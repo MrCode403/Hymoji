@@ -1,48 +1,55 @@
 apply plugin: 'com.android.application'
 
 android {
-	useLibrary 'org.apache.http.legacy'
-	compileSdkVersion 30
-	
-	defaultConfig {
-		applicationId "com.nerbly.bemoji"
-		minSdkVersion 21
-		targetSdkVersion 30
-		versionCode 8
-		versionName "0.4"
-	}
-	buildTypes {
-		release {
-			minifyEnabled true
-			shrinkResources true
-			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-		}
-	}
+    useLibrary 'org.apache.http.legacy'
+    compileSdkVersion 30
+
+    defaultConfig {
+        applicationId "com.nerbly.bemoji"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 8
+        versionName "0.4"
+    }
+    buildTypes {
+        release {
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
 }
 
 dependencies {
-	implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-	//Google
-	implementation 'androidx.appcompat:appcompat:1.2.0'
-	implementation 'com.google.android.material:material:1.4.0-alpha02'
-	implementation 'com.google.firebase:firebase-analytics:18.0.3'
-	implementation 'com.google.firebase:firebase-messaging:21.1.0'
+    //Google
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.4.0-alpha02'
+    implementation 'com.google.firebase:firebase-analytics:18.0.3'
+    implementation 'com.google.firebase:firebase-messaging:21.1.0'
 
-	//Necessary libs
-	implementation 'com.github.bumptech.glide:glide:4.12.0'
-	implementation 'jp.wasabeef:glide-transformations:4.3.0'
-	implementation 'com.google.code.gson:gson:2.8.6'
-	implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    //Necessary libs
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    implementation 'jp.wasabeef:glide-transformations:4.3.0'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
 
-	//animations
-	implementation 'com.airbnb.android:lottie:3.7.0'
-	implementation 'com.facebook.shimmer:shimmer:0.5.0'
-	implementation 'io.github.everythingme:overscroll-decor-android:1.1.1'
+    //animations
+    implementation 'com.airbnb.android:lottie:3.7.0'
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    implementation 'io.github.everythingme:overscroll-decor-android:1.1.1'
 
-	//ads
-	implementation 'com.facebook.android:audience-network-sdk:6.3.0'
+    //ads
+    implementation 'com.facebook.android:audience-network-sdk:6.3.0'
 
-	//other libs
-	implementation 'com.mindorks.android:prdownloader:0.6.0'
+    //other libs
+    implementation 'com.mindorks.android:prdownloader:0.6.0'
 }
