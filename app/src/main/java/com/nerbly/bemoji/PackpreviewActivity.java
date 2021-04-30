@@ -2,6 +2,7 @@ package com.nerbly.bemoji;
 
 import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
 import static com.nerbly.bemoji.Functions.Utils.ZIP;
+import static com.nerbly.bemoji.UI.MainUIMethods.*;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -112,8 +113,8 @@ public class PackpreviewActivity extends AppCompatActivity {
         linear1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View _view) {
-                MainUIMethods.shadAnim(download, "translationY", 200, 200);
-                MainUIMethods.shadAnim(download, "alpha", 0, 200);
+                shadAnim(download, "translationY", 200, 200);
+                shadAnim(download, "alpha", 0, 200);
 
                 sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             }
@@ -141,8 +142,8 @@ public class PackpreviewActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        MainUIMethods.shadAnim(download, "translationY", 200, 200);
-        MainUIMethods.shadAnim(download, "alpha", 0, 200);
+        shadAnim(download, "translationY", 200, 200);
+        shadAnim(download, "alpha", 0, 200);
 
         sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
@@ -166,11 +167,11 @@ public class PackpreviewActivity extends AppCompatActivity {
     }
 
     public void _LOGIC_FRONTEND() {
-        MainUIMethods.advancedCorners(background, "#FFFFFF", 40, 40, 0, 0);
-        MainUIMethods.setViewRadius(slider, 90, "#E0E0E0");
-        MainUIMethods.DARK_ICONS(this);
-        MainUIMethods.transparentStatusBar(this);
-        MainUIMethods.rippleRoundStroke(download, "#7289DA", "#687DC8", 25, 0, "#7289DA");
+       advancedCorners(background, "#FFFFFF", 40, 40, 0, 0);
+       setViewRadius(slider, 90, "#E0E0E0");
+        DARK_ICONS(this);
+        transparentStatusBar(this);
+        rippleRoundStroke(download, "#7289DA", "#687DC8", 25, 0, "#7289DA");
         title.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
         textview4.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
         textview3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
@@ -238,7 +239,7 @@ public class PackpreviewActivity extends AppCompatActivity {
                     if (isDownloading) {
                         sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     } else {
-                        MainUIMethods.shadAnim(linear1, "alpha", 0, 200);
+                        shadAnim(linear1, "alpha", 0, 200);
                         fixUIIssues = new TimerTask() {
                             @Override
                             public void run() {
@@ -254,29 +255,29 @@ public class PackpreviewActivity extends AppCompatActivity {
                     }
                 } else {
                     if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                        MainUIMethods.shadAnim(background, "elevation", 20, 200);
-                        MainUIMethods.shadAnim(slider, "translationY", 0, 200);
-                        MainUIMethods.shadAnim(slider, "alpha", 1, 200);
-                        MainUIMethods.shadAnim(download, "translationY", 0, 200);
-                        MainUIMethods.shadAnim(download, "alpha", 1, 200);
+                        shadAnim(background, "elevation", 20, 200);
+                        shadAnim(slider, "translationY", 0, 200);
+                        shadAnim(slider, "alpha", 1, 200);
+                        shadAnim(download, "translationY", 0, 200);
+                        shadAnim(download, "alpha", 1, 200);
                         slider.setVisibility(View.VISIBLE);
                     } else {
                         if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                            MainUIMethods.shadAnim(background, "elevation", 0, 200);
-                            MainUIMethods.shadAnim(slider, "translationY", -200, 200);
-                            MainUIMethods.shadAnim(slider, "alpha", 0, 200);
-                            MainUIMethods.shadAnim(download, "translationY", 0, 200);
-                            MainUIMethods.shadAnim(download, "alpha", 1, 200);
+                            shadAnim(background, "elevation", 0, 200);
+                            shadAnim(slider, "translationY", -200, 200);
+                            shadAnim(slider, "alpha", 0, 200);
+                            shadAnim(download, "translationY", 0, 200);
+                            shadAnim(download, "alpha", 1, 200);
                             slider.setVisibility(View.INVISIBLE);
                         } else {
                             if (newState == BottomSheetBehavior.STATE_DRAGGING) {
-                                MainUIMethods.shadAnim(background, "elevation", 20, 200);
-                                MainUIMethods.shadAnim(slider, "translationY", 0, 200);
-                                MainUIMethods.shadAnim(slider, "alpha", 1, 200);
+                                shadAnim(background, "elevation", 20, 200);
+                                shadAnim(slider, "translationY", 0, 200);
+                                shadAnim(slider, "alpha", 1, 200);
                                 slider.setVisibility(View.VISIBLE);
                                 if (!isDownloading) {
-                                    MainUIMethods.shadAnim(download, "translationY", 200, 200);
-                                    MainUIMethods.shadAnim(download, "alpha", 0, 200);
+                                    shadAnim(download, "translationY", 200, 200);
+                                    shadAnim(download, "alpha", 0, 200);
                                 }
                             }
                         }
@@ -406,10 +407,10 @@ public class PackpreviewActivity extends AppCompatActivity {
             final LinearLayout slider = bottomSheetView.findViewById(R.id.slider);
 
             final LinearLayout btnsback = bottomSheetView.findViewById(R.id.infosheet_btnsholder);
-            MainUIMethods.advancedCorners(infoback, "#ffffff", 38, 38, 0, 0);
-            MainUIMethods.rippleRoundStroke(infook, "#7289DA", "#6275BB", 20, 0, "#007EEF");
-            MainUIMethods.rippleRoundStroke(infocancel, "#424242", "#181818", 20, 0, "#007EEF");
-            MainUIMethods.setViewRadius(slider, 180, "#BDBDBD");
+            advancedCorners(infoback, "#ffffff", 38, 38, 0, 0);
+            rippleRoundStroke(infook, "#7289DA", "#6275BB", 20, 0, "#007EEF");
+            rippleRoundStroke(infocancel, "#424242", "#181818", 20, 0, "#007EEF");
+            setViewRadius(slider, 180, "#BDBDBD");
             infotitle.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
             infosub.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
             infook.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
@@ -453,7 +454,7 @@ public class PackpreviewActivity extends AppCompatActivity {
 
         TextView text =
                 _inflate.findViewById(R.id.textview1);
-        MainUIMethods.setViewRadius(back, 20, "#202125");
+        setViewRadius(back, 20, "#202125");
         text.setText(_text);
         text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
         _sblayout.addView(_inflate, 0);

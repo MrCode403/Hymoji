@@ -33,9 +33,8 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
     private final Timer _timer = new Timer();
     private final ArrayList<HashMap<String, Object>> viewPagerList = new ArrayList<>();
-    private final Intent tohome = new Intent();
+    private final Intent intent = new Intent();
     FirebaseAnalytics mFirebaseAnalytics;
-    private HashMap<String, Object> viewPagerMap = new HashMap<>();
     private ImageView imageview2;
     private LinearLayout dataview;
     private LinearLayout splashview;
@@ -43,18 +42,17 @@ public class MainActivity extends AppCompatActivity {
     private TextView textview1;
     private TextView textview3;
     private SharedPreferences sharedPref;
-    private TimerTask splashTmr;
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.main);
-        initialize(_savedInstanceState);
+        initialize();
         com.google.firebase.FirebaseApp.initializeApp(this);
         initializeLogic();
     }
 
-    private void initialize(Bundle _savedInstanceState) {
+    private void initialize() {
         imageview2 = findViewById(R.id.imageview2);
         dataview = findViewById(R.id.dataview);
         splashview = findViewById(R.id.splashview);
@@ -66,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
         splashview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View _view) {
-                tohome.setClass(getApplicationContext(), HomeActivity.class);
-                startActivity(tohome);
+                intent.setClass(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -80,9 +78,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int _position) {
                 if (_position == 2) {
-                    textview1.setText("Start");
+                    textview1.setText(R.string.welcome_start);
                 } else {
-                    textview1.setText("Continue");
+                    textview1.setText(R.string.welcome_continue);
                 }
             }
 
@@ -97,8 +95,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View _view) {
                 if (viewpager1.getCurrentItem() == 2) {
                     sharedPref.edit().putString("firstUse", "true").apply();
-                    tohome.setClass(getApplicationContext(), HomeActivity.class);
-                    startActivity(tohome);
+                    intent.setClass(getApplicationContext(), HomeActivity.class);
+                    startActivity(intent);
                 } else {
                     viewpager1.setCurrentItem(viewpager1.getCurrentItem() + 1);
                 }
@@ -149,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception ignored) {
         }
         for (int _repeat16 = 0; _repeat16 < 3; _repeat16++) {
-            viewPagerMap = new HashMap<>();
+            HashMap<String, Object> viewPagerMap = new HashMap<>();
             viewPagerMap.put("title", "data");
             viewPagerMap.put("subtitle", "data");
             viewPagerList.add(viewPagerMap);
@@ -162,14 +160,14 @@ public class MainActivity extends AppCompatActivity {
         } else {
             splashview.setVisibility(View.VISIBLE);
             dataview.setVisibility(View.GONE);
-            splashTmr = new TimerTask() {
+            TimerTask splashTmr = new TimerTask() {
                 @Override
                 public void run() {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            tohome.setClass(getApplicationContext(), HomeActivity.class);
-                            startActivity(tohome);
+                            intent.setClass(getApplicationContext(), HomeActivity.class);
+                            startActivity(intent);
                         }
                     });
                 }
@@ -193,17 +191,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public boolean isViewFromObject(View _view, Object _object) {
+        public boolean isViewFromObject(@NonNull View _view, @NonNull Object _object) {
             return _view == _object;
         }
 
         @Override
-        public void destroyItem(ViewGroup _container, int _position, Object _object) {
+        public void destroyItem(ViewGroup _container, int _position, @NonNull Object _object) {
             _container.removeView((View) _object);
         }
 
         @Override
-        public int getItemPosition(Object _object) {
+        public int getItemPosition(@NonNull Object _object) {
             return super.getItemPosition(_object);
         }
 

@@ -1,6 +1,7 @@
 package com.nerbly.bemoji;
 
 import android.animation.LayoutTransition;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import com.facebook.ads.AudienceNetworkAds;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.nerbly.bemoji.Adapters.LoadingPacksAdapter;
 import com.nerbly.bemoji.Functions.RequestNetwork;
 import com.nerbly.bemoji.Functions.RequestNetworkController;
 import com.nerbly.bemoji.Functions.Utils;
@@ -52,10 +54,7 @@ public class PacksActivity extends AppCompatActivity {
     BottomSheetBehavior sheetBehavior;
     private String packsTempArrayString = "";
     private String currentPositionPackArray = "";
-    private com.facebook.ads.AdView bannerAd;
-    private HashMap<String, Object> shimmerMap = new HashMap<>();
     private ArrayList<HashMap<String, Object>> packsList = new ArrayList<>();
-    private CoordinatorLayout linear1;
     private LinearLayout bsheetbehavior;
     private LinearLayout background;
     private LinearLayout adview;
@@ -67,22 +66,18 @@ public class PacksActivity extends AppCompatActivity {
     private RequestNetwork startGettingPacks;
     private RequestNetwork.RequestListener _startGettingPacks_request_listener;
     private SharedPreferences sharedPref;
-    private TimerTask loadingTmr;
-
-    {
-    }
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.packs);
-        initialize(_savedInstanceState);
+        initialize();
         com.google.firebase.FirebaseApp.initializeApp(this);
         initializeLogic();
     }
 
-    private void initialize(Bundle _savedInstanceState) {
-        linear1 = findViewById(R.id.linear1);
+    private void initialize() {
+        CoordinatorLayout linear1 = findViewById(R.id.linear1);
         bsheetbehavior = findViewById(R.id.bsheetbehavior);
         background = findViewById(R.id.background);
         adview = findViewById(R.id.adview);
@@ -141,25 +136,25 @@ public class PacksActivity extends AppCompatActivity {
         background.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
         AudienceNetworkAds.initialize(this);
 
-        bannerAd = new AdView(this, "3773974092696684_3774022966025130", AdSize.BANNER_HEIGHT_50);
+        AdView bannerAd = new AdView(this, "3773974092696684_3774022966025130", AdSize.BANNER_HEIGHT_50);
 
         adview.addView(bannerAd);
 
         bannerAd.loadAd();
         for (int _repeat32 = 0; _repeat32 < 30; _repeat32++) {
-            shimmerMap = new HashMap<>();
+            HashMap<String, Object> shimmerMap = new HashMap<>();
             shimmerMap.put("key", "value");
             shimmerList.add(shimmerMap);
         }
-        loadingRecycler.setAdapter(new LoadingRecyclerAdapter(shimmerList));
+        loadingRecycler.setAdapter(new LoadingPacksAdapter.LoadingRecyclerAdapter(shimmerList));
         new getPacksTask().execute("");
         packsRecycler.setHasFixedSize(true);
         loadingRecycler.setHasFixedSize(true);
     }
 
     public void _LOGIC_FRONTEND() {
-        textview3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), 1);
-        textview4.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), 0);
+        textview3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
+        textview4.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
         MainUIMethods.advancedCorners(background, "#FFFFFF", 40, 40, 0, 0);
         MainUIMethods.setViewRadius(slider, 90, "#E0E0E0");
         MainUIMethods.DARK_ICONS(this);
@@ -216,13 +211,14 @@ public class PacksActivity extends AppCompatActivity {
         StringBuffer capBuffer = new StringBuffer();
         Matcher capMatcher = Pattern.compile("([a-z])([a-z]*)", Pattern.CASE_INSENSITIVE).matcher(_data);
         while (capMatcher.find()) {
-            capMatcher.appendReplacement(capBuffer, capMatcher.group(1).toUpperCase() + capMatcher.group(2).toLowerCase());
+            capMatcher.appendReplacement(capBuffer, Objects.requireNonNull(capMatcher.group(1)).toUpperCase() + Objects.requireNonNull(capMatcher.group(2)).toLowerCase());
         }
 
         return capMatcher.appendTail(capBuffer).toString();
 
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class getPacksTask extends AsyncTask<String, Integer, String> {
         @Override
         protected void onPreExecute() {
@@ -231,7 +227,6 @@ public class PacksActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            String _param = params[0];
             if (sharedPref.getString("packsData", "").equals("")) {
                 startGettingPacks.startRequestNetwork(RequestNetworkController.GET, "https://emoji.gg/api/packs", "", _startGettingPacks_request_listener);
             } else {
@@ -248,17 +243,14 @@ public class PacksActivity extends AppCompatActivity {
 
         @Override
         protected void onProgressUpdate(Integer... values) {
-            int _value = values[0];
 
         }
 
         @Override
         protected void onPostExecute(String _result) {
-            if (sharedPref.getString("packsData", "").equals("")) {
-
-            } else {
+            if (!sharedPref.getString("packsData", "").equals("")) {
                 packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
-                loadingTmr = new TimerTask() {
+                TimerTask loadingTmr = new TimerTask() {
                     @Override
                     public void run() {
                         runOnUiThread(new Runnable() {
@@ -283,17 +275,18 @@ public class PacksActivity extends AppCompatActivity {
             _data = _arr;
         }
 
+        @NonNull
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater _inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View _v = _inflater.inflate(R.layout.fullpacksview, null);
+            @SuppressLint("InflateParams") View _v = _inflater.inflate(R.layout.fullpacksview, null);
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             _v.setLayoutParams(_lp);
             return new ViewHolder(_v);
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder _holder, final int _position) {
+        public void onBindViewHolder(ViewHolder _holder, @SuppressLint("RecyclerView") final int _position) {
             View _view = _holder.itemView;
 
             final com.google.android.material.card.MaterialCardView cardview1 = _view.findViewById(R.id.cardview1);
@@ -331,62 +324,18 @@ public class PacksActivity extends AppCompatActivity {
 
                     }
                     toPreview.putExtra("switchType", "pack");
-                    toPreview.putExtra("title", "BemojiPack_".concat(String.valueOf((long) (Double.parseDouble(_data.get(_position).get("id").toString())))));
+                    toPreview.putExtra("title", "BemojiPack_".concat(String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(_data.get(_position).get("id")).toString())))));
                     toPreview.putExtra("subtitle", Objects.requireNonNull(_data.get(_position).get("description")).toString());
                     toPreview.putExtra("imageUrl", Objects.requireNonNull(_data.get(_position).get("image")).toString());
                     toPreview.putExtra("fileName", Objects.requireNonNull(_data.get(_position).get("slug")).toString());
                     toPreview.putExtra("packEmojisArray", currentPositionPackArray);
-                    toPreview.putExtra("packEmojisAmount", _data.get(_position).get("amount").toString());
-                    toPreview.putExtra("packName", _capitalizedFirstWord(_data.get(_position).get("name").toString().replace("_", " ")));
-                    toPreview.putExtra("packId", _data.get(_position).get("id").toString());
+                    toPreview.putExtra("packEmojisAmount", Objects.requireNonNull(_data.get(_position).get("amount")).toString());
+                    toPreview.putExtra("packName", _capitalizedFirstWord(Objects.requireNonNull(_data.get(_position).get("name")).toString().replace("_", " ")));
+                    toPreview.putExtra("packId", Objects.requireNonNull(_data.get(_position).get("id")).toString());
                     toPreview.setClass(getApplicationContext(), PackpreviewActivity.class);
                     startActivity(toPreview);
                 }
             });
-        }
-
-        @Override
-        public int getItemCount() {
-            return _data.size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public ViewHolder(View v) {
-                super(v);
-            }
-        }
-
-    }
-
-    public class LoadingRecyclerAdapter extends RecyclerView.Adapter<LoadingRecyclerAdapter.ViewHolder> {
-        ArrayList<HashMap<String, Object>> _data;
-
-        public LoadingRecyclerAdapter(ArrayList<HashMap<String, Object>> _arr) {
-            _data = _arr;
-        }
-
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater _inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View _v = _inflater.inflate(R.layout.loadingview, null);
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _v.setLayoutParams(_lp);
-            return new ViewHolder(_v);
-        }
-
-        @Override
-        public void onBindViewHolder(ViewHolder _holder, final int _position) {
-            View _view = _holder.itemView;
-
-            final LinearLayout categoriesShimmer = _view.findViewById(R.id.categoriesShimmer);
-            final LinearLayout shimmer2 = _view.findViewById(R.id.shimmer2);
-            final LinearLayout shimmer3 = _view.findViewById(R.id.shimmer3);
-            final LinearLayout shimmer4 = _view.findViewById(R.id.shimmer4);
-
-            categoriesShimmer.setVisibility(View.GONE);
-            MainUIMethods.setClippedView(shimmer2, "#FFFFFF", 30, 0);
-            MainUIMethods.setClippedView(shimmer3, "#FFFFFF", 200, 0);
-            MainUIMethods.setClippedView(shimmer4, "#FFFFFF", 200, 0);
         }
 
         @Override

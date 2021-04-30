@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 	<LinearLayout
@@ -25,17 +26,19 @@
 			android:padding="40dp"
 			android:src="@drawable/smiley_face_flatline"
 			android:scaleType="centerCrop" />
+
 		<TextView
 			android:id="@+id/infosheet_title"
-			android:focusable="false"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="8dp"
 			android:layout_marginRight="8dp"
+			android:focusable="false"
 			android:gravity="center_horizontal|center_vertical"
 			android:text="@string/animated_emojis_warning_title"
+			android:textColor="#7289DA"
 			android:textSize="18sp"
-			android:textColor="#7289DA" />
+			tools:ignore="TextContrastCheck" />
 		<TextView
 			android:id="@+id/infosheet_sub"
 			android:focusable="false"
@@ -56,45 +59,49 @@
 			android:layout_marginTop="7dp"
 			android:gravity="center_horizontal|center_vertical"
 			android:orientation="horizontal">
+
 			<TextView
 				android:id="@+id/infosheet_cancel"
-				android:focusable="false"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginStart="8dp"
 				android:layout_marginTop="8dp"
 				android:layout_marginEnd="4dp"
 				android:layout_marginBottom="8dp"
+				android:layout_weight="1"
+				android:background="#F44336"
+				android:focusable="false"
+				android:gravity="center_horizontal|center_vertical"
 				android:paddingLeft="8dp"
 				android:paddingTop="10dp"
 				android:paddingRight="8dp"
 				android:paddingBottom="10dp"
-				android:background="#F44336"
-				android:gravity="center_horizontal|center_vertical"
 				android:text="@string/animated_emojis_warning_btncancel"
-				android:textSize="14sp"
 				android:textColor="#FFFFFF"
-				android:layout_weight="1" />
+				android:textSize="14sp"
+				tools:ignore="TextContrastCheck" />
+
 			<TextView
 				android:id="@+id/infosheet_ok"
-				android:focusable="false"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginStart="4dp"
 				android:layout_marginTop="8dp"
 				android:layout_marginEnd="8dp"
 				android:layout_marginBottom="8dp"
+				android:layout_weight="1"
+				android:background="#7289DA"
+				android:focusable="false"
+				android:gravity="center_horizontal|center_vertical"
 				android:paddingLeft="8dp"
 				android:paddingTop="10dp"
 				android:paddingRight="8dp"
 				android:paddingBottom="10dp"
-				android:background="#7289DA"
-				android:gravity="center_horizontal|center_vertical"
-				android:text="@string/animated_emojis_warning_btnok"
-				android:textSize="14sp"
-				android:textColor="#FFFFFF"
 				android:singleLine="true"
-				android:layout_weight="1" />
+				android:text="@string/animated_emojis_warning_btnok"
+				android:textColor="#FFFFFF"
+				android:textSize="14sp"
+				tools:ignore="TextContrastCheck" />
 		</LinearLayout>
 	</LinearLayout>
 </LinearLayout>

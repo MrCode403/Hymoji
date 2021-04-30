@@ -61,12 +61,12 @@ public class CategoriesActivity extends AppCompatActivity {
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.categories);
-        initialize(_savedInstanceState);
+        initialize();
         com.google.firebase.FirebaseApp.initializeApp(this);
         initializeLogic();
     }
 
-    private void initialize(Bundle _savedInstanceState) {
+    private void initialize() {
         CoordinatorLayout linear1 = findViewById(R.id.linear1);
         bsheetbehavior = findViewById(R.id.bsheetbehavior);
         background = findViewById(R.id.background);

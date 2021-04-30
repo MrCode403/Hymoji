@@ -18,9 +18,9 @@
     <string name="home_searchbox">Search…</string>
     <string name="home_sections_title">SECTIONS</string>
     <string name="home_dock1_title">All emojis</string>
-    <string name="home_dock1_subtitle"> emojis</string>
+    <string name="home_dock1_subtitle">emojis</string>
     <string name="home_dock2_title">Categories</string>
-    <string name="home_dock2_subtitle"> categories</string>
+    <string name="home_dock2_subtitle">categories</string>
     <string name="home_dock3_title">Settings</string>
     <string name="home_dock3_subtitle">Manage Bemoji</string>
     <string name="home_dock4_subtitle">How to add emojis?</string>
@@ -76,6 +76,7 @@
     <string name="settings_option_8_title">Content source</string>
     <string name="settings_option_8_subtitle">All emojis are provided by emoji.gg.</string>
     <string name="help_center_title">Help center</string>
-    <string name="help_center_subtitle">Step-by-step instructions to add emojis to your own discord or slack server</string>>
+    <string name="help_center_subtitle">Step-by-step instructions to add emojis to your own discord or slack server</string>
+    <string name="welcome_start">Start</string>>
 
 </resources>

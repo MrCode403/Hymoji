@@ -1,6 +1,5 @@
 package com.nerbly.bemoji;
 
-import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.NavStatusBarColor;
 import static com.nerbly.bemoji.UI.MainUIMethods.changeActivityFont;
@@ -10,19 +9,15 @@ import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -34,7 +29,6 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
-import com.bumptech.glide.Glide;
 import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
 import com.facebook.ads.AudienceNetworkAds;
@@ -42,14 +36,15 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.nerbly.bemoji.Adapters.*;
+import com.nerbly.bemoji.Adapters.HomePacksAdapter;
+import com.nerbly.bemoji.Adapters.LoadingPacksAdapter;
+import com.nerbly.bemoji.Adapters.LocalEmojisAdapter;
 import com.nerbly.bemoji.Functions.FileManager;
 import com.nerbly.bemoji.Functions.RequestNetwork;
 import com.nerbly.bemoji.Functions.RequestNetworkController;
 import com.nerbly.bemoji.Functions.Utils;
 import com.nerbly.bemoji.UI.MainUIMethods;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -63,8 +58,6 @@ import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 public class HomeActivity extends AppCompatActivity {
 
     private final ArrayList<HashMap<String, Object>> shimmerList = new ArrayList<>();
-    private final ArrayList<String> packsArrayList = new ArrayList<>();
-    private final Intent toPreview = new Intent();
     private final Intent toSearch = new Intent();
     private final Intent toCategories = new Intent();
     private final Intent toHelp = new Intent();
@@ -80,11 +73,9 @@ public class HomeActivity extends AppCompatActivity {
     private double emojisScanPosition = 0;
     private double localEmojisScanPosition = 0;
     private String localEmojisScanPath = "";
-    private String currentPositionPackArray = "";
-    private String packsTempArrayString = "";
     private ArrayList<HashMap<String, Object>> emojisList = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> categoriesList = new ArrayList<>();
-    private ArrayList<HashMap<String, Object>> packsList = new ArrayList<>();
+    public static ArrayList<HashMap<String, Object>> packsList = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> localEmojisList = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> backendPacksList = new ArrayList<>();
     private LinearLayout adview;
@@ -103,7 +94,6 @@ public class HomeActivity extends AppCompatActivity {
     private MaterialCardView searchcard;
     private LinearLayout localemojisview;
     private LinearLayout linear30;
-    private LinearLayout linear53;
     private RecyclerView packs_recycler;
     private RecyclerView local_recycler;
     private LinearLayout dock1;
@@ -128,12 +118,12 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.home);
-        initialize(_savedInstanceState);
+        initialize();
         com.google.firebase.FirebaseApp.initializeApp(this);
         initializeLogic();
     }
 
-    private void initialize(Bundle _savedInstanceState) {
+    private void initialize() {
         adview = findViewById(R.id.adview);
         vscroll2 = findViewById(R.id.vscroll2);
         textview1 = findViewById(R.id.textview1);
@@ -150,7 +140,7 @@ public class HomeActivity extends AppCompatActivity {
         searchcard = findViewById(R.id.searchcard);
         localemojisview = findViewById(R.id.localemojisview);
         linear30 = findViewById(R.id.linear30);
-        linear53 = findViewById(R.id.linear53);
+        LinearLayout gotopacks = findViewById(R.id.gotopacks);
         packs_recycler = findViewById(R.id.packs_recycler);
         local_recycler = findViewById(R.id.local_recycler);
         dock1 = findViewById(R.id.dock1);
@@ -178,7 +168,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        linear53.setOnClickListener(new View.OnClickListener() {
+        gotopacks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View _view) {
                 toPacks.setClass(getApplicationContext(), PacksActivity.class);
@@ -299,7 +289,8 @@ public class HomeActivity extends AppCompatActivity {
                                 }.getType());
                                 sharedPref.edit().putString("packsDataOriginal", response).apply();
                                 sharedPref.edit().putString("packsData", new Gson().toJson(packsList)).apply();
-                                packs_recycler.setAdapter(new Packs_recyclerAdapter(packsList));
+                                packs_recycler.setAdapter(new HomePacksAdapter.Packs_recyclerAdapter(packsList));
+
                             } catch (Exception e) {
                                 Utils.showMessage(getApplicationContext(), (e.toString()));
                             }
@@ -345,8 +336,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void initializeLogic() {
-        _LOGIC_FRONTEND();
-        _LOGIC_BACKEND();
+        LOGIC_FRONTEND();
+        LOGIC_BACKEND();
     }
 
     @Override
@@ -366,7 +357,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    public void _LOGIC_BACKEND() {
+    public void LOGIC_BACKEND() {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         overridePendingTransition(R.anim.fade_in, 0);
 
@@ -389,7 +380,7 @@ public class HomeActivity extends AppCompatActivity {
                 shimmerMap.put("key", "value");
                 shimmerList.add(shimmerMap);
             }
-            loadingRecycler.setAdapter(new LoadingRecyclerAdapter(shimmerList));
+            loadingRecycler.setAdapter(new LoadingPacksAdapter.LoadingRecyclerAdapter(shimmerList));
         } else {
             loadingView.setVisibility(View.GONE);
             mainView.setVisibility(View.VISIBLE);
@@ -421,7 +412,7 @@ public class HomeActivity extends AppCompatActivity {
                 packsList = new Gson().fromJson(sharedPref.getString("packsData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
                 }.getType());
                 sharedPref.edit().putString("packsData", new Gson().toJson(packsList)).apply();
-                packs_recycler.setAdapter(new Packs_recyclerAdapter(packsList));
+                packs_recycler.setAdapter(new HomePacksAdapter.Packs_recyclerAdapter(packsList));
             } catch (Exception e) {
                 Utils.showMessage(getApplicationContext(), (e.toString()));
             }
@@ -437,7 +428,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-    public void _LOGIC_FRONTEND() {
+    public void LOGIC_FRONTEND() {
         NavStatusBarColor("#FFFFFF", "#FFFFFF", this);
         DARK_ICONS(this);
         changeActivityFont("whitney", this);
@@ -467,16 +458,9 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(_intent, optionsCompat.toBundle());
     }
 
-
-    public void _setImageFromUrl(final ImageView _image, final String _url) {
-        Glide.with(this)
-
-                .load(_url)
-                .centerCrop()
-                .into(_image);
-
+    public static String PacksArray() {
+        return new Gson().toJson(packsList);
     }
-
 
     public void _showCustomSnackBar(final String _text) {
         ViewGroup parentLayout = (ViewGroup) ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
@@ -534,7 +518,7 @@ public class HomeActivity extends AppCompatActivity {
                             } else {
                                 localemojisview.setVisibility(View.VISIBLE);
                                 Utils.sortListMap(localEmojisList, "modi_time", false, false);
-                                local_recycler.setAdapter(new Local_recyclerAdapter(localEmojisList));
+                                local_recycler.setAdapter(new LocalEmojisAdapter.Local_recyclerAdapter(localEmojisList));
                             }
                         } catch (Exception ignored) {
                         }
@@ -543,239 +527,6 @@ public class HomeActivity extends AppCompatActivity {
                 });
             }
         }).start();
-
-    }
-
-    public void setImageFromPath(final ImageView _image, final String _path) {
-        java.io.File file = new java.io.File(_path);
-        Uri imageUri = Uri.fromFile(file);
-
-        Glide.with(this)
-                .load(imageUri)
-                .into(_image);
-    }
-
-
-
-
-    /*
-    public void _newDataAvailableSnackBar(final String _text) {
-        ViewGroup parentLayout2 = (ViewGroup) ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
-
-        _snackBarView2 = com.google.android.material.snackbar.Snackbar.make(parentLayout2, "", com.google.android.material.snackbar.Snackbar.LENGTH_LONG);
-        _sblayout2 = (com.google.android.material.snackbar.Snackbar.SnackbarLayout) _snackBarView2.getView();
-
-        View _inflate2 = getLayoutInflater().inflate(R.layout.snackbarbtn, null);
-        _sblayout2.setPadding(0, 0, 0, 0);
-        _sblayout2.setBackgroundColor(Color.argb(0, 0, 0, 0));
-        LinearLayout back =
-                _inflate2.findViewById(R.id.linear1);
-
-        TextView text =
-                _inflate2.findViewById(R.id.textview1);
-
-        TextView btn =
-                _inflate2.findViewById(R.id.textview3);
-        setViewRadius(back, 20, "#202125");
-        text.setText("");
-        btn.setText("UPDATE NOW");
-        text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), 0);
-        text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), 1);
-        if (_text.contains("new packs")) {
-
-        } else {
-            if (_text.contains("new emojis")) {
-
-            } else {
-                if (_text.contains("new packs and emojis")) {
-
-                }
-            }
-        }
-        _sblayout2.addView(_inflate, 0);
-        _snackBarView2.show();
-    }
-    com.google.android.material.snackbar.Snackbar _snackBarView2;
-    com.google.android.material.snackbar.Snackbar.SnackbarLayout _sblayout2;
-    View _inflate2;
-    */
-
-
-    public class LoadingRecyclerAdapter extends RecyclerView.Adapter<LoadingRecyclerAdapter.ViewHolder> {
-        ArrayList<HashMap<String, Object>> _data;
-
-        public LoadingRecyclerAdapter(ArrayList<HashMap<String, Object>> _arr) {
-            _data = _arr;
-        }
-
-
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater _inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            @SuppressLint("InflateParams") View _v = _inflater.inflate(R.layout.loadingview, null);
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _v.setLayoutParams(_lp);
-            return new ViewHolder(_v);
-        }
-
-        @Override
-        public void onBindViewHolder(ViewHolder _holder, final int _position) {
-            View _view = _holder.itemView;
-
-            final LinearLayout categoriesShimmer = _view.findViewById(R.id.categoriesShimmer);
-            final LinearLayout shimmer2 = _view.findViewById(R.id.shimmer2);
-            final LinearLayout shimmer3 = _view.findViewById(R.id.shimmer3);
-            final LinearLayout shimmer4 = _view.findViewById(R.id.shimmer4);
-
-            categoriesShimmer.setVisibility(View.GONE);
-            setClippedView(shimmer2, "#FFFFFF", 30, 0);
-            setClippedView(shimmer3, "#FFFFFF", 200, 0);
-            setClippedView(shimmer4, "#FFFFFF", 200, 0);
-        }
-
-        @Override
-        public int getItemCount() {
-            return _data.size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public ViewHolder(View v) {
-                super(v);
-            }
-        }
-
-    }
-
-    public class Packs_recyclerAdapter extends RecyclerView.Adapter<Packs_recyclerAdapter.ViewHolder> {
-        ArrayList<HashMap<String, Object>> _data;
-
-        public Packs_recyclerAdapter(ArrayList<HashMap<String, Object>> _arr) {
-            _data = _arr;
-        }
-
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater _inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            @SuppressLint("InflateParams") View _v = _inflater.inflate(R.layout.packsview, null);
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _v.setLayoutParams(_lp);
-            return new ViewHolder(_v);
-        }
-
-        @Override
-        public void onBindViewHolder(ViewHolder _holder, @SuppressLint("RecyclerView") final int _position) {
-            View _view = _holder.itemView;
-
-            final com.google.android.material.card.MaterialCardView cardview2 = _view.findViewById(R.id.cardview2);
-            final com.google.android.material.card.MaterialCardView cardview1 = _view.findViewById(R.id.cardview1);
-            final TextView textview1 = _view.findViewById(R.id.textview1);
-            final TextView textview2 = _view.findViewById(R.id.textview2);
-            final ImageView imageview1 = _view.findViewById(R.id.imageview1);
-
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _view.setLayoutParams(_lp);
-            textview1.setText(capitalizedFirstWord(Objects.requireNonNull(_data.get(_position).get("name")).toString().replace("_", " ")));
-            textview2.setText(Objects.requireNonNull(_data.get(_position).get("description")).toString());
-            textview1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
-            textview2.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
-            _setImageFromUrl(imageview1, Objects.requireNonNull(_data.get(_position).get("image")).toString());
-            cardview1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View _view) {
-                    try {
-                        packsTempArrayString = new Gson().toJson(packsList);
-                        JSONArray backPacksArray = new JSONArray(packsTempArrayString);
-                        JSONObject packsObject = backPacksArray.getJSONObject(_position);
-
-                        JSONArray frontPacksArray = packsObject.getJSONArray("emojis");
-                        for (int frontPacksInt = 0; frontPacksInt < frontPacksArray.length(); frontPacksInt++) {
-                            packsArrayList.add(frontPacksArray.getString(frontPacksInt));
-                        }
-                        currentPositionPackArray = new Gson().toJson(packsArrayList);
-                        packsArrayList.clear();
-                    } catch (Exception ignored) {
-
-                    }
-                    toPreview.putExtra("switchType", "pack");
-                    toPreview.putExtra("title", "BemojiPack_" + (long) (Double.parseDouble(Objects.requireNonNull(_data.get(_position).get("id")).toString())));
-                    toPreview.putExtra("subtitle", Objects.requireNonNull(_data.get(_position).get("description")).toString());
-                    toPreview.putExtra("imageUrl", Objects.requireNonNull(_data.get(_position).get("image")).toString());
-                    toPreview.putExtra("fileName", Objects.requireNonNull(_data.get(_position).get("slug")).toString());
-                    toPreview.putExtra("packEmojisArray", currentPositionPackArray);
-                    toPreview.putExtra("packEmojisAmount", Objects.requireNonNull(_data.get(_position).get("amount")).toString());
-                    toPreview.putExtra("packName", capitalizedFirstWord(Objects.requireNonNull(_data.get(_position).get("name")).toString().replace("_", " ")));
-                    toPreview.putExtra("packId", Objects.requireNonNull(_data.get(_position).get("id")).toString());
-                    toPreview.setClass(getApplicationContext(), PackpreviewActivity.class);
-                    startActivity(toPreview);
-                }
-            });
-            if (_position == 0) {
-                cardview2.setVisibility(View.VISIBLE);
-            } else {
-                cardview2.setVisibility(View.GONE);
-            }
-            cardview2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View _view) {
-                    toPacks.setClass(getApplicationContext(), PacksActivity.class);
-                    startActivity(toPacks);
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return _data.size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public ViewHolder(View v) {
-                super(v);
-            }
-        }
-
-    }
-
-    public class Local_recyclerAdapter extends RecyclerView.Adapter<HomeActivity.Local_recyclerAdapter.ViewHolder> {
-        ArrayList<HashMap<String, Object>> _data;
-
-        public Local_recyclerAdapter(ArrayList<HashMap<String, Object>> _arr) {
-            _data = _arr;
-        }
-
-        @NonNull
-        @Override
-        public HomeActivity.Local_recyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater _inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            @SuppressLint("InflateParams") View _v = _inflater.inflate(R.layout.localemojisview, null);
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _v.setLayoutParams(_lp);
-            return new HomeActivity.Local_recyclerAdapter.ViewHolder(_v);
-        }
-
-        @Override
-        public void onBindViewHolder(HomeActivity.Local_recyclerAdapter.ViewHolder _holder, final int _position) {
-            View _view = _holder.itemView;
-
-            final ImageView imageview1 = _view.findViewById(R.id.imageview1);
-
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _view.setLayoutParams(_lp);
-            setImageFromPath(imageview1, Objects.requireNonNull(_data.get(_position).get("filePath")).toString());
-        }
-
-        @Override
-        public int getItemCount() {
-            return _data.size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public ViewHolder(View v) {
-                super(v);
-            }
-        }
 
     }
 

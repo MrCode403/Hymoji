@@ -1,6 +1,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/_coordinator"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/_coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 	<com.google.android.material.appbar.AppBarLayout
@@ -41,19 +42,23 @@
 						android:src="@drawable/icons8_search_60"
 						android:scaleType="fitCenter"
 						app:tint="#9E9E9E" />
+
 					<EditText
 						android:id="@+id/edittext1"
 						android:layout_width="0dp"
 						android:layout_height="wrap_content"
-						android:padding="8dp"
+						android:layout_weight="1"
 						android:background="@android:color/transparent"
-						android:textSize="14sp"
-						android:textColor="#000000"
 						android:hint="@string/emojis_search_box_txt"
-						android:textColorHint="#757575"
-						android:singleLine="true"
 						android:imeOptions="actionDone"
-						android:layout_weight="1" />
+						android:padding="8dp"
+						android:singleLine="true"
+						android:textColor="#000000"
+						android:textColorHint="#757575"
+						android:textSize="14sp"
+						tools:ignore="TouchTargetSizeCheck"
+						android:importantForAutofill="no"
+						android:inputType="text" />
 					<ImageView
 						android:id="@+id/imageview2"
 						android:layout_width="40dp"

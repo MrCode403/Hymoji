@@ -337,8 +337,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:orientation="horizontal"
-                        android:baselineAligned="false">
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
 
                         <LinearLayout
                             android:id="@+id/dock1"
@@ -395,6 +395,7 @@
                                     android:id="@+id/textview50"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginStart="3dp"
                                     android:singleLine="true"
                                     android:text="@string/home_dock1_subtitle"
                                     android:textColor="#757575"
@@ -457,6 +458,7 @@
                                     android:id="@+id/textview51"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginStart="3dp"
                                     android:singleLine="true"
                                     android:text="@string/home_dock2_subtitle"
                                     android:textColor="#757575"
@@ -579,7 +581,7 @@
                         android:orientation="horizontal" />
 
                     <LinearLayout
-                        android:id="@+id/linear53"
+                        android:id="@+id/gotopacks"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:animateLayoutChanges="true"

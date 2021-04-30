@@ -24,6 +24,7 @@ import com.facebook.ads.AudienceNetworkAds;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.nerbly.bemoji.Adapters.LoadingPacksAdapter;
 import com.nerbly.bemoji.Functions.RequestNetwork;
 import com.nerbly.bemoji.Functions.RequestNetworkController;
 import com.nerbly.bemoji.Functions.Utils;
@@ -57,12 +58,12 @@ public class TutorialActivity extends AppCompatActivity {
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.tutorial);
-        initialize(_savedInstanceState);
+        initialize();
         com.google.firebase.FirebaseApp.initializeApp(this);
         initializeLogic();
     }
 
-    private void initialize(Bundle _savedInstanceState) {
+    private void initialize() {
         CoordinatorLayout linear1 = findViewById(R.id.linear1);
         bsheetbehavior = findViewById(R.id.bsheetbehavior);
         background = findViewById(R.id.background);
@@ -134,7 +135,7 @@ public class TutorialActivity extends AppCompatActivity {
             shimmerMap.put("key", "value");
             shimmerList.add(shimmerMap);
         }
-        loadingRecycler.setAdapter(new LoadingRecyclerAdapter(shimmerList));
+        loadingRecycler.setAdapter(new LoadingPacksAdapter.LoadingRecyclerAdapter(shimmerList));
         _BottomSheetBehaviorListener();
         recyclerview1.setHasFixedSize(true);
         loadingRecycler.setHasFixedSize(true);
@@ -256,54 +257,6 @@ public class TutorialActivity extends AppCompatActivity {
             textview2.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             _view.setLayoutParams(_lp);
-        }
-
-        @Override
-        public int getItemCount() {
-            return _data.size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public ViewHolder(View v) {
-                super(v);
-            }
-        }
-
-    }
-
-    public class LoadingRecyclerAdapter extends RecyclerView.Adapter<LoadingRecyclerAdapter.ViewHolder> {
-        ArrayList<HashMap<String, Object>> _data;
-
-        public LoadingRecyclerAdapter(ArrayList<HashMap<String, Object>> _arr) {
-            _data = _arr;
-        }
-
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater _inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            @SuppressLint("InflateParams") View _v = _inflater.inflate(R.layout.loadingview, null);
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _v.setLayoutParams(_lp);
-            return new ViewHolder(_v);
-        }
-
-        @Override
-        public void onBindViewHolder(ViewHolder _holder, final int _position) {
-            View _view = _holder.itemView;
-
-            final LinearLayout categoriesShimmer = _view.findViewById(R.id.categoriesShimmer);
-            final LinearLayout shimmer2 = _view.findViewById(R.id.shimmer2);
-            final LinearLayout shimmer3 = _view.findViewById(R.id.shimmer3);
-            final LinearLayout shimmer4 = _view.findViewById(R.id.shimmer4);
-
-
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _view.setLayoutParams(_lp);
-            categoriesShimmer.setVisibility(View.GONE);
-            MainUIMethods.setClippedView(shimmer2, "#FFFFFF", 30, 0);
-            MainUIMethods.setClippedView(shimmer3, "#FFFFFF", 200, 0);
-            MainUIMethods.setClippedView(shimmer4, "#FFFFFF", 200, 0);
         }
 
         @Override

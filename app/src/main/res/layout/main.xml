@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:id="@+id/rootview"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
@@ -28,10 +29,12 @@
 				android:padding="8dp"
 				android:orientation="vertical"
 				android:layout_weight="1" />
+
 			<androidx.viewpager.widget.ViewPager
 				android:id="@+id/viewpager1"
 				android:layout_width="match_parent"
-				android:layout_height="280dp" />
+				android:layout_height="280dp"
+				tools:ignore="SpeakableTextPresentCheck" />
 			<LinearLayout
 				android:id="@+id/linear1"
 				android:layout_width="wrap_content"
@@ -39,58 +42,63 @@
 				android:padding="8dp"
 				android:orientation="vertical"
 				android:layout_weight="1" />
+
 			<TextView
 				android:id="@+id/textview1"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:layout_gravity="center_horizontal"
 				android:layout_marginBottom="120dp"
+				android:background="#FFFFFF"
+				android:elevation="3dp"
 				android:paddingLeft="40dp"
 				android:paddingTop="14dp"
 				android:paddingRight="40dp"
 				android:paddingBottom="14dp"
-				android:background="#FFFFFF"
 				android:text="@string/welcome_continue"
-				android:textSize="18sp"
-				android:textColor="#7289DA"
-				android:layout_gravity="center_horizontal"
-				android:elevation="3dp" />
+				android:textColor="#1976D2"
+				android:textSize="18sp" />
 		</LinearLayout>
-		<LinearLayout
-			android:id="@+id/splashview"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:padding="8dp"
+
+	<LinearLayout
+		android:id="@+id/splashview"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_centerInParent="true"
+		android:background="#80000000"
+		android:gravity="center_horizontal|center_vertical"
+		android:orientation="vertical"
+		android:padding="8dp">
+
+		<ImageView
+			android:id="@+id/imageview4"
+			android:layout_width="wrap_content"
+			android:layout_height="70dp"
+			android:scaleType="fitCenter"
+			android:src="@drawable/logo"
+			app:tint="#FFFFFF" />
+
+		<TextView
+			android:id="@+id/textview3"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="5dp"
 			android:gravity="center_horizontal|center_vertical"
-			android:orientation="vertical"
-			android:layout_centerInParent="true"
-			android:background="#80000000">
-			<ImageView
-				android:id="@+id/imageview4"
-				android:layout_width="wrap_content"
-				android:layout_height="70dp"
-				android:src="@drawable/logo"
-				android:scaleType="fitCenter"
-				app:tint="#FFFFFF" />
-			<TextView
-				android:id="@+id/textview3"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginTop="5dp"
-				android:padding="8dp"
-				android:gravity="center_horizontal|center_vertical"
-				android:text="@string/welcome_title_1"
-				android:textSize="30sp"
-				android:textColor="#FFFFFF" />
-			<TextView
-				android:id="@+id/textview4"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:padding="8dp"
-				android:gravity="center_horizontal|center_vertical"
-				android:text="@string/welcome_subtitle_1"
-				android:textSize="16sp"
-				android:textColor="#FFFFFF" />
-		</LinearLayout>
+			android:padding="8dp"
+			android:text="@string/welcome_title_1"
+			android:textColor="#FFFFFF"
+			android:textSize="30sp" />
+
+		<TextView
+			android:id="@+id/textview4"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:gravity="center_horizontal|center_vertical"
+			android:padding="8dp"
+			android:text="@string/welcome_subtitle_1"
+			android:textColor="#FFFFFF"
+			android:textSize="16sp" />
+	</LinearLayout>
 		<TextView
 			android:id="@+id/textview5"
 			android:layout_width="match_parent"
