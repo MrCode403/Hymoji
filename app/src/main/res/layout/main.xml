@@ -12,7 +12,8 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:src="@drawable/default_image"
-			android:scaleType="centerCrop" />
+			android:scaleType="centerCrop"
+			tools:ignore="ContentDescription" />
 		<LinearLayout
 			android:id="@+id/dataview"
 			android:layout_width="match_parent"
@@ -76,7 +77,8 @@
 			android:layout_height="70dp"
 			android:scaleType="fitCenter"
 			android:src="@drawable/logo"
-			app:tint="#FFFFFF" />
+			app:tint="#FFFFFF"
+			tools:ignore="ContentDescription" />
 
 		<TextView
 			android:id="@+id/textview3"

@@ -25,7 +25,8 @@
 			android:layout_marginTop="20dp"
 			android:padding="40dp"
 			android:src="@drawable/smiley_face_flatline"
-			android:scaleType="centerCrop" />
+			android:scaleType="centerCrop"
+			tools:ignore="ContentDescription" />
 
 		<TextView
 			android:id="@+id/infosheet_title"

@@ -1,5 +1,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription"
     android:id="@+id/linear1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,7 +24,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
 
             <LinearLayout
                 android:id="@+id/background"
@@ -64,6 +67,7 @@
                 android:layout_marginTop="10dp"
                 android:paddingTop="4dp"
                 android:paddingEnd="8dp"
+                android:paddingStart="8dp"
                 android:paddingBottom="8dp"
                 android:text="TextView"
                 android:textColor="#000000"
@@ -75,6 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:paddingEnd="8dp"
+                android:paddingStart="8dp"
                 android:paddingBottom="8dp"
                 android:text="TextView"
                 android:textColor="#757575"
@@ -86,6 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:paddingEnd="8dp"
+                android:paddingStart="8dp"
                 android:paddingBottom="8dp"
                 android:text="@string/app_name"
                 android:textColor="#757575"

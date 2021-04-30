@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
+	tools:ignore="ContentDescription"
 	android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -8,7 +9,8 @@
 		android:id="@+id/relativeview"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:orientation="vertical">
+		android:orientation="vertical"
+		tools:ignore="UselessParent">
 		<androidx.coordinatorlayout.widget.CoordinatorLayout
 			android:id="@+id/linear1"
 			android:layout_width="match_parent"

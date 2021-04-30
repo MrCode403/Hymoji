@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -10,7 +11,8 @@
         android:layout_margin="12dp"
         android:background="#202125"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="8dp"
+        tools:ignore="UselessParent">
 
         <TextView
             android:id="@+id/textview1"

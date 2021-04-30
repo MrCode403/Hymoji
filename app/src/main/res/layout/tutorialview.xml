@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -9,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="6dp">
+        android:padding="6dp"
+        tools:ignore="UselessParent">
 
         <TextView
             android:id="@+id/textview1"
@@ -55,7 +57,8 @@
                 android:adjustViewBounds="true"
                 android:focusable="false"
                 android:scaleType="fitCenter"
-                android:src="@drawable/default_image" />
+                android:src="@drawable/default_image"
+                tools:ignore="ContentDescription" />
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 </LinearLayout>

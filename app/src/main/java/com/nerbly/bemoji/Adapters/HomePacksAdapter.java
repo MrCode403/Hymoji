@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.nerbly.bemoji.HomeActivity;
-import com.nerbly.bemoji.PackpreviewActivity;
+import com.nerbly.bemoji.PackPreviewActivity;
 import com.nerbly.bemoji.PacksActivity;
 import com.nerbly.bemoji.R;
 
@@ -98,7 +98,7 @@ public class HomePacksAdapter {
                     toPreview.putExtra("packEmojisAmount", Objects.requireNonNull(_data.get(_position).get("amount")).toString());
                     toPreview.putExtra("packName", capitalizedFirstWord(Objects.requireNonNull(_data.get(_position).get("name")).toString().replace("_", " ")));
                     toPreview.putExtra("packId", Objects.requireNonNull(_data.get(_position).get("id")).toString());
-                    toPreview.setClass(imageview1.getContext(), PackpreviewActivity.class);
+                    toPreview.setClass(imageview1.getContext(), PackPreviewActivity.class);
                     imageview1.getContext().startActivity(toPreview);
                 }
             });

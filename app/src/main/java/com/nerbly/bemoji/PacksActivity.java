@@ -332,7 +332,7 @@ public class PacksActivity extends AppCompatActivity {
                     toPreview.putExtra("packEmojisAmount", Objects.requireNonNull(_data.get(_position).get("amount")).toString());
                     toPreview.putExtra("packName", _capitalizedFirstWord(Objects.requireNonNull(_data.get(_position).get("name")).toString().replace("_", " ")));
                     toPreview.putExtra("packId", Objects.requireNonNull(_data.get(_position).get("id")).toString());
-                    toPreview.setClass(getApplicationContext(), PackpreviewActivity.class);
+                    toPreview.setClass(getApplicationContext(), PackPreviewActivity.class);
                     startActivity(toPreview);
                 }
             });

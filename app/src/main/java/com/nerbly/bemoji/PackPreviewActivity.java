@@ -54,7 +54,7 @@ import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class PackpreviewActivity extends AppCompatActivity {
+public class PackPreviewActivity extends AppCompatActivity {
     private final Timer _timer = new Timer();
     private final ArrayList<HashMap<String, Object>> emojisListMap = new ArrayList<>();
     private final Intent toPreview = new Intent();

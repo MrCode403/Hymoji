@@ -38,7 +38,7 @@
         <activity android:name=".TutorialActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".PacksActivity" />
-        <activity android:name=".PackpreviewActivity" />
+        <activity android:name=".PackPreviewActivity" />
 
     </application>
 </manifest>
