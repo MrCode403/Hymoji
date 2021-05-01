@@ -9,10 +9,7 @@ public class FileManager {
 
 
     final String path1 = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS + "/Bemojis");
-    private FileManager fileManager;
-    private final ArrayList<HashMap<String, Object>> filesList = new ArrayList<HashMap<String, Object>>();
-
-    private final String extension1 = ".txt";
+    private final ArrayList<HashMap<String, Object>> filesList = new ArrayList<>();
 
     public ArrayList<HashMap<String, Object>> getList() {
         System.out.println(path1);
@@ -63,9 +60,7 @@ public class FileManager {
     private void addFileToList(java.io.File file) {
 
         if (file.getName().startsWith("Bemoji") && (file.getName().endsWith(".jpg") || (file.getName().endsWith(".png") || file.getName().endsWith(".gif")))) {
-            HashMap<String, Object> fileMap = new HashMap<String, Object>();
-
-            final java.io.File file1 = new java.io.File(file.getPath());
+            HashMap<String, Object> fileMap = new HashMap<>();
 
             fileMap.put("filePath", file.getPath());
 

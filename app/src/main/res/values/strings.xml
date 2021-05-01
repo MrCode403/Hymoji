@@ -77,6 +77,9 @@
     <string name="settings_option_8_subtitle">All emojis are provided by emoji.gg.</string>
     <string name="help_center_title">Help center</string>
     <string name="help_center_subtitle">Step-by-step instructions to add emojis to your own discord or slack server</string>
-    <string name="welcome_start">Start</string>>
+    <string name="welcome_start">Start</string>
+    <string name="settings_option_10_title">Bemoji on Github</string>
+    <string name="settings_option_10_subtitle">Feel free to check out Bemoji\'s source code on Github.</string>
+    >
 
 </resources>

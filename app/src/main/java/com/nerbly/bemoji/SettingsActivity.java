@@ -1,5 +1,13 @@
 package com.nerbly.bemoji;
 
+import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
+import static com.nerbly.bemoji.UI.MainUIMethods.changeActivityFont;
+import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
+import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
+import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
+import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -12,6 +20,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,7 +28,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.nerbly.bemoji.UI.MainUIMethods;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -27,7 +35,7 @@ import java.util.Objects;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private final Intent toHome = new Intent();
+    private final Intent intent = new Intent();
     com.google.android.material.snackbar.Snackbar _snackBarView;
     com.google.android.material.snackbar.Snackbar.SnackbarLayout _sblayout;
     BottomSheetBehavior sheetBehavior;
@@ -35,14 +43,15 @@ public class SettingsActivity extends AppCompatActivity {
     private LinearLayout background;
     private LinearLayout slider;
     private TextView title;
-    private LinearLayout setting1;
-    private LinearLayout setting3;
-    private LinearLayout setting2;
-    private LinearLayout setting4;
-    private LinearLayout setting5;
-    private LinearLayout setting8;
-    private LinearLayout setting6;
-    private LinearLayout setting7;
+    private RelativeLayout setting1;
+    private RelativeLayout setting3;
+    private RelativeLayout setting2;
+    private RelativeLayout setting4;
+    private RelativeLayout setting5;
+    private RelativeLayout setting8;
+    private RelativeLayout setting6;
+    private RelativeLayout setting7;
+    private RelativeLayout setting10;
     private TextView textview8;
     private SharedPreferences sharedPref;
 
@@ -92,6 +101,7 @@ public class SettingsActivity extends AppCompatActivity {
         setting8 = findViewById(R.id.setting8);
         setting6 = findViewById(R.id.setting6);
         setting7 = findViewById(R.id.setting7);
+        setting10 = findViewById(R.id.setting10);
         textview8 = findViewById(R.id.textview8);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
@@ -119,9 +129,9 @@ public class SettingsActivity extends AppCompatActivity {
         setting3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View _view) {
-                toHome.setAction(Intent.ACTION_VIEW);
-                toHome.setData(Uri.parse("https://emoji.gg/submit"));
-                startActivity(toHome);
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://emoji.gg/submit"));
+                startActivity(intent);
             }
         });
 
@@ -142,39 +152,48 @@ public class SettingsActivity extends AppCompatActivity {
         setting4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View _view) {
-                toHome.setAction(Intent.ACTION_VIEW);
-                toHome.setData(Uri.parse("mailto:nerblyteam@gmail.com"));
-                startActivity(toHome);
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("mailto:nerblyteam@gmail.com"));
+                startActivity(intent);
             }
         });
 
         setting5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View _view) {
-                toHome.setAction(Intent.ACTION_VIEW);
-                toHome.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.nerbly.bemoji"));
-                startActivity(toHome);
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.nerbly.bemoji"));
+                startActivity(intent);
             }
         });
 
         setting6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View _view) {
-                toHome.setAction(Intent.ACTION_VIEW);
-                toHome.setData(Uri.parse("https://emoji.gg/copyright"));
-                startActivity(toHome);
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://emoji.gg/copyright"));
+                startActivity(intent);
             }
         });
 
         setting7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View _view) {
-                toHome.setAction(Intent.ACTION_VIEW);
-                toHome.setData(Uri.parse("https://emoji.gg/"));
-                startActivity(toHome);
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://emoji.gg/"));
+                startActivity(intent);
+            }
+        });
+        setting10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View _view) {
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://github.com/ilyassesalama/bemoji"));
+                startActivity(intent);
             }
         });
     }
+
 
     private void initializeLogic() {
         _LOGIC_FRONTEND();
@@ -193,19 +212,20 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void _LOGIC_FRONTEND() {
-        MainUIMethods.advancedCorners(background, "#FFFFFF", 40, 40, 0, 0);
-        MainUIMethods.setViewRadius(slider, 90, "#E0E0E0");
-        MainUIMethods.DARK_ICONS(this);
-        MainUIMethods.transparentStatusBar(this);
-        MainUIMethods.changeActivityFont("whitney", this);
-        MainUIMethods.rippleRoundStroke(setting1, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
-        MainUIMethods.rippleRoundStroke(setting2, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
-        MainUIMethods.rippleRoundStroke(setting3, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
-        MainUIMethods.rippleRoundStroke(setting4, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
-        MainUIMethods.rippleRoundStroke(setting5, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
-        MainUIMethods.rippleRoundStroke(setting6, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
-        MainUIMethods.rippleRoundStroke(setting7, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
-        MainUIMethods.rippleRoundStroke(setting8, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
+        advancedCorners(background, "#FFFFFF", 40, 40, 0, 0);
+        setViewRadius(slider, 90, "#E0E0E0");
+        DARK_ICONS(this);
+        transparentStatusBar(this);
+        changeActivityFont("whitney", this);
+        rippleRoundStroke(setting1, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
+        rippleRoundStroke(setting2, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
+        rippleRoundStroke(setting3, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
+        rippleRoundStroke(setting4, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
+        rippleRoundStroke(setting5, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
+        rippleRoundStroke(setting6, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
+        rippleRoundStroke(setting7, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
+        rippleRoundStroke(setting8, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
+        rippleRoundStroke(setting10, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
         title.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
     }
 
@@ -228,21 +248,21 @@ public class SettingsActivity extends AppCompatActivity {
                     finish();
                 } else {
                     if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                        MainUIMethods.shadAnim(background, "elevation", 20, 200);
-                        MainUIMethods.shadAnim(slider, "translationY", 0, 200);
-                        MainUIMethods.shadAnim(slider, "alpha", 1, 200);
+                        shadAnim(background, "elevation", 20, 200);
+                        shadAnim(slider, "translationY", 0, 200);
+                        shadAnim(slider, "alpha", 1, 200);
                         slider.setVisibility(View.VISIBLE);
                     } else {
                         if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                            MainUIMethods.shadAnim(background, "elevation", 0, 200);
-                            MainUIMethods.shadAnim(slider, "translationY", -200, 200);
-                            MainUIMethods.shadAnim(slider, "alpha", 0, 200);
+                            shadAnim(background, "elevation", 0, 200);
+                            shadAnim(slider, "translationY", -200, 200);
+                            shadAnim(slider, "alpha", 0, 200);
                             slider.setVisibility(View.INVISIBLE);
                         } else {
                             if (newState == BottomSheetBehavior.STATE_DRAGGING) {
-                                MainUIMethods.shadAnim(background, "elevation", 20, 200);
-                                MainUIMethods.shadAnim(slider, "translationY", 0, 200);
-                                MainUIMethods.shadAnim(slider, "alpha", 1, 200);
+                                shadAnim(background, "elevation", 20, 200);
+                                shadAnim(slider, "translationY", 0, 200);
+                                shadAnim(slider, "alpha", 1, 200);
                                 slider.setVisibility(View.VISIBLE);
                             }
                         }
@@ -271,7 +291,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         TextView text =
                 _inflate.findViewById(R.id.textview1);
-        MainUIMethods.setViewRadius(back, 20, "#202125");
+        setViewRadius(back, 20, "#202125");
         text.setText(_text);
         text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
         _sblayout.addView(_inflate, 0);

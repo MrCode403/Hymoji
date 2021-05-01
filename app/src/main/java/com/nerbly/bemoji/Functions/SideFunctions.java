@@ -49,7 +49,6 @@ public class SideFunctions {
     }
 
     public static void initDragNDropRecycler(final RecyclerView recycler, final ArrayList<HashMap<String, Object>> arraylist) {
-
         //this is an easter egg to play with downloaded emojis a little bit. Have fun!
 
         androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback simpleCallback = new androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback(

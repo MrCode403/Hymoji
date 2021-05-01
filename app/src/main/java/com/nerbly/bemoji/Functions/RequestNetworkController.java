@@ -82,7 +82,7 @@ public class RequestNetworkController {
                         return true;
                     }
                 });
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
 
             client = builder.build();
@@ -162,6 +162,7 @@ public class RequestNetworkController {
 
                 @Override
                 public void onResponse(Call call, final Response response) throws IOException {
+                    assert response.body() != null;
                     final String responseBody = response.body().string().trim();
                     requestNetwork.getActivity().runOnUiThread(new Runnable() {
                         @Override

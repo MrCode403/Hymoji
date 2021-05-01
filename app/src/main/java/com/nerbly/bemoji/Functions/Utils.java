@@ -27,9 +27,9 @@ public class Utils {
                     int _count1 = Integer.parseInt(Objects.requireNonNull(_compareMap1.get(key)).toString());
                     int _count2 = Integer.parseInt(Objects.requireNonNull(_compareMap2.get(key)).toString());
                     if (ascending) {
-                        return _count1 < _count2 ? -1 : _count1 < _count2 ? 1 : 0;
+                        return _count1 < _count2 ? -1 : 0;
                     } else {
-                        return _count1 > _count2 ? -1 : _count1 > _count2 ? 1 : 0;
+                        return _count1 > _count2 ? -1 : 0;
                     }
                 } else {
                     if (ascending) {
@@ -125,9 +125,9 @@ public class Utils {
                     int _count1 = Integer.parseInt(Objects.requireNonNull(_compareMap1.get(key)).toString());
                     int _count2 = Integer.parseInt(Objects.requireNonNull(_compareMap2.get(key)).toString());
                     if (ascending) {
-                        return _count1 < _count2 ? -1 : _count1 < _count2 ? 1 : 0;
+                        return _count1 < _count2 ? -1 : 0;
                     } else {
-                        return _count1 > _count2 ? -1 : _count1 > _count2 ? 1 : 0;
+                        return _count1 > _count2 ? -1 : 0;
                     }
                 } else {
                     if (ascending) {

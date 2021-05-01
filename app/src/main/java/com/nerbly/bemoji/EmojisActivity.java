@@ -16,7 +16,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -39,6 +38,7 @@ import com.facebook.ads.AudienceNetworkAds;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.nerbly.bemoji.Adapters.EmojisSuggestionsAdapter;
 import com.nerbly.bemoji.Functions.RequestNetwork;
 import com.nerbly.bemoji.Functions.RequestNetworkController;
 import com.nerbly.bemoji.Functions.Utils;
@@ -58,7 +58,7 @@ public class EmojisActivity extends AppCompatActivity {
     private final boolean isCategorized = false;
     private final Intent toPreview = new Intent();
     GridLayoutManager layoutManager1 = new GridLayoutManager(this, 3);
-    private AppBarLayout _app_bar;
+    private static AppBarLayout _app_bar;
     private double searchPosition = 0;
     private double emojisCount = 0;
     private boolean isSearching = false;
@@ -70,7 +70,7 @@ public class EmojisActivity extends AppCompatActivity {
     private ArrayList<HashMap<String, Object>> suggestionsList = new ArrayList<>();
     private LinearLayout adview;
     private LinearLayout searchbox;
-    private EditText edittext1;
+    private static EditText edittext1;
     private ImageView imageview2;
     private RecyclerView chiprecycler;
     private RecyclerView recycler1;
@@ -177,7 +177,7 @@ public class EmojisActivity extends AppCompatActivity {
                     try {
                         suggestionsList = new Gson().fromJson(response, new TypeToken<ArrayList<HashMap<String, Object>>>() {
                         }.getType());
-                        chiprecycler.setAdapter(new ChiprecyclerAdapter(suggestionsList));
+                        chiprecycler.setAdapter(new EmojisSuggestionsAdapter.ChipRecyclerAdapter(suggestionsList));
                         chiprecycler.setVisibility(View.VISIBLE);
                     } catch (Exception e) {
                         Utils.showMessage(getApplicationContext(), (e.toString()));
@@ -291,6 +291,11 @@ public class EmojisActivity extends AppCompatActivity {
             android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    public static void whenChipItemClicked(String suggestion) {
+        edittext1.setText(suggestion);
+        _app_bar.setExpanded(true, true);
     }
 
 
@@ -463,7 +468,9 @@ public class EmojisActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             isSearching = true;
+
             if (edittext1.getText().toString().trim().length() > 0) {
+
                 emojisList = new Gson().fromJson(sharedPref.getString("emojisData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
                 }.getType());
                 emojisCount = emojisList.size();
@@ -500,7 +507,6 @@ public class EmojisActivity extends AppCompatActivity {
                 } else {
                     emojisList = new Gson().fromJson(sharedPref.getString("emojisData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
                     }.getType());
-                    Collections.reverse(emojisList);
                 }
             }
             return null;
@@ -612,55 +618,5 @@ public class EmojisActivity extends AppCompatActivity {
                 getSuggestions.startRequestNetwork(RequestNetworkController.GET, "https://nerbly.com/bemoji/suggestions.json", "", _getSuggestions_request_listener);
             }
         }
-    }
-
-    public class ChiprecyclerAdapter extends RecyclerView.Adapter<ChiprecyclerAdapter.ViewHolder> {
-        ArrayList<HashMap<String, Object>> _data;
-
-        public ChiprecyclerAdapter(ArrayList<HashMap<String, Object>> _arr) {
-            _data = _arr;
-        }
-
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater _inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            @SuppressLint("InflateParams") View _v = _inflater.inflate(R.layout.chipview, null);
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _v.setLayoutParams(_lp);
-            return new ViewHolder(_v);
-        }
-
-        @Override
-        public void onBindViewHolder(ViewHolder _holder, @SuppressLint("RecyclerView") final int _position) {
-            View _view = _holder.itemView;
-
-            final com.google.android.material.card.MaterialCardView cardview3 = _view.findViewById(R.id.cardview3);
-            final TextView textview1 = _view.findViewById(R.id.textview1);
-
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _view.setLayoutParams(_lp);
-            cardview3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View _view) {
-                    edittext1.setText(Objects.requireNonNull(_data.get(_position).get("title")).toString());
-                    _app_bar.setExpanded(true, true);
-                }
-            });
-            textview1.setText(Objects.requireNonNull(_data.get(_position).get("title")).toString());
-            textview1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
-        }
-
-        @Override
-        public int getItemCount() {
-            return _data.size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public ViewHolder(View v) {
-                super(v);
-            }
-        }
-
     }
 }
