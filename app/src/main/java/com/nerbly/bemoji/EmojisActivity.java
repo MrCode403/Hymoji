@@ -3,6 +3,12 @@ package com.nerbly.bemoji;
 
 import static com.nerbly.bemoji.Adapters.MainEmojisAdapter.Recycler1Adapter;
 import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
+import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.RippleEffects;
+import static com.nerbly.bemoji.UI.MainUIMethods.changeActivityFont;
+import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
+import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
+import static com.nerbly.bemoji.UI.MainUIMethods.setImageViewRipple;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -42,7 +48,6 @@ import com.nerbly.bemoji.Adapters.EmojisSuggestionsAdapter;
 import com.nerbly.bemoji.Functions.RequestNetwork;
 import com.nerbly.bemoji.Functions.RequestNetworkController;
 import com.nerbly.bemoji.Functions.Utils;
-import com.nerbly.bemoji.UI.MainUIMethods;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,17 +74,17 @@ public class EmojisActivity extends AppCompatActivity {
     private ArrayList<HashMap<String, Object>> emojisList = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> suggestionsList = new ArrayList<>();
     private LinearLayout adview;
-    private LinearLayout searchbox;
-    private static EditText edittext1;
+    private LinearLayout searchBox;
+    private static EditText searchBoxField;
     private ImageView imageview2;
     private RecyclerView chiprecycler;
-    private RecyclerView recycler1;
+    private RecyclerView emojisRecycler;
     private LinearLayout emptyview;
     private RequestNetwork startGettingEmojis;
-    private RequestNetwork.RequestListener _startGettingEmojis_request_listener;
+    private RequestNetwork.RequestListener RequestEmojis;
     private SharedPreferences sharedPref;
     private RequestNetwork getSuggestions;
-    private RequestNetwork.RequestListener _getSuggestions_request_listener;
+    private RequestNetwork.RequestListener RequestSuggestions;
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
@@ -103,17 +108,17 @@ public class EmojisActivity extends AppCompatActivity {
             }
         });
         adview = findViewById(R.id.adview);
-        searchbox = findViewById(R.id.searchbox);
-        edittext1 = findViewById(R.id.edittext1);
+        searchBox = findViewById(R.id.searchbox);
+        searchBoxField = findViewById(R.id.edittext1);
         imageview2 = findViewById(R.id.imageview2);
         chiprecycler = findViewById(R.id.chiprecycler);
-        recycler1 = findViewById(R.id.recycler1);
+        emojisRecycler = findViewById(R.id.recycler1);
         emptyview = findViewById(R.id.emptyview);
         startGettingEmojis = new RequestNetwork(this);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
         getSuggestions = new RequestNetwork(this);
 
-        edittext1.addTextChangedListener(new TextWatcher() {
+        searchBoxField.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence charSeq, int _param2, int _param3, int _param4) {
                 new searchTask().execute("");
@@ -133,15 +138,15 @@ public class EmojisActivity extends AppCompatActivity {
         imageview2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View _view) {
-                if (edittext1.getText().toString().trim().length() > 0) {
-                    edittext1.setText("");
+                if (searchBoxField.getText().toString().trim().length() > 0) {
+                    searchBoxField.setText("");
                 } else {
                     _showFilterMenu(imageview2);
                 }
             }
         });
 
-        _startGettingEmojis_request_listener = new RequestNetwork.RequestListener() {
+        RequestEmojis = new RequestNetwork.RequestListener() {
             @Override
             public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
                 isRequestingServerEmojis = true;
@@ -170,7 +175,7 @@ public class EmojisActivity extends AppCompatActivity {
             }
         };
 
-        _getSuggestions_request_listener = new RequestNetwork.RequestListener() {
+        RequestSuggestions = new RequestNetwork.RequestListener() {
             @Override
             public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
                 if (!Objects.equals(getIntent().getStringExtra("switchFrom"), "categories")) {
@@ -184,7 +189,7 @@ public class EmojisActivity extends AppCompatActivity {
                     }
                 }
                 if (response.contains("STOP_ALL")) {
-                    recycler1.setVisibility(View.GONE);
+                    emojisRecycler.setVisibility(View.GONE);
                     chiprecycler.setVisibility(View.GONE);
                 }
             }
@@ -203,10 +208,10 @@ public class EmojisActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (edittext1.getText().toString().trim().equals("")) {
+        if (searchBoxField.getText().toString().trim().equals("")) {
             supportFinishAfterTransition();
         } else {
-            edittext1.setText("");
+            searchBoxField.setText("");
         }
     }
 
@@ -215,11 +220,11 @@ public class EmojisActivity extends AppCompatActivity {
         chiprecycler.setLayoutManager(layoutManager2);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        androidx.core.view.ViewCompat.setNestedScrollingEnabled(recycler1, true);
+        androidx.core.view.ViewCompat.setNestedScrollingEnabled(emojisRecycler, true);
         if (getIntent().getStringExtra("switchFrom").equals("categories")) {
             if (sharedPref.getString("emojisData", "").equals("")) {
                 isSortingNew = true;
-                startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, "https://emoji.gg/api/", "", _startGettingEmojis_request_listener);
+                startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, "https://emoji.gg/api/", "", RequestEmojis);
             } else {
                 isRequestingServerEmojis = false;
                 isSortingNew = true;
@@ -228,15 +233,15 @@ public class EmojisActivity extends AppCompatActivity {
         } else {
             isSortingNew = true;
             if (Objects.equals(getIntent().getStringExtra("switchFrom"), "search")) {
-                _transitionComplete(searchbox, "searchbox");
-                edittext1.requestFocus();
+                _transitionComplete(searchBox, "searchbox");
+                searchBoxField.requestFocus();
                 TimerTask fixUIIssues = new TimerTask() {
                     @Override
                     public void run() {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                _hideShowKeyboard(true, edittext1);
+                                _hideShowKeyboard(true, searchBoxField);
                             }
                         });
                     }
@@ -244,14 +249,14 @@ public class EmojisActivity extends AppCompatActivity {
                 _timer.schedule(fixUIIssues, 500);
             }
             if (sharedPref.getString("emojisData", "").equals("")) {
-                startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, "https://emoji.gg/api/", "", _startGettingEmojis_request_listener);
+                startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, "https://emoji.gg/api/", "", RequestEmojis);
             } else {
                 isRequestingServerEmojis = false;
                 new getEmojisTask().execute("");
             }
         }
         _rotationListener();
-        OverScrollDecoratorHelper.setUpOverScroll(recycler1, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
+        OverScrollDecoratorHelper.setUpOverScroll(emojisRecycler, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
 
         OverScrollDecoratorHelper.setUpOverScroll(chiprecycler, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL);
         AudienceNetworkAds.initialize(this);
@@ -265,13 +270,13 @@ public class EmojisActivity extends AppCompatActivity {
 
 
     public void _LOGIC_FRONTEND() {
-        MainUIMethods.changeActivityFont("whitney", this);
+        changeActivityFont("whitney", this);
 
-        MainUIMethods.rippleRoundStroke(searchbox, "#FFFFFF", "#FFFFFF", 200, 1, "#C4C4C4");
+        rippleRoundStroke(searchBox, "#FFFFFF", "#FFFFFF", 200, 1, "#C4C4C4");
 
-        MainUIMethods.DARK_ICONS(this);
+        DARK_ICONS(this);
 
-        MainUIMethods.RippleEffects("#E0E0E0", imageview2);
+        RippleEffects("#E0E0E0", imageview2);
     }
 
 
@@ -294,7 +299,7 @@ public class EmojisActivity extends AppCompatActivity {
     }
 
     public static void whenChipItemClicked(String suggestion) {
-        edittext1.setText(suggestion);
+        searchBoxField.setText(suggestion);
         _app_bar.setExpanded(true, true);
     }
 
@@ -308,7 +313,7 @@ public class EmojisActivity extends AppCompatActivity {
 
         layoutManager1 = new GridLayoutManager(this, columns);
 
-        recycler1.setLayoutManager(layoutManager1);
+        emojisRecycler.setLayoutManager(layoutManager1);
     }
 
     @Override
@@ -325,7 +330,7 @@ public class EmojisActivity extends AppCompatActivity {
 
             layoutManager1 = new GridLayoutManager(this, columns);
 
-            recycler1.setLayoutManager(layoutManager1);
+            emojisRecycler.setLayoutManager(layoutManager1);
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
 
             float scalefactor = getResources().getDisplayMetrics().density * 60;
@@ -337,7 +342,7 @@ public class EmojisActivity extends AppCompatActivity {
             layoutManager1 = new GridLayoutManager(this, columns);
 
 
-            recycler1.setLayoutManager(layoutManager1);
+            emojisRecycler.setLayoutManager(layoutManager1);
         }
     }
 
@@ -389,25 +394,25 @@ public class EmojisActivity extends AppCompatActivity {
         t1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
         t2.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
         t3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
-        MainUIMethods.setImageViewRipple(i1, "#414141", "#7289DA");
-        MainUIMethods.setImageViewRipple(i2, "#414141", "#7289DA");
-        MainUIMethods.setImageViewRipple(i3, "#414141", "#7289DA");
+        setImageViewRipple(i1, "#414141", "#7289DA");
+        setImageViewRipple(i2, "#414141", "#7289DA");
+        setImageViewRipple(i3, "#414141", "#7289DA");
 
-        MainUIMethods.setClippedView(bg, "#FFFFFF", 25, 7);
+        setClippedView(bg, "#FFFFFF", 25, 7);
         if (isSortingNew) {
-            MainUIMethods.rippleRoundStroke(b1, "#EEEEEE", "#BDBDBD", 0, 0, "#EEEEEE");
+            rippleRoundStroke(b1, "#EEEEEE", "#BDBDBD", 0, 0, "#EEEEEE");
         } else {
-            MainUIMethods.rippleRoundStroke(b1, "#FFFFFF", "#EEEEEE", 0, 0, "#EEEEEE");
+            rippleRoundStroke(b1, "#FFFFFF", "#EEEEEE", 0, 0, "#EEEEEE");
         }
         if (isSortingOld) {
-            MainUIMethods.rippleRoundStroke(b2, "#EEEEEE", "#BDBDBD", 0, 0, "#EEEEEE");
+            rippleRoundStroke(b2, "#EEEEEE", "#BDBDBD", 0, 0, "#EEEEEE");
         } else {
-            MainUIMethods.rippleRoundStroke(b2, "#FFFFFF", "#EEEEEE", 0, 0, "#EEEEEE");
+            rippleRoundStroke(b2, "#FFFFFF", "#EEEEEE", 0, 0, "#EEEEEE");
         }
         if (isSortingAlphabet) {
-            MainUIMethods.rippleRoundStroke(b3, "#EEEEEE", "#BDBDBD", 0, 0, "#EEEEEE");
+            rippleRoundStroke(b3, "#EEEEEE", "#BDBDBD", 0, 0, "#EEEEEE");
         } else {
-            MainUIMethods.rippleRoundStroke(b3, "#FFFFFF", "#EEEEEE", 0, 0, "#EEEEEE");
+            rippleRoundStroke(b3, "#FFFFFF", "#EEEEEE", 0, 0, "#EEEEEE");
         }
         b1.setOnClickListener(new OnClickListener() {
             public void onClick(View view) {
@@ -416,7 +421,7 @@ public class EmojisActivity extends AppCompatActivity {
                     isSortingOld = false;
                     isSortingAlphabet = false;
                     Utils.sortListMap2(emojisList, "id", false, false);
-                    recycler1.setAdapter(new Recycler1Adapter(emojisList));
+                    emojisRecycler.setAdapter(new Recycler1Adapter(emojisList));
                     popup.dismiss();
                 }
             }
@@ -428,7 +433,7 @@ public class EmojisActivity extends AppCompatActivity {
                     isSortingNew = false;
                     isSortingAlphabet = false;
                     Utils.sortListMap2(emojisList, "id", false, true);
-                    recycler1.setAdapter(new Recycler1Adapter(emojisList));
+                    emojisRecycler.setAdapter(new Recycler1Adapter(emojisList));
                     popup.dismiss();
                 }
             }
@@ -441,7 +446,7 @@ public class EmojisActivity extends AppCompatActivity {
                     isSortingOld = false;
 
                     Utils.sortListMap(emojisList, "title", false, true);
-                    recycler1.setAdapter(new Recycler1Adapter(emojisList));
+                    emojisRecycler.setAdapter(new Recycler1Adapter(emojisList));
                     popup.dismiss();
                 }
             }
@@ -458,7 +463,7 @@ public class EmojisActivity extends AppCompatActivity {
     private class searchTask extends AsyncTask<String, Integer, String> {
         @Override
         protected void onPreExecute() {
-            if (edittext1.getText().toString().trim().length() > 0) {
+            if (searchBoxField.getText().toString().trim().length() > 0) {
                 imageview2.setImageResource(R.drawable.round_clear_black_48dp);
             } else {
                 imageview2.setImageResource(R.drawable.outline_filter_alt_black_48dp);
@@ -469,7 +474,7 @@ public class EmojisActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             isSearching = true;
 
-            if (edittext1.getText().toString().trim().length() > 0) {
+            if (searchBoxField.getText().toString().trim().length() > 0) {
 
                 emojisList = new Gson().fromJson(sharedPref.getString("emojisData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
                 }.getType());
@@ -478,11 +483,11 @@ public class EmojisActivity extends AppCompatActivity {
                 for (int _repeat22 = 0; _repeat22 < (int) (emojisCount); _repeat22++) {
                     if (Objects.equals(getIntent().getStringExtra("switchFrom"), "categories")) {
 
-                        if ((!Objects.requireNonNull(emojisList.get((int) searchPosition).get("submitted_by")).toString().toLowerCase().contains(edittext1.getText().toString().trim().toLowerCase()) && !Objects.requireNonNull(emojisList.get((int) searchPosition).get("title")).toString().toLowerCase().contains(edittext1.getText().toString().trim().toLowerCase())) || !String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(emojisList.get((int) searchPosition).get("category")).toString()))).equals(getIntent().getStringExtra("category_id"))) {
+                        if ((!Objects.requireNonNull(emojisList.get((int) searchPosition).get("submitted_by")).toString().toLowerCase().contains(searchBoxField.getText().toString().trim().toLowerCase()) && !Objects.requireNonNull(emojisList.get((int) searchPosition).get("title")).toString().toLowerCase().contains(searchBoxField.getText().toString().trim().toLowerCase())) || !String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(emojisList.get((int) searchPosition).get("category")).toString()))).equals(getIntent().getStringExtra("category_id"))) {
                             emojisList.remove((int) (searchPosition));
                         }
                     } else {
-                        if (!Objects.requireNonNull(emojisList.get((int) searchPosition).get("submitted_by")).toString().toLowerCase().contains(edittext1.getText().toString().trim().toLowerCase()) && !Objects.requireNonNull(emojisList.get((int) searchPosition).get("title")).toString().toLowerCase().contains(edittext1.getText().toString().trim().toLowerCase())) {
+                        if (!Objects.requireNonNull(emojisList.get((int) searchPosition).get("submitted_by")).toString().toLowerCase().contains(searchBoxField.getText().toString().trim().toLowerCase()) && !Objects.requireNonNull(emojisList.get((int) searchPosition).get("title")).toString().toLowerCase().contains(searchBoxField.getText().toString().trim().toLowerCase())) {
                             emojisList.remove((int) (searchPosition));
                         }
                     }
@@ -522,24 +527,24 @@ public class EmojisActivity extends AppCompatActivity {
             if (Objects.equals(getIntent().getStringExtra("switchFrom"), "categories")) {
                 if (emojisList.size() == 0) {
                     emptyview.setVisibility(View.VISIBLE);
-                    recycler1.setVisibility(View.GONE);
+                    emojisRecycler.setVisibility(View.GONE);
                 } else {
-                    recycler1.setVisibility(View.VISIBLE);
+                    emojisRecycler.setVisibility(View.VISIBLE);
                     emptyview.setVisibility(View.GONE);
-                    recycler1.setAdapter(new Recycler1Adapter(emojisList));
+                    emojisRecycler.setAdapter(new Recycler1Adapter(emojisList));
                 }
             } else {
                 if (emojisList.size() == 0) {
                     emptyview.setVisibility(View.VISIBLE);
-                    recycler1.setVisibility(View.GONE);
+                    emojisRecycler.setVisibility(View.GONE);
                 } else {
-                    recycler1.setAdapter(new Recycler1Adapter(emojisList));
-                    recycler1.setVisibility(View.VISIBLE);
+                    emojisRecycler.setAdapter(new Recycler1Adapter(emojisList));
+                    emojisRecycler.setVisibility(View.VISIBLE);
                     emptyview.setVisibility(View.GONE);
                 }
             }
             isSearching = false;
-            if (edittext1.getText().toString().trim().length() > 0) {
+            if (searchBoxField.getText().toString().trim().length() > 0) {
                 imageview2.setImageResource(R.drawable.round_clear_black_48dp);
             } else {
                 imageview2.setImageResource(R.drawable.outline_filter_alt_black_48dp);
@@ -562,7 +567,7 @@ public class EmojisActivity extends AppCompatActivity {
                     sharedPref.edit().putString("emojisData", new Gson().toJson(emojisList)).apply();
                     emojisCount = emojisList.size();
                     emojisScanPosition = emojisCount - 1;
-                    for (int _repeat71 = 0; _repeat71 < (int) (emojisCount); _repeat71++) {
+                    for (int i = 0; i < (int) (emojisCount); i++) {
                         if (!Objects.requireNonNull(emojisList.get((int) emojisScanPosition).get("category")).toString().equals(getIntent().getStringExtra("category_id"))) {
                             emojisList.remove((int) (emojisScanPosition));
                         }
@@ -578,7 +583,7 @@ public class EmojisActivity extends AppCompatActivity {
                 if (isRequestingServerEmojis) {
                     emojisCount = emojisList.size();
                     emojisScanPosition = emojisCount - 1;
-                    for (int _repeat15 = 0; _repeat15 < (int) (emojisCount); _repeat15++) {
+                    for (int i = 0; i < (int) (emojisCount); i++) {
                         if (Objects.requireNonNull(emojisList.get((int) emojisScanPosition).get("category")).toString().equals("9.0")) {
                             emojisList.remove((int) (emojisScanPosition));
                         }
@@ -606,16 +611,16 @@ public class EmojisActivity extends AppCompatActivity {
             if (Objects.equals(getIntent().getStringExtra("switchFrom"), "categories")) {
                 if (emojisList.size() == 0) {
                     emptyview.setVisibility(View.VISIBLE);
-                    recycler1.setVisibility(View.GONE);
-                    searchbox.setVisibility(View.GONE);
+                    emojisRecycler.setVisibility(View.GONE);
+                    searchBox.setVisibility(View.GONE);
                 } else {
-                    recycler1.setVisibility(View.VISIBLE);
+                    emojisRecycler.setVisibility(View.VISIBLE);
                     emptyview.setVisibility(View.GONE);
-                    recycler1.setAdapter(new Recycler1Adapter(emojisList));
+                    emojisRecycler.setAdapter(new Recycler1Adapter(emojisList));
                 }
             } else {
-                recycler1.setAdapter(new Recycler1Adapter(emojisList));
-                getSuggestions.startRequestNetwork(RequestNetworkController.GET, "https://nerbly.com/bemoji/suggestions.json", "", _getSuggestions_request_listener);
+                emojisRecycler.setAdapter(new Recycler1Adapter(emojisList));
+                getSuggestions.startRequestNetwork(RequestNetworkController.GET, "https://nerbly.com/bemoji/suggestions.json", "", RequestSuggestions);
             }
         }
     }

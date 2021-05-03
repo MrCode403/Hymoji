@@ -6,11 +6,10 @@
     <string name="home_title" translatable="true">Explore emojis</string>
     <string name="home_subtitle" translatable="true">Here you can explore our categories to access an unlimited collection of emojis</string>
     <string name="local_emojis_title" translatable="true">DOWNLOADED EMOJIS</string>
-    <string name="pack_download_success">Saved to downloads folder</string>
+    <string name="download_success">Saved to downloads folder</string>
     <string name="pack_downloading_txt">Downloading</string>
     <string name="pack_downloading_progress">Downloading pack emojis: </string>
     <string name="download_btn_txt">Download</string>
-    <string name="download_success_txt">Saved to downloads folder</string>
     <string name="pack_confirmation_sheet_title">Wait a second, there\'s more!</string>
     <string name="pack_confirmation_sheet_subtitle">Do you want me to download this pack as a ZIP file (suitable for Desktop or sharing) or simply download it as a folder?</string>
     <string name="pack_confirmation_sheet_btn1">Download as ZIP</string>
@@ -80,6 +79,14 @@
     <string name="welcome_start">Start</string>
     <string name="settings_option_10_title">Bemoji on Github</string>
     <string name="settings_option_10_subtitle">Feel free to check out Bemoji\'s source code on Github.</string>
-    >
-
+    <string name="submitted_by">Submitted by: </string>
+    <string name="downloading">Downloading</string>
+    <string name="full_download_path">Full download path: </string>
+    <string name="permission_denied_emojis">You can\'t download emojis without storage access permission. Please allow it.</string>
+    <string name="permission_denied_packs">You can\'t download packs without storage access permission. Please allow it.</string>
+    <string name="permission_denied_cache">You can\'t download packs without storage access permission. Please allow it.</string>
+    <string name="ask_for_permission">Please give the access to access your storage to continue.</string>
+    <string name="error_msg">Something went wrong, please try again later.</string>
+    <string name="cache_cleared_success">Cache has been cleared successfully.</string>
+    <string name="emojis_reloaded_success">Done. Home page will be reloaded when you get back</string>
 </resources>

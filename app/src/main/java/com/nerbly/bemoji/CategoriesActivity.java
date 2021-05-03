@@ -52,8 +52,8 @@ public class CategoriesActivity extends AppCompatActivity {
     private TextView subtitle;
     private RecyclerView categoriesRecycler;
     private RecyclerView loadingRecycler;
-    private RequestNetwork startGettingCategories;
-    private RequestNetwork.RequestListener _startGettingCategories_request_listener;
+    private RequestNetwork RequestCategories;
+    private RequestNetwork.RequestListener CategoriesRequestListener;
     private SharedPreferences sharedPref;
     private TimerTask loadingTmr;
 
@@ -62,7 +62,6 @@ public class CategoriesActivity extends AppCompatActivity {
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.categories);
         initialize();
-        com.google.firebase.FirebaseApp.initializeApp(this);
         initializeLogic();
     }
 
@@ -75,7 +74,7 @@ public class CategoriesActivity extends AppCompatActivity {
         subtitle = findViewById(R.id.subtitle);
         categoriesRecycler = findViewById(R.id.categoriesRecycler);
         loadingRecycler = findViewById(R.id.loadingRecycler);
-        startGettingCategories = new RequestNetwork(this);
+        RequestCategories = new RequestNetwork(this);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
         linear1.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +84,7 @@ public class CategoriesActivity extends AppCompatActivity {
             }
         });
 
-        _startGettingCategories_request_listener = new RequestNetwork.RequestListener() {
+        CategoriesRequestListener = new RequestNetwork.RequestListener() {
             @Override
             public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
                 try {
@@ -154,7 +153,7 @@ public class CategoriesActivity extends AppCompatActivity {
         }
         loadingRecycler.setAdapter(new LoadingRecyclerAdapter(shimmerList));
         if (sharedPref.getString("categoriesData", "").equals("")) {
-            startGettingCategories.startRequestNetwork(RequestNetworkController.GET, "https://emoji.gg/api/?request=categories", "", _startGettingCategories_request_listener);
+            RequestCategories.startRequestNetwork(RequestNetworkController.GET, "https://emoji.gg/api/?request=categories", "", CategoriesRequestListener);
         } else {
             categoriesList = new Gson().fromJson(sharedPref.getString("categoriesData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
             }.getType());

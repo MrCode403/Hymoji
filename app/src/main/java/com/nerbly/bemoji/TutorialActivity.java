@@ -1,5 +1,11 @@
 package com.nerbly.bemoji;
 
+import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
+import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
+import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
+import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -28,7 +34,6 @@ import com.nerbly.bemoji.Adapters.LoadingPacksAdapter;
 import com.nerbly.bemoji.Functions.RequestNetwork;
 import com.nerbly.bemoji.Functions.RequestNetworkController;
 import com.nerbly.bemoji.Functions.Utils;
-import com.nerbly.bemoji.UI.MainUIMethods;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +44,7 @@ import java.util.TimerTask;
 public class TutorialActivity extends AppCompatActivity {
     private final Timer _timer = new Timer();
     private final ArrayList<HashMap<String, Object>> shimmerList = new ArrayList<>();
-    BottomSheetBehavior sheetBehavior;
+    private BottomSheetBehavior<LinearLayout> sheetBehavior;
     private ArrayList<HashMap<String, Object>> tutorialList = new ArrayList<>();
     private LinearLayout bsheetbehavior;
     private LinearLayout background;
@@ -116,8 +121,8 @@ public class TutorialActivity extends AppCompatActivity {
     }
 
     private void initializeLogic() {
-        _LOGIC_FRONTEND();
-        _LOGIC_BACKEND();
+        LOGIC_FRONTEND();
+        LOGIC_BACKEND();
     }
 
     @Override
@@ -125,7 +130,7 @@ public class TutorialActivity extends AppCompatActivity {
         sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
-    public void _LOGIC_BACKEND() {
+    public void LOGIC_BACKEND() {
         sheetBehavior = BottomSheetBehavior.from(bsheetbehavior);
         recyclerview1.setLayoutManager(new LinearLayoutManager(this));
         loadingRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -136,33 +141,29 @@ public class TutorialActivity extends AppCompatActivity {
             shimmerList.add(shimmerMap);
         }
         loadingRecycler.setAdapter(new LoadingPacksAdapter.LoadingRecyclerAdapter(shimmerList));
-        _BottomSheetBehaviorListener();
+        bottomSheetBehaviorListener();
+
         recyclerview1.setHasFixedSize(true);
         loadingRecycler.setHasFixedSize(true);
+
         AudienceNetworkAds.initialize(this);
-
         AdView bannerAd = new AdView(this, "3773974092696684_3774022966025130", AdSize.BANNER_HEIGHT_50);
-
         adview.addView(bannerAd);
-
         bannerAd.loadAd();
     }
 
 
-    public void _LOGIC_FRONTEND() {
+    public void LOGIC_FRONTEND() {
         textview3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
         textview4.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
-        MainUIMethods.advancedCorners(background, "#FFFFFF", 40, 40, 0, 0);
-
-        MainUIMethods.setViewRadius(slider, 90, "#E0E0E0");
-
-        MainUIMethods.DARK_ICONS(this);
-
-        MainUIMethods.transparentStatusBar(this);
+        advancedCorners(background, "#FFFFFF", 40, 40, 0, 0);
+        setViewRadius(slider, 90, "#E0E0E0");
+        DARK_ICONS(this);
+        transparentStatusBar(this);
     }
 
 
-    public void _BottomSheetBehaviorListener() {
+    public void bottomSheetBehaviorListener() {
         sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -170,21 +171,21 @@ public class TutorialActivity extends AppCompatActivity {
                     finish();
                 } else {
                     if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                        MainUIMethods.shadAnim(background, "elevation", 20, 200);
-                        MainUIMethods.shadAnim(slider, "translationY", 0, 200);
-                        MainUIMethods.shadAnim(slider, "alpha", 1, 200);
+                        shadAnim(background, "elevation", 20, 200);
+                        shadAnim(slider, "translationY", 0, 200);
+                        shadAnim(slider, "alpha", 1, 200);
                         slider.setVisibility(View.VISIBLE);
                     } else {
                         if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                            MainUIMethods.shadAnim(background, "elevation", 0, 200);
-                            MainUIMethods.shadAnim(slider, "translationY", -200, 200);
-                            MainUIMethods.shadAnim(slider, "alpha", 0, 200);
+                            shadAnim(background, "elevation", 0, 200);
+                            shadAnim(slider, "translationY", -200, 200);
+                            shadAnim(slider, "alpha", 0, 200);
                             slider.setVisibility(View.INVISIBLE);
                         } else {
                             if (newState == BottomSheetBehavior.STATE_DRAGGING) {
-                                MainUIMethods.shadAnim(background, "elevation", 20, 200);
-                                MainUIMethods.shadAnim(slider, "translationY", 0, 200);
-                                MainUIMethods.shadAnim(slider, "alpha", 1, 200);
+                                shadAnim(background, "elevation", 20, 200);
+                                shadAnim(slider, "translationY", 0, 200);
+                                shadAnim(slider, "alpha", 1, 200);
                                 slider.setVisibility(View.VISIBLE);
                             }
                         }
@@ -200,21 +201,21 @@ public class TutorialActivity extends AppCompatActivity {
     }
 
 
-    public void _setImageFromUrl(final ImageView _image, final String _url) {
+    public void setImageFromUrl(final ImageView image, final String url) {
         Glide.with(this)
 
-                .load(_url)
+                .load(url)
                 .fitCenter()
-                .into(_image);
+                .into(image);
 
     }
 
 
     public class Recyclerview1Adapter extends RecyclerView.Adapter<Recyclerview1Adapter.ViewHolder> {
-        ArrayList<HashMap<String, Object>> _data;
+        ArrayList<HashMap<String, Object>> data;
 
         public Recyclerview1Adapter(ArrayList<HashMap<String, Object>> _arr) {
-            _data = _arr;
+            data = _arr;
         }
 
         @NonNull
@@ -228,40 +229,40 @@ public class TutorialActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder _holder, final int _position) {
-            View _view = _holder.itemView;
+        public void onBindViewHolder(ViewHolder holder, final int _position) {
+            View view = holder.itemView;
 
-            final TextView textview1 = _view.findViewById(R.id.textview1);
-            final TextView textview2 = _view.findViewById(R.id.textview2);
-            final ImageView imageview1 = _view.findViewById(R.id.imageview1);
+            final TextView textview1 = view.findViewById(R.id.textview1);
+            final TextView textview2 = view.findViewById(R.id.textview2);
+            final ImageView imageview1 = view.findViewById(R.id.imageview1);
 
-            if (Objects.requireNonNull(_data.get(_position).get("isTitled")).toString().equals("true")) {
+            if (Objects.requireNonNull(data.get(_position).get("isTitled")).toString().equals("true")) {
                 textview1.setVisibility(View.VISIBLE);
-                textview1.setText(Objects.requireNonNull(_data.get(_position).get("title")).toString());
+                textview1.setText(Objects.requireNonNull(data.get(_position).get("title")).toString());
             } else {
                 textview1.setVisibility(View.GONE);
             }
-            if (Objects.requireNonNull(_data.get(_position).get("isSubtitled")).toString().equals("true")) {
+            if (Objects.requireNonNull(data.get(_position).get("isSubtitled")).toString().equals("true")) {
                 textview2.setVisibility(View.VISIBLE);
-                textview2.setText(Objects.requireNonNull(_data.get(_position).get("subtitle")).toString());
+                textview2.setText(Objects.requireNonNull(data.get(_position).get("subtitle")).toString());
             } else {
                 textview2.setVisibility(View.GONE);
             }
-            if (Objects.requireNonNull(_data.get(_position).get("isImaged")).toString().equals("true")) {
+            if (Objects.requireNonNull(data.get(_position).get("isImaged")).toString().equals("true")) {
                 imageview1.setVisibility(View.VISIBLE);
-                _setImageFromUrl(imageview1, Objects.requireNonNull(_data.get(_position).get("image")).toString());
+                setImageFromUrl(imageview1, Objects.requireNonNull(data.get(_position).get("image")).toString());
             } else {
                 imageview1.setVisibility(View.GONE);
             }
             textview1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
             textview2.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _view.setLayoutParams(_lp);
+            view.setLayoutParams(_lp);
         }
 
         @Override
         public int getItemCount() {
-            return _data.size();
+            return data.size();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {

@@ -1,5 +1,11 @@
 package com.nerbly.bemoji;
 
+import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
+import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
+import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
+import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
+
 import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -33,7 +39,6 @@ import com.nerbly.bemoji.Adapters.LoadingPacksAdapter;
 import com.nerbly.bemoji.Functions.RequestNetwork;
 import com.nerbly.bemoji.Functions.RequestNetworkController;
 import com.nerbly.bemoji.Functions.Utils;
-import com.nerbly.bemoji.UI.MainUIMethods;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -47,11 +52,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PacksActivity extends AppCompatActivity {
-    private final Timer _timer = new Timer();
+    private final Timer timer = new Timer();
     private final ArrayList<String> packsArrayList = new ArrayList<>();
     private final ArrayList<HashMap<String, Object>> shimmerList = new ArrayList<>();
     private final Intent toPreview = new Intent();
-    BottomSheetBehavior sheetBehavior;
+    private BottomSheetBehavior<LinearLayout> sheetBehavior;
     private String packsTempArrayString = "";
     private String currentPositionPackArray = "";
     private ArrayList<HashMap<String, Object>> packsList = new ArrayList<>();
@@ -64,7 +69,7 @@ public class PacksActivity extends AppCompatActivity {
     private RecyclerView packsRecycler;
     private RecyclerView loadingRecycler;
     private RequestNetwork startGettingPacks;
-    private RequestNetwork.RequestListener _startGettingPacks_request_listener;
+    private RequestNetwork.RequestListener PacksRequestListener;
     private SharedPreferences sharedPref;
 
     @Override
@@ -96,7 +101,7 @@ public class PacksActivity extends AppCompatActivity {
             }
         });
 
-        _startGettingPacks_request_listener = new RequestNetwork.RequestListener() {
+        PacksRequestListener = new RequestNetwork.RequestListener() {
             @Override
             public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
                 try {
@@ -119,8 +124,8 @@ public class PacksActivity extends AppCompatActivity {
     }
 
     private void initializeLogic() {
-        _LOGIC_FRONTEND();
-        _LOGIC_BACKEND();
+        LOGIC_FRONTEND();
+        LOGIC_BACKEND();
     }
 
     @Override
@@ -128,11 +133,11 @@ public class PacksActivity extends AppCompatActivity {
         sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
-    public void _LOGIC_BACKEND() {
+    public void LOGIC_BACKEND() {
         sheetBehavior = BottomSheetBehavior.from(bsheetbehavior);
         loadingRecycler.setLayoutManager(new LinearLayoutManager(this));
         packsRecycler.setLayoutManager(new LinearLayoutManager(this));
-        _BottomSheetBehaviorListener();
+        bottomSheetBehaviorListener();
         background.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
         AudienceNetworkAds.initialize(this);
 
@@ -141,7 +146,7 @@ public class PacksActivity extends AppCompatActivity {
         adview.addView(bannerAd);
 
         bannerAd.loadAd();
-        for (int _repeat32 = 0; _repeat32 < 30; _repeat32++) {
+        for (int i = 0; i < 30; i++) {
             HashMap<String, Object> shimmerMap = new HashMap<>();
             shimmerMap.put("key", "value");
             shimmerList.add(shimmerMap);
@@ -152,16 +157,16 @@ public class PacksActivity extends AppCompatActivity {
         loadingRecycler.setHasFixedSize(true);
     }
 
-    public void _LOGIC_FRONTEND() {
+    public void LOGIC_FRONTEND() {
         textview3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
         textview4.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
-        MainUIMethods.advancedCorners(background, "#FFFFFF", 40, 40, 0, 0);
-        MainUIMethods.setViewRadius(slider, 90, "#E0E0E0");
-        MainUIMethods.DARK_ICONS(this);
-        MainUIMethods.transparentStatusBar(this);
+        advancedCorners(background, "#FFFFFF", 40, 40, 0, 0);
+        setViewRadius(slider, 90, "#E0E0E0");
+        DARK_ICONS(this);
+        transparentStatusBar(this);
     }
 
-    public void _BottomSheetBehaviorListener() {
+    public void bottomSheetBehaviorListener() {
         sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -169,21 +174,21 @@ public class PacksActivity extends AppCompatActivity {
                     finish();
                 } else {
                     if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                        MainUIMethods.shadAnim(background, "elevation", 20, 200);
-                        MainUIMethods.shadAnim(slider, "translationY", 0, 200);
-                        MainUIMethods.shadAnim(slider, "alpha", 1, 200);
+                        shadAnim(background, "elevation", 20, 200);
+                        shadAnim(slider, "translationY", 0, 200);
+                        shadAnim(slider, "alpha", 1, 200);
                         slider.setVisibility(View.VISIBLE);
                     } else {
                         if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                            MainUIMethods.shadAnim(background, "elevation", 0, 200);
-                            MainUIMethods.shadAnim(slider, "translationY", -200, 200);
-                            MainUIMethods.shadAnim(slider, "alpha", 0, 200);
+                            shadAnim(background, "elevation", 0, 200);
+                            shadAnim(slider, "translationY", -200, 200);
+                            shadAnim(slider, "alpha", 0, 200);
                             slider.setVisibility(View.INVISIBLE);
                         } else {
                             if (newState == BottomSheetBehavior.STATE_DRAGGING) {
-                                MainUIMethods.shadAnim(background, "elevation", 20, 200);
-                                MainUIMethods.shadAnim(slider, "translationY", 0, 200);
-                                MainUIMethods.shadAnim(slider, "alpha", 1, 200);
+                                shadAnim(background, "elevation", 20, 200);
+                                shadAnim(slider, "translationY", 0, 200);
+                                shadAnim(slider, "alpha", 1, 200);
                                 slider.setVisibility(View.VISIBLE);
                             }
                         }
@@ -198,12 +203,12 @@ public class PacksActivity extends AppCompatActivity {
 
     }
 
-    public void _setImageFromUrl(final ImageView _image, final String _url) {
+    public void _setImageFromUrl(final ImageView image, final String url) {
         Glide.with(this)
 
-                .load(_url)
+                .load(url)
                 .centerCrop()
-                .into(_image);
+                .into(image);
 
     }
 
@@ -228,7 +233,7 @@ public class PacksActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             if (sharedPref.getString("packsData", "").equals("")) {
-                startGettingPacks.startRequestNetwork(RequestNetworkController.GET, "https://emoji.gg/api/packs", "", _startGettingPacks_request_listener);
+                startGettingPacks.startRequestNetwork(RequestNetworkController.GET, "https://emoji.gg/api/packs", "", PacksRequestListener);
             } else {
                 try {
                     packsList = new Gson().fromJson(sharedPref.getString("packsData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
@@ -263,16 +268,16 @@ public class PacksActivity extends AppCompatActivity {
                         });
                     }
                 };
-                _timer.schedule(loadingTmr, 1000);
+                timer.schedule(loadingTmr, 1000);
             }
         }
     }
 
     public class PacksRecyclerAdapter extends RecyclerView.Adapter<PacksRecyclerAdapter.ViewHolder> {
-        ArrayList<HashMap<String, Object>> _data;
+        ArrayList<HashMap<String, Object>> data;
 
         public PacksRecyclerAdapter(ArrayList<HashMap<String, Object>> _arr) {
-            _data = _arr;
+            data = _arr;
         }
 
         @NonNull
@@ -286,33 +291,33 @@ public class PacksActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder _holder, @SuppressLint("RecyclerView") final int _position) {
-            View _view = _holder.itemView;
+        public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
+            View view = holder.itemView;
 
-            final com.google.android.material.card.MaterialCardView cardview1 = _view.findViewById(R.id.cardview1);
-            final ImageView imageview1 = _view.findViewById(R.id.imageview1);
-            final TextView textview1 = _view.findViewById(R.id.textview1);
-            final TextView textview2 = _view.findViewById(R.id.textview2);
-            final TextView textview3 = _view.findViewById(R.id.textview3);
-            final TextView textview4 = _view.findViewById(R.id.textview4);
+            final com.google.android.material.card.MaterialCardView cardview1 = view.findViewById(R.id.cardview1);
+            final ImageView imageview1 = view.findViewById(R.id.imageview1);
+            final TextView textview1 = view.findViewById(R.id.textview1);
+            final TextView textview2 = view.findViewById(R.id.textview2);
+            final TextView textview3 = view.findViewById(R.id.textview3);
+            final TextView textview4 = view.findViewById(R.id.textview4);
 
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _view.setLayoutParams(_lp);
-            textview1.setText(_capitalizedFirstWord(Objects.requireNonNull(_data.get(_position).get("name")).toString().replace("_", " ")));
-            textview2.setText(Objects.requireNonNull(_data.get(_position).get("description")).toString());
-            textview3.setText(String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(_data.get(_position).get("amount")).toString()))));
+            view.setLayoutParams(_lp);
+            textview1.setText(_capitalizedFirstWord(Objects.requireNonNull(data.get(position).get("name")).toString().replace("_", " ")));
+            textview2.setText(Objects.requireNonNull(data.get(position).get("description")).toString());
+            textview3.setText(String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("amount")).toString()))));
             textview1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
             textview2.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
             textview3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
             textview4.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
-            _setImageFromUrl(imageview1, Objects.requireNonNull(_data.get(_position).get("image")).toString());
+            _setImageFromUrl(imageview1, Objects.requireNonNull(data.get(position).get("image")).toString());
             cardview1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View _view) {
                     try {
                         packsTempArrayString = new Gson().toJson(packsList);
                         JSONArray backPacksArray = new JSONArray(packsTempArrayString);
-                        JSONObject packsObject = backPacksArray.getJSONObject(_position);
+                        JSONObject packsObject = backPacksArray.getJSONObject(position);
 
                         JSONArray frontPacksArray = packsObject.getJSONArray("emojis");
                         for (int frontPacksInt = 0; frontPacksInt < frontPacksArray.length(); frontPacksInt++) {
@@ -324,14 +329,14 @@ public class PacksActivity extends AppCompatActivity {
 
                     }
                     toPreview.putExtra("switchType", "pack");
-                    toPreview.putExtra("title", "BemojiPack_".concat(String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(_data.get(_position).get("id")).toString())))));
-                    toPreview.putExtra("subtitle", Objects.requireNonNull(_data.get(_position).get("description")).toString());
-                    toPreview.putExtra("imageUrl", Objects.requireNonNull(_data.get(_position).get("image")).toString());
-                    toPreview.putExtra("fileName", Objects.requireNonNull(_data.get(_position).get("slug")).toString());
+                    toPreview.putExtra("title", "BemojiPack_".concat(String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("id")).toString())))));
+                    toPreview.putExtra("subtitle", Objects.requireNonNull(data.get(position).get("description")).toString());
+                    toPreview.putExtra("imageUrl", Objects.requireNonNull(data.get(position).get("image")).toString());
+                    toPreview.putExtra("fileName", Objects.requireNonNull(data.get(position).get("slug")).toString());
                     toPreview.putExtra("packEmojisArray", currentPositionPackArray);
-                    toPreview.putExtra("packEmojisAmount", Objects.requireNonNull(_data.get(_position).get("amount")).toString());
-                    toPreview.putExtra("packName", _capitalizedFirstWord(Objects.requireNonNull(_data.get(_position).get("name")).toString().replace("_", " ")));
-                    toPreview.putExtra("packId", Objects.requireNonNull(_data.get(_position).get("id")).toString());
+                    toPreview.putExtra("packEmojisAmount", Objects.requireNonNull(data.get(position).get("amount")).toString());
+                    toPreview.putExtra("packName", _capitalizedFirstWord(Objects.requireNonNull(data.get(position).get("name")).toString().replace("_", " ")));
+                    toPreview.putExtra("packId", Objects.requireNonNull(data.get(position).get("id")).toString());
                     toPreview.setClass(getApplicationContext(), PackPreviewActivity.class);
                     startActivity(toPreview);
                 }
@@ -340,7 +345,7 @@ public class PacksActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return _data.size();
+            return data.size();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {

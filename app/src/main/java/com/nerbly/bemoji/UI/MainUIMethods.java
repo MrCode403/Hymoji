@@ -117,12 +117,12 @@ public class MainUIMethods {
 
     //mics
 
-    public static void changeActivityFont(final String fontname, Activity activity) {
-        String activityFontName = fontname.trim();
+    public static void changeActivityFont(final String fontName, Activity context) {
+        String activityFontName = fontName.trim();
         if (activityFontName.contains(".ttf")) {
             activityFontName = activityFontName.replace(".ttf", "");
         }
-        overrideFonts(activityFontName, activity, activity.getWindow().getDecorView());
+        overrideFonts(activityFontName, context, context.getWindow().getDecorView());
     }
 
     public static void overrideFonts(String font, final android.content.Context context, final View v) {
@@ -157,7 +157,7 @@ public class MainUIMethods {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 }

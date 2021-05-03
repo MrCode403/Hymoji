@@ -36,9 +36,9 @@ import java.util.Objects;
 public class SettingsActivity extends AppCompatActivity {
 
     private final Intent intent = new Intent();
-    com.google.android.material.snackbar.Snackbar _snackBarView;
-    com.google.android.material.snackbar.Snackbar.SnackbarLayout _sblayout;
-    BottomSheetBehavior sheetBehavior;
+    com.google.android.material.snackbar.Snackbar snackBarView;
+    com.google.android.material.snackbar.Snackbar.SnackbarLayout sblayout;
+    private BottomSheetBehavior<LinearLayout> sheetBehavior;
     private LinearLayout bsheetbehavior;
     private LinearLayout background;
     private LinearLayout slider;
@@ -82,12 +82,12 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.settings);
-        initialize(_savedInstanceState);
+        initialize();
         com.google.firebase.FirebaseApp.initializeApp(this);
         initializeLogic();
     }
 
-    private void initialize(Bundle _savedInstanceState) {
+    private void initialize() {
         CoordinatorLayout linear1 = findViewById(R.id.linear1);
         bsheetbehavior = findViewById(R.id.bsheetbehavior);
         background = findViewById(R.id.background);
@@ -122,7 +122,7 @@ public class SettingsActivity extends AppCompatActivity {
                 sharedPref.edit().putString("packsData", "").apply();
 
                 sharedPref.edit().putString("isAskingForReload", "true").apply();
-                _showCustomSnackBar("Done. Home page will be reloaded when you get back");
+                showCustomSnackBar(R.string.emojis_reloaded_success);
             }
         });
 
@@ -140,11 +140,11 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View _view) {
                 if (androidx.core.content.ContextCompat.checkSelfPermission(SettingsActivity.this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == android.content.pm.PackageManager.PERMISSION_DENIED || androidx.core.content.ContextCompat.checkSelfPermission(SettingsActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == android.content.pm.PackageManager.PERMISSION_DENIED) {
                     androidx.core.app.ActivityCompat.requestPermissions(SettingsActivity.this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                    _showCustomSnackBar("Please allow Bemoji to have storage permission");
+                    showCustomSnackBar(R.string.ask_for_permission);
                 } else {
                     trimCache();
-                    _initializeCacheScan();
-                    _showCustomSnackBar("Cache has been cleared successfully");
+                    initializeCacheScan();
+                    showCustomSnackBar(R.string.cache_cleared_success);
                 }
             }
         });
@@ -196,8 +196,8 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     private void initializeLogic() {
-        _LOGIC_FRONTEND();
-        _LOGIC_BACKEND();
+        LOGIC_FRONTEND();
+        LOGIC_BACKEND();
     }
 
     @Override
@@ -205,13 +205,13 @@ public class SettingsActivity extends AppCompatActivity {
         sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
-    public void _LOGIC_BACKEND() {
+    public void LOGIC_BACKEND() {
         sheetBehavior = BottomSheetBehavior.from(bsheetbehavior);
-        _BottomSheetBehaviorListener();
-        _initializeCacheScan();
+        bottomSheetBehaviorListener();
+        initializeCacheScan();
     }
 
-    public void _LOGIC_FRONTEND() {
+    public void LOGIC_FRONTEND() {
         advancedCorners(background, "#FFFFFF", 40, 40, 0, 0);
         setViewRadius(slider, 90, "#E0E0E0");
         DARK_ICONS(this);
@@ -240,7 +240,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
-    public void _BottomSheetBehaviorListener() {
+    public void bottomSheetBehaviorListener() {
         sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -277,28 +277,26 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
-    public void _showCustomSnackBar(final String _text) {
+    public void showCustomSnackBar(final int _text) {
         ViewGroup parentLayout = (ViewGroup) ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
 
-        _snackBarView = com.google.android.material.snackbar.Snackbar.make(parentLayout, "", com.google.android.material.snackbar.Snackbar.LENGTH_LONG);
-        _sblayout = (com.google.android.material.snackbar.Snackbar.SnackbarLayout) _snackBarView.getView();
+        snackBarView = com.google.android.material.snackbar.Snackbar.make(parentLayout, "", com.google.android.material.snackbar.Snackbar.LENGTH_LONG);
+        sblayout = (com.google.android.material.snackbar.Snackbar.SnackbarLayout) snackBarView.getView();
 
-        @SuppressLint("InflateParams") View _inflate = getLayoutInflater().inflate(R.layout.snackbar, null);
-        _sblayout.setPadding(0, 0, 0, 0);
-        _sblayout.setBackgroundColor(Color.argb(0, 0, 0, 0));
-        LinearLayout back =
-                _inflate.findViewById(R.id.linear1);
+        @SuppressLint("InflateParams") View inflate = getLayoutInflater().inflate(R.layout.snackbar, null);
+        sblayout.setPadding(0, 0, 0, 0);
+        sblayout.setBackgroundColor(Color.argb(0, 0, 0, 0));
+        LinearLayout back = inflate.findViewById(R.id.linear1);
 
-        TextView text =
-                _inflate.findViewById(R.id.textview1);
+        TextView text = inflate.findViewById(R.id.textview1);
         setViewRadius(back, 20, "#202125");
         text.setText(_text);
         text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
-        _sblayout.addView(_inflate, 0);
-        _snackBarView.show();
+        sblayout.addView(inflate, 0);
+        snackBarView.show();
     }
 
-    public void _performClick(final View _view) {
+    public void performClick(final View _view) {
         _view.performClick();
     }
 
@@ -307,14 +305,14 @@ public class SettingsActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                _performClick(setting2);
+                performClick(setting2);
             } else {
-                _showCustomSnackBar("You can't clear cache without storage access permission. Please allow it.");
+                showCustomSnackBar(R.string.ask_for_permission);
             }
         }
     }
 
-    public void _initializeCacheScan() {
+    public void initializeCacheScan() {
         try {
             long size = 0;
             size += getDirSize(this.getCacheDir());

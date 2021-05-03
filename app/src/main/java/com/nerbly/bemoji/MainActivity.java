@@ -1,5 +1,10 @@
 package com.nerbly.bemoji;
 
+import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.changeActivityFont;
+import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
+import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusNavBar;
+
 import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.Context;
@@ -22,7 +27,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.nerbly.bemoji.UI.MainUIMethods;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -36,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private final Intent intent = new Intent();
     FirebaseAnalytics mFirebaseAnalytics;
     private ImageView imageview2;
-    private LinearLayout dataview;
-    private LinearLayout splashview;
+    private LinearLayout dataView;
+    private LinearLayout splashView;
     private ViewPager viewpager1;
     private TextView textview1;
     private TextView textview3;
@@ -54,14 +58,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void initialize() {
         imageview2 = findViewById(R.id.imageview2);
-        dataview = findViewById(R.id.dataview);
-        splashview = findViewById(R.id.splashview);
+        dataView = findViewById(R.id.dataview);
+        splashView = findViewById(R.id.splashview);
         viewpager1 = findViewById(R.id.viewpager1);
         textview1 = findViewById(R.id.textview1);
         textview3 = findViewById(R.id.textview3);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
-        splashview.setOnClickListener(new View.OnClickListener() {
+        splashView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View _view) {
                 intent.setClass(getApplicationContext(), HomeActivity.class);
@@ -71,13 +75,13 @@ public class MainActivity extends AppCompatActivity {
 
         viewpager1.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int _position, float _positionOffset, int _positionOffsetPixels) {
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
 
             @Override
-            public void onPageSelected(int _position) {
-                if (_position == 2) {
+            public void onPageSelected(int position) {
+                if (position == 2) {
                     textview1.setText(R.string.welcome_start);
                 } else {
                     textview1.setText(R.string.welcome_continue);
@@ -85,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onPageScrollStateChanged(int _scrollState) {
+            public void onPageScrollStateChanged(int scrollState) {
 
             }
         });
@@ -105,8 +109,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initializeLogic() {
-        _LOGIC_FRONTEND();
-        _LOGIC_BACKEND();
+        LOGIC_FRONTEND();
+        LOGIC_BACKEND();
     }
 
     @Override
@@ -117,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void _LOGIC_FRONTEND() {
+    public void LOGIC_FRONTEND() {
         try {
             InputStream ims = getAssets().open("images/splash.png");
             Drawable d = Drawable.createFromStream(ims, null);
@@ -125,19 +129,19 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             return;
         }
-        MainUIMethods.transparentStatusNavBar(this);
+        transparentStatusNavBar(this);
 
-        MainUIMethods.LIGHT_ICONS(this);
+        LIGHT_ICONS(this);
 
-        MainUIMethods.changeActivityFont("whitney", this);
+        changeActivityFont("whitney", this);
 
-        MainUIMethods.rippleRoundStroke(textview1, "#FFFFFF", "#EEEEEE", 200, 0, "#FFFFFF");
+        rippleRoundStroke(textview1, "#FFFFFF", "#EEEEEE", 200, 0, "#FFFFFF");
         textview1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
         textview3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
     }
 
 
-    public void _LOGIC_BACKEND() {
+    public void LOGIC_BACKEND() {
         try {
             FirebaseApp.initializeApp(this);
         } catch (Exception ignored) {
@@ -146,20 +150,20 @@ public class MainActivity extends AppCompatActivity {
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         } catch (Exception ignored) {
         }
-        for (int _repeat16 = 0; _repeat16 < 3; _repeat16++) {
+        for (int i = 0; i < 3; i++) {
             HashMap<String, Object> viewPagerMap = new HashMap<>();
             viewPagerMap.put("title", "data");
             viewPagerMap.put("subtitle", "data");
             viewPagerList.add(viewPagerMap);
         }
-        viewpager1.setAdapter(new Viewpager1Adapter(viewPagerList));
-        dataview.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
+        viewpager1.setAdapter(new ViewPager1Adapter(viewPagerList));
+        dataView.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
         if (sharedPref.getString("firstUse", "").equals("")) {
-            splashview.setVisibility(View.GONE);
-            dataview.setVisibility(View.VISIBLE);
+            splashView.setVisibility(View.GONE);
+            dataView.setVisibility(View.VISIBLE);
         } else {
-            splashview.setVisibility(View.VISIBLE);
-            dataview.setVisibility(View.GONE);
+            splashView.setVisibility(View.VISIBLE);
+            dataView.setVisibility(View.GONE);
             TimerTask splashTmr = new TimerTask() {
                 @Override
                 public void run() {
@@ -176,18 +180,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public class Viewpager1Adapter extends PagerAdapter {
-        Context _context;
-        ArrayList<HashMap<String, Object>> _data;
+    public class ViewPager1Adapter extends PagerAdapter {
+        Context context;
+        ArrayList<HashMap<String, Object>> data;
 
-        public Viewpager1Adapter(ArrayList<HashMap<String, Object>> _arr) {
-            _context = getApplicationContext();
-            _data = _arr;
+        public ViewPager1Adapter(ArrayList<HashMap<String, Object>> _arr) {
+            context = getApplicationContext();
+            data = _arr;
         }
 
         @Override
         public int getCount() {
-            return _data.size();
+            return data.size();
         }
 
         @Override
@@ -213,20 +217,20 @@ public class MainActivity extends AppCompatActivity {
 
         @NonNull
         @Override
-        public Object instantiateItem(@NonNull ViewGroup _container, final int _position) {
-            View _view = LayoutInflater.from(_context).inflate(R.layout.welcomepager, _container, false);
-            final TextView textview2 = _view.findViewById(R.id.textview2);
-            final TextView textview3 = _view.findViewById(R.id.textview3);
+        public Object instantiateItem(@NonNull ViewGroup container, final int position) {
+            View view = LayoutInflater.from(context).inflate(R.layout.welcomepager, container, false);
+            final TextView textview2 = view.findViewById(R.id.textview2);
+            final TextView textview3 = view.findViewById(R.id.textview3);
 
-            if (_position == 0) {
+            if (position == 0) {
                 textview2.setText(R.string.welcome_title_1);
                 textview3.setText(R.string.welcome_subtitle_1);
             } else {
-                if (_position == 1) {
+                if (position == 1) {
                     textview2.setText(R.string.welcome_title_2);
                     textview3.setText(R.string.welcome_subtitle_2);
                 } else {
-                    if (_position == 2) {
+                    if (position == 2) {
                         textview2.setText(R.string.welcome_title_3);
                         textview3.setText(R.string.welcome_subtitle_3);
                     }
@@ -235,8 +239,8 @@ public class MainActivity extends AppCompatActivity {
             textview2.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
             textview3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
 
-            _container.addView(_view);
-            return _view;
+            container.addView(view);
+            return view;
         }
     }
 }
