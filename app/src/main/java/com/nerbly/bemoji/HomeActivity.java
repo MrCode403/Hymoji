@@ -517,7 +517,7 @@ public class HomeActivity extends AppCompatActivity {
                                 localemojisview.setVisibility(View.VISIBLE);
                                 Utils.sortListMap(localEmojisList, "modi_time", false, false);
                                 local_recycler.setAdapter(new LocalEmojisAdapter.Local_recyclerAdapter(localEmojisList));
-                                initDragNDropRecycler(local_recycler, localEmojisList);
+                                //initDragNDropRecycler(local_recycler, localEmojisList);
                             }
                         } catch (Exception ignored) {
                         }
