@@ -3,90 +3,90 @@
 <resources>
     <string name="app_name" translatable="false">Bemoji</string>
 
-    <string name="home_title" translatable="true">Explore emojis</string>
-    <string name="home_subtitle" translatable="true">Here you can explore our categories to access an unlimited collection of emojis</string>
-    <string name="local_emojis_title" translatable="true">DOWNLOADED EMOJIS</string>
-    <string name="download_success">Saved to downloads folder</string>
-    <string name="pack_downloading_txt">Downloading</string>
-    <string name="pack_downloading_progress">Downloading pack emojis: </string>
-    <string name="download_btn_txt">Download</string>
-    <string name="pack_confirmation_sheet_title">Wait a second, there\'s more!</string>
-    <string name="pack_confirmation_sheet_subtitle">Do you want me to download this pack as a ZIP file (suitable for Desktop or sharing) or simply download it as a folder?</string>
-    <string name="pack_confirmation_sheet_btn1">Download as ZIP</string>
-    <string name="pack_confirmation_sheet_btn2">Download as a folder</string>
-    <string name="home_searchbox">Search…</string>
-    <string name="home_sections_title">SECTIONS</string>
-    <string name="home_dock1_title">All emojis</string>
-    <string name="home_dock1_subtitle">emojis</string>
-    <string name="home_dock2_title">Categories</string>
-    <string name="home_dock2_subtitle">categories</string>
-    <string name="home_dock3_title">Settings</string>
-    <string name="home_dock3_subtitle">Manage Bemoji</string>
-    <string name="home_dock4_subtitle">How to add emojis?</string>
-    <string name="home_dock4_title">Help</string>
-    <string name="home_packs_title">EMOJI PACKS</string>
-    <string name="home_packs_seemore">SEE ALL</string>
-    <string name="home_pack_seemore2">More packs</string>
-    <string name="categories_screen_title">Explore categories</string>
-    <string name="categories_screen_subtitle">Lazy to search? choose what suits your shiny server. Some categories are empty btw.</string>
-    <string name="emojis_search_box_txt">For best results, search like a memer…</string>
-    <string name="emojis_not_found">Oh boy, we couldn\'t find anything.</string>
-    <string name="packs_included_emojis">included\nemojis</string>
-    <string name="animated_emojis_warning_title">Hold up, wait a minute!</string>
-    <string name="animated_emojis_warning_subtitle">You\'re about to enter a category contains flashing images that may potentially trigger seizures for people with photosensitive epilepsy.</string>
-    <string name="animated_emojis_warning_btncancel">Nope, I\'m out</string>
-    <string name="animated_emojis_warning_btnok">Let me in</string>
-    <string name="welcome_continue">Continue</string>
-    <string name="welcome_title_1">Bemoji</string>
-    <string name="welcome_subtitle_1">Tired of boring emojis? Let me introduce myself…</string>
-    <string name="welcome_title_2">Another dimension of emojis</string>
-    <string name="welcome_subtitle_2">Memes, animations, faces, expressions, any emoji. We literally have them all.</string>
-    <string name="welcome_title_3">Let\'s get started</string>
-    <string name="welcome_subtitle_3">Let our journey begins now</string>
-    <string name="welcome_artwork_creator">Art work by Jackie Chen</string>
-    <string name="sort_by_title">SORT BY</string>
-    <string name="sort_by_newest">Newest</string>
-    <string name="sort_by_oldest">Oldest</string>
-    <string name="sort_by_alphabetically">Alphabetically</string>
-    <string name="preview_pack_title">Preview pack</string>
-    <string name="preview_pack_subtitle">You can see what emojis this pack contains and guess what? you can download them individually too!!</string>
-    <string name="preview_pack_download_btn">Download full pack</string>
-    <string name="explore_packs_title">Explore packs</string>
-    <string name="explore_packs_subtitle">Packs of different emojis of the same type</string>
-    <string name="settings_subtitle">Manage and customize Bemoji app</string>
-    <string name="settings_title">Settings</string>
-    <string name="settings_section_1_title">GENERAL</string>
-    <string name="settings_option_1_title">Reload emojis</string>
-    <string name="settings_option_1_subtitle">You can get the latest emojis by clicking here (home will reloaded when you get back).</string>
-    <string name="settings_option_2_title">Upload emojis</string>
-    <string name="settings_option_2_subtitle">You\'ll be redirected to emojis.gg to manually upload your emojis there. After approval, you may click \"Reload emojis\" above.</string>
-    <string name="settings_option_3_title">Clear cache</string>
-    <string name="settings_option_3_subtitle">All preloaded emojis will be erased. Less app size, more emojis loading time.</string>
-    <string name="settings_section_2_title">BEMOJI</string>
-    <string name="settings_option_4_title">Support</string>
-    <string name="settings_option_4_subtitle">Before taking any action, please contact us first to settle everything down. Thanks.</string>
-    <string name="settings_option_5_title">Feedback</string>
-    <string name="settings_option_5_subtitle">Is something missing or you need a feature? let us know. Also, don\'t forget to give us a nice rating.</string>
-    <string name="settings_option_6_title">Bemoji</string>
-    <string name="settings_option_6_subtitle">We are in no way affiliated with Discord or Slack. Bemoji wasn\'t created to compete with any other service.</string>
-    <string name="settings_section_3_title">COPYRIGHT</string>
-    <string name="settings_option_7_title">Content copyright</string>
-    <string name="settings_option_7_subtitle">Emojis are user-submitted and are copyright of their respective owners. Click here if you have questions or copyright concerns.</string>
-    <string name="settings_option_8_title">Content source</string>
-    <string name="settings_option_8_subtitle">All emojis are provided by emoji.gg.</string>
-    <string name="help_center_title">Help center</string>
-    <string name="help_center_subtitle">Step-by-step instructions to add emojis to your own discord or slack server</string>
-    <string name="welcome_start">Start</string>
-    <string name="settings_option_10_title">Bemoji on Github</string>
-    <string name="settings_option_10_subtitle">Feel free to check out Bemoji\'s source code on Github.</string>
-    <string name="submitted_by">Submitted by: </string>
-    <string name="downloading">Downloading</string>
-    <string name="full_download_path">Full download path: </string>
-    <string name="permission_denied_emojis">You can\'t download emojis without storage access permission. Please allow it.</string>
-    <string name="permission_denied_packs">You can\'t download packs without storage access permission. Please allow it.</string>
-    <string name="permission_denied_cache">You can\'t download packs without storage access permission. Please allow it.</string>
-    <string name="ask_for_permission">Please give the access to access your storage to continue.</string>
-    <string name="error_msg">Something went wrong, please try again later.</string>
-    <string name="cache_cleared_success">Cache has been cleared successfully.</string>
-    <string name="emojis_reloaded_success">Done. Home page will be reloaded when you get back</string>
+    <string name="home_title" translatable="false">Explore emojis</string>
+    <string name="home_subtitle" translatable="false">Here you can explore our categories to access an unlimited collection of emojis</string>
+    <string name="local_emojis_title" translatable="false">DOWNLOADED EMOJIS</string>
+    <string name="download_success" translatable="false">Saved to downloads folder</string>
+    <string name="pack_downloading_txt" translatable="false">Downloading</string>
+    <string name="pack_downloading_progress" translatable="false">Downloading pack emojis: </string>
+    <string name="download_btn_txt" translatable="false">Download</string>
+    <string name="pack_confirmation_sheet_title" translatable="false">Wait a second, there\'s more!</string>
+    <string name="pack_confirmation_sheet_subtitle" translatable="false">Do you want me to download this pack as a ZIP file (suitable for Desktop or sharing) or simply download it as a folder?</string>
+    <string name="pack_confirmation_sheet_btn1" translatable="false">Download as ZIP</string>
+    <string name="pack_confirmation_sheet_btn2" translatable="false">Download as a folder</string>
+    <string name="home_searchbox" translatable="false">Search…</string>
+    <string name="home_sections_title" translatable="false">SECTIONS</string>
+    <string name="home_dock1_title" translatable="false">All emojis</string>
+    <string name="home_dock1_subtitle" translatable="false">emojis</string>
+    <string name="home_dock2_title" translatable="false">Categories</string>
+    <string name="home_dock2_subtitle" translatable="false">categories</string>
+    <string name="home_dock3_title" translatable="false">Settings</string>
+    <string name="home_dock3_subtitle" translatable="false">Manage Bemoji</string>
+    <string name="home_dock4_subtitle" translatable="false">How to add emojis?</string>
+    <string name="home_dock4_title" translatable="false">Help</string>
+    <string name="home_packs_title" translatable="false">EMOJI PACKS</string>
+    <string name="home_packs_seemore" translatable="false">SEE ALL</string>
+    <string name="home_pack_seemore2" translatable="false">More packs</string>
+    <string name="categories_screen_title" translatable="false">Explore categories</string>
+    <string name="categories_screen_subtitle" translatable="false">Lazy to search? choose what suits your shiny server. Some categories are empty btw.</string>
+    <string name="emojis_search_box_txt" translatable="false">For best results, search like a memer…</string>
+    <string name="emojis_not_found" translatable="false">Oh boy, we couldn\'t find anything.</string>
+    <string name="packs_included_emojis" translatable="false">included\nemojis</string>
+    <string name="animated_emojis_warning_title" translatable="false">Hold up, wait a minute!</string>
+    <string name="animated_emojis_warning_subtitle" translatable="false">You\'re about to enter a category contains flashing images that may potentially trigger seizures for people with photosensitive epilepsy.</string>
+    <string name="animated_emojis_warning_btncancel" translatable="false">Nope, I\'m out</string>
+    <string name="animated_emojis_warning_btnok" translatable="false">Let me in</string>
+    <string name="welcome_continue" translatable="false">Continue</string>
+    <string name="welcome_title_1" translatable="false">Bemoji</string>
+    <string name="welcome_subtitle_1" translatable="false">Tired of boring emojis? Let me introduce myself…</string>
+    <string name="welcome_title_2" translatable="false">Another dimension of emojis</string>
+    <string name="welcome_subtitle_2" translatable="false">Memes, animations, faces, expressions, any emoji. We literally have them all.</string>
+    <string name="welcome_title_3" translatable="false">Let\'s get started</string>
+    <string name="welcome_subtitle_3" translatable="false">Let our journey begins now</string>
+    <string name="welcome_artwork_creator" translatable="false">Art work by Jackie Chen</string>
+    <string name="sort_by_title" translatable="false">SORT BY</string>
+    <string name="sort_by_newest" translatable="false">Newest</string>
+    <string name="sort_by_oldest" translatable="false">Oldest</string>
+    <string name="sort_by_alphabetically" translatable="false">Alphabetically</string>
+    <string name="preview_pack_title" translatable="false">Preview pack</string>
+    <string name="preview_pack_subtitle" translatable="false">You can see what emojis this pack contains and guess what? you can download them individually too!!</string>
+    <string name="preview_pack_download_btn" translatable="false">Download full pack</string>
+    <string name="explore_packs_title" translatable="false">Explore packs</string>
+    <string name="explore_packs_subtitle" translatable="false">Packs of different emojis of the same type</string>
+    <string name="settings_subtitle" translatable="false">Manage and customize Bemoji app</string>
+    <string name="settings_title" translatable="false">Settings</string>
+    <string name="settings_section_1_title" translatable="false">GENERAL</string>
+    <string name="settings_option_1_title" translatable="false">Reload emojis</string>
+    <string name="settings_option_1_subtitle" translatable="false">You can get the latest emojis by clicking here (home will reloaded when you get back).</string>
+    <string name="settings_option_2_title" translatable="false">Upload emojis</string>
+    <string name="settings_option_2_subtitle" translatable="false">You\'ll be redirected to emojis.gg to manually upload your emojis there. After approval, you may click \"Reload emojis\" above.</string>
+    <string name="settings_option_3_title" translatable="false">Clear cache</string>
+    <string name="settings_option_3_subtitle" translatable="false">All preloaded emojis will be erased. Less app size, more emojis loading time.</string>
+    <string name="settings_section_2_title" translatable="false">BEMOJI</string>
+    <string name="settings_option_4_title" translatable="false">Support</string>
+    <string name="settings_option_4_subtitle" translatable="false">Before taking any action, please contact us first to settle everything down. Thanks.</string>
+    <string name="settings_option_5_title" translatable="false">Feedback</string>
+    <string name="settings_option_5_subtitle" translatable="false">Is something missing or you need a feature? let us know. Also, don\'t forget to give us a nice rating.</string>
+    <string name="settings_option_6_title" translatable="false">Bemoji</string>
+    <string name="settings_option_6_subtitle" translatable="false">We are in no way affiliated with Discord or Slack. Bemoji wasn\'t created to compete with any other service.</string>
+    <string name="settings_section_3_title" translatable="false">COPYRIGHT</string>
+    <string name="settings_option_7_title" translatable="false">Content copyright</string>
+    <string name="settings_option_7_subtitle" translatable="false">Emojis are user-submitted and are copyright of their respective owners. Click here if you have questions or copyright concerns.</string>
+    <string name="settings_option_8_title" translatable="false">Content source</string>
+    <string name="settings_option_8_subtitle" translatable="false">All emojis are provided by emoji.gg.</string>
+    <string name="help_center_title" translatable="false">Help center</string>
+    <string name="help_center_subtitle" translatable="false">Step-by-step instructions to add emojis to your own discord or slack server</string>
+    <string name="welcome_start" translatable="false">Start</string>
+    <string name="settings_option_10_title" translatable="false">Bemoji on Github</string>
+    <string name="settings_option_10_subtitle" translatable="false">Feel free to check out Bemoji\'s source code on Github.</string>
+    <string name="submitted_by" translatable="false">Submitted by: </string>
+    <string name="downloading" translatable="false">Downloading</string>
+    <string name="full_download_path" translatable="false">Full download path: </string>
+    <string name="permission_denied_emojis" translatable="false">You can\'t download emojis without storage access permission. Please allow it.</string>
+    <string name="permission_denied_packs" translatable="false">You can\'t download packs without storage access permission. Please allow it.</string>
+    <string name="permission_denied_cache" translatable="false">You can\'t download packs without storage access permission. Please allow it.</string>
+    <string name="ask_for_permission" translatable="false">Please give the access to access your storage to continue.</string>
+    <string name="error_msg" translatable="false">Something went wrong, please try again later.</string>
+    <string name="cache_cleared_success" translatable="false">Cache has been cleared successfully.</string>
+    <string name="emojis_reloaded_success" translatable="false">Done. Home page will be reloaded when you get back</string>
 </resources>
