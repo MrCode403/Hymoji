@@ -24,12 +24,12 @@ public class Utils {
         Collections.sort(listMap, new Comparator<HashMap<String, Object>>() {
             public int compare(HashMap<String, Object> _compareMap1, HashMap<String, Object> _compareMap2) {
                 if (isNumber) {
-                    int _count1 = Integer.parseInt(Objects.requireNonNull(_compareMap1.get(key)).toString());
-                    int _count2 = Integer.parseInt(Objects.requireNonNull(_compareMap2.get(key)).toString());
+                    int count1 = Integer.parseInt(Objects.requireNonNull(_compareMap1.get(key)).toString());
+                    int count2 = Integer.parseInt(Objects.requireNonNull(_compareMap2.get(key)).toString());
                     if (ascending) {
-                        return _count1 < _count2 ? -1 : 0;
+                        return count1 < count2 ? -1 : 0;
                     } else {
-                        return _count1 > _count2 ? -1 : 0;
+                        return count1 > count2 ? -1 : 0;
                     }
                 } else {
                     if (ascending) {
@@ -42,13 +42,13 @@ public class Utils {
         });
     }
 
-    public static void showMessage(Context _context, String _s) {
-        Toast.makeText(_context, _s, Toast.LENGTH_SHORT).show();
+    public static void showToast(Context context, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
 
-    public static void ZIP(final String _source, final String _destination) {
-        zipFileAtPath(_source, _destination);
+    public static void ZIP(String source, String destination) {
+        zipFileAtPath(source, destination);
     }
 
     public static void zipFileAtPath(String sourcePath, String toLocation) {
@@ -122,12 +122,12 @@ public class Utils {
         Collections.sort(listMap, new Comparator<HashMap<String, Object>>() {
             public int compare(HashMap<String, Object> _compareMap1, HashMap<String, Object> _compareMap2) {
                 if (isNumber) {
-                    int _count1 = Integer.parseInt(Objects.requireNonNull(_compareMap1.get(key)).toString());
-                    int _count2 = Integer.parseInt(Objects.requireNonNull(_compareMap2.get(key)).toString());
+                    int count1 = Integer.parseInt(Objects.requireNonNull(_compareMap1.get(key)).toString());
+                    int count2 = Integer.parseInt(Objects.requireNonNull(_compareMap2.get(key)).toString());
                     if (ascending) {
-                        return _count1 < _count2 ? -1 : 0;
+                        return count1 < count2 ? -1 : 0;
                     } else {
-                        return _count1 > _count2 ? -1 : 0;
+                        return count1 > count2 ? -1 : 0;
                     }
                 } else {
                     if (ascending) {

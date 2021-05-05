@@ -42,8 +42,8 @@ public class EmojisSuggestionsAdapter {
         public void onBindViewHolder(ViewHolder _holder, @SuppressLint("RecyclerView") final int _position) {
             View _view = _holder.itemView;
 
-            final com.google.android.material.card.MaterialCardView cardview3 = _view.findViewById(R.id.cardview3);
-            final TextView textview1 = _view.findViewById(R.id.textview1);
+            final com.google.android.material.card.MaterialCardView cardview3 = _view.findViewById(R.id.cardView);
+            final TextView textview1 = _view.findViewById(R.id.tutorialTitle);
 
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             _view.setLayoutParams(_lp);

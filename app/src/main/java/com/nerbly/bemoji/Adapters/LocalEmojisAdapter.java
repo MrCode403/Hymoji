@@ -2,7 +2,6 @@ package com.nerbly.bemoji.Adapters;
 
 import static com.nerbly.bemoji.Functions.SideFunctions.setImageFromPath;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,36 +20,36 @@ import java.util.Objects;
 public class LocalEmojisAdapter {
 
     public static class Local_recyclerAdapter extends RecyclerView.Adapter<Local_recyclerAdapter.ViewHolder> {
-        ArrayList<HashMap<String, Object>> _data;
+        ArrayList<HashMap<String, Object>> data;
 
         public Local_recyclerAdapter(ArrayList<HashMap<String, Object>> _arr) {
-            _data = _arr;
+            data = _arr;
         }
 
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater _inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            @SuppressLint("InflateParams") View _v = _inflater.inflate(R.layout.localemojisview, null);
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _v.setLayoutParams(_lp);
-            return new ViewHolder(_v);
+            LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View v = inflater.inflate(R.layout.localemojisview, parent, false);
+            RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            v.setLayoutParams(lp);
+            return new ViewHolder(v);
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder _holder, final int _position) {
-            View _view = _holder.itemView;
+        public void onBindViewHolder(ViewHolder holder, final int position) {
+            View view = holder.itemView;
 
-            final ImageView imageview1 = _view.findViewById(R.id.imageview1);
+            final ImageView emojis = view.findViewById(R.id.emoji);
 
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _view.setLayoutParams(_lp);
-            setImageFromPath(imageview1, Objects.requireNonNull(_data.get(_position).get("filePath")).toString());
+            RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            view.setLayoutParams(lp);
+            setImageFromPath(emojis, Objects.requireNonNull(data.get(position).get("filePath")).toString());
         }
 
         @Override
         public int getItemCount() {
-            return _data.size();
+            return data.size();
         }
 
         public static class ViewHolder extends RecyclerView.ViewHolder {

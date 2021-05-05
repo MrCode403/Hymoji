@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     useLibrary 'org.apache.http.legacy'
@@ -8,8 +9,8 @@ android {
         applicationId "com.nerbly.bemoji"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 8
-        versionName "0.4"
+        versionCode 11
+        versionName "0.5"
     }
     buildTypes {
         release {
@@ -35,6 +36,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0-alpha02'
     implementation 'com.google.firebase:firebase-analytics:18.0.3'
     implementation 'com.google.firebase:firebase-messaging:21.1.0'
+    implementation platform('com.google.firebase:firebase-bom:27.1.0')
+    implementation 'com.google.firebase:firebase-crashlytics'
 
     //Necessary libs
     implementation 'com.github.bumptech.glide:glide:4.12.0'
@@ -48,7 +51,7 @@ dependencies {
     implementation 'io.github.everythingme:overscroll-decor-android:1.1.1'
 
     //ads
-    implementation 'com.facebook.android:audience-network-sdk:6.3.0'
+    implementation 'com.facebook.android:audience-network-sdk:6.4.0'
 
     //other libs
     implementation 'com.mindorks.android:prdownloader:0.6.0'

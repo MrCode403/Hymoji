@@ -6,7 +6,7 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical">
 	<LinearLayout
-		android:id="@+id/linear1"
+		android:id="@+id/tutorialBg"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_marginStart="5dp"
@@ -80,7 +80,7 @@
 					android:layout_height="match_parent"
 					android:orientation="vertical">
 					<ImageView
-						android:id="@+id/imageview1"
+						android:id="@+id/emoji"
 						android:focusable="false"
 						android:layout_width="match_parent"
 						android:layout_height="80dp"
@@ -88,7 +88,7 @@
 						android:scaleType="centerCrop" />
 				</LinearLayout>
 				<TextView
-					android:id="@+id/textview1"
+					android:id="@+id/tutorialTitle"
 					android:focusable="false"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
 					android:textSize="18sp"
 					android:textColor="#000000" />
 				<TextView
-					android:id="@+id/textview2"
+					android:id="@+id/tutorialSubtitle"
 					android:focusable="false"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"

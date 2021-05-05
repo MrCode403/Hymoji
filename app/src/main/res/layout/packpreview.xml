@@ -1,23 +1,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
-	tools:ignore="ContentDescription"
 	android:layout_width="match_parent"
     android:layout_height="match_parent"
+	android:id="@+id/rootView"
     android:orientation="vertical">
 	<RelativeLayout
-		android:id="@+id/relativeview"
+		android:id="@+id/relativeView"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:orientation="vertical"
 		tools:ignore="UselessParent">
 		<androidx.coordinatorlayout.widget.CoordinatorLayout
-			android:id="@+id/linear1"
+			android:id="@+id/coordinator"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:gravity="center_horizontal|center_vertical">
 			<LinearLayout
-				android:id="@+id/bsheetbehavior"
+				android:id="@+id/sheetBehavior"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:orientation="vertical"
@@ -42,7 +42,7 @@
 						android:orientation="horizontal"
 						android:layout_gravity="center_horizontal" />
 					<TextView
-						android:id="@+id/title"
+						android:id="@+id/activityTitle"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_marginLeft="10dp"
@@ -54,7 +54,7 @@
 						android:textColor="#000000"
 						android:singleLine="true" />
 					<TextView
-						android:id="@+id/textview4"
+						android:id="@+id/activityDescription"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_marginLeft="10dp"
@@ -75,7 +75,7 @@
 						android:background="#E0E0E0"
 						android:orientation="horizontal" />
 					<androidx.recyclerview.widget.RecyclerView
-						android:id="@+id/recycler1"
+						android:id="@+id/packEmojisRecycler"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_marginTop="10dp"
@@ -99,14 +99,14 @@
 			android:orientation="horizontal"
 			android:layout_alignParentBottom="true">
 			<ImageView
-				android:id="@+id/imageview6"
+				android:id="@+id/download_ic"
 				android:layout_width="21dp"
 				android:layout_height="21dp"
 				android:src="@drawable/round_get_app_white_48dp"
 				android:scaleType="fitCenter" />
 
 			<TextView
-				android:id="@+id/textview3"
+				android:id="@+id/download_tv"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:gravity="center_horizontal|center_vertical"

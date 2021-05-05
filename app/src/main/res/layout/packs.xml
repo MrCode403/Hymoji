@@ -4,12 +4,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 	<androidx.coordinatorlayout.widget.CoordinatorLayout
-		android:id="@+id/linear1"
+		android:id="@+id/tutorialBg"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:gravity="center_horizontal|center_vertical">
 		<LinearLayout
-			android:id="@+id/bsheetbehavior"
+			android:id="@+id/sheetBehavior"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:orientation="vertical"
@@ -34,7 +34,7 @@
 					android:orientation="horizontal"
 					android:layout_gravity="center_horizontal" />
 				<TextView
-					android:id="@+id/textview3"
+					android:id="@+id/download_tv"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginLeft="10dp"
@@ -45,7 +45,7 @@
 					android:textSize="30sp"
 					android:textColor="#000000" />
 				<TextView
-					android:id="@+id/textview4"
+					android:id="@+id/activityDescription"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginLeft="10dp"

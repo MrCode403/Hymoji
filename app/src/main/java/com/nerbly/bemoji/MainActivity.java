@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
         dataView = findViewById(R.id.dataview);
         splashView = findViewById(R.id.splashview);
         viewpager1 = findViewById(R.id.viewpager1);
-        textview1 = findViewById(R.id.textview1);
-        textview3 = findViewById(R.id.textview3);
+        textview1 = findViewById(R.id.tutorialTitle);
+        textview3 = findViewById(R.id.download_tv);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
         splashView.setOnClickListener(new View.OnClickListener() {
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
         }
         viewpager1.setAdapter(new ViewPager1Adapter(viewPagerList));
         dataView.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
-        if (sharedPref.getString("firstUse", "").equals("")) {
+        if (sharedPref.getString("firstUse", "").isEmpty()) {
             splashView.setVisibility(View.GONE);
             dataView.setVisibility(View.VISIBLE);
         } else {
@@ -219,8 +219,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, final int position) {
             View view = LayoutInflater.from(context).inflate(R.layout.welcomepager, container, false);
-            final TextView textview2 = view.findViewById(R.id.textview2);
-            final TextView textview3 = view.findViewById(R.id.textview3);
+            final TextView textview2 = view.findViewById(R.id.tutorialSubtitle);
+            final TextView textview3 = view.findViewById(R.id.download_tv);
 
             if (position == 0) {
                 textview2.setText(R.string.welcome_title_1);

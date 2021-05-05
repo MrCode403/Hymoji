@@ -18,7 +18,7 @@
         tools:ignore="UselessParent">
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/activityTitle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:focusable="false"

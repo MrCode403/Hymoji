@@ -5,13 +5,12 @@ import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.changeActivityFont;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
-import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
 import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
 import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
+import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -20,7 +19,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -52,25 +50,25 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
 
 public class PreviewActivity extends AppCompatActivity {
 
-    private final Timer _timer = new Timer();
+    private final Timer timer = new Timer();
     private final ObjectAnimator downloadAnimation = new ObjectAnimator();
-    private BottomSheetBehavior<LinearLayout> sheetBehavior;
     com.google.android.material.snackbar.Snackbar snackBarView;
     com.google.android.material.snackbar.Snackbar.SnackbarLayout sblayout;
+    private BottomSheetBehavior<LinearLayout> sheetBehavior;
     private String downloadPath = "";
     private String downloadUrl = "";
     private boolean isDownloading = false;
     private CoordinatorLayout linear1;
     private LinearLayout bsheetbehavior;
     private LinearLayout relativeview;
-    private TextView title;
-    private TextView subtitle;
+    private TextView activityTitle;
+    private TextView activitySubtitle;
     private TextView information;
     private LinearLayout download;
-    private ImageView imageview1;
+    private ImageView emoji;
     private ImageView imageview7;
-    private ImageView imageview6;
-    private TextView textview3;
+    private ImageView download_ic;
+    private TextView download_tv;
     private TimerTask fixUIIssues;
     private SharedPreferences sharedPref;
 
@@ -84,17 +82,17 @@ public class PreviewActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        linear1 = findViewById(R.id.linear1);
-        bsheetbehavior = findViewById(R.id.bsheetbehavior);
-        relativeview = findViewById(R.id.relativeview);
-        title = findViewById(R.id.title);
-        subtitle = findViewById(R.id.subtitle);
+        linear1 = findViewById(R.id.tutorialBg);
+        bsheetbehavior = findViewById(R.id.sheetBehavior);
+        relativeview = findViewById(R.id.relativeView);
+        activityTitle = findViewById(R.id.activityTitle);
+        activitySubtitle = findViewById(R.id.activitySubtitle);
         information = findViewById(R.id.information);
         download = findViewById(R.id.download);
-        imageview1 = findViewById(R.id.imageview1);
+        emoji = findViewById(R.id.emoji);
         imageview7 = findViewById(R.id.imageview7);
-        imageview6 = findViewById(R.id.imageview6);
-        textview3 = findViewById(R.id.textview3);
+        download_ic = findViewById(R.id.download_ic);
+        download_tv = findViewById(R.id.download_tv);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
         linear1.setOnClickListener(new View.OnClickListener() {
@@ -107,14 +105,14 @@ public class PreviewActivity extends AppCompatActivity {
         download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View _view) {
-                if (!isDownloading && !textview3.getText().toString().contains("Saved")) {
-                    if (sharedPref.getString("downloadPath", "").equals("")) {
+                if (!isDownloading && !download_tv.getText().toString().contains("Saved")) {
+                    if (sharedPref.getString("downloadPath", "").isEmpty()) {
                         downloadPath = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS).concat("/Bemojis");
                     } else {
                         downloadPath = sharedPref.getString("downloadPath", "");
                     }
                     downloadUrl = getIntent().getStringExtra("imageUrl");
-                    _startDownload("Bemoji_".concat(downloadUrl.substring(downloadUrl.lastIndexOf('/') + 1)), downloadUrl, downloadPath);
+                    startDownload("Bemoji_".concat(downloadUrl.substring(downloadUrl.lastIndexOf('/') + 1)), downloadUrl, downloadPath);
                 }
             }
         });
@@ -145,11 +143,11 @@ public class PreviewActivity extends AppCompatActivity {
                 });
             }
         };
-        _timer.schedule(fixUIIssues, 200);
-        setBlurImageUrl(imageview1, 25, getIntent().getStringExtra("imageUrl"));
-        _setImageFromUrl(imageview7, getIntent().getStringExtra("imageUrl"));
-        title.setText(getIntent().getStringExtra("title"));
-        subtitle.setText(getString(R.string.submitted_by).concat(getIntent().getStringExtra("submitted_by")));
+        timer.schedule(fixUIIssues, 200);
+        setBlurImageUrl(emoji, 25, getIntent().getStringExtra("imageUrl"));
+        setImageFromUrl(imageview7, getIntent().getStringExtra("imageUrl"));
+        activityTitle.setText(getIntent().getStringExtra("title"));
+        activitySubtitle.setText(getString(R.string.submitted_by).concat(getIntent().getStringExtra("submitted_by")));
         _BottomBehaviourListener();
         shadAnim(linear1, "alpha", 1, 200);
     }
@@ -171,7 +169,7 @@ public class PreviewActivity extends AppCompatActivity {
         JJACCAI.setOrientation(android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM);
         JJACCAI.setCornerRadius(0);
         linear1.setBackground(JJACCAI);
-        title.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
+        activityTitle.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
     }
 
 
@@ -195,7 +193,7 @@ public class PreviewActivity extends AppCompatActivity {
                                 });
                             }
                         };
-                        _timer.schedule(fixUIIssues, 150);
+                        timer.schedule(fixUIIssues, 150);
                     }
                 }
             }
@@ -208,22 +206,22 @@ public class PreviewActivity extends AppCompatActivity {
     }
 
 
-    public void _startDownload(final String _name, final String _url, final String _path) {
+    public void startDownload(final String name, String url, String path) {
         if (androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == android.content.pm.PackageManager.PERMISSION_DENIED || androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == android.content.pm.PackageManager.PERMISSION_DENIED) {
             androidx.core.app.ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-            showCustomSnackBar(getString(R.string.ask_for_permission));
+            showCustomSnackBar(getString(R.string.ask_for_permission), this);
         } else {
             isDownloading = true;
-            textview3.setText(R.string.downloading);
-            imageview6.setImageResource(R.drawable.loadingimg);
-            downloadAnimation.setTarget(imageview6);
+            download_tv.setText(R.string.downloading);
+            download_ic.setImageResource(R.drawable.loadingimg);
+            downloadAnimation.setTarget(download_ic);
             downloadAnimation.setPropertyName("rotation");
             downloadAnimation.setFloatValues((float) (1000));
             downloadAnimation.setRepeatCount(999);
             downloadAnimation.setDuration(1000);
             downloadAnimation.setRepeatMode(ValueAnimator.REVERSE);
             downloadAnimation.start();
-            PRDownloader.download(_url, _path, _name)
+            PRDownloader.download(url, path, name)
                     .build()
                     .setOnStartOrResumeListener(new OnStartOrResumeListener() {
                         @Override
@@ -247,7 +245,7 @@ public class PreviewActivity extends AppCompatActivity {
                         @Override
                         public void onProgress(Progress progress) {
                             long progressPercent = progress.currentBytes * 100 / progress.totalBytes;
-                            textview3.setText(getString(R.string.downloading).concat(progressPercent + "%"));
+                            download_tv.setText(getString(R.string.downloading).concat(progressPercent + "%"));
                         }
                     })
                     .start(new OnDownloadListener() {
@@ -255,10 +253,10 @@ public class PreviewActivity extends AppCompatActivity {
                         public void onDownloadComplete() {
 
                             isDownloading = false;
-                            textview3.setText(R.string.download_success);
-                            imageview6.setImageResource(R.drawable.round_done_white_48dp);
-                            imageview6.setRotation((float) (0));
-                            information.setText(getString(R.string.full_download_path).concat(downloadPath + "/" + _name));
+                            download_tv.setText(R.string.download_success);
+                            download_ic.setImageResource(R.drawable.round_done_white_48dp);
+                            download_ic.setRotation((float) (0));
+                            information.setText(getString(R.string.full_download_path).concat(downloadPath + "/" + name));
                             information.setVisibility(View.VISIBLE);
                             downloadAnimation.cancel();
 
@@ -269,37 +267,16 @@ public class PreviewActivity extends AppCompatActivity {
 
 
                             isDownloading = false;
-                            textview3.setText(R.string.download_btn_txt);
-                            imageview6.setImageResource(R.drawable.round_get_app_white_48dp);
-                            showCustomSnackBar(getString(R.string.error_msg));
-                            imageview6.setRotation((float) (0));
+                            download_tv.setText(R.string.download_btn_txt);
+                            download_ic.setImageResource(R.drawable.round_get_app_white_48dp);
+                            showCustomSnackBar(getString(R.string.error_msg), PreviewActivity.this);
+                            download_ic.setRotation((float) (0));
                             downloadAnimation.cancel();
                         }
                     });
 
         }
     }
-
-
-    public void showCustomSnackBar(String message) {
-        ViewGroup parentLayout = (ViewGroup) ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
-
-        snackBarView = com.google.android.material.snackbar.Snackbar.make(parentLayout, "", com.google.android.material.snackbar.Snackbar.LENGTH_LONG);
-        sblayout = (com.google.android.material.snackbar.Snackbar.SnackbarLayout) snackBarView.getView();
-
-        @SuppressLint("InflateParams") View _inflate = getLayoutInflater().inflate(R.layout.snackbar, null);
-        sblayout.setPadding(0, 0, 0, 0);
-        sblayout.setBackgroundColor(Color.argb(0, 0, 0, 0));
-        LinearLayout back = _inflate.findViewById(R.id.linear1);
-
-        TextView text = _inflate.findViewById(R.id.textview1);
-        setViewRadius(back, 20, "#202125");
-        text.setText(message);
-        text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
-        sblayout.addView(_inflate, 0);
-        snackBarView.show();
-    }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -308,44 +285,44 @@ public class PreviewActivity extends AppCompatActivity {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 performClick(download);
             } else {
-                showCustomSnackBar(getString(R.string.ask_for_permission));
+                showCustomSnackBar(getString(R.string.ask_for_permission), this);
             }
         }
     }
 
 
-    public void performClick(final View _view) {
-        _view.performClick();
+    public void performClick(View view) {
+        view.performClick();
     }
 
 
-    public void setBlurImageUrl(final ImageView _image, final double _blur, final String _url) {
+    public void setBlurImageUrl(ImageView image, double blur, String url) {
         try {
             RequestOptions options1 = new RequestOptions()
                     .priority(Priority.HIGH);
 
             Glide.with(this)
 
-                    .load(_url)
+                    .load(url)
                     .apply(options1)
                     .transition(DrawableTransitionOptions.withCrossFade())
-                    .apply(bitmapTransform(new BlurTransformation((int) _blur, 4)))
-                    .into(_image);
+                    .apply(bitmapTransform(new BlurTransformation((int) blur, 4)))
+                    .into(image);
         } catch (Exception e) {
-            Utils.showMessage(getApplicationContext(), (e.toString()));
+            Utils.showToast(getApplicationContext(), (e.toString()));
         }
 
     }
 
 
-    public void _setImageFromUrl(final ImageView _image, final String _url) {
+    public void setImageFromUrl(ImageView image, String url) {
         RequestOptions options = new RequestOptions()
                 .priority(Priority.IMMEDIATE);
 
         Glide.with(this)
-                .load(_url)
+                .load(url)
                 .apply(options)
-                .into(_image);
+                .into(image);
 
     }
 

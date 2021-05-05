@@ -36,10 +36,10 @@ public class HomePacksAdapter {
         private final Intent toPreview = new Intent();
         private final Intent toPacks = new Intent();
         private final ArrayList<HashMap<String, Object>> packsList = new ArrayList<>();
-        private String packsTempArrayString = "";
         private final ArrayList<String> packsArrayList = new ArrayList<>();
-        private String currentPositionPackArray = "";
         ArrayList<HashMap<String, Object>> _data;
+        private String packsTempArrayString = "";
+        private String currentPositionPackArray = "";
 
         public Packs_recyclerAdapter(ArrayList<HashMap<String, Object>> _arr) {
             _data = _arr;
@@ -61,9 +61,9 @@ public class HomePacksAdapter {
 
             final com.google.android.material.card.MaterialCardView cardview2 = _view.findViewById(R.id.cardview2);
             final com.google.android.material.card.MaterialCardView cardview1 = _view.findViewById(R.id.cardview1);
-            final TextView textview1 = _view.findViewById(R.id.textview1);
-            final TextView textview2 = _view.findViewById(R.id.textview2);
-            final ImageView imageview1 = _view.findViewById(R.id.imageview1);
+            final TextView textview1 = _view.findViewById(R.id.tutorialTitle);
+            final TextView textview2 = _view.findViewById(R.id.tutorialSubtitle);
+            final ImageView imageview1 = _view.findViewById(R.id.emoji);
 
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             _view.setLayoutParams(_lp);

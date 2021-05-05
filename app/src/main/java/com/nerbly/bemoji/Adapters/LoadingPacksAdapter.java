@@ -20,31 +20,31 @@ import java.util.HashMap;
 public class LoadingPacksAdapter {
 
     public static class LoadingRecyclerAdapter extends RecyclerView.Adapter<LoadingRecyclerAdapter.ViewHolder> {
-        ArrayList<HashMap<String, Object>> _data;
+        ArrayList<HashMap<String, Object>> data;
 
-        public LoadingRecyclerAdapter(ArrayList<HashMap<String, Object>> _arr) {
-            _data = _arr;
+        public LoadingRecyclerAdapter(ArrayList<HashMap<String, Object>> hashMaps) {
+            data = hashMaps;
         }
 
 
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater _inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            @SuppressLint("InflateParams") View _v = _inflater.inflate(R.layout.loadingview, null);
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _v.setLayoutParams(_lp);
-            return new ViewHolder(_v);
+            LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            @SuppressLint("InflateParams") View v = inflater.inflate(R.layout.loadingview, null);
+            RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            v.setLayoutParams(lp);
+            return new ViewHolder(v);
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder _holder, final int _position) {
-            View _view = _holder.itemView;
+        public void onBindViewHolder(ViewHolder holder, final int position) {
+            View view = holder.itemView;
 
-            final LinearLayout categoriesShimmer = _view.findViewById(R.id.categoriesShimmer);
-            final LinearLayout shimmer2 = _view.findViewById(R.id.shimmer2);
-            final LinearLayout shimmer3 = _view.findViewById(R.id.shimmer3);
-            final LinearLayout shimmer4 = _view.findViewById(R.id.shimmer4);
+            final LinearLayout categoriesShimmer = view.findViewById(R.id.categoriesShimmer);
+            final LinearLayout shimmer2 = view.findViewById(R.id.shimmer2);
+            final LinearLayout shimmer3 = view.findViewById(R.id.shimmer3);
+            final LinearLayout shimmer4 = view.findViewById(R.id.shimmer4);
 
             categoriesShimmer.setVisibility(View.GONE);
             setClippedView(shimmer2, "#FFFFFF", 30, 0);
@@ -54,7 +54,7 @@ public class LoadingPacksAdapter {
 
         @Override
         public int getItemCount() {
-            return _data.size();
+            return data.size();
         }
 
         public static class ViewHolder extends RecyclerView.ViewHolder {

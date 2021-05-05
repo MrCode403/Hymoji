@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "20150108484",
+    "project_id": "bemoji-app",
+    "storage_bucket": "bemoji-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:20150108484:android:4ab2f3b053ec6df4bb9711",
+        "android_client_info": {
+          "package_name": "com.nerbly.bemoji"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "20150108484-sfh8nqubeumaauudduos60s7tc8e7lp2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkEsxoTRs8l1e5_YNYqRWKGHw_7Xfug34"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "20150108484-sfh8nqubeumaauudduos60s7tc8e7lp2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -82,13 +82,13 @@ public class PacksActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        CoordinatorLayout linear1 = findViewById(R.id.linear1);
-        bsheetbehavior = findViewById(R.id.bsheetbehavior);
+        CoordinatorLayout linear1 = findViewById(R.id.tutorialBg);
+        bsheetbehavior = findViewById(R.id.sheetBehavior);
         background = findViewById(R.id.background);
         adview = findViewById(R.id.adview);
         slider = findViewById(R.id.slider);
-        textview3 = findViewById(R.id.textview3);
-        textview4 = findViewById(R.id.textview4);
+        textview3 = findViewById(R.id.download_tv);
+        textview4 = findViewById(R.id.activityDescription);
         packsRecycler = findViewById(R.id.packsRecycler);
         loadingRecycler = findViewById(R.id.loadingRecycler);
         startGettingPacks = new RequestNetwork(this);
@@ -110,7 +110,7 @@ public class PacksActivity extends AppCompatActivity {
                     sharedPref.edit().putString("packsData", new Gson().toJson(packsList)).apply();
                     packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
                 } catch (Exception e) {
-                    Utils.showMessage(getApplicationContext(), (e.toString()));
+                    Utils.showToast(getApplicationContext(), (e.toString()));
                 }
                 loadingRecycler.setVisibility(View.GONE);
                 packsRecycler.setVisibility(View.VISIBLE);
@@ -232,7 +232,7 @@ public class PacksActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            if (sharedPref.getString("packsData", "").equals("")) {
+            if (sharedPref.getString("packsData", "").isEmpty()) {
                 startGettingPacks.startRequestNetwork(RequestNetworkController.GET, "https://emoji.gg/api/packs", "", PacksRequestListener);
             } else {
                 try {
@@ -240,7 +240,7 @@ public class PacksActivity extends AppCompatActivity {
                     }.getType());
                     sharedPref.edit().putString("packsData", new Gson().toJson(packsList)).apply();
                 } catch (Exception e) {
-                    Utils.showMessage(getApplicationContext(), (e.toString()));
+                    Utils.showToast(getApplicationContext(), (e.toString()));
                 }
             }
             return null;
@@ -253,7 +253,7 @@ public class PacksActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String _result) {
-            if (!sharedPref.getString("packsData", "").equals("")) {
+            if (!sharedPref.getString("packsData", "").isEmpty()) {
                 packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
                 TimerTask loadingTmr = new TimerTask() {
                     @Override
@@ -295,11 +295,11 @@ public class PacksActivity extends AppCompatActivity {
             View view = holder.itemView;
 
             final com.google.android.material.card.MaterialCardView cardview1 = view.findViewById(R.id.cardview1);
-            final ImageView imageview1 = view.findViewById(R.id.imageview1);
-            final TextView textview1 = view.findViewById(R.id.textview1);
-            final TextView textview2 = view.findViewById(R.id.textview2);
-            final TextView textview3 = view.findViewById(R.id.textview3);
-            final TextView textview4 = view.findViewById(R.id.textview4);
+            final ImageView imageview1 = view.findViewById(R.id.emoji);
+            final TextView textview1 = view.findViewById(R.id.tutorialTitle);
+            final TextView textview2 = view.findViewById(R.id.tutorialSubtitle);
+            final TextView textview3 = view.findViewById(R.id.download_tv);
+            final TextView textview4 = view.findViewById(R.id.activityDescription);
 
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             view.setLayoutParams(_lp);

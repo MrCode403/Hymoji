@@ -66,12 +66,12 @@ public class CategoriesActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        CoordinatorLayout linear1 = findViewById(R.id.linear1);
-        bsheetbehavior = findViewById(R.id.bsheetbehavior);
+        CoordinatorLayout linear1 = findViewById(R.id.tutorialBg);
+        bsheetbehavior = findViewById(R.id.sheetBehavior);
         background = findViewById(R.id.background);
         slider = findViewById(R.id.slider);
-        title = findViewById(R.id.title);
-        subtitle = findViewById(R.id.subtitle);
+        title = findViewById(R.id.activityTitle);
+        subtitle = findViewById(R.id.activitySubtitle);
         categoriesRecycler = findViewById(R.id.categoriesRecycler);
         loadingRecycler = findViewById(R.id.loadingRecycler);
         RequestCategories = new RequestNetwork(this);
@@ -152,7 +152,7 @@ public class CategoriesActivity extends AppCompatActivity {
             shimmerList.add(shimmerMap);
         }
         loadingRecycler.setAdapter(new LoadingRecyclerAdapter(shimmerList));
-        if (sharedPref.getString("categoriesData", "").equals("")) {
+        if (sharedPref.getString("categoriesData", "").isEmpty()) {
             RequestCategories.startRequestNetwork(RequestNetworkController.GET, "https://emoji.gg/api/?request=categories", "", CategoriesRequestListener);
         } else {
             categoriesList = new Gson().fromJson(sharedPref.getString("categoriesData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
@@ -249,7 +249,7 @@ public class CategoriesActivity extends AppCompatActivity {
         public void onBindViewHolder(ViewHolder _holder, @SuppressLint("RecyclerView") final int _position) {
             View _view = _holder.itemView;
 
-            final TextView textview1 = _view.findViewById(R.id.textview1);
+            final TextView textview1 = _view.findViewById(R.id.tutorialTitle);
 
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             _view.setLayoutParams(_lp);

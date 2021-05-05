@@ -24,7 +24,7 @@
 			android:animateLayoutChanges="true"
 			android:background="#80000000">
 			<LinearLayout
-				android:id="@+id/linear2"
+				android:id="@+id/space"
 				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
 				android:padding="8dp"
@@ -37,7 +37,7 @@
 				android:layout_height="280dp"
 				tools:ignore="SpeakableTextPresentCheck" />
 			<LinearLayout
-				android:id="@+id/linear1"
+				android:id="@+id/tutorialBg"
 				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
 				android:padding="8dp"
@@ -45,7 +45,7 @@
 				android:layout_weight="1" />
 
 			<TextView
-				android:id="@+id/textview1"
+				android:id="@+id/tutorialTitle"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center_horizontal"
@@ -81,7 +81,7 @@
 			tools:ignore="ContentDescription" />
 
 		<TextView
-			android:id="@+id/textview3"
+			android:id="@+id/download_tv"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="5dp"
@@ -92,7 +92,7 @@
 			android:textSize="30sp" />
 
 		<TextView
-			android:id="@+id/textview4"
+			android:id="@+id/activityDescription"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:gravity="center_horizontal|center_vertical"

@@ -47,15 +47,15 @@ public class MainEmojisAdapter {
         public void onBindViewHolder(ViewHolder _holder, @SuppressLint("RecyclerView") final int _position) {
             View _view = _holder.itemView;
 
-            final LinearLayout linear1 = _view.findViewById(R.id.linear1);
-            final LinearLayout linear2 = _view.findViewById(R.id.linear2);
-            final ImageView imageview1 = _view.findViewById(R.id.imageview1);
+            final LinearLayout linear1 = _view.findViewById(R.id.tutorialBg);
+            final LinearLayout linear2 = _view.findViewById(R.id.space);
+            final ImageView imageview1 = _view.findViewById(R.id.emoji);
 
             setImgURL(Objects.requireNonNull(_data.get(_position).get("image")).toString(), imageview1);
             linear1.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View _view) {
-                    Utils.showMessage(_view.getContext(), Objects.requireNonNull(_data.get(_position).get("title")).toString());
+                    Utils.showToast(_view.getContext(), Objects.requireNonNull(_data.get(_position).get("title")).toString());
                     return true;
                 }
             });

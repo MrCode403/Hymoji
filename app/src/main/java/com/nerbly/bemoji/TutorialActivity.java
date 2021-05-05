@@ -42,7 +42,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class TutorialActivity extends AppCompatActivity {
-    private final Timer _timer = new Timer();
+    private final Timer timer = new Timer();
     private final ArrayList<HashMap<String, Object>> shimmerList = new ArrayList<>();
     private BottomSheetBehavior<LinearLayout> sheetBehavior;
     private ArrayList<HashMap<String, Object>> tutorialList = new ArrayList<>();
@@ -56,7 +56,7 @@ public class TutorialActivity extends AppCompatActivity {
     private RecyclerView loadingRecycler;
 
     private RequestNetwork requestTutorial;
-    private RequestNetwork.RequestListener _requestTutorial_request_listener;
+    private RequestNetwork.RequestListener TutorialRequestListener;
     private TimerTask loadTutorialTmr;
 
     @Override
@@ -69,13 +69,13 @@ public class TutorialActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        CoordinatorLayout linear1 = findViewById(R.id.linear1);
-        bsheetbehavior = findViewById(R.id.bsheetbehavior);
+        CoordinatorLayout linear1 = findViewById(R.id.tutorialBg);
+        bsheetbehavior = findViewById(R.id.sheetBehavior);
         background = findViewById(R.id.background);
         adview = findViewById(R.id.adview);
         slider = findViewById(R.id.slider);
-        textview3 = findViewById(R.id.textview3);
-        textview4 = findViewById(R.id.textview4);
+        textview3 = findViewById(R.id.download_tv);
+        textview4 = findViewById(R.id.activityDescription);
         recyclerview1 = findViewById(R.id.recyclerview1);
         loadingRecycler = findViewById(R.id.loadingRecycler);
         requestTutorial = new RequestNetwork(this);
@@ -87,7 +87,7 @@ public class TutorialActivity extends AppCompatActivity {
             }
         });
 
-        _requestTutorial_request_listener = new RequestNetwork.RequestListener() {
+        TutorialRequestListener = new RequestNetwork.RequestListener() {
             @Override
             public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
                 try {
@@ -95,7 +95,7 @@ public class TutorialActivity extends AppCompatActivity {
                     }.getType());
                     recyclerview1.setAdapter(new Recyclerview1Adapter(tutorialList));
                 } catch (Exception e) {
-                    Utils.showMessage(getApplicationContext(), (e.toString()));
+                    Utils.showToast(getApplicationContext(), (e.toString()));
                 }
                 loadTutorialTmr = new TimerTask() {
                     @Override
@@ -109,7 +109,7 @@ public class TutorialActivity extends AppCompatActivity {
                         });
                     }
                 };
-                _timer.schedule(loadTutorialTmr, 1000);
+                timer.schedule(loadTutorialTmr, 1000);
                 sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
 
@@ -134,7 +134,7 @@ public class TutorialActivity extends AppCompatActivity {
         sheetBehavior = BottomSheetBehavior.from(bsheetbehavior);
         recyclerview1.setLayoutManager(new LinearLayoutManager(this));
         loadingRecycler.setLayoutManager(new LinearLayoutManager(this));
-        requestTutorial.startRequestNetwork(RequestNetworkController.GET, "https://nerbly.com/bemoji/tutorial.json", "", _requestTutorial_request_listener);
+        requestTutorial.startRequestNetwork(RequestNetworkController.GET, "https://nerbly.com/bemoji/tutorial.json", "", TutorialRequestListener);
         for (int _repeat14 = 0; _repeat14 < 20; _repeat14++) {
             HashMap<String, Object> shimmerMap = new HashMap<>();
             shimmerMap.put("key", "value");
@@ -232,9 +232,9 @@ public class TutorialActivity extends AppCompatActivity {
         public void onBindViewHolder(ViewHolder holder, final int _position) {
             View view = holder.itemView;
 
-            final TextView textview1 = view.findViewById(R.id.textview1);
-            final TextView textview2 = view.findViewById(R.id.textview2);
-            final ImageView imageview1 = view.findViewById(R.id.imageview1);
+            final TextView textview1 = view.findViewById(R.id.tutorialTitle);
+            final TextView textview2 = view.findViewById(R.id.tutorialSubtitle);
+            final ImageView imageview1 = view.findViewById(R.id.emoji);
 
             if (Objects.requireNonNull(data.get(_position).get("isTitled")).toString().equals("true")) {
                 textview1.setVisibility(View.VISIBLE);

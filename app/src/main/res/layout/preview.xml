@@ -2,14 +2,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="ContentDescription"
-    android:id="@+id/linear1"
+    android:id="@+id/tutorialBg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:alpha="0"
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/bsheetbehavior"
+        android:id="@+id/sheetBehavior"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
@@ -20,7 +20,7 @@
         app:layout_behavior="@string/bottom_sheet_behavior">
 
         <LinearLayout
-            android:id="@+id/relativeview"
+            android:id="@+id/relativeView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
@@ -35,14 +35,14 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/linear2"
+                    android:id="@+id/space"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:gravity="center_horizontal|center_vertical"
                     android:orientation="vertical">
 
                     <ImageView
-                        android:id="@+id/imageview1"
+                        android:id="@+id/emoji"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:scaleType="centerCrop"
@@ -60,7 +60,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/activityTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -74,7 +74,7 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/subtitle"
+                android:id="@+id/activitySubtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -116,14 +116,14 @@
                 android:paddingBottom="6dp">
 
                 <ImageView
-                    android:id="@+id/imageview6"
+                    android:id="@+id/download_ic"
                     android:layout_width="21dp"
                     android:layout_height="21dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/round_get_app_white_48dp" />
 
                 <TextView
-                    android:id="@+id/textview3"
+                    android:id="@+id/download_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal|center_vertical"

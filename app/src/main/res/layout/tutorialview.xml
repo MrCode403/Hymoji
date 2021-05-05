@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/linear1"
+        android:id="@+id/tutorialBg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -14,7 +14,7 @@
         tools:ignore="UselessParent">
 
         <TextView
-            android:id="@+id/textview1"
+            android:id="@+id/tutorialTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
@@ -28,7 +28,7 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textview2"
+            android:id="@+id/tutorialSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -50,14 +50,14 @@
             app:strokeWidth="1dp">
 
             <ImageView
-                android:id="@+id/imageview1"
+                android:id="@+id/emoji"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:adjustViewBounds="true"
                 android:focusable="false"
                 android:scaleType="fitCenter"
-                android:src="@drawable/default_image"
+                android:src="@drawable/logo"
                 tools:ignore="ContentDescription" />
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
