@@ -4,36 +4,32 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.Color;
-import android.graphics.Typeface;
+import android.os.Build;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowInsetsController;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 public class MainUIMethods {
 
     //views shape and shadows
 
-    public static void RippleEffects(final String color, final View view) {
+    public static void RippleEffects(String color, View view) {
         android.content.res.ColorStateList clr = new android.content.res.ColorStateList(new int[][]{new int[]{}}, new int[]{Color.parseColor(color)});
         android.graphics.drawable.RippleDrawable ripdr = new android.graphics.drawable.RippleDrawable(clr, null, null);
         view.setBackground(ripdr);
     }
 
-    public static void setViewRadius(final View view, final double radius, final String color) {
+    public static void setViewRadius(View view, double radius, String color) {
         android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
         gd.setColor(Color.parseColor("#" + color.replace("#", "")));
         gd.setCornerRadius((int) radius);
         view.setBackground(gd);
     }
 
-    public static void setClippedView(final View view, final String color, final double radius, final double elevation) {
+    public static void setClippedView(View view, String color, double radius, double elevation) {
         android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
         gd.setColor(Color.parseColor(color));
         gd.setCornerRadius((int) radius);
@@ -42,7 +38,7 @@ public class MainUIMethods {
         view.setClipToOutline(true);
     }
 
-    public static void rippleRoundStroke(final View view, final String focus, final String pressed, final double round, final double stroke, final String strokeclr) {
+    public static void rippleRoundStroke(View view, String focus, String pressed, double round, double stroke, String strokeclr) {
         android.graphics.drawable.GradientDrawable GG = new android.graphics.drawable.GradientDrawable();
         GG.setColor(Color.parseColor(focus));
         GG.setCornerRadius((float) round);
@@ -52,11 +48,11 @@ public class MainUIMethods {
         view.setBackground(RE);
     }
 
-    public static void setImageViewRipple(final ImageView imageview, final String color1, final String color2) {
+    public static void setImageViewRipple(ImageView imageview, String color1, String color2) {
         imageview.setImageTintList(new android.content.res.ColorStateList(new int[][]{{-android.R.attr.state_pressed}, {android.R.attr.state_pressed}}, new int[]{Color.parseColor(color1), Color.parseColor(color2)}));
     }
 
-    public static void advancedCorners(final View view, final String color, final double n1, final double n2, final double n3, final double n4) {
+    public static void advancedCorners(View view, String color, double n1, double n2, double n3, double n4) {
         android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
         gd.setColor(Color.parseColor(color));
         gd.setCornerRadii(new float[]{(int) n1, (int) n1, (int) n2, (int) n2, (int) n4, (int) n4, (int) n3, (int) n3});
@@ -73,11 +69,15 @@ public class MainUIMethods {
         w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 
-    public static void transparentStatusBar(Activity activity) {
-        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+    public static void transparentStatusBar(Activity context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            context.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        } else {
+            context.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
     }
 
-    public static void NavStatusBarColor(final String color1, final String color2, Activity activity) {
+    public static void NavStatusBarColor(String color1, String color2, Activity activity) {
         Window w = activity.getWindow();
         w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -85,17 +85,28 @@ public class MainUIMethods {
         w.setNavigationBarColor(Color.parseColor("#" + color2.replace("#", "")));
     }
 
+    public static void statusBarColor(String color, Activity activity) {
+        Window w = activity.getWindow();
+        w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        w.setStatusBarColor(Color.parseColor("#" + color.replace("#", "")));
+    }
+
     public static void LIGHT_ICONS(Activity activity) {
         activity.getWindow().getDecorView().setSystemUiVisibility(0);
     }
 
     public static void DARK_ICONS(Activity activity) {
-        activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            activity.getWindow().getDecorView().getWindowInsetsController().setSystemBarsAppearance(WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS, WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS);
+        } else {
+            activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
     }
 
     //animations
 
-    public static void shadAnim(final View view, final String propertyName, final double value, final double duration) {
+    public static void shadAnim(View view, String propertyName, double value, double duration) {
         ObjectAnimator anim = new ObjectAnimator();
         anim.setTarget(view);
         anim.setPropertyName(propertyName);
@@ -104,7 +115,7 @@ public class MainUIMethods {
         anim.start();
     }
 
-    public static void numbersAnimator(final TextView textview, final double from, final double to, final double duration) {
+    public static void numbersAnimator(final TextView textview, double from, double to, double duration) {
         ValueAnimator animator = ValueAnimator.ofInt((int) from, (int) to);
         animator.setDuration((int) duration);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -116,49 +127,5 @@ public class MainUIMethods {
     }
 
     //mics
-
-    public static void changeActivityFont(final String fontName, Activity context) {
-        String activityFontName = fontName.trim();
-        if (activityFontName.contains(".ttf")) {
-            activityFontName = activityFontName.replace(".ttf", "");
-        }
-        overrideFonts(activityFontName, context, context.getWindow().getDecorView());
-    }
-
-    public static void overrideFonts(String font, final android.content.Context context, final View v) {
-        try {
-            Typeface activityTypeFace = Typeface.createFromAsset(context.getAssets(), "fonts/" + font + ".ttf");
-            if ((v instanceof ViewGroup)) {
-                ViewGroup activityFontGroup = (ViewGroup) v;
-                for (int i = 0;
-                     i < activityFontGroup.getChildCount();
-                     i++) {
-                    View child = activityFontGroup.getChildAt(i);
-                    overrideFonts(font, context, child);
-                }
-            } else {
-                if ((v instanceof TextView)) {
-                    ((TextView) v).setTypeface(activityTypeFace);
-                } else {
-                    if ((v instanceof EditText)) {
-                        ((EditText) v).setTypeface(activityTypeFace);
-                    } else {
-                        if ((v instanceof Switch)) {
-                            ((Switch) v).setTypeface(activityTypeFace);
-                        } else {
-                            if ((v instanceof CheckBox)) {
-                                ((CheckBox) v).setTypeface(activityTypeFace);
-                            } else {
-                                if ((v instanceof Button)) {
-                                    ((Button) v).setTypeface(activityTypeFace);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Exception ignored) {
-        }
-    }
 }
 

@@ -47,10 +47,12 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="6dp"
                     android:layout_marginRight="10dp"
+                    android:fontFamily="@font/whitney"
                     android:padding="8dp"
                     android:text="@string/settings_title"
                     android:textColor="#000000"
-                    android:textSize="30sp" />
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/activityDescription"
@@ -58,6 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
+                    android:fontFamily="@font/whitney"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:paddingBottom="8dp"
@@ -93,25 +96,27 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
+                            android:fontFamily="@font/whitney"
                             android:paddingStart="3dp"
-                            android:paddingEnd="3dp"
                             android:paddingTop="8dp"
+                            android:paddingEnd="3dp"
                             android:paddingBottom="8dp"
                             android:text="@string/settings_section_1_title"
                             android:textColor="#616161"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                         <RelativeLayout
                             android:id="@+id/setting1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:paddingBottom="7dp"
-                            android:paddingTop="7dp"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
                             android:paddingLeft="5dp"
-                            android:paddingRight="5dp">
+                            android:paddingTop="7dp"
+                            android:paddingRight="5dp"
+                            android:paddingBottom="7dp">
 
                             <ImageView
                                 android:id="@+id/emoji"
@@ -127,13 +132,15 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_toEndOf="@+id/emoji"
+                                android:fontFamily="@font/whitney"
                                 android:paddingLeft="8dp"
                                 android:paddingTop="8dp"
                                 android:paddingRight="8dp"
                                 android:paddingBottom="2dp"
                                 android:text="@string/settings_option_1_title"
                                 android:textColor="#212121"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/textview6"
@@ -141,6 +148,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/emoji"
                                 android:layout_toEndOf="@+id/emoji"
+                                android:fontFamily="@font/whitney"
                                 android:paddingLeft="8dp"
                                 android:paddingTop="2dp"
                                 android:paddingRight="8dp"
@@ -155,12 +163,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:paddingBottom="7dp"
-                            android:paddingTop="7dp"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
                             android:paddingLeft="5dp"
-                            android:paddingRight="5dp">
+                            android:paddingTop="7dp"
+                            android:paddingRight="5dp"
+                            android:paddingBottom="7dp">
 
                             <ImageView
                                 android:id="@+id/imageview3"
@@ -176,13 +184,15 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_toEndOf="@+id/imageview3"
+                                android:fontFamily="@font/whitney"
                                 android:paddingLeft="8dp"
                                 android:paddingTop="8dp"
                                 android:paddingRight="8dp"
                                 android:paddingBottom="2dp"
                                 android:text="@string/settings_option_2_title"
                                 android:textColor="#212121"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/textview11"
@@ -190,6 +200,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/imageview3"
                                 android:layout_toEndOf="@+id/imageview3"
+                                android:fontFamily="@font/whitney"
                                 android:paddingLeft="8dp"
                                 android:paddingTop="2dp"
                                 android:paddingRight="8dp"
@@ -204,12 +215,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:paddingBottom="7dp"
-                            android:paddingTop="7dp"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
                             android:paddingLeft="5dp"
-                            android:paddingRight="5dp">
+                            android:paddingTop="7dp"
+                            android:paddingRight="5dp"
+                            android:paddingBottom="7dp">
 
                             <ImageView
                                 android:id="@+id/imageview2"
@@ -225,13 +236,15 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_toEndOf="@+id/imageview2"
+                                android:fontFamily="@font/whitney"
                                 android:paddingLeft="8dp"
                                 android:paddingTop="8dp"
                                 android:paddingRight="8dp"
                                 android:paddingBottom="2dp"
                                 android:text="@string/settings_option_3_title"
                                 android:textColor="#212121"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/textview9"
@@ -239,6 +252,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/imageview2"
                                 android:layout_toEndOf="@+id/imageview2"
+                                android:fontFamily="@font/whitney"
                                 android:paddingLeft="8dp"
                                 android:paddingTop="2dp"
                                 android:paddingRight="8dp"
@@ -261,25 +275,27 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
+                            android:fontFamily="@font/whitney"
                             android:paddingStart="3dp"
-                            android:paddingEnd="3dp"
                             android:paddingTop="8dp"
+                            android:paddingEnd="3dp"
                             android:paddingBottom="8dp"
                             android:text="@string/settings_section_2_title"
                             android:textColor="#616161"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                         <RelativeLayout
                             android:id="@+id/setting4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:paddingBottom="7dp"
-                            android:paddingTop="7dp"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
                             android:paddingLeft="5dp"
-                            android:paddingRight="5dp">
+                            android:paddingTop="7dp"
+                            android:paddingRight="5dp"
+                            android:paddingBottom="7dp">
 
                             <ImageView
                                 android:id="@+id/imageview4"
@@ -295,13 +311,15 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_toEndOf="@+id/imageview4"
+                                android:fontFamily="@font/whitney"
                                 android:paddingLeft="8dp"
                                 android:paddingTop="8dp"
                                 android:paddingRight="8dp"
                                 android:paddingBottom="2dp"
                                 android:text="@string/settings_option_4_title"
                                 android:textColor="#212121"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/textview14"
@@ -309,6 +327,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/imageview4"
                                 android:layout_toEndOf="@+id/imageview4"
+                                android:fontFamily="@font/whitney"
                                 android:paddingLeft="8dp"
                                 android:paddingTop="2dp"
                                 android:paddingRight="8dp"
@@ -323,13 +342,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:paddingBottom="7dp"
-                            android:paddingTop="7dp"
                             android:background="@android:color/white"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
                             android:paddingLeft="5dp"
-                            android:paddingRight="5dp">
+                            android:paddingTop="7dp"
+                            android:paddingRight="5dp"
+                            android:paddingBottom="7dp">
 
                             <ImageView
                                 android:id="@+id/imageview5"
@@ -345,13 +364,15 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_toEndOf="@+id/imageview5"
+                                android:fontFamily="@font/whitney"
                                 android:paddingLeft="8dp"
                                 android:paddingTop="8dp"
                                 android:paddingRight="8dp"
                                 android:paddingBottom="2dp"
                                 android:text="@string/settings_option_5_title"
                                 android:textColor="#212121"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/textview16"
@@ -359,6 +380,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/textview15"
                                 android:layout_toEndOf="@+id/imageview5"
+                                android:fontFamily="@font/whitney"
                                 android:paddingLeft="8dp"
                                 android:paddingTop="2dp"
                                 android:paddingRight="8dp"
@@ -373,12 +395,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:paddingBottom="7dp"
-                            android:paddingTop="7dp"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
                             android:paddingLeft="5dp"
-                            android:paddingRight="5dp">
+                            android:paddingTop="7dp"
+                            android:paddingRight="5dp"
+                            android:paddingBottom="7dp">
 
                             <ImageView
                                 android:id="@+id/download_ic"
@@ -394,24 +416,27 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_toEndOf="@+id/download_ic"
+                                android:fontFamily="@font/whitney"
                                 android:paddingLeft="8dp"
                                 android:paddingTop="8dp"
                                 android:paddingRight="8dp"
                                 android:paddingBottom="2dp"
                                 android:text="@string/settings_option_6_title"
                                 android:textColor="#212121"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/textview19"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_below="@+id/download_ic"
+                                android:layout_toEndOf="@+id/download_ic"
+                                android:fontFamily="@font/whitney"
                                 android:paddingLeft="8dp"
                                 android:paddingTop="2dp"
                                 android:paddingRight="8dp"
                                 android:paddingBottom="8dp"
-								android:layout_toEndOf="@+id/download_ic"
-								android:layout_below="@+id/download_ic"
                                 android:text="@string/settings_option_6_subtitle"
                                 android:textColor="#616161"
                                 android:textSize="12sp" />
@@ -422,13 +447,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:paddingBottom="7dp"
-                            android:paddingTop="7dp"
-                            android:visibility="gone"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
                             android:paddingLeft="5dp"
-                            android:paddingRight="5dp">
+                            android:paddingTop="7dp"
+                            android:paddingRight="5dp"
+                            android:paddingBottom="7dp"
+                            android:visibility="gone">
 
                             <ImageView
                                 android:id="@+id/setting10_ico"
@@ -444,24 +469,27 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_toEndOf="@+id/setting10_ico"
+                                android:fontFamily="@font/whitney"
                                 android:paddingLeft="8dp"
                                 android:paddingTop="8dp"
                                 android:paddingRight="8dp"
                                 android:paddingBottom="2dp"
                                 android:text="@string/settings_option_10_title"
                                 android:textColor="#212121"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/setting10_subtitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_below="@+id/setting10_ico"
+                                android:layout_toEndOf="@+id/setting10_ico"
+                                android:fontFamily="@font/whitney"
                                 android:paddingLeft="8dp"
                                 android:paddingTop="2dp"
                                 android:paddingRight="8dp"
                                 android:paddingBottom="8dp"
-                                android:layout_toEndOf="@+id/setting10_ico"
-                                android:layout_below="@+id/setting10_ico"
                                 android:text="@string/settings_option_10_subtitle"
                                 android:textColor="#616161"
                                 android:textSize="12sp" />
@@ -480,61 +508,66 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
+                            android:fontFamily="@font/whitney"
                             android:paddingStart="3dp"
-                            android:paddingEnd="3dp"
                             android:paddingTop="8dp"
+                            android:paddingEnd="3dp"
                             android:paddingBottom="8dp"
                             android:text="@string/settings_section_3_title"
                             android:textColor="#616161"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                         <RelativeLayout
                             android:id="@+id/setting6"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:paddingBottom="7dp"
-                            android:paddingTop="7dp"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
                             android:paddingLeft="5dp"
-                            android:paddingRight="5dp">
+                            android:paddingTop="7dp"
+                            android:paddingRight="5dp"
+                            android:paddingBottom="7dp">
 
                             <ImageView
                                 android:id="@+id/imageview7"
                                 android:layout_width="30dp"
                                 android:layout_height="25dp"
+                                android:layout_centerVertical="true"
                                 android:scaleType="fitCenter"
-								android:layout_centerVertical="true"
                                 android:src="@drawable/twotone_copyright_black_48dp"
                                 app:tint="#795548" />
 
-                                <TextView
-                                    android:id="@+id/textview20"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:paddingLeft="8dp"
-                                    android:paddingTop="8dp"
-                                    android:paddingRight="8dp"
-                                    android:paddingBottom="2dp"
-									android:layout_toEndOf="@+id/imageview7"
-                                    android:text="@string/settings_option_7_title"
-                                    android:textColor="#212121"
-                                    android:textSize="14sp" />
+                            <TextView
+                                android:id="@+id/textview20"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@+id/imageview7"
+                                android:fontFamily="@font/whitney"
+                                android:paddingLeft="8dp"
+                                android:paddingTop="8dp"
+                                android:paddingRight="8dp"
+                                android:paddingBottom="2dp"
+                                android:text="@string/settings_option_7_title"
+                                android:textColor="#212121"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
 
-                                <TextView
-                                    android:id="@+id/textview21"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:paddingLeft="8dp"
-                                    android:paddingTop="2dp"
-                                    android:paddingRight="8dp"
-                                    android:paddingBottom="8dp"
-									android:layout_toEndOf="@+id/imageview7"
-									android:layout_below="@+id/imageview7"
-                                    android:text="@string/settings_option_7_subtitle"
-                                    android:textColor="#616161"
-                                    android:textSize="12sp" />
+                            <TextView
+                                android:id="@+id/textview21"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/imageview7"
+                                android:layout_toEndOf="@+id/imageview7"
+                                android:fontFamily="@font/whitney"
+                                android:paddingLeft="8dp"
+                                android:paddingTop="2dp"
+                                android:paddingRight="8dp"
+                                android:paddingBottom="8dp"
+                                android:text="@string/settings_option_7_subtitle"
+                                android:textColor="#616161"
+                                android:textSize="12sp" />
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -542,49 +575,52 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:paddingBottom="7dp"
-                            android:paddingTop="7dp"
                             android:layout_marginBottom="60dp"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
                             android:paddingLeft="5dp"
-                            android:paddingRight="5dp">
+                            android:paddingTop="7dp"
+                            android:paddingRight="5dp"
+                            android:paddingBottom="7dp">
 
                             <ImageView
                                 android:id="@+id/imageview8"
                                 android:layout_width="30dp"
                                 android:layout_height="25dp"
+                                android:layout_centerVertical="true"
                                 android:scaleType="fitCenter"
-								android:layout_centerVertical="true"
                                 android:src="@drawable/twotone_sentiment_satisfied_alt_black_48dp"
                                 app:tint="#E91E63" />
 
-                                <TextView
-                                    android:id="@+id/textview22"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:paddingLeft="8dp"
-                                    android:paddingTop="8dp"
-                                    android:paddingRight="8dp"
-                                    android:paddingBottom="2dp"
-									android:layout_toEndOf="@+id/imageview8"
-                                    android:text="@string/settings_option_8_title"
-                                    android:textColor="#212121"
-                                    android:textSize="14sp" />
+                            <TextView
+                                android:id="@+id/textview22"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@+id/imageview8"
+                                android:fontFamily="@font/whitney"
+                                android:paddingLeft="8dp"
+                                android:paddingTop="8dp"
+                                android:paddingRight="8dp"
+                                android:paddingBottom="2dp"
+                                android:text="@string/settings_option_8_title"
+                                android:textColor="#212121"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
 
-                                <TextView
-                                    android:id="@+id/textview23"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:paddingLeft="8dp"
-                                    android:paddingTop="2dp"
-                                    android:paddingRight="8dp"
-                                    android:paddingBottom="8dp"
-									android:layout_toEndOf="@+id/imageview8"
-									android:layout_below="@+id/imageview8"
-                                    android:text="@string/settings_option_8_subtitle"
-                                    android:textColor="#616161"
-                                    android:textSize="12sp" />
+                            <TextView
+                                android:id="@+id/textview23"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/imageview8"
+                                android:layout_toEndOf="@+id/imageview8"
+                                android:fontFamily="@font/whitney"
+                                android:paddingLeft="8dp"
+                                android:paddingTop="2dp"
+                                android:paddingRight="8dp"
+                                android:paddingBottom="8dp"
+                                android:text="@string/settings_option_8_subtitle"
+                                android:textColor="#616161"
+                                android:textSize="12sp" />
                         </RelativeLayout>
                     </LinearLayout>
                 </androidx.core.widget.NestedScrollView>

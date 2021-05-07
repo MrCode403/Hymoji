@@ -2,7 +2,6 @@ package com.nerbly.bemoji;
 
 import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.changeActivityFont;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
 import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
@@ -148,7 +147,7 @@ public class PreviewActivity extends AppCompatActivity {
         setImageFromUrl(imageview7, getIntent().getStringExtra("imageUrl"));
         activityTitle.setText(getIntent().getStringExtra("title"));
         activitySubtitle.setText(getString(R.string.submitted_by).concat(getIntent().getStringExtra("submitted_by")));
-        _BottomBehaviourListener();
+        bottomBehaviourListener();
         shadAnim(linear1, "alpha", 1, 200);
     }
 
@@ -157,8 +156,6 @@ public class PreviewActivity extends AppCompatActivity {
         DARK_ICONS(this);
 
         transparentStatusBar(this);
-
-        changeActivityFont("whitney", this);
 
         setClippedView(relativeview, "#FFFFFF", 25, 7);
 
@@ -169,11 +166,10 @@ public class PreviewActivity extends AppCompatActivity {
         JJACCAI.setOrientation(android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM);
         JJACCAI.setCornerRadius(0);
         linear1.setBackground(JJACCAI);
-        activityTitle.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
     }
 
 
-    public void _BottomBehaviourListener() {
+    public void bottomBehaviourListener() {
         sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {

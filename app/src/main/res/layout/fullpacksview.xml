@@ -52,7 +52,7 @@
 					android:orientation="vertical"
 					android:layout_weight="1">
 					<TextView
-						android:id="@+id/tutorialTitle"
+						android:id="@+id/emptyTitle"
 						android:focusable="false"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
@@ -65,6 +65,8 @@
 						android:paddingBottom="8dp"
 						android:text="@string/app_name"
 						android:textSize="18sp"
+						android:fontFamily="@font/whitney"
+						android:textStyle="bold"
 						android:textColor="#000000" />
 					<TextView
 						android:id="@+id/tutorialSubtitle"
@@ -79,6 +81,7 @@
 						android:paddingBottom="8dp"
 						android:text="@string/app_name"
 						android:textSize="12sp"
+						android:fontFamily="@font/whitney"
 						android:textColor="#757575" />
 				</LinearLayout>
 				<LinearLayout
@@ -98,6 +101,8 @@
 						android:gravity="center_horizontal|center_vertical"
 						android:text="@string/app_name"
 						android:textSize="18sp"
+						android:fontFamily="@font/whitney"
+						android:textStyle="bold"
 						android:textColor="#000000" />
 					<TextView
 						android:id="@+id/activityDescription"
@@ -109,6 +114,7 @@
 						android:gravity="center_horizontal|center_vertical"
 						android:text="@string/packs_included_emojis"
 						android:textSize="12sp"
+						android:fontFamily="@font/whitney"
 						android:textColor="#757575" />
 				</LinearLayout>
 			</LinearLayout>

@@ -1,10 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="ContentDescription"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="ContentDescription">
 
     <LinearLayout
         android:id="@+id/linear34"
@@ -30,7 +30,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tutorialTitle"
+                    android:id="@+id/emptyTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -39,6 +39,8 @@
                     android:padding="8dp"
                     android:text="@string/home_title"
                     android:textColor="#000000"
+                    android:fontFamily="@font/whitney"
+                    android:textStyle="bold"
                     android:textSize="30sp" />
 
                 <TextView
@@ -52,12 +54,14 @@
                     android:paddingBottom="8dp"
                     android:text="@string/home_subtitle"
                     android:textColor="#616161"
+                    android:fontFamily="@font/whitney"
                     android:textSize="14sp" />
 
                 <LinearLayout
                     android:id="@+id/loadingView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -222,10 +226,65 @@
                             app:shimmer_auto_start="true" />
                     </LinearLayout>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/loadingRecycler"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                    <LinearLayout
+                        android:id="@+id/packsloading"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/shimmer9"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:orientation="vertical">
+
+                            <com.facebook.shimmer.ShimmerFrameLayout
+                                android:id="@+id/linear87"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="#EEEEEE"
+                                android:orientation="vertical"
+                                android:padding="8dp"
+                                app:shimmer_auto_start="true" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/shimmer10"
+                            android:layout_width="200dp"
+                            android:layout_height="20dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:orientation="vertical">
+
+                            <com.facebook.shimmer.ShimmerFrameLayout
+                                android:id="@+id/linear40"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="#EEEEEE"
+                                android:orientation="vertical"
+                                android:padding="8dp"
+                                app:shimmer_auto_start="true" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/shimmer11"
+                            android:layout_width="100dp"
+                            android:layout_height="20dp"
+                            android:layout_marginBottom="16dp"
+                            android:orientation="vertical">
+
+                            <com.facebook.shimmer.ShimmerFrameLayout
+                                android:id="@+id/linear48"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="#EEEEEE"
+                                android:orientation="vertical"
+                                android:padding="8dp"
+                                app:shimmer_auto_start="true" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -276,6 +335,7 @@
                                 android:padding="8dp"
                                 android:text="@string/home_searchbox"
                                 android:textColor="#757575"
+                                android:fontFamily="@font/whitney"
                                 android:textSize="14sp" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
@@ -332,6 +392,7 @@
                         android:paddingBottom="8dp"
                         android:text="@string/home_sections_title"
                         android:textColor="#424242"
+                        android:fontFamily="@font/whitney"
                         android:textSize="16sp" />
 
                     <LinearLayout
@@ -376,6 +437,8 @@
                                 android:singleLine="true"
                                 android:text="@string/home_dock1_title"
                                 android:textColor="#212121"
+                                android:fontFamily="@font/whitney"
+                                android:textStyle="bold"
                                 android:textSize="20sp" />
 
                             <LinearLayout
@@ -392,6 +455,7 @@
                                     android:singleLine="true"
                                     android:text="0"
                                     android:textColor="#757575"
+                                    android:fontFamily="@font/whitney"
                                     android:textSize="14sp" />
 
                                 <TextView
@@ -402,6 +466,7 @@
                                     android:singleLine="true"
                                     android:text="@string/home_dock1_subtitle"
                                     android:textColor="#757575"
+                                    android:fontFamily="@font/whitney"
                                     android:textSize="14sp" />
                             </LinearLayout>
                         </LinearLayout>
@@ -439,6 +504,8 @@
                                 android:singleLine="true"
                                 android:text="@string/home_dock2_title"
                                 android:textColor="#212121"
+                                android:fontFamily="@font/whitney"
+                                android:textStyle="bold"
                                 android:textSize="20sp" />
 
                             <LinearLayout
@@ -455,6 +522,7 @@
                                     android:singleLine="true"
                                     android:text="0"
                                     android:textColor="#757575"
+                                    android:fontFamily="@font/whitney"
                                     android:textSize="14sp" />
 
                                 <TextView
@@ -465,6 +533,7 @@
                                     android:singleLine="true"
                                     android:text="@string/home_dock2_subtitle"
                                     android:textColor="#757575"
+                                    android:fontFamily="@font/whitney"
                                     android:textSize="14sp" />
                             </LinearLayout>
                         </LinearLayout>
@@ -513,6 +582,8 @@
                                 android:singleLine="true"
                                 android:text="@string/home_dock3_title"
                                 android:textColor="#212121"
+                                android:fontFamily="@font/whitney"
+                                android:textStyle="bold"
                                 android:textSize="20sp" />
 
                             <TextView
@@ -523,6 +594,7 @@
                                 android:singleLine="true"
                                 android:text="@string/home_dock3_subtitle"
                                 android:textColor="#757575"
+                                android:fontFamily="@font/whitney"
                                 android:textSize="14sp" />
                         </LinearLayout>
 
@@ -559,6 +631,8 @@
                                 android:singleLine="true"
                                 android:text="@string/home_dock4_title"
                                 android:textColor="#212121"
+                                android:fontFamily="@font/whitney"
+                                android:textStyle="bold"
                                 android:textSize="20sp" />
 
                             <TextView
@@ -569,6 +643,7 @@
                                 android:singleLine="true"
                                 android:text="@string/home_dock4_subtitle"
                                 android:textColor="#757575"
+                                android:fontFamily="@font/whitney"
                                 android:textSize="14sp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -604,6 +679,7 @@
                             android:paddingBottom="8dp"
                             android:text="@string/home_packs_title"
                             android:textColor="#424242"
+                            android:fontFamily="@font/whitney"
                             android:textSize="16sp" />
 
                         <TextView

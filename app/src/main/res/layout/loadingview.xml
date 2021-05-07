@@ -47,9 +47,7 @@
 			android:id="@+id/shimmer3"
 			android:layout_width="200dp"
 			android:layout_height="20dp"
-			android:layout_marginLeft="4dp"
 			android:layout_marginTop="10dp"
-			android:layout_marginRight="4dp"
 			android:layout_marginBottom="10dp"
 			android:orientation="vertical">
 			<com.facebook.shimmer.ShimmerFrameLayout
@@ -65,8 +63,6 @@
 			android:id="@+id/shimmer4"
 			android:layout_width="100dp"
 			android:layout_height="20dp"
-			android:layout_marginLeft="4dp"
-			android:layout_marginRight="4dp"
 			android:layout_marginBottom="16dp"
 			android:orientation="vertical">
 			<com.facebook.shimmer.ShimmerFrameLayout

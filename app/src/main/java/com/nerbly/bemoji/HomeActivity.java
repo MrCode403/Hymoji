@@ -1,23 +1,19 @@
 package com.nerbly.bemoji;
 
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.NavStatusBarColor;
-import static com.nerbly.bemoji.UI.MainUIMethods.changeActivityFont;
+import static com.nerbly.bemoji.UI.MainUIMethods.numbersAnimator;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
-import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
+import static com.nerbly.bemoji.UI.MainUIMethods.statusBarColor;
+import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -37,13 +33,11 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nerbly.bemoji.Adapters.HomePacksAdapter;
-import com.nerbly.bemoji.Adapters.LoadingPacksAdapter;
 import com.nerbly.bemoji.Adapters.LocalEmojisAdapter;
 import com.nerbly.bemoji.Functions.FileManager;
 import com.nerbly.bemoji.Functions.RequestNetwork;
 import com.nerbly.bemoji.Functions.RequestNetworkController;
 import com.nerbly.bemoji.Functions.Utils;
-import com.nerbly.bemoji.UI.MainUIMethods;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,8 +60,6 @@ public class HomeActivity extends AppCompatActivity {
     private final Intent toPacks = new Intent();
     FirebaseAnalytics mFirebaseAnalytics;
     LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-    com.google.android.material.snackbar.Snackbar snackBarView;
-    com.google.android.material.snackbar.Snackbar.SnackbarLayout sblayout;
     private FileManager fileManager;
     private HashMap<String, Object> categoriesMap = new HashMap<>();
     private double emojisCount = 0;
@@ -80,17 +72,18 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<HashMap<String, Object>> backendPacksList = new ArrayList<>();
     private LinearLayout adview;
     private ScrollView vscroll2;
-    private TextView textview1;
     private LinearLayout loadingView;
     private LinearLayout mainView;
     private LinearLayout shimmer1;
     private LinearLayout shimmer2;
     private LinearLayout shimmer7;
-    private RecyclerView loadingRecycler;
     private LinearLayout shimmer3;
     private LinearLayout shimmer4;
     private LinearLayout shimmer6;
     private LinearLayout shimmer5;
+    private LinearLayout shimmer9;
+    private LinearLayout shimmer10;
+    private LinearLayout shimmer11;
     private MaterialCardView searchcard;
     private LinearLayout localemojisview;
     private LinearLayout linear30;
@@ -98,14 +91,10 @@ public class HomeActivity extends AppCompatActivity {
     private RecyclerView local_recycler;
     private LinearLayout dock1;
     private LinearLayout dock2;
-    private TextView dock_txt_1;
     private TextView textview42;
-    private TextView dock_txt_2;
     private TextView textview44;
     private LinearLayout dock3;
     private LinearLayout dock4;
-    private TextView dock_txt_3;
-    private TextView dock_txt_4;
     private TextView textview4;
     private TextView seeMorePacks;
     private RequestNetwork startGettingEmojis;
@@ -130,17 +119,18 @@ public class HomeActivity extends AppCompatActivity {
     private void initialize() {
         adview = findViewById(R.id.adview);
         vscroll2 = findViewById(R.id.vscroll2);
-        textview1 = findViewById(R.id.tutorialTitle);
         loadingView = findViewById(R.id.loadingView);
         mainView = findViewById(R.id.mainView);
         shimmer1 = findViewById(R.id.shimmer1);
         shimmer2 = findViewById(R.id.shimmer2);
         shimmer7 = findViewById(R.id.shimmer7);
-        loadingRecycler = findViewById(R.id.loadingRecycler);
         shimmer3 = findViewById(R.id.shimmer3);
         shimmer4 = findViewById(R.id.shimmer4);
         shimmer6 = findViewById(R.id.shimmer6);
         shimmer5 = findViewById(R.id.shimmer5);
+        shimmer9 = findViewById(R.id.shimmer9);
+        shimmer10 = findViewById(R.id.shimmer10);
+        shimmer11 = findViewById(R.id.shimmer11);
         searchcard = findViewById(R.id.searchcard);
         localemojisview = findViewById(R.id.localemojisview);
         linear30 = findViewById(R.id.linear30);
@@ -149,14 +139,10 @@ public class HomeActivity extends AppCompatActivity {
         local_recycler = findViewById(R.id.local_recycler);
         dock1 = findViewById(R.id.dock1);
         dock2 = findViewById(R.id.dock2);
-        dock_txt_1 = findViewById(R.id.dock_txt_1);
         textview42 = findViewById(R.id.textview42);
-        dock_txt_2 = findViewById(R.id.dock_txt_2);
         textview44 = findViewById(R.id.textview44);
         dock3 = findViewById(R.id.dock3);
         dock4 = findViewById(R.id.dock4);
-        dock_txt_3 = findViewById(R.id.dock_txt_3);
-        dock_txt_4 = findViewById(R.id.dock_txt_4);
         textview4 = findViewById(R.id.activityDescription);
         seeMorePacks = findViewById(R.id.textview53);
         startGettingEmojis = new RequestNetwork(this);
@@ -166,9 +152,13 @@ public class HomeActivity extends AppCompatActivity {
         searchcard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View _view) {
-                toSearch.putExtra("switchFrom", "search");
-                toSearch.setClass(getApplicationContext(), EmojisActivity.class);
-                transitionManager(searchcard, "searchbox", toSearch);
+                if (textview42.getText().toString().equals("0")) {
+                    showCustomSnackBar(getString(R.string.emojis_still_loading_msg), HomeActivity.this);
+                } else {
+                    toSearch.putExtra("switchFrom", "search");
+                    toSearch.setClass(getApplicationContext(), EmojisActivity.class);
+                    startActivity(toSearch);
+                }
             }
         });
 
@@ -202,7 +192,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View _view) {
                 if (textview42.getText().toString().equals("0")) {
-                    showCustomSnackBar(getString(R.string.emojis_still_loading_msg));
+                    showCustomSnackBar(getString(R.string.emojis_still_loading_msg), HomeActivity.this);
                 } else {
                     toSearch.putExtra("switchFrom", "dock");
                     toSearch.setClass(getApplicationContext(), EmojisActivity.class);
@@ -215,10 +205,10 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View _view) {
                 if (textview44.getText().toString().equals("0")) {
-                    showCustomSnackBar(getString(R.string.packs_still_loading_msg));
+                    showCustomSnackBar(getString(R.string.packs_still_loading_msg), HomeActivity.this);
                 } else {
                     if (textview42.getText().toString().equals("0")) {
-                        showCustomSnackBar(getString(R.string.emojis_still_loading_msg));
+                        showCustomSnackBar(getString(R.string.emojis_still_loading_msg), HomeActivity.this);
                     } else {
                         toCategories.setClass(getApplicationContext(), CategoriesActivity.class);
                         startActivity(toCategories);
@@ -259,7 +249,7 @@ public class HomeActivity extends AppCompatActivity {
                             emojisScanPosition--;
                         }
                         sharedPref.edit().putString("emojisData", new Gson().toJson(emojisList)).apply();
-                        MainUIMethods.numbersAnimator(textview42, 0, emojisList.size(), 1000);
+                        numbersAnimator(textview42, 0, emojisList.size(), 1000);
                     } catch (Exception e) {
                         Utils.showToast(getApplicationContext(), (e.toString()));
                     }
@@ -281,11 +271,11 @@ public class HomeActivity extends AppCompatActivity {
                             }
 
                         } catch (JSONException e) {
-                            // Something went wrong!
+                            e.printStackTrace();
                         }
 
                         sharedPref.edit().putString("categoriesData", new Gson().toJson(categoriesList)).apply();
-                        MainUIMethods.numbersAnimator(textview44, 0, categoriesList.size(), 1000);
+                        numbersAnimator(textview44, 0, categoriesList.size(), 1000);
                     } else {
                         if (tag.equals("PACKS")) {
                             try {
@@ -296,7 +286,7 @@ public class HomeActivity extends AppCompatActivity {
                                 packs_recycler.setAdapter(new HomePacksAdapter.Packs_recyclerAdapter(packsList));
 
                             } catch (Exception e) {
-                                Utils.showToast(getApplicationContext(), (e.toString()));
+                                e.printStackTrace();
                             }
                         } else {
                             if (tag.equals("PACKS_1")) {
@@ -369,22 +359,11 @@ public class HomeActivity extends AppCompatActivity {
         packs_recycler.setLayoutManager(layoutManager);
         snapHelper.attachToRecyclerView(packs_recycler);
 
-        LinearLayoutManager layoutManager1 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        SnapHelper snapHelper1 = new PagerSnapHelper();
-        loadingRecycler.setLayoutManager(layoutManager1);
-        snapHelper1.attachToRecyclerView(loadingRecycler);
-
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         local_recycler.setLayoutManager(layoutManager2);
         if (sharedPref.getString("isNewEmojisAvailable", "").equals("true") || (sharedPref.getString("categoriesData", "").isEmpty() || (sharedPref.getString("packsData", "").isEmpty() || sharedPref.getString("emojisData", "").isEmpty()))) {
             loadingView.setVisibility(View.VISIBLE);
             mainView.setVisibility(View.GONE);
-            for (int _repeat77 = 0; _repeat77 < 20; _repeat77++) {
-                HashMap<String, Object> shimmerMap = new HashMap<>();
-                shimmerMap.put("key", "value");
-                shimmerList.add(shimmerMap);
-            }
-            loadingRecycler.setAdapter(new LoadingPacksAdapter.LoadingRecyclerAdapter(shimmerList));
         } else {
             loadingView.setVisibility(View.GONE);
             mainView.setVisibility(View.VISIBLE);
@@ -431,9 +410,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void LOGIC_FRONTEND() {
-        NavStatusBarColor("#FFFFFF", "#FFFFFF", this);
+        statusBarColor("#FFFFFF", this);
         DARK_ICONS(this);
-        changeActivityFont("whitney", this);
         rippleRoundStroke(dock1, "#FEF3ED", "#FEE0D0", 25, 0, "#FFFFFF");
         rippleRoundStroke(dock2, "#FAECFD", "#F6D6FD", 25, 0, "#FFFFFF");
         rippleRoundStroke(dock3, "#FFF7EC", "#FFEACE", 25, 0, "#FFFFFF");
@@ -445,37 +423,15 @@ public class HomeActivity extends AppCompatActivity {
         setClippedView(shimmer5, "#FFFFFF", 30, 0);
         setClippedView(shimmer6, "#FFFFFF", 30, 0);
         setClippedView(shimmer7, "#FFFFFF", 200, 0);
-
-        textview1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
-        dock_txt_1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
-        dock_txt_2.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
-        dock_txt_3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
-        dock_txt_4.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
+        setClippedView(shimmer9, "#FFFFFF", 30, 0);
+        setClippedView(shimmer10, "#FFFFFF", 200, 0);
+        setClippedView(shimmer11, "#FFFFFF", 200, 0);
     }
 
     public void transitionManager(final View view, final String transitionName, final Intent intent) {
         view.setTransitionName(transitionName);
         android.app.ActivityOptions optionsCompat = android.app.ActivityOptions.makeSceneTransitionAnimation(this, view, transitionName);
         startActivity(intent, optionsCompat.toBundle());
-    }
-
-    public void showCustomSnackBar(final String _text) {
-        ViewGroup parentLayout = (ViewGroup) ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
-
-        snackBarView = com.google.android.material.snackbar.Snackbar.make(parentLayout, "", com.google.android.material.snackbar.Snackbar.LENGTH_LONG);
-        sblayout = (com.google.android.material.snackbar.Snackbar.SnackbarLayout) snackBarView.getView();
-
-        @SuppressLint("InflateParams") View inflate = getLayoutInflater().inflate(R.layout.snackbar, null);
-        sblayout.setPadding(0, 0, 0, 0);
-        sblayout.setBackgroundColor(Color.argb(0, 0, 0, 0));
-        LinearLayout back = inflate.findViewById(R.id.tutorialBg);
-
-        TextView text = inflate.findViewById(R.id.tutorialTitle);
-        setViewRadius(back, 20, "#202125");
-        text.setText(_text);
-        text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
-        sblayout.addView(inflate, 0);
-        snackBarView.show();
     }
 
     public void getLocalEmojis() {

@@ -25,6 +25,8 @@
             android:padding="8dp"
             android:text="@string/sort_by_title"
             android:textColor="#616161"
+            android:fontFamily="@font/whitney"
+            android:textStyle="bold"
             android:textSize="12sp" />
 
         <LinearLayout
@@ -52,6 +54,7 @@
                 android:focusable="false"
                 android:text="@string/sort_by_newest"
                 android:textColor="#424242"
+                android:fontFamily="@font/whitney"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -61,6 +64,7 @@
             android:layout_height="wrap_content"
             android:gravity="start|center_vertical"
             android:orientation="horizontal"
+            android:fontFamily="@font/whitney"
             android:padding="15dp">
 
             <ImageView
@@ -80,6 +84,7 @@
                 android:focusable="false"
                 android:text="@string/sort_by_oldest"
                 android:textColor="#424242"
+                android:fontFamily="@font/whitney"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -108,6 +113,7 @@
                 android:focusable="false"
                 android:text="@string/sort_by_alphabetically"
                 android:textColor="#424242"
+                android:fontFamily="@font/whitney"
                 android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>

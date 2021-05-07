@@ -51,6 +51,7 @@
 					android:paddingRight="8dp"
 					android:text="@string/home_pack_seemore2"
 					android:textSize="12sp"
+					android:fontFamily="@font/whitney"
 					android:textColor="#757575" />
 			</LinearLayout>
 		</com.google.android.material.card.MaterialCardView>
@@ -88,7 +89,7 @@
 						android:scaleType="centerCrop" />
 				</LinearLayout>
 				<TextView
-					android:id="@+id/tutorialTitle"
+					android:id="@+id/emptyTitle"
 					android:focusable="false"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -101,6 +102,8 @@
 					android:paddingBottom="8dp"
 					android:text="@string/app_name"
 					android:textSize="18sp"
+					android:fontFamily="@font/whitney"
+					android:textStyle="bold"
 					android:textColor="#000000" />
 				<TextView
 					android:id="@+id/tutorialSubtitle"
@@ -116,6 +119,7 @@
 					android:text="@string/app_name"
 					android:textSize="12sp"
 					android:textColor="#757575"
+					android:fontFamily="@font/whitney"
 					android:lines="2" />
 			</LinearLayout>
 		</com.google.android.material.card.MaterialCardView>

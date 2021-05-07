@@ -170,9 +170,6 @@ public class PackPreviewActivity extends AppCompatActivity {
         DARK_ICONS(this);
         transparentStatusBar(this);
         rippleRoundStroke(download, "#7289DA", "#687DC8", 25, 0, "#7289DA");
-        activityTitle.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
-        activityDescription.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
-        download_tv.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
     }
 
     public void setImgURL(final String url, final ImageView image) {
@@ -219,53 +216,57 @@ public class PackPreviewActivity extends AppCompatActivity {
         sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    if (isDownloading) {
-                        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    } else {
-                        shadAnim(coordinator, "alpha", 0, 200);
-                        fixUIIssues = new TimerTask() {
-                            @Override
-                            public void run() {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        finish();
-                                    }
-                                });
-                            }
-                        };
-                        timer.schedule(fixUIIssues, 150);
-                    }
-                } else {
-                    if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                switch (newState) {
+                    case BottomSheetBehavior.STATE_COLLAPSED:
                         shadAnim(background, "elevation", 20, 200);
                         shadAnim(slider, "translationY", 0, 200);
                         shadAnim(slider, "alpha", 1, 200);
                         shadAnim(download, "translationY", 0, 200);
                         shadAnim(download, "alpha", 1, 200);
                         slider.setVisibility(View.VISIBLE);
-                    } else {
-                        if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                            shadAnim(background, "elevation", 0, 200);
-                            shadAnim(slider, "translationY", -200, 200);
-                            shadAnim(slider, "alpha", 0, 200);
-                            shadAnim(download, "translationY", 0, 200);
-                            shadAnim(download, "alpha", 1, 200);
-                            slider.setVisibility(View.INVISIBLE);
-                        } else {
-                            if (newState == BottomSheetBehavior.STATE_DRAGGING) {
-                                shadAnim(background, "elevation", 20, 200);
-                                shadAnim(slider, "translationY", 0, 200);
-                                shadAnim(slider, "alpha", 1, 200);
-                                slider.setVisibility(View.VISIBLE);
-                                if (!isDownloading) {
-                                    shadAnim(download, "translationY", 200, 200);
-                                    shadAnim(download, "alpha", 0, 200);
-                                }
-                            }
+                        break;
+                    case BottomSheetBehavior.STATE_DRAGGING:
+                        shadAnim(background, "elevation", 20, 200);
+                        shadAnim(slider, "translationY", 0, 200);
+                        shadAnim(slider, "alpha", 1, 200);
+                        slider.setVisibility(View.VISIBLE);
+                        if (!isDownloading) {
+                            shadAnim(download, "translationY", 200, 200);
+                            shadAnim(download, "alpha", 0, 200);
                         }
-                    }
+                        break;
+
+                    case BottomSheetBehavior.STATE_EXPANDED:
+                        shadAnim(background, "elevation", 0, 200);
+                        shadAnim(slider, "translationY", -200, 200);
+                        shadAnim(slider, "alpha", 0, 200);
+                        shadAnim(download, "translationY", 0, 200);
+                        shadAnim(download, "alpha", 1, 200);
+                        slider.setVisibility(View.INVISIBLE);
+                        break;
+                    case BottomSheetBehavior.STATE_HIDDEN:
+                        if (isDownloading) {
+                            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        } else {
+                            shadAnim(coordinator, "alpha", 0, 200);
+                            fixUIIssues = new TimerTask() {
+                                @Override
+                                public void run() {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            finish();
+                                        }
+                                    });
+                                }
+                            };
+                            timer.schedule(fixUIIssues, 150);
+                        }
+                        break;
+                    case BottomSheetBehavior.STATE_HALF_EXPANDED:
+                    case BottomSheetBehavior.STATE_SETTLING:
+                        break;
+
                 }
             }
 
@@ -382,7 +383,7 @@ public class PackPreviewActivity extends AppCompatActivity {
             final TextView infook = bottomSheetView.findViewById(R.id.infosheet_ok);
             final TextView infocancel = bottomSheetView.findViewById(R.id.infosheet_cancel);
             final TextView infotitle = bottomSheetView.findViewById(R.id.infosheet_title);
-            final TextView infosub = bottomSheetView.findViewById(R.id.infosheet_sub);
+            final TextView infosub = bottomSheetView.findViewById(R.id.infosheet_description);
             final LinearLayout infoback = bottomSheetView.findViewById(R.id.infosheet_back);
             final LinearLayout slider = bottomSheetView.findViewById(R.id.slider);
 
@@ -390,10 +391,6 @@ public class PackPreviewActivity extends AppCompatActivity {
             rippleRoundStroke(infook, "#7289DA", "#6275BB", 20, 0, "#007EEF");
             rippleRoundStroke(infocancel, "#424242", "#181818", 20, 0, "#007EEF");
             setViewRadius(slider, 180, "#BDBDBD");
-            infotitle.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
-            infosub.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
-            infook.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
-            infocancel.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
             infotitle.setText(R.string.pack_confirmation_sheet_title);
             infosub.setText(R.string.pack_confirmation_sheet_subtitle);
             infook.setText(R.string.pack_confirmation_sheet_btn1);

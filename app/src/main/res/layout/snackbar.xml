@@ -15,13 +15,14 @@
         tools:ignore="UselessParent">
 
         <TextView
-            android:id="@+id/tutorialTitle"
+            android:id="@+id/emptyTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusable="false"
             android:padding="8dp"
             android:text="@string/app_name"
             android:textColor="#FFFFFF"
+            android:fontFamily="@font/whitney"
             android:textSize="14sp" />
     </LinearLayout>
 </LinearLayout>

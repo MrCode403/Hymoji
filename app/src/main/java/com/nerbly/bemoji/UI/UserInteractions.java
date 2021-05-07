@@ -4,7 +4,6 @@ import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -27,10 +26,9 @@ public class UserInteractions {
         sblayout.setBackgroundColor(Color.argb(0, 0, 0, 0));
         LinearLayout back = inflate.findViewById(R.id.tutorialBg);
 
-        TextView snackbar_tv = inflate.findViewById(R.id.tutorialTitle);
+        TextView snackbar_tv = inflate.findViewById(R.id.emptyTitle);
         setViewRadius(back, 20, "#202125");
         snackbar_tv.setText(message);
-        snackbar_tv.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
         sblayout.addView(inflate, 0);
         snackBarView.show();
     }

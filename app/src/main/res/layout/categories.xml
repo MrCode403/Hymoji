@@ -42,6 +42,8 @@
 					android:padding="8dp"
 					android:text="@string/categories_screen_title"
 					android:textSize="30sp"
+					android:fontFamily="@font/whitney"
+					android:textStyle="bold"
 					android:textColor="#000000" />
 				<TextView
 					android:id="@+id/activitySubtitle"
@@ -54,6 +56,7 @@
 					android:paddingBottom="8dp"
 					android:text="@string/categories_screen_subtitle"
 					android:textSize="14sp"
+					android:fontFamily="@font/whitney"
 					android:textColor="#616161" />
 				<LinearLayout
 					android:id="@+id/line"

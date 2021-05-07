@@ -1,150 +1,177 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	tools:ignore="ContentDescription"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:id="@+id/_coordinator"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-	<com.google.android.material.appbar.AppBarLayout
-		android:id="@+id/_app_bar"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:theme="@style/AppTheme.AppBarOverlay"
-		app:elevation="0dp">
-		<com.google.android.material.appbar.CollapsingToolbarLayout
-			android:id="@+id/collapse"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			app:contentScrim="#FFFFFF"
-			android:fitsSystemWindows="true"
-			app:layout_scrollFlags="scroll|enterAlways|snap">
-			<LinearLayout
-				android:id="@+id/space"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="#FFFFFF"
-				android:orientation="vertical">
-				<LinearLayout
-					android:id="@+id/searchbox"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="10dp"
-					android:layout_marginTop="10dp"
-					android:layout_marginRight="10dp"
-					android:layout_marginBottom="5dp"
-					android:padding="6dp"
-					android:gravity="center_vertical"
-					android:orientation="horizontal">
-					<ImageView
-						android:id="@+id/emoji"
-						android:layout_width="40dp"
-						android:layout_height="40dp"
-						android:padding="8dp"
-						android:src="@drawable/icons8_search_60"
-						android:scaleType="fitCenter"
-						app:tint="#9E9E9E" />
 
-					<EditText
-						android:id="@+id/edittext1"
-						android:layout_width="0dp"
-						android:layout_height="wrap_content"
-						android:layout_weight="1"
-						android:background="@android:color/transparent"
-						android:hint="@string/emojis_search_box_txt"
-						android:imeOptions="actionDone"
-						android:padding="8dp"
-						android:singleLine="true"
-						android:textColor="#000000"
-						android:textColorHint="#757575"
-						android:textSize="14sp"
-						tools:ignore="TouchTargetSizeCheck"
-						android:importantForAutofill="no"
-						android:inputType="text" />
-					<ImageView
-						android:id="@+id/imageview2"
-						android:layout_width="40dp"
-						android:layout_height="40dp"
-						android:padding="8dp"
-						android:src="@drawable/outline_filter_alt_black_48dp"
-						android:scaleType="fitCenter"
-						app:tint="#9E9E9E" />
-				</LinearLayout>
-			</LinearLayout>
-			<androidx.appcompat.widget.Toolbar
-				android:id="@+id/_toolbar"
-				android:layout_width="match_parent"
-				android:layout_height="?attr/actionBarSize"
-				android:background="?attr/colorPrimary"
-				app:popupTheme="@style/AppTheme.PopupOverlay" />
-		</com.google.android.material.appbar.CollapsingToolbarLayout>
-	</com.google.android.material.appbar.AppBarLayout>
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:orientation="vertical"
-		app:layout_behavior="@string/appbar_scrolling_view_behavior">
-		<LinearLayout
-			android:id="@+id/tutorialBg"
-			android:layout_width="match_parent"
-			android:layout_height="0dp"
-			android:background="#FFFFFF"
-			android:orientation="vertical"
-			android:layout_weight="1"
-			android:animateLayoutChanges="true">
-			<androidx.recyclerview.widget.RecyclerView
-				android:id="@+id/chiprecycler"
-				android:layout_width="match_parent"
-				android:layout_height="50dp"
-				android:layout_marginTop="10dp"
-				android:requiresFadingEdge="horizontal"
-				android:fadingEdgeLength="30dp"
-				android:visibility="gone" />
-			<androidx.recyclerview.widget.RecyclerView
-				android:id="@+id/packEmojisRecycler"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:requiresFadingEdge="vertical"
-				android:fadingEdgeLength="20dp" />
-			<LinearLayout
-				android:id="@+id/emptyview"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:padding="8dp"
-				android:gravity="center_horizontal|center_vertical"
-				android:orientation="vertical">
-				<com.airbnb.lottie.LottieAnimationView
-					android:id="@+id/lottie1"
-					android:layout_width="wrap_content"
-					android:layout_height="130dp"
-					android:scaleType="fitCenter"
-					app:lottie_fileName="animations/notfound.json"
-					app:lottie_loop="true"
-					app:lottie_autoPlay="true" />
-				<TextView
-					android:id="@+id/tutorialTitle"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_marginTop="17dp"
-					android:paddingLeft="8dp"
-					android:paddingRight="8dp"
-					android:paddingBottom="8dp"
-					android:gravity="center_horizontal|center_vertical"
-					android:text="@string/emojis_not_found"
-					android:textSize="14sp"
-					android:textColor="#424242" />
-			</LinearLayout>
-		</LinearLayout>
-		<LinearLayout
-			android:id="@+id/adviewline"
-			android:layout_width="match_parent"
-			android:layout_height="1dp"
-			android:background="#E0E0E0"
-			android:orientation="horizontal" />
-		<LinearLayout
-			android:id="@+id/adview"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="#FFFFFF"
-			android:orientation="vertical" />
-	</LinearLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/_coordinator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="ContentDescription">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:elevation="0dp">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
+                app:contentScrim="#FFFFFF"
+                app:layout_scrollFlags="scroll|enterAlways|snap">
+
+                <LinearLayout
+                    android:id="@+id/space"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/searchbox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="6dp">
+
+                        <ImageView
+                            android:id="@+id/emoji"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:padding="8dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/icons8_search_60"
+                            app:tint="#9E9E9E" />
+
+                        <EditText
+                            android:id="@+id/searchField"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:hint="@string/emojis_search_box_txt"
+                            android:imeOptions="actionSearch"
+                            android:importantForAutofill="no"
+                            android:inputType="textNoSuggestions"
+                            android:padding="8dp"
+                            android:singleLine="true"
+                            android:textColor="#000000"
+                            android:textColorHint="#757575"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/whitney"
+                            tools:ignore="TouchTargetSizeCheck" />
+
+                        <ImageView
+                            android:id="@+id/imageview2"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:padding="8dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/outline_filter_alt_black_48dp"
+                            app:tint="#9E9E9E" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary"
+                    app:popupTheme="@style/AppTheme.PopupOverlay" />
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:id="@+id/tutorialBg"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:animateLayoutChanges="true"
+                android:background="#FFFFFF"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/chiprecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:fadingEdgeLength="30dp"
+                    android:requiresFadingEdge="horizontal"
+                    android:visibility="gone" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/packEmojisRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fadingEdgeLength="20dp"
+                    android:requiresFadingEdge="vertical"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/adviewline"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E0E0E0"
+                android:orientation="horizontal" />
+
+            <LinearLayout
+                android:id="@+id/adview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:orientation="vertical" />
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <LinearLayout
+        android:id="@+id/emptyview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/emptyAnimation"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:scaleType="fitCenter"
+            app:lottie_autoPlay="true"
+            app:lottie_repeatMode="reverse"
+            app:lottie_renderMode="automatic"
+            app:lottie_progress="0"
+            app:lottie_fileName="animations/loading.json"
+            app:lottie_loop="true" />
+
+        <TextView
+            android:id="@+id/emptyTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/emojis_loading"
+            android:textColor="#424242"
+            android:fontFamily="@font/whitney"
+            android:textSize="16sp" />
+    </LinearLayout>
+</RelativeLayout>

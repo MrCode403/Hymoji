@@ -2,6 +2,10 @@
 
 <resources>
     <string name="app_name" translatable="false">Bemoji</string>
+    <string name="firebase_database_url" translatable="false">https://bemoji-app.firebaseio.com</string>
+    <string name="project_id" translatable="false">bemoji-app</string>
+    <string name="google_app_id" translatable="false">1:20150108484:android:4ab2f3b053ec6df4bb9711</string>
+    <string name="google_api_key" translatable="false">AIzaSyDkEsxoTRs8l1e5_YNYqRWKGHw_7Xfug34</string>
 
     <string name="home_title" translatable="true">Explore emojis</string>
     <string name="home_subtitle" translatable="true">Here you can explore our categories to access an unlimited collection of emojis</string>
@@ -31,6 +35,7 @@
     <string name="categories_screen_subtitle" translatable="true">Lazy to search? choose what suits your shiny server. Some categories are empty btw.</string>
     <string name="emojis_search_box_txt" translatable="true">For best results, search like a memer…</string>
     <string name="emojis_not_found" translatable="true">Oh boy, we couldn\'t find anything.</string>
+    <string name="emojis_loading" translatable="true">One second, we\'re getting emojis…</string>
     <string name="packs_included_emojis" translatable="true">included\nemojis</string>
     <string name="animated_emojis_warning_title" translatable="true">Hold up, wait a minute!</string>
     <string name="animated_emojis_warning_subtitle" translatable="true">You\'re about to enter a category contains flashing images that may potentially trigger seizures for people with photosensitive epilepsy.</string>

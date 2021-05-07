@@ -8,7 +8,6 @@ import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,10 +47,8 @@ public class TutorialActivity extends AppCompatActivity {
     private ArrayList<HashMap<String, Object>> tutorialList = new ArrayList<>();
     private LinearLayout bsheetbehavior;
     private LinearLayout background;
-    private LinearLayout adview;
+    private LinearLayout adView;
     private LinearLayout slider;
-    private TextView textview3;
-    private TextView textview4;
     private RecyclerView recyclerview1;
     private RecyclerView loadingRecycler;
 
@@ -72,10 +69,8 @@ public class TutorialActivity extends AppCompatActivity {
         CoordinatorLayout linear1 = findViewById(R.id.tutorialBg);
         bsheetbehavior = findViewById(R.id.sheetBehavior);
         background = findViewById(R.id.background);
-        adview = findViewById(R.id.adview);
+        adView = findViewById(R.id.adView);
         slider = findViewById(R.id.slider);
-        textview3 = findViewById(R.id.download_tv);
-        textview4 = findViewById(R.id.activityDescription);
         recyclerview1 = findViewById(R.id.recyclerview1);
         loadingRecycler = findViewById(R.id.loadingRecycler);
         requestTutorial = new RequestNetwork(this);
@@ -135,7 +130,7 @@ public class TutorialActivity extends AppCompatActivity {
         recyclerview1.setLayoutManager(new LinearLayoutManager(this));
         loadingRecycler.setLayoutManager(new LinearLayoutManager(this));
         requestTutorial.startRequestNetwork(RequestNetworkController.GET, "https://nerbly.com/bemoji/tutorial.json", "", TutorialRequestListener);
-        for (int _repeat14 = 0; _repeat14 < 20; _repeat14++) {
+        for (int i = 0; i < 20; i++) {
             HashMap<String, Object> shimmerMap = new HashMap<>();
             shimmerMap.put("key", "value");
             shimmerList.add(shimmerMap);
@@ -148,14 +143,12 @@ public class TutorialActivity extends AppCompatActivity {
 
         AudienceNetworkAds.initialize(this);
         AdView bannerAd = new AdView(this, "3773974092696684_3774022966025130", AdSize.BANNER_HEIGHT_50);
-        adview.addView(bannerAd);
+        adView.addView(bannerAd);
         bannerAd.loadAd();
     }
 
 
     public void LOGIC_FRONTEND() {
-        textview3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
-        textview4.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
         advancedCorners(background, "#FFFFFF", 40, 40, 0, 0);
         setViewRadius(slider, 90, "#E0E0E0");
         DARK_ICONS(this);
@@ -167,29 +160,28 @@ public class TutorialActivity extends AppCompatActivity {
         sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    finish();
-                } else {
-                    if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                switch (newState) {
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+                    case BottomSheetBehavior.STATE_DRAGGING:
                         shadAnim(background, "elevation", 20, 200);
                         shadAnim(slider, "translationY", 0, 200);
                         shadAnim(slider, "alpha", 1, 200);
                         slider.setVisibility(View.VISIBLE);
-                    } else {
-                        if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                            shadAnim(background, "elevation", 0, 200);
-                            shadAnim(slider, "translationY", -200, 200);
-                            shadAnim(slider, "alpha", 0, 200);
-                            slider.setVisibility(View.INVISIBLE);
-                        } else {
-                            if (newState == BottomSheetBehavior.STATE_DRAGGING) {
-                                shadAnim(background, "elevation", 20, 200);
-                                shadAnim(slider, "translationY", 0, 200);
-                                shadAnim(slider, "alpha", 1, 200);
-                                slider.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    }
+                        break;
+
+                    case BottomSheetBehavior.STATE_EXPANDED:
+                        shadAnim(background, "elevation", 0, 200);
+                        shadAnim(slider, "translationY", -200, 200);
+                        shadAnim(slider, "alpha", 0, 200);
+                        slider.setVisibility(View.INVISIBLE);
+                        break;
+                    case BottomSheetBehavior.STATE_HIDDEN:
+                        finish();
+                        break;
+                    case BottomSheetBehavior.STATE_HALF_EXPANDED:
+                    case BottomSheetBehavior.STATE_SETTLING:
+                        break;
+
                 }
             }
 
@@ -229,33 +221,31 @@ public class TutorialActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, final int _position) {
+        public void onBindViewHolder(ViewHolder holder, final int position) {
             View view = holder.itemView;
 
-            final TextView textview1 = view.findViewById(R.id.tutorialTitle);
-            final TextView textview2 = view.findViewById(R.id.tutorialSubtitle);
-            final ImageView imageview1 = view.findViewById(R.id.emoji);
+            final TextView tutorialTitle = view.findViewById(R.id.tutorialTitle);
+            final TextView tutorialSubtitle = view.findViewById(R.id.tutorialSubtitle);
+            final ImageView tutorialImage = view.findViewById(R.id.tutorialImage);
 
-            if (Objects.requireNonNull(data.get(_position).get("isTitled")).toString().equals("true")) {
-                textview1.setVisibility(View.VISIBLE);
-                textview1.setText(Objects.requireNonNull(data.get(_position).get("title")).toString());
+            if (Objects.requireNonNull(data.get(position).get("isTitled")).toString().equals("true")) {
+                tutorialTitle.setVisibility(View.VISIBLE);
+                tutorialTitle.setText(Objects.requireNonNull(data.get(position).get("title")).toString());
             } else {
-                textview1.setVisibility(View.GONE);
+                tutorialTitle.setVisibility(View.GONE);
             }
-            if (Objects.requireNonNull(data.get(_position).get("isSubtitled")).toString().equals("true")) {
-                textview2.setVisibility(View.VISIBLE);
-                textview2.setText(Objects.requireNonNull(data.get(_position).get("subtitle")).toString());
+            if (Objects.requireNonNull(data.get(position).get("isSubtitled")).toString().equals("true")) {
+                tutorialSubtitle.setVisibility(View.VISIBLE);
+                tutorialSubtitle.setText(Objects.requireNonNull(data.get(position).get("subtitle")).toString());
             } else {
-                textview2.setVisibility(View.GONE);
+                tutorialSubtitle.setVisibility(View.GONE);
             }
-            if (Objects.requireNonNull(data.get(_position).get("isImaged")).toString().equals("true")) {
-                imageview1.setVisibility(View.VISIBLE);
-                setImageFromUrl(imageview1, Objects.requireNonNull(data.get(_position).get("image")).toString());
+            if (Objects.requireNonNull(data.get(position).get("isImaged")).toString().equals("true")) {
+                tutorialImage.setVisibility(View.VISIBLE);
+                setImageFromUrl(tutorialImage, Objects.requireNonNull(data.get(position).get("image")).toString());
             } else {
-                imageview1.setVisibility(View.GONE);
+                tutorialImage.setVisibility(View.GONE);
             }
-            textview1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
-            textview2.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             view.setLayoutParams(_lp);
         }

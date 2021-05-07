@@ -158,8 +158,6 @@ public class PacksActivity extends AppCompatActivity {
     }
 
     public void LOGIC_FRONTEND() {
-        textview3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
-        textview4.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
         advancedCorners(background, "#FFFFFF", 40, 40, 0, 0);
         setViewRadius(slider, 90, "#E0E0E0");
         DARK_ICONS(this);
@@ -170,29 +168,28 @@ public class PacksActivity extends AppCompatActivity {
         sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    finish();
-                } else {
-                    if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                switch (newState) {
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+                    case BottomSheetBehavior.STATE_DRAGGING:
                         shadAnim(background, "elevation", 20, 200);
                         shadAnim(slider, "translationY", 0, 200);
                         shadAnim(slider, "alpha", 1, 200);
                         slider.setVisibility(View.VISIBLE);
-                    } else {
-                        if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                            shadAnim(background, "elevation", 0, 200);
-                            shadAnim(slider, "translationY", -200, 200);
-                            shadAnim(slider, "alpha", 0, 200);
-                            slider.setVisibility(View.INVISIBLE);
-                        } else {
-                            if (newState == BottomSheetBehavior.STATE_DRAGGING) {
-                                shadAnim(background, "elevation", 20, 200);
-                                shadAnim(slider, "translationY", 0, 200);
-                                shadAnim(slider, "alpha", 1, 200);
-                                slider.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    }
+                        break;
+
+                    case BottomSheetBehavior.STATE_EXPANDED:
+                        shadAnim(background, "elevation", 0, 200);
+                        shadAnim(slider, "translationY", -200, 200);
+                        shadAnim(slider, "alpha", 0, 200);
+                        slider.setVisibility(View.INVISIBLE);
+                        break;
+                    case BottomSheetBehavior.STATE_HIDDEN:
+                        finish();
+                        break;
+                    case BottomSheetBehavior.STATE_HALF_EXPANDED:
+                    case BottomSheetBehavior.STATE_SETTLING:
+                        break;
+
                 }
             }
 
@@ -296,20 +293,15 @@ public class PacksActivity extends AppCompatActivity {
 
             final com.google.android.material.card.MaterialCardView cardview1 = view.findViewById(R.id.cardview1);
             final ImageView imageview1 = view.findViewById(R.id.emoji);
-            final TextView textview1 = view.findViewById(R.id.tutorialTitle);
+            final TextView textview1 = view.findViewById(R.id.emptyTitle);
             final TextView textview2 = view.findViewById(R.id.tutorialSubtitle);
             final TextView textview3 = view.findViewById(R.id.download_tv);
-            final TextView textview4 = view.findViewById(R.id.activityDescription);
 
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             view.setLayoutParams(_lp);
             textview1.setText(_capitalizedFirstWord(Objects.requireNonNull(data.get(position).get("name")).toString().replace("_", " ")));
             textview2.setText(Objects.requireNonNull(data.get(position).get("description")).toString());
             textview3.setText(String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("amount")).toString()))));
-            textview1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
-            textview2.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
-            textview3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
-            textview4.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
             _setImageFromUrl(imageview1, Objects.requireNonNull(data.get(position).get("image")).toString());
             cardview1.setOnClickListener(new View.OnClickListener() {
                 @Override

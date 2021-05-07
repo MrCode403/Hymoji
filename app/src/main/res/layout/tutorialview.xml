@@ -25,6 +25,8 @@
             android:paddingBottom="8dp"
             android:text="@string/app_name"
             android:textColor="#7289DA"
+            android:fontFamily="@font/whitney"
+            android:textStyle="bold"
             android:textSize="16sp" />
 
         <TextView
@@ -37,10 +39,11 @@
             android:paddingRight="4dp"
             android:text="@string/app_name"
             android:textColor="#000000"
+            android:fontFamily="@font/whitney"
             android:textSize="14sp" />
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardview1"
+            android:id="@+id/tutorialCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/Theme.MaterialComponents.Light"
@@ -50,7 +53,7 @@
             app:strokeWidth="1dp">
 
             <ImageView
-                android:id="@+id/emoji"
+                android:id="@+id/tutorialImage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

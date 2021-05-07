@@ -56,29 +56,27 @@ public class HomePacksAdapter {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder _holder, @SuppressLint("RecyclerView") final int _position) {
-            View _view = _holder.itemView;
+        public void onBindViewHolder(ViewHolder _holder, @SuppressLint("RecyclerView") final int position) {
+            View view = _holder.itemView;
 
-            final com.google.android.material.card.MaterialCardView cardview2 = _view.findViewById(R.id.cardview2);
-            final com.google.android.material.card.MaterialCardView cardview1 = _view.findViewById(R.id.cardview1);
-            final TextView textview1 = _view.findViewById(R.id.tutorialTitle);
-            final TextView textview2 = _view.findViewById(R.id.tutorialSubtitle);
-            final ImageView imageview1 = _view.findViewById(R.id.emoji);
+            final com.google.android.material.card.MaterialCardView cardview2 = view.findViewById(R.id.cardview2);
+            final com.google.android.material.card.MaterialCardView cardview1 = view.findViewById(R.id.cardview1);
+            final TextView textview1 = view.findViewById(R.id.emptyTitle);
+            final TextView textview2 = view.findViewById(R.id.tutorialSubtitle);
+            final ImageView imageview1 = view.findViewById(R.id.emoji);
 
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _view.setLayoutParams(_lp);
-            textview1.setText(capitalizedFirstWord(Objects.requireNonNull(_data.get(_position).get("name")).toString().replace("_", " ")));
-            textview2.setText(Objects.requireNonNull(_data.get(_position).get("description")).toString());
-            textview1.setTypeface(Typeface.createFromAsset(imageview1.getContext().getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
-            textview2.setTypeface(Typeface.createFromAsset(imageview1.getContext().getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
-            setImageFromUrl(imageview1, Objects.requireNonNull(_data.get(_position).get("image")).toString());
+            view.setLayoutParams(_lp);
+            textview1.setText(capitalizedFirstWord(Objects.requireNonNull(_data.get(position).get("name")).toString().replace("_", " ")));
+            textview2.setText(Objects.requireNonNull(_data.get(position).get("description")).toString());
+            setImageFromUrl(imageview1, Objects.requireNonNull(_data.get(position).get("image")).toString());
             cardview1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View _view) {
                     try {
                         packsTempArrayString = HomeActivity.PacksArray();
                         JSONArray backPacksArray = new JSONArray(packsTempArrayString);
-                        JSONObject packsObject = backPacksArray.getJSONObject(_position);
+                        JSONObject packsObject = backPacksArray.getJSONObject(position);
 
                         JSONArray frontPacksArray = packsObject.getJSONArray("emojis");
                         for (int frontPacksInt = 0; frontPacksInt < frontPacksArray.length(); frontPacksInt++) {
@@ -90,19 +88,19 @@ public class HomePacksAdapter {
                         Log.e("Pack Array Crashed", e.toString());
                     }
                     toPreview.putExtra("switchType", "pack");
-                    toPreview.putExtra("title", "BemojiPack_" + (long) (Double.parseDouble(Objects.requireNonNull(_data.get(_position).get("id")).toString())));
-                    toPreview.putExtra("subtitle", Objects.requireNonNull(_data.get(_position).get("description")).toString());
-                    toPreview.putExtra("imageUrl", Objects.requireNonNull(_data.get(_position).get("image")).toString());
-                    toPreview.putExtra("fileName", Objects.requireNonNull(_data.get(_position).get("slug")).toString());
+                    toPreview.putExtra("title", "BemojiPack_" + (long) (Double.parseDouble(Objects.requireNonNull(_data.get(position).get("id")).toString())));
+                    toPreview.putExtra("subtitle", Objects.requireNonNull(_data.get(position).get("description")).toString());
+                    toPreview.putExtra("imageUrl", Objects.requireNonNull(_data.get(position).get("image")).toString());
+                    toPreview.putExtra("fileName", Objects.requireNonNull(_data.get(position).get("slug")).toString());
                     toPreview.putExtra("packEmojisArray", currentPositionPackArray);
-                    toPreview.putExtra("packEmojisAmount", Objects.requireNonNull(_data.get(_position).get("amount")).toString());
-                    toPreview.putExtra("packName", capitalizedFirstWord(Objects.requireNonNull(_data.get(_position).get("name")).toString().replace("_", " ")));
-                    toPreview.putExtra("packId", Objects.requireNonNull(_data.get(_position).get("id")).toString());
+                    toPreview.putExtra("packEmojisAmount", Objects.requireNonNull(_data.get(position).get("amount")).toString());
+                    toPreview.putExtra("packName", capitalizedFirstWord(Objects.requireNonNull(_data.get(position).get("name")).toString().replace("_", " ")));
+                    toPreview.putExtra("packId", Objects.requireNonNull(_data.get(position).get("id")).toString());
                     toPreview.setClass(imageview1.getContext(), PackPreviewActivity.class);
                     imageview1.getContext().startActivity(toPreview);
                 }
             });
-            if (_position == 0) {
+            if (position == 0) {
                 cardview2.setVisibility(View.VISIBLE);
             } else {
                 cardview2.setVisibility(View.GONE);

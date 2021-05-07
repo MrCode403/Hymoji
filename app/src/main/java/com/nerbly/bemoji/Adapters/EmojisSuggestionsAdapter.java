@@ -32,29 +32,28 @@ public class EmojisSuggestionsAdapter {
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater _inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            @SuppressLint("InflateParams") View _v = _inflater.inflate(R.layout.chipview, null);
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _v.setLayoutParams(_lp);
-            return new ViewHolder(_v);
+            @SuppressLint("InflateParams") View view = _inflater.inflate(R.layout.chipview, null);
+            RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            view.setLayoutParams(layoutParams);
+            return new ViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder _holder, @SuppressLint("RecyclerView") final int _position) {
-            View _view = _holder.itemView;
+        public void onBindViewHolder(ViewHolder viewHolder, @SuppressLint("RecyclerView") final int position) {
+            View view = viewHolder.itemView;
 
-            final com.google.android.material.card.MaterialCardView cardview3 = _view.findViewById(R.id.cardView);
-            final TextView textview1 = _view.findViewById(R.id.tutorialTitle);
+            final com.google.android.material.card.MaterialCardView cardview3 = view.findViewById(R.id.cardView);
+            final TextView textview1 = view.findViewById(R.id.emptyTitle);
 
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _view.setLayoutParams(_lp);
+            view.setLayoutParams(_lp);
             cardview3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View _view) {
-                    whenChipItemClicked(Objects.requireNonNull(_data.get(_position).get("title")).toString());
+                    whenChipItemClicked(Objects.requireNonNull(_data.get(position).get("title")).toString());
                 }
             });
-            textview1.setText(Objects.requireNonNull(_data.get(_position).get("title")).toString());
-            textview1.setTypeface(Typeface.createFromAsset(textview1.getContext().getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
+            textview1.setText(Objects.requireNonNull(_data.get(position).get("title")).toString());
         }
 
         @Override

@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 	<TextView
-		android:id="@+id/tutorialTitle"
+		android:id="@+id/emptyTitle"
 		android:focusable="false"
 		android:layout_width="match_parent"
 		android:layout_height="60dp"
@@ -17,5 +17,6 @@
 		android:gravity="center_vertical"
 		android:text="@string/categories_screen_title"
 		android:textSize="16sp"
+		android:fontFamily="@font/whitney"
 		android:textColor="#212121" />
 </LinearLayout>

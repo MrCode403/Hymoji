@@ -1,12 +1,18 @@
 package com.nerbly.bemoji;
 
+import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
+import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
+import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
+import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
+import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
+
 import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,10 +29,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.nerbly.bemoji.Adapters.LoadingPacksAdapter;
 import com.nerbly.bemoji.Functions.RequestNetwork;
 import com.nerbly.bemoji.Functions.RequestNetworkController;
 import com.nerbly.bemoji.Functions.Utils;
-import com.nerbly.bemoji.UI.MainUIMethods;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,14 +48,12 @@ public class CategoriesActivity extends AppCompatActivity {
     private final Timer _timer = new Timer();
     private final ArrayList<HashMap<String, Object>> shimmerList = new ArrayList<>();
     private final Intent toEmojis = new Intent();
-    BottomSheetBehavior sheetBehavior;
+    private BottomSheetBehavior<LinearLayout> sheetBehavior;
     private HashMap<String, Object> categoriesMap = new HashMap<>();
     private ArrayList<HashMap<String, Object>> categoriesList = new ArrayList<>();
     private LinearLayout bsheetbehavior;
     private LinearLayout background;
     private LinearLayout slider;
-    private TextView title;
-    private TextView subtitle;
     private RecyclerView categoriesRecycler;
     private RecyclerView loadingRecycler;
     private RequestNetwork RequestCategories;
@@ -58,8 +62,8 @@ public class CategoriesActivity extends AppCompatActivity {
     private TimerTask loadingTmr;
 
     @Override
-    protected void onCreate(Bundle _savedInstanceState) {
-        super.onCreate(_savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.categories);
         initialize();
         initializeLogic();
@@ -70,8 +74,6 @@ public class CategoriesActivity extends AppCompatActivity {
         bsheetbehavior = findViewById(R.id.sheetBehavior);
         background = findViewById(R.id.background);
         slider = findViewById(R.id.slider);
-        title = findViewById(R.id.activityTitle);
-        subtitle = findViewById(R.id.activitySubtitle);
         categoriesRecycler = findViewById(R.id.categoriesRecycler);
         loadingRecycler = findViewById(R.id.loadingRecycler);
         RequestCategories = new RequestNetwork(this);
@@ -134,7 +136,7 @@ public class CategoriesActivity extends AppCompatActivity {
 
     private void initializeLogic() {
         _LOGIC_BACKEND();
-        _LOGIC_FRONTEND();
+        LOGIC_FRONTEND();
     }
 
     @Override
@@ -151,7 +153,7 @@ public class CategoriesActivity extends AppCompatActivity {
             shimmerMap.put("key", "value");
             shimmerList.add(shimmerMap);
         }
-        loadingRecycler.setAdapter(new LoadingRecyclerAdapter(shimmerList));
+        loadingRecycler.setAdapter(new LoadingPacksAdapter.LoadingRecyclerAdapter(shimmerList));
         if (sharedPref.getString("categoriesData", "").isEmpty()) {
             RequestCategories.startRequestNetwork(RequestNetworkController.GET, "https://emoji.gg/api/?request=categories", "", CategoriesRequestListener);
         } else {
@@ -174,50 +176,47 @@ public class CategoriesActivity extends AppCompatActivity {
             };
             _timer.schedule(loadingTmr, 1000);
         }
-        _BottomSheetBehaviorListener();
+        bottomSheetBehaviorListener();
         background.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
         categoriesRecycler.setHasFixedSize(true);
         loadingRecycler.setHasFixedSize(true);
     }
 
 
-    public void _LOGIC_FRONTEND() {
-        title.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
-        subtitle.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
-        MainUIMethods.advancedCorners(background, "#FFFFFF", 40, 40, 0, 0);
-        MainUIMethods.setViewRadius(slider, 90, "#E0E0E0");
-        MainUIMethods.DARK_ICONS(this);
-        MainUIMethods.transparentStatusBar(this);
+    public void LOGIC_FRONTEND() {
+        advancedCorners(background, "#FFFFFF", 40, 40, 0, 0);
+        setViewRadius(slider, 90, "#E0E0E0");
+        DARK_ICONS(this);
+        transparentStatusBar(this);
     }
 
 
-    public void _BottomSheetBehaviorListener() {
+    public void bottomSheetBehaviorListener() {
         sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    finish();
-                } else {
-                    if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                        MainUIMethods.shadAnim(background, "elevation", 20, 200);
-                        MainUIMethods.shadAnim(slider, "translationY", 0, 200);
-                        MainUIMethods.shadAnim(slider, "alpha", 1, 200);
+                switch (newState) {
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+                    case BottomSheetBehavior.STATE_DRAGGING:
+                        shadAnim(background, "elevation", 20, 200);
+                        shadAnim(slider, "translationY", 0, 200);
+                        shadAnim(slider, "alpha", 1, 200);
                         slider.setVisibility(View.VISIBLE);
-                    } else {
-                        if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                            MainUIMethods.shadAnim(background, "elevation", 0, 200);
-                            MainUIMethods.shadAnim(slider, "translationY", -200, 200);
-                            MainUIMethods.shadAnim(slider, "alpha", 0, 200);
-                            slider.setVisibility(View.INVISIBLE);
-                        } else {
-                            if (newState == BottomSheetBehavior.STATE_DRAGGING) {
-                                MainUIMethods.shadAnim(background, "elevation", 20, 200);
-                                MainUIMethods.shadAnim(slider, "translationY", 0, 200);
-                                MainUIMethods.shadAnim(slider, "alpha", 1, 200);
-                                slider.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    }
+                        break;
+
+                    case BottomSheetBehavior.STATE_EXPANDED:
+                        shadAnim(background, "elevation", 0, 200);
+                        shadAnim(slider, "translationY", -200, 200);
+                        shadAnim(slider, "alpha", 0, 200);
+                        slider.setVisibility(View.INVISIBLE);
+                        break;
+                    case BottomSheetBehavior.STATE_HIDDEN:
+                        finish();
+                        break;
+                    case BottomSheetBehavior.STATE_HALF_EXPANDED:
+                    case BottomSheetBehavior.STATE_SETTLING:
+                        break;
+
                 }
             }
 
@@ -246,19 +245,19 @@ public class CategoriesActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder _holder, @SuppressLint("RecyclerView") final int _position) {
-            View _view = _holder.itemView;
+        public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
+            View view = holder.itemView;
 
-            final TextView textview1 = _view.findViewById(R.id.tutorialTitle);
+            final TextView textview1 = view.findViewById(R.id.emptyTitle);
 
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _view.setLayoutParams(_lp);
-            textview1.setText(Objects.requireNonNull(_data.get(_position).get("category_name")).toString());
+            view.setLayoutParams(_lp);
+            textview1.setText(Objects.requireNonNull(_data.get(position).get("category_name")).toString());
             textview1.setOnClickListener(new View.OnClickListener() {
                 @SuppressLint("InflateParams")
                 @Override
                 public void onClick(View _view) {
-                    if (Objects.requireNonNull(_data.get(_position).get("category_name")).toString().equals("Animated")) {
+                    if (Objects.requireNonNull(_data.get(position).get("category_name")).toString().equals("Animated")) {
                         final com.google.android.material.bottomsheet.BottomSheetDialog bottomSheetDialog = new com.google.android.material.bottomsheet.BottomSheetDialog(CategoriesActivity.this, R.style.materialsheet);
 
                         View bottomSheetView;
@@ -268,32 +267,21 @@ public class CategoriesActivity extends AppCompatActivity {
                         bottomSheetDialog.getWindow().findViewById(R.id.design_bottom_sheet).setBackgroundResource(android.R.color.transparent);
 
                         final TextView infook = bottomSheetView.findViewById(R.id.infosheet_ok);
-
                         final TextView infocancel = bottomSheetView.findViewById(R.id.infosheet_cancel);
-
-                        final TextView infotitle = bottomSheetView.findViewById(R.id.infosheet_title);
-
-                        final TextView infosub = bottomSheetView.findViewById(R.id.infosheet_sub);
-
                         final LinearLayout infoback = bottomSheetView.findViewById(R.id.infosheet_back);
-
                         final LinearLayout slider = bottomSheetView.findViewById(R.id.slider);
 
-                        MainUIMethods.advancedCorners(infoback, "#ffffff", 38, 38, 0, 0);
+                        advancedCorners(infoback, "#ffffff", 38, 38, 0, 0);
 
-                        MainUIMethods.rippleRoundStroke(infook, "#7289DA", "#6275BB", 20, 0, "#007EEF");
+                        rippleRoundStroke(infook, "#7289DA", "#6275BB", 20, 0, "#007EEF");
 
-                        MainUIMethods.rippleRoundStroke(infocancel, "#424242", "#181818", 20, 0, "#007EEF");
+                        rippleRoundStroke(infocancel, "#424242", "#181818", 20, 0, "#007EEF");
 
-                        MainUIMethods.setViewRadius(slider, 180, "#BDBDBD");
-                        infotitle.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
-                        infosub.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
-                        infook.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
-                        infocancel.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
+                        setViewRadius(slider, 180, "#BDBDBD");
                         infook.setOnClickListener(new View.OnClickListener() {
                             public void onClick(View v) {
                                 toEmojis.putExtra("switchFrom", "categories");
-                                toEmojis.putExtra("category_id", Objects.requireNonNull(_data.get(_position).get("category_id")).toString());
+                                toEmojis.putExtra("category_id", Objects.requireNonNull(_data.get(position).get("category_id")).toString());
                                 toEmojis.setClass(getApplicationContext(), EmojisActivity.class);
                                 startActivity(toEmojis);
                                 bottomSheetDialog.dismiss();
@@ -309,14 +297,13 @@ public class CategoriesActivity extends AppCompatActivity {
                         }
                     } else {
                         toEmojis.putExtra("switchFrom", "categories");
-                        toEmojis.putExtra("category_id", Objects.requireNonNull(_data.get(_position).get("category_id")).toString());
+                        toEmojis.putExtra("category_id", Objects.requireNonNull(_data.get(position).get("category_id")).toString());
                         toEmojis.setClass(getApplicationContext(), EmojisActivity.class);
                         startActivity(toEmojis);
                     }
                 }
             });
-            textview1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.NORMAL);
-            MainUIMethods.rippleRoundStroke(textview1, "#F5F5F5", "#EEEEEE", 25, 1, "#EEEEEE");
+            rippleRoundStroke(textview1, "#F5F5F5", "#EEEEEE", 25, 1, "#EEEEEE");
         }
 
         @Override
@@ -332,44 +319,4 @@ public class CategoriesActivity extends AppCompatActivity {
 
     }
 
-    public class LoadingRecyclerAdapter extends RecyclerView.Adapter<LoadingRecyclerAdapter.ViewHolder> {
-        ArrayList<HashMap<String, Object>> _data;
-
-        public LoadingRecyclerAdapter(ArrayList<HashMap<String, Object>> _arr) {
-            _data = _arr;
-        }
-
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater _inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            @SuppressLint("InflateParams") View _v = _inflater.inflate(R.layout.loadingview, null);
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _v.setLayoutParams(_lp);
-            return new ViewHolder(_v);
-        }
-
-        @Override
-        public void onBindViewHolder(ViewHolder _holder, final int _position) {
-            View _view = _holder.itemView;
-
-            final LinearLayout categoriesShimmer = _view.findViewById(R.id.categoriesShimmer);
-            final LinearLayout packsloading = _view.findViewById(R.id.packsloading);
-
-            MainUIMethods.setClippedView(categoriesShimmer, "#FFFFFF", 30, 0);
-            packsloading.setVisibility(View.GONE);
-        }
-
-        @Override
-        public int getItemCount() {
-            return _data.size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public ViewHolder(View v) {
-                super(v);
-            }
-        }
-
-    }
 }

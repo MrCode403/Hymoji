@@ -4,7 +4,6 @@ import static com.nerbly.bemoji.Functions.MainFunctions.initializeCacheScan;
 import static com.nerbly.bemoji.Functions.MainFunctions.trimCache;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
-import static com.nerbly.bemoji.UI.MainUIMethods.changeActivityFont;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
 import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
@@ -14,8 +13,6 @@ import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -109,14 +106,9 @@ public class SettingsActivity extends AppCompatActivity {
         setting2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View _view) {
-                if (isStoragePermissionGranted()) {
-                    trimCache(SettingsActivity.this);
-                    textview8.setText(getString(R.string.settings_option_3_title).concat(" (" + initializeCacheScan(SettingsActivity.this) + ")"));
-                    showCustomSnackBar(getString(R.string.cache_cleared_success), SettingsActivity.this);
-                } else {
-                    androidx.core.app.ActivityCompat.requestPermissions(SettingsActivity.this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                    showCustomSnackBar(getString(R.string.ask_for_permission), SettingsActivity.this);
-                }
+                trimCache(SettingsActivity.this);
+                textview8.setText(getString(R.string.settings_option_3_title).concat(" (" + initializeCacheScan(SettingsActivity.this) + ")"));
+                showCustomSnackBar(getString(R.string.cache_cleared_success), SettingsActivity.this);
             }
         });
 
@@ -187,7 +179,6 @@ public class SettingsActivity extends AppCompatActivity {
         setViewRadius(slider, 90, "#E0E0E0");
         DARK_ICONS(this);
         transparentStatusBar(this);
-        changeActivityFont("whitney", this);
         rippleRoundStroke(setting1, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
         rippleRoundStroke(setting2, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
         rippleRoundStroke(setting3, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
@@ -197,36 +188,35 @@ public class SettingsActivity extends AppCompatActivity {
         rippleRoundStroke(setting7, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
         rippleRoundStroke(setting8, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
         rippleRoundStroke(setting10, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
-        title.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/whitney.ttf"), Typeface.BOLD);
     }
 
     public void bottomSheetBehaviorListener() {
         sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    finish();
-                } else {
-                    if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+
+                switch (newState) {
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+                    case BottomSheetBehavior.STATE_DRAGGING:
                         shadAnim(background, "elevation", 20, 200);
                         shadAnim(slider, "translationY", 0, 200);
                         shadAnim(slider, "alpha", 1, 200);
                         slider.setVisibility(View.VISIBLE);
-                    } else {
-                        if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                            shadAnim(background, "elevation", 0, 200);
-                            shadAnim(slider, "translationY", -200, 200);
-                            shadAnim(slider, "alpha", 0, 200);
-                            slider.setVisibility(View.INVISIBLE);
-                        } else {
-                            if (newState == BottomSheetBehavior.STATE_DRAGGING) {
-                                shadAnim(background, "elevation", 20, 200);
-                                shadAnim(slider, "translationY", 0, 200);
-                                shadAnim(slider, "alpha", 1, 200);
-                                slider.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    }
+                        break;
+
+                    case BottomSheetBehavior.STATE_EXPANDED:
+                        shadAnim(background, "elevation", 0, 200);
+                        shadAnim(slider, "translationY", -200, 200);
+                        shadAnim(slider, "alpha", 0, 200);
+                        slider.setVisibility(View.INVISIBLE);
+                        break;
+                    case BottomSheetBehavior.STATE_HIDDEN:
+                        finish();
+                        break;
+                    case BottomSheetBehavior.STATE_HALF_EXPANDED:
+                    case BottomSheetBehavior.STATE_SETTLING:
+                        break;
+
                 }
             }
 
@@ -236,25 +226,4 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
     }
-
-    public void performClick(final View _view) {
-        _view.performClick();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                performClick(setting2);
-            } else {
-                showCustomSnackBar(getString(R.string.ask_for_permission), SettingsActivity.this);
-            }
-        }
-    }
-
-    private Boolean isStoragePermissionGranted() {
-        return androidx.core.content.ContextCompat.checkSelfPermission(SettingsActivity.this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_DENIED && androidx.core.content.ContextCompat.checkSelfPermission(SettingsActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_DENIED;
-    }
-
 }
