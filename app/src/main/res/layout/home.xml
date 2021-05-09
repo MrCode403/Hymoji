@@ -15,7 +15,7 @@
         android:orientation="vertical">
 
         <ScrollView
-            android:id="@+id/vscroll2"
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none"
@@ -30,7 +30,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/emptyTitle"
+                    android:id="@+id/activityTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -44,7 +44,7 @@
                     android:textSize="30sp" />
 
                 <TextView
-                    android:id="@+id/tutorialSubtitle"
+                    android:id="@+id/activityDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -305,7 +305,7 @@
                         android:clickable="true"
                         android:focusable="true"
                         android:theme="@style/Theme.MaterialComponents.Light"
-                        app:cardCornerRadius="90dp"
+                        app:cardCornerRadius="25dp"
                         app:cardElevation="0dp"
                         app:rippleColor="#EEEEEE"
                         app:strokeColor="#E0E0E0"
@@ -449,7 +449,7 @@
                                 android:paddingTop="4dp">
 
                                 <TextView
-                                    android:id="@+id/textview42"
+                                    android:id="@+id/emojisCounter"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:singleLine="true"
@@ -459,7 +459,6 @@
                                     android:textSize="14sp" />
 
                                 <TextView
-                                    android:id="@+id/textview50"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="3dp"
@@ -516,7 +515,7 @@
                                 android:paddingTop="4dp">
 
                                 <TextView
-                                    android:id="@+id/textview44"
+                                    android:id="@+id/categoriesCounter"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:singleLine="true"
@@ -526,7 +525,6 @@
                                     android:textSize="14sp" />
 
                                 <TextView
-                                    android:id="@+id/textview51"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="3dp"
@@ -587,7 +585,6 @@
                                 android:textSize="20sp" />
 
                             <TextView
-                                android:id="@+id/textview46"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:paddingTop="4dp"
@@ -636,7 +633,6 @@
                                 android:textSize="20sp" />
 
                             <TextView
-                                android:id="@+id/textview48"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:paddingTop="4dp"
@@ -666,7 +662,6 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/activityDescription"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
@@ -683,7 +678,7 @@
                             android:textSize="16sp" />
 
                         <TextView
-                            android:id="@+id/textview53"
+                            android:id="@+id/seeMorePacks"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"

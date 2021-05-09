@@ -3,6 +3,7 @@ package com.nerbly.bemoji;
 
 import static com.nerbly.bemoji.Adapters.MainEmojisAdapter.Recycler1Adapter;
 import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
+import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.RippleEffects;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
@@ -13,17 +14,14 @@ import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -64,8 +62,7 @@ public class EmojisActivity extends AppCompatActivity {
     private static EditText searchBoxField;
     private final Timer timer = new Timer();
     private final boolean isCategorized = false;
-    private final Intent toPreview = new Intent();
-    GridLayoutManager layoutManager1 = new GridLayoutManager(this, 3);
+    private GridLayoutManager layoutManager1 = new GridLayoutManager(this, 3);
     private double searchPosition = 0;
     private double emojisCount = 0;
     private boolean isSearching = false;
@@ -95,8 +92,9 @@ public class EmojisActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle _savedInstanceState) {
-        super.onCreate(_savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        loadLocale(this);
         setContentView(R.layout.emojis);
         initialize();
         com.google.firebase.FirebaseApp.initializeApp(this);
@@ -137,14 +135,11 @@ public class EmojisActivity extends AppCompatActivity {
             }
         });
 
-        sortByBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                if (searchBoxField.getText().toString().trim().length() > 0) {
-                    searchBoxField.setText("");
-                } else {
-                    showFilterMenu(sortByBtn);
-                }
+        sortByBtn.setOnClickListener(_view -> {
+            if (searchBoxField.getText().toString().trim().length() > 0) {
+                searchBoxField.setText("");
+            } else {
+                showFilterMenu(sortByBtn);
             }
         });
 
@@ -249,7 +244,7 @@ public class EmojisActivity extends AppCompatActivity {
         OverScrollDecoratorHelper.setUpOverScroll(chiprecycler, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL);
         AudienceNetworkAds.initialize(this);
 
-        AdView bannerAd = new AdView(this, "3773974092696684_3774022966025130", AdSize.BANNER_HEIGHT_50);
+        AdView bannerAd = new AdView(this, getString(R.string.banner_id), AdSize.BANNER_HEIGHT_50);
 
         adview.addView(bannerAd);
 
@@ -349,30 +344,23 @@ public class EmojisActivity extends AppCompatActivity {
         TimerTask loadingTmr = new TimerTask() {
             @Override
             public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        shadAnim(emptyview, "translationY", -1000, 300);
-                        shadAnim(emptyview, "alpha", 0, 300);
+                runOnUiThread(() -> {
+                    shadAnim(emptyview, "translationY", -1000, 300);
+                    shadAnim(emptyview, "alpha", 0, 300);
+                    searchBoxField.setEnabled(true);
 
 
-                        if (Objects.equals(getIntent().getStringExtra("switchFrom"), "search")) {
+                    if (Objects.equals(getIntent().getStringExtra("switchFrom"), "search")) {
 
-                            transitionComplete(searchBox, "searchbox");
-                            searchBoxField.requestFocus();
-                            TimerTask fixUIIssues = new TimerTask() {
-                                @Override
-                                public void run() {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            hideShowKeyboard(true, searchBoxField);
-                                        }
-                                    });
-                                }
-                            };
-                            timer.schedule(fixUIIssues, 500);
-                        }
+                        transitionComplete(searchBox, "searchbox");
+                        searchBoxField.requestFocus();
+                        TimerTask fixUIIssues = new TimerTask() {
+                            @Override
+                            public void run() {
+                                runOnUiThread(() -> hideShowKeyboard(true, searchBoxField));
+                            }
+                        };
+                        timer.schedule(fixUIIssues, 500);
                     }
                 });
             }
@@ -410,49 +398,40 @@ public class EmojisActivity extends AppCompatActivity {
         } else {
             rippleRoundStroke(b3, "#FFFFFF", "#EEEEEE", 0, 0, "#EEEEEE");
         }
-        b1.setOnClickListener(new OnClickListener() {
-            public void onClick(View view) {
-                if (!isSortingNew) {
-                    isSortingNew = true;
-                    isSortingOld = false;
-                    isSortingAlphabet = false;
-                    Utils.sortListMap2(emojisList, "id", false, false);
-                    emojisRecycler.setAdapter(new Recycler1Adapter(emojisList));
-                    popup.dismiss();
-                }
+        b1.setOnClickListener(view1 -> {
+            if (!isSortingNew) {
+                isSortingNew = true;
+                isSortingOld = false;
+                isSortingAlphabet = false;
+                Utils.sortListMap2(emojisList, "id", false, false);
+                emojisRecycler.setAdapter(new Recycler1Adapter(emojisList));
+                popup.dismiss();
             }
         });
-        b2.setOnClickListener(new OnClickListener() {
-            public void onClick(View view) {
-                if (!isSortingOld) {
-                    isSortingOld = true;
-                    isSortingNew = false;
-                    isSortingAlphabet = false;
-                    Utils.sortListMap2(emojisList, "id", false, true);
-                    emojisRecycler.setAdapter(new Recycler1Adapter(emojisList));
-                    popup.dismiss();
-                }
+        b2.setOnClickListener(view12 -> {
+            if (!isSortingOld) {
+                isSortingOld = true;
+                isSortingNew = false;
+                isSortingAlphabet = false;
+                Utils.sortListMap2(emojisList, "id", false, true);
+                emojisRecycler.setAdapter(new Recycler1Adapter(emojisList));
+                popup.dismiss();
             }
         });
-        b3.setOnClickListener(new OnClickListener() {
-            public void onClick(View view) {
-                if (!isSortingAlphabet) {
-                    isSortingAlphabet = true;
-                    isSortingNew = false;
-                    isSortingOld = false;
+        b3.setOnClickListener(view13 -> {
+            if (!isSortingAlphabet) {
+                isSortingAlphabet = true;
+                isSortingNew = false;
+                isSortingOld = false;
 
-                    Utils.sortListMap(emojisList, "title", false, true);
-                    emojisRecycler.setAdapter(new Recycler1Adapter(emojisList));
-                    popup.dismiss();
-                }
+                Utils.sortListMap(emojisList, "title", false, true);
+                emojisRecycler.setAdapter(new Recycler1Adapter(emojisList));
+                popup.dismiss();
             }
         });
         popup.setAnimationStyle(android.R.style.Animation_Dialog);
 
         popup.showAsDropDown(view, 0, 0);
-
-        popup.setBackgroundDrawable(new BitmapDrawable());
-
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -613,20 +592,17 @@ public class EmojisActivity extends AppCompatActivity {
                     emojisRecycler.setVisibility(View.GONE);
                     searchBox.setVisibility(View.GONE);
                     emptyTitle.setText(getString(R.string.emojis_not_found));
-                    shadAnim(emptyAnimation, "translationX", -200, 400);
-                    shadAnim(emptyAnimation, "alpha", 0, 400);
+                    shadAnim(emptyAnimation, "translationX", -200, 200);
+                    shadAnim(emptyAnimation, "alpha", 0, 200);
                     TimerTask loadingTmr = new TimerTask() {
                         @Override
                         public void run() {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    emptyAnimation.setAnimation("animations/notfound.json");
-                                    emptyAnimation.playAnimation();
-                                    emptyAnimation.setTranslationX(200);
-                                    shadAnim(emptyAnimation, "translationX", 0, 200);
-                                    shadAnim(emptyAnimation, "alpha", 1, 200);
-                                }
+                            runOnUiThread(() -> {
+                                emptyAnimation.setAnimation("animations/notfound.json");
+                                emptyAnimation.playAnimation();
+                                emptyAnimation.setTranslationX(200);
+                                shadAnim(emptyAnimation, "translationX", 0, 200);
+                                shadAnim(emptyAnimation, "alpha", 1, 200);
                             });
                         }
                     };

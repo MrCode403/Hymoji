@@ -4,7 +4,6 @@ import static com.nerbly.bemoji.EmojisActivity.whenChipItemClicked;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,12 +46,7 @@ public class EmojisSuggestionsAdapter {
 
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             view.setLayoutParams(_lp);
-            cardview3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View _view) {
-                    whenChipItemClicked(Objects.requireNonNull(_data.get(position).get("title")).toString());
-                }
-            });
+            cardview3.setOnClickListener(_view -> whenChipItemClicked(Objects.requireNonNull(_data.get(position).get("title")).toString()));
             textview1.setText(Objects.requireNonNull(_data.get(position).get("title")).toString());
         }
 

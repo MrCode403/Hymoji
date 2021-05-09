@@ -1,6 +1,7 @@
 package com.nerbly.bemoji;
 
 import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
+import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
@@ -14,7 +15,6 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -31,13 +31,8 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.downloader.Error;
-import com.downloader.OnCancelListener;
 import com.downloader.OnDownloadListener;
-import com.downloader.OnPauseListener;
-import com.downloader.OnProgressListener;
-import com.downloader.OnStartOrResumeListener;
 import com.downloader.PRDownloader;
-import com.downloader.Progress;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.nerbly.bemoji.Functions.FileUtil;
 import com.nerbly.bemoji.Functions.Utils;
@@ -51,8 +46,6 @@ public class PreviewActivity extends AppCompatActivity {
 
     private final Timer timer = new Timer();
     private final ObjectAnimator downloadAnimation = new ObjectAnimator();
-    com.google.android.material.snackbar.Snackbar snackBarView;
-    com.google.android.material.snackbar.Snackbar.SnackbarLayout sblayout;
     private BottomSheetBehavior<LinearLayout> sheetBehavior;
     private String downloadPath = "";
     private String downloadUrl = "";
@@ -74,6 +67,7 @@ public class PreviewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadLocale(this);
         setContentView(R.layout.preview);
         initialize();
         com.google.firebase.FirebaseApp.initializeApp(this);
@@ -94,25 +88,17 @@ public class PreviewActivity extends AppCompatActivity {
         download_tv = findViewById(R.id.download_tv);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
-        linear1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            }
-        });
+        linear1.setOnClickListener(_view -> sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN));
 
-        download.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                if (!isDownloading && !download_tv.getText().toString().contains("Saved")) {
-                    if (sharedPref.getString("downloadPath", "").isEmpty()) {
-                        downloadPath = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS).concat("/Bemojis");
-                    } else {
-                        downloadPath = sharedPref.getString("downloadPath", "");
-                    }
-                    downloadUrl = getIntent().getStringExtra("imageUrl");
-                    startDownload("Bemoji_".concat(downloadUrl.substring(downloadUrl.lastIndexOf('/') + 1)), downloadUrl, downloadPath);
+        download.setOnClickListener(_view -> {
+            if (!isDownloading && !download_tv.getText().toString().contains("Saved")) {
+                if (sharedPref.getString("downloadPath", "").isEmpty()) {
+                    downloadPath = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS).concat("/Bemojis");
+                } else {
+                    downloadPath = sharedPref.getString("downloadPath", "");
                 }
+                downloadUrl = getIntent().getStringExtra("imageUrl");
+                startDownload("Bemoji_".concat(downloadUrl.substring(downloadUrl.lastIndexOf('/') + 1)), downloadUrl, downloadPath);
             }
         });
     }
@@ -134,19 +120,14 @@ public class PreviewActivity extends AppCompatActivity {
         fixUIIssues = new TimerTask() {
             @Override
             public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    }
-                });
+                runOnUiThread(() -> sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED));
             }
         };
         timer.schedule(fixUIIssues, 200);
         setBlurImageUrl(emoji, 25, getIntent().getStringExtra("imageUrl"));
         setImageFromUrl(imageview7, getIntent().getStringExtra("imageUrl"));
         activityTitle.setText(getIntent().getStringExtra("title"));
-        activitySubtitle.setText(getString(R.string.submitted_by).concat(getIntent().getStringExtra("submitted_by")));
+        activitySubtitle.setText(getString(R.string.submitted_by) + " " + getIntent().getStringExtra("submitted_by"));
         bottomBehaviourListener();
         shadAnim(linear1, "alpha", 1, 200);
     }
@@ -181,12 +162,7 @@ public class PreviewActivity extends AppCompatActivity {
                         fixUIIssues = new TimerTask() {
                             @Override
                             public void run() {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        finish();
-                                    }
-                                });
+                                runOnUiThread(PreviewActivity.this::finish);
                             }
                         };
                         timer.schedule(fixUIIssues, 150);
@@ -219,30 +195,18 @@ public class PreviewActivity extends AppCompatActivity {
             downloadAnimation.start();
             PRDownloader.download(url, path, name)
                     .build()
-                    .setOnStartOrResumeListener(new OnStartOrResumeListener() {
-                        @Override
-                        public void onStartOrResume() {
+                    .setOnStartOrResumeListener(() -> {
 
-                        }
                     })
-                    .setOnPauseListener(new OnPauseListener() {
-                        @Override
-                        public void onPause() {
+                    .setOnPauseListener(() -> {
 
-                        }
                     })
-                    .setOnCancelListener(new OnCancelListener() {
-                        @Override
-                        public void onCancel() {
+                    .setOnCancelListener(() -> {
 
-                        }
                     })
-                    .setOnProgressListener(new OnProgressListener() {
-                        @Override
-                        public void onProgress(Progress progress) {
-                            long progressPercent = progress.currentBytes * 100 / progress.totalBytes;
-                            download_tv.setText(getString(R.string.downloading).concat(progressPercent + "%"));
-                        }
+                    .setOnProgressListener(progress -> {
+                        long progressPercent = progress.currentBytes * 100 / progress.totalBytes;
+                        download_tv.setText(getString(R.string.downloading).concat(progressPercent + "%"));
                     })
                     .start(new OnDownloadListener() {
                         @Override

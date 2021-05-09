@@ -3,13 +3,11 @@ package com.nerbly.bemoji.Functions;
 import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.security.cert.CertificateException;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -53,13 +51,11 @@ public class RequestNetworkController {
                 final TrustManager[] trustAllCerts = new TrustManager[]{
                         new X509TrustManager() {
                             @Override
-                            public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType)
-                                    throws CertificateException {
+                            public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) {
                             }
 
                             @Override
-                            public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType)
-                                    throws CertificateException {
+                            public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) {
                             }
 
                             @Override
@@ -76,12 +72,7 @@ public class RequestNetworkController {
                 builder.connectTimeout(SOCKET_TIMEOUT, TimeUnit.MILLISECONDS);
                 builder.readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
                 builder.writeTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
-                builder.hostnameVerifier(new HostnameVerifier() {
-                    @Override
-                    public boolean verify(String hostname, SSLSession session) {
-                        return true;
-                    }
-                });
+                builder.hostnameVerifier((hostname, session) -> true);
             } catch (Exception ignored) {
             }
 
@@ -109,7 +100,7 @@ public class RequestNetworkController {
                     HttpUrl.Builder httpBuilder;
 
                     try {
-                        httpBuilder = HttpUrl.parse(url).newBuilder();
+                        httpBuilder = Objects.requireNonNull(HttpUrl.parse(url)).newBuilder();
                     } catch (NullPointerException ne) {
                         throw new NullPointerException("unexpected url: " + url);
                     }
@@ -152,28 +143,20 @@ public class RequestNetworkController {
             getClient().newCall(req).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, final IOException e) {
-                    requestNetwork.getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            requestListener.onErrorResponse(tag, e.getMessage());
-                        }
-                    });
+                    requestNetwork.getActivity().runOnUiThread(() -> requestListener.onErrorResponse(tag, e.getMessage()));
                 }
 
                 @Override
                 public void onResponse(Call call, final Response response) throws IOException {
                     assert response.body() != null;
                     final String responseBody = response.body().string().trim();
-                    requestNetwork.getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Headers b = response.headers();
-                            HashMap<String, Object> map = new HashMap<>();
-                            for (String s : b.names()) {
-                                map.put(s, b.get(s) != null ? b.get(s) : "null");
-                            }
-                            requestListener.onResponse(tag, responseBody, map);
+                    requestNetwork.getActivity().runOnUiThread(() -> {
+                        Headers b = response.headers();
+                        HashMap<String, Object> map = new HashMap<>();
+                        for (String s : b.names()) {
+                            map.put(s, b.get(s) != null ? b.get(s) : "null");
                         }
+                        requestListener.onResponse(tag, responseBody, map);
                     });
                 }
             });

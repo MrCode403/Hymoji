@@ -177,7 +177,7 @@
                                 android:layout_centerVertical="true"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/twotone_backup_black_48dp"
-                                app:tint="#2196F3" />
+                                app:tint="#DE21F3" />
 
                             <TextView
                                 android:id="@+id/textview10"
@@ -206,6 +206,58 @@
                                 android:paddingRight="8dp"
                                 android:paddingBottom="8dp"
                                 android:text="@string/settings_option_2_subtitle"
+                                android:textColor="#616161"
+                                android:textSize="12sp" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/setting11"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingLeft="5dp"
+                            android:paddingTop="7dp"
+                            android:paddingRight="5dp"
+                            android:paddingBottom="7dp">
+
+                            <ImageView
+                                android:id="@+id/setting11_ic"
+                                android:layout_width="30dp"
+                                android:layout_height="25dp"
+                                android:layout_centerVertical="true"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/outline_language_black_48dp"
+                                app:tint="#2196F3" />
+
+                            <TextView
+                                android:id="@+id/setting11_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@+id/setting11_ic"
+                                android:fontFamily="@font/whitney"
+                                android:paddingLeft="8dp"
+                                android:paddingTop="8dp"
+                                android:paddingRight="8dp"
+                                android:paddingBottom="2dp"
+                                android:text="@string/settings_option_11_title"
+                                android:textColor="#212121"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/setting11_desc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/setting11_ic"
+                                android:layout_toEndOf="@+id/setting11_ic"
+                                android:fontFamily="@font/whitney"
+                                android:paddingLeft="8dp"
+                                android:paddingTop="2dp"
+                                android:paddingRight="8dp"
+                                android:paddingBottom="8dp"
+                                android:text="@string/settings_option_11_subtitle"
                                 android:textColor="#616161"
                                 android:textSize="12sp" />
                         </RelativeLayout>
@@ -590,7 +642,7 @@
                                 android:layout_centerVertical="true"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/twotone_sentiment_satisfied_alt_black_48dp"
-                                app:tint="#E91E63" />
+                                app:tint="#5A5A5A" />
 
                             <TextView
                                 android:id="@+id/textview22"

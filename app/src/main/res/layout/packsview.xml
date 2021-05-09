@@ -51,6 +51,7 @@
 					android:paddingRight="8dp"
 					android:text="@string/home_pack_seemore2"
 					android:textSize="12sp"
+					android:gravity="center_horizontal"
 					android:fontFamily="@font/whitney"
 					android:textColor="#757575" />
 			</LinearLayout>

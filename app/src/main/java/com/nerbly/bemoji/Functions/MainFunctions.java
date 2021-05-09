@@ -1,6 +1,8 @@
 package com.nerbly.bemoji.Functions;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Insets;
 import android.os.Build;
 import android.util.DisplayMetrics;
@@ -11,12 +13,37 @@ import androidx.annotation.NonNull;
 
 import java.io.File;
 import java.text.DecimalFormat;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MainFunctions {
 
+    //languages
+    public static void setLocale(String lang, Activity context) {
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        context.getBaseContext().getResources().updateConfiguration(config, context.getBaseContext().getResources().getDisplayMetrics());
+        SharedPreferences.Editor shared1 = context.getSharedPreferences("AppData", Activity.MODE_PRIVATE).edit();
+        shared1.putString("language", lang);
+        shared1.apply();
+    }
+
+    public static void loadLocale(Activity context) {
+
+        SharedPreferences shared = context.getSharedPreferences("AppData", Activity.MODE_PRIVATE);
+
+        if (shared.getString("language", "") != null) {
+            setLocale(shared.getString("language", ""), context);
+        }
+
+    }
+
+
+    //naming
     public static String capitalizedFirstWord(final String _data) {
         StringBuffer capBuffer = new StringBuffer();
         Matcher capMatcher = Pattern.compile("([a-z])([a-z]*)", Pattern.CASE_INSENSITIVE).matcher(_data);
@@ -27,6 +54,7 @@ public class MainFunctions {
     }
 
 
+    //screen utils
     public static int getScreenWidth(@NonNull Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             WindowMetrics windowMetrics = activity.getWindowManager().getCurrentWindowMetrics();

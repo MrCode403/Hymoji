@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     useLibrary 'org.apache.http.legacy'
@@ -9,22 +10,29 @@ android {
         applicationId "com.nerbly.bemoji"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 11
-        versionName "0.5"
+        versionCode 12
+        versionName "0.6"
     }
     buildTypes {
         release {
             debuggable false
-            minifyEnabled true
             shrinkResources true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            firebaseCrashlytics {
+                mappingFileUploadEnabled false
+            }
         }
         debug {
             debuggable true
-            minifyEnabled false
             shrinkResources false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -33,7 +41,7 @@ dependencies {
 
     //Google
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.4.0-alpha02'
+    implementation 'com.google.android.material:material:1.4.0-beta01'
     implementation 'com.google.firebase:firebase-messaging:21.1.0'
     implementation platform('com.google.firebase:firebase-bom:27.1.0')
     implementation 'com.google.firebase:firebase-crashlytics'

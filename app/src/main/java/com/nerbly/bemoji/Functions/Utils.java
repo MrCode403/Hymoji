@@ -11,7 +11,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
@@ -21,22 +20,20 @@ public class Utils {
 
 
     public static void sortListMap(final ArrayList<HashMap<String, Object>> listMap, final String key, final boolean isNumber, final boolean ascending) {
-        Collections.sort(listMap, new Comparator<HashMap<String, Object>>() {
-            public int compare(HashMap<String, Object> _compareMap1, HashMap<String, Object> _compareMap2) {
-                if (isNumber) {
-                    int count1 = Integer.parseInt(Objects.requireNonNull(_compareMap1.get(key)).toString());
-                    int count2 = Integer.parseInt(Objects.requireNonNull(_compareMap2.get(key)).toString());
-                    if (ascending) {
-                        return count1 < count2 ? -1 : 0;
-                    } else {
-                        return count1 > count2 ? -1 : 0;
-                    }
+        Collections.sort(listMap, (compareMap1, compareMap2) -> {
+            if (isNumber) {
+                int count1 = Integer.parseInt(Objects.requireNonNull(compareMap1.get(key)).toString());
+                int count2 = Integer.parseInt(Objects.requireNonNull(compareMap2.get(key)).toString());
+                if (ascending) {
+                    return count1 < count2 ? -1 : 0;
                 } else {
-                    if (ascending) {
-                        return (Objects.requireNonNull(_compareMap1.get(key)).toString()).compareTo(Objects.requireNonNull(_compareMap2.get(key)).toString());
-                    } else {
-                        return (Objects.requireNonNull(_compareMap2.get(key)).toString()).compareTo(Objects.requireNonNull(_compareMap1.get(key)).toString());
-                    }
+                    return count1 > count2 ? -1 : 0;
+                }
+            } else {
+                if (ascending) {
+                    return (Objects.requireNonNull(compareMap1.get(key)).toString()).compareTo(Objects.requireNonNull(compareMap2.get(key)).toString());
+                } else {
+                    return (Objects.requireNonNull(compareMap2.get(key)).toString()).compareTo(Objects.requireNonNull(compareMap1.get(key)).toString());
                 }
             }
         });
@@ -56,7 +53,7 @@ public class Utils {
 
         File sourceFile = new File(sourcePath);
         try {
-            BufferedInputStream origin = null;
+            BufferedInputStream origin;
             FileOutputStream dest = new FileOutputStream(toLocation);
             ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(
                     dest));
@@ -80,13 +77,12 @@ public class Utils {
         }
     }
 
-    private static void zipSubFolder(ZipOutputStream out, File folder,
-                                     int basePathLength) throws IOException {
+    private static void zipSubFolder(ZipOutputStream out, File folder, int basePathLength) throws IOException {
 
         final int BUFFER = 2048;
 
         File[] fileList = folder.listFiles();
-        BufferedInputStream origin = null;
+        BufferedInputStream origin;
         assert fileList != null;
         for (File file : fileList) {
             if (file.isDirectory()) {
@@ -119,22 +115,20 @@ public class Utils {
     }
 
     public static void sortListMap2(final ArrayList<HashMap<String, Object>> listMap, final String key, final boolean isNumber, final boolean ascending) {
-        Collections.sort(listMap, new Comparator<HashMap<String, Object>>() {
-            public int compare(HashMap<String, Object> _compareMap1, HashMap<String, Object> _compareMap2) {
-                if (isNumber) {
-                    int count1 = Integer.parseInt(Objects.requireNonNull(_compareMap1.get(key)).toString());
-                    int count2 = Integer.parseInt(Objects.requireNonNull(_compareMap2.get(key)).toString());
-                    if (ascending) {
-                        return count1 < count2 ? -1 : 0;
-                    } else {
-                        return count1 > count2 ? -1 : 0;
-                    }
+        Collections.sort(listMap, (_compareMap1, _compareMap2) -> {
+            if (isNumber) {
+                int count1 = Integer.parseInt(Objects.requireNonNull(_compareMap1.get(key)).toString());
+                int count2 = Integer.parseInt(Objects.requireNonNull(_compareMap2.get(key)).toString());
+                if (ascending) {
+                    return count1 < count2 ? -1 : 0;
                 } else {
-                    if (ascending) {
-                        return (Objects.requireNonNull(_compareMap1.get(key)).toString()).compareTo(Objects.requireNonNull(_compareMap2.get(key)).toString());
-                    } else {
-                        return (Objects.requireNonNull(_compareMap2.get(key)).toString()).compareTo(Objects.requireNonNull(_compareMap1.get(key)).toString());
-                    }
+                    return count1 > count2 ? -1 : 0;
+                }
+            } else {
+                if (ascending) {
+                    return (Objects.requireNonNull(_compareMap1.get(key)).toString()).compareTo(Objects.requireNonNull(_compareMap2.get(key)).toString());
+                } else {
+                    return (Objects.requireNonNull(_compareMap2.get(key)).toString()).compareTo(Objects.requireNonNull(_compareMap1.get(key)).toString());
                 }
             }
         });

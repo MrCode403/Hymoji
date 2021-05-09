@@ -1,6 +1,8 @@
 package com.nerbly.bemoji;
 
 import static com.nerbly.bemoji.Functions.MainFunctions.initializeCacheScan;
+import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
+import static com.nerbly.bemoji.Functions.MainFunctions.setLocale;
 import static com.nerbly.bemoji.Functions.MainFunctions.trimCache;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
@@ -25,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -33,7 +36,6 @@ public class SettingsActivity extends AppCompatActivity {
     private LinearLayout bsheetbehavior;
     private LinearLayout background;
     private LinearLayout slider;
-    private TextView title;
     private RelativeLayout setting1;
     private RelativeLayout setting3;
     private RelativeLayout setting2;
@@ -43,12 +45,14 @@ public class SettingsActivity extends AppCompatActivity {
     private RelativeLayout setting6;
     private RelativeLayout setting7;
     private RelativeLayout setting10;
+    private RelativeLayout setting11;
     private TextView textview8;
     private SharedPreferences sharedPref;
 
     @Override
-    protected void onCreate(Bundle _savedInstanceState) {
-        super.onCreate(_savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        loadLocale(this);
         setContentView(R.layout.settings);
         initialize();
         com.google.firebase.FirebaseApp.initializeApp(this);
@@ -60,7 +64,6 @@ public class SettingsActivity extends AppCompatActivity {
         bsheetbehavior = findViewById(R.id.sheetBehavior);
         background = findViewById(R.id.background);
         slider = findViewById(R.id.slider);
-        title = findViewById(R.id.activityTitle);
         setting1 = findViewById(R.id.setting1);
         setting3 = findViewById(R.id.setting3);
         setting2 = findViewById(R.id.setting2);
@@ -70,93 +73,82 @@ public class SettingsActivity extends AppCompatActivity {
         setting6 = findViewById(R.id.setting6);
         setting7 = findViewById(R.id.setting7);
         setting10 = findViewById(R.id.setting10);
+        setting11 = findViewById(R.id.setting11);
         textview8 = findViewById(R.id.textview8);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
-        linear1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            }
+        linear1.setOnClickListener(_view -> sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN));
+
+        setting1.setOnClickListener(_view -> {
+            sharedPref.edit().putString("emojisData", "").apply();
+
+            sharedPref.edit().putString("categoriesData", "").apply();
+
+            sharedPref.edit().putString("packsData", "").apply();
+
+            sharedPref.edit().putString("isAskingForReload", "true").apply();
+            showCustomSnackBar(getString(R.string.emojis_reloaded_success), SettingsActivity.this);
         });
 
-        setting1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                sharedPref.edit().putString("emojisData", "").apply();
-
-                sharedPref.edit().putString("categoriesData", "").apply();
-
-                sharedPref.edit().putString("packsData", "").apply();
-
-                sharedPref.edit().putString("isAskingForReload", "true").apply();
-                showCustomSnackBar(getString(R.string.emojis_reloaded_success), SettingsActivity.this);
-            }
+        setting3.setOnClickListener(_view -> {
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://emoji.gg/submit"));
+            startActivity(intent);
         });
 
-        setting3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("https://emoji.gg/submit"));
-                startActivity(intent);
-            }
+        setting2.setOnClickListener(_view -> {
+            trimCache(SettingsActivity.this);
+            textview8.setText(getString(R.string.settings_option_3_title).concat(" (" + initializeCacheScan(SettingsActivity.this) + ")"));
+            showCustomSnackBar(getString(R.string.cache_cleared_success), SettingsActivity.this);
         });
 
-        setting2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                trimCache(SettingsActivity.this);
-                textview8.setText(getString(R.string.settings_option_3_title).concat(" (" + initializeCacheScan(SettingsActivity.this) + ")"));
-                showCustomSnackBar(getString(R.string.cache_cleared_success), SettingsActivity.this);
-            }
+        setting4.setOnClickListener(_view -> {
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("mailto:nerblyteam@gmail.com"));
+            startActivity(intent);
         });
 
-        setting4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("mailto:nerblyteam@gmail.com"));
-                startActivity(intent);
-            }
+        setting5.setOnClickListener(_view -> {
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.nerbly.bemoji"));
+            startActivity(intent);
         });
 
-        setting5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.nerbly.bemoji"));
-                startActivity(intent);
-            }
+        setting6.setOnClickListener(_view -> {
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://emoji.gg/copyright"));
+            startActivity(intent);
         });
 
-        setting6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("https://emoji.gg/copyright"));
-                startActivity(intent);
-            }
+        setting7.setOnClickListener(_view -> {
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://emoji.gg/"));
+            startActivity(intent);
         });
-
-        setting7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("https://emoji.gg/"));
-                startActivity(intent);
-            }
+        setting10.setOnClickListener(_view -> {
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://github.com/ilyassesalama/bemoji"));
+            startActivity(intent);
         });
-        setting10.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("https://github.com/ilyassesalama/bemoji"));
-                startActivity(intent);
-            }
-        });
+        setting11.setOnClickListener(_view -> showLanguagesSheet());
     }
 
+    private void showLanguagesSheet() {
+        final String[] languages = {"English", "Deutsche"};
+
+        MaterialAlertDialogBuilder languagesDialog = new MaterialAlertDialogBuilder(this, R.style.RoundShapeTheme);
+        languagesDialog.setTitle("Choose your language")
+                .setSingleChoiceItems(languages, -1, (dialog, i) -> {
+                    if (i == 0) {
+                        setLocale("en", SettingsActivity.this);
+                    } else if (i == 1) {
+                        setLocale("de", SettingsActivity.this);
+                    }
+                    sharedPref.edit().putString("isAskingForReload", "true").apply();
+                    recreate();
+                })
+                .show();
+    }
 
     private void initializeLogic() {
         LOGIC_FRONTEND();
@@ -188,7 +180,9 @@ public class SettingsActivity extends AppCompatActivity {
         rippleRoundStroke(setting7, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
         rippleRoundStroke(setting8, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
         rippleRoundStroke(setting10, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
+        rippleRoundStroke(setting11, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
     }
+
 
     public void bottomSheetBehaviorListener() {
         sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {

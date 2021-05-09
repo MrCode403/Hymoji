@@ -1,5 +1,6 @@
 package com.nerbly.bemoji;
 
+import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
@@ -64,6 +65,7 @@ public class CategoriesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadLocale(this);
         setContentView(R.layout.categories);
         initialize();
         initializeLogic();
@@ -79,12 +81,7 @@ public class CategoriesActivity extends AppCompatActivity {
         RequestCategories = new RequestNetwork(this);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
-        linear1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            }
-        });
+        linear1.setOnClickListener(_view -> sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN));
 
         CategoriesRequestListener = new RequestNetwork.RequestListener() {
             @Override
@@ -114,13 +111,10 @@ public class CategoriesActivity extends AppCompatActivity {
                 loadingTmr = new TimerTask() {
                     @Override
                     public void run() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                loadingRecycler.setVisibility(View.GONE);
-                                categoriesRecycler.setVisibility(View.VISIBLE);
-                                sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                            }
+                        runOnUiThread(() -> {
+                            loadingRecycler.setVisibility(View.GONE);
+                            categoriesRecycler.setVisibility(View.VISIBLE);
+                            sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                         });
                     }
                 };
@@ -135,7 +129,7 @@ public class CategoriesActivity extends AppCompatActivity {
     }
 
     private void initializeLogic() {
-        _LOGIC_BACKEND();
+        LOGIC_BACKEND();
         LOGIC_FRONTEND();
     }
 
@@ -144,11 +138,11 @@ public class CategoriesActivity extends AppCompatActivity {
         sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
-    public void _LOGIC_BACKEND() {
+    public void LOGIC_BACKEND() {
         sheetBehavior = BottomSheetBehavior.from(bsheetbehavior);
         loadingRecycler.setLayoutManager(new LinearLayoutManager(this));
         categoriesRecycler.setLayoutManager(new LinearLayoutManager(this));
-        for (int _repeat39 = 0; _repeat39 < 30; _repeat39++) {
+        for (int i = 0; i < 30; i++) {
             HashMap<String, Object> shimmerMap = new HashMap<>();
             shimmerMap.put("key", "value");
             shimmerList.add(shimmerMap);
@@ -164,13 +158,10 @@ public class CategoriesActivity extends AppCompatActivity {
             loadingTmr = new TimerTask() {
                 @Override
                 public void run() {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadingRecycler.setVisibility(View.GONE);
-                            categoriesRecycler.setVisibility(View.VISIBLE);
-                            sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                        }
+                    runOnUiThread(() -> {
+                        loadingRecycler.setVisibility(View.GONE);
+                        categoriesRecycler.setVisibility(View.VISIBLE);
+                        sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                     });
                 }
             };
@@ -253,54 +244,44 @@ public class CategoriesActivity extends AppCompatActivity {
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             view.setLayoutParams(_lp);
             textview1.setText(Objects.requireNonNull(_data.get(position).get("category_name")).toString());
-            textview1.setOnClickListener(new View.OnClickListener() {
-                @SuppressLint("InflateParams")
-                @Override
-                public void onClick(View _view) {
-                    if (Objects.requireNonNull(_data.get(position).get("category_name")).toString().equals("Animated")) {
-                        final com.google.android.material.bottomsheet.BottomSheetDialog bottomSheetDialog = new com.google.android.material.bottomsheet.BottomSheetDialog(CategoriesActivity.this, R.style.materialsheet);
+            textview1.setOnClickListener(_view -> {
+                if (Objects.requireNonNull(_data.get(position).get("category_name")).toString().equals("Animated")) {
+                    final com.google.android.material.bottomsheet.BottomSheetDialog bottomSheetDialog = new com.google.android.material.bottomsheet.BottomSheetDialog(CategoriesActivity.this, R.style.materialsheet);
 
-                        View bottomSheetView;
-                        bottomSheetView = getLayoutInflater().inflate(R.layout.infosheet, null);
-                        bottomSheetDialog.setContentView(bottomSheetView);
+                    View bottomSheetView;
+                    bottomSheetView = getLayoutInflater().inflate(R.layout.infosheet, null);
+                    bottomSheetDialog.setContentView(bottomSheetView);
 
-                        bottomSheetDialog.getWindow().findViewById(R.id.design_bottom_sheet).setBackgroundResource(android.R.color.transparent);
+                    bottomSheetDialog.getWindow().findViewById(R.id.design_bottom_sheet).setBackgroundResource(android.R.color.transparent);
 
-                        final TextView infook = bottomSheetView.findViewById(R.id.infosheet_ok);
-                        final TextView infocancel = bottomSheetView.findViewById(R.id.infosheet_cancel);
-                        final LinearLayout infoback = bottomSheetView.findViewById(R.id.infosheet_back);
-                        final LinearLayout slider = bottomSheetView.findViewById(R.id.slider);
+                    final TextView infook = bottomSheetView.findViewById(R.id.infosheet_ok);
+                    final TextView infocancel = bottomSheetView.findViewById(R.id.infosheet_cancel);
+                    final LinearLayout infoback = bottomSheetView.findViewById(R.id.infosheet_back);
+                    final LinearLayout slider = bottomSheetView.findViewById(R.id.slider);
 
-                        advancedCorners(infoback, "#ffffff", 38, 38, 0, 0);
+                    advancedCorners(infoback, "#ffffff", 38, 38, 0, 0);
 
-                        rippleRoundStroke(infook, "#7289DA", "#6275BB", 20, 0, "#007EEF");
+                    rippleRoundStroke(infook, "#7289DA", "#6275BB", 20, 0, "#007EEF");
 
-                        rippleRoundStroke(infocancel, "#424242", "#181818", 20, 0, "#007EEF");
+                    rippleRoundStroke(infocancel, "#424242", "#181818", 20, 0, "#007EEF");
 
-                        setViewRadius(slider, 180, "#BDBDBD");
-                        infook.setOnClickListener(new View.OnClickListener() {
-                            public void onClick(View v) {
-                                toEmojis.putExtra("switchFrom", "categories");
-                                toEmojis.putExtra("category_id", Objects.requireNonNull(_data.get(position).get("category_id")).toString());
-                                toEmojis.setClass(getApplicationContext(), EmojisActivity.class);
-                                startActivity(toEmojis);
-                                bottomSheetDialog.dismiss();
-                            }
-                        });
-                        infocancel.setOnClickListener(new View.OnClickListener() {
-                            public void onClick(View v) {
-                                bottomSheetDialog.dismiss();
-                            }
-                        });
-                        if (!isFinishing()) {
-                            bottomSheetDialog.show();
-                        }
-                    } else {
+                    setViewRadius(slider, 180, "#BDBDBD");
+                    infook.setOnClickListener(v -> {
                         toEmojis.putExtra("switchFrom", "categories");
                         toEmojis.putExtra("category_id", Objects.requireNonNull(_data.get(position).get("category_id")).toString());
                         toEmojis.setClass(getApplicationContext(), EmojisActivity.class);
                         startActivity(toEmojis);
+                        bottomSheetDialog.dismiss();
+                    });
+                    infocancel.setOnClickListener(v -> bottomSheetDialog.dismiss());
+                    if (!isFinishing()) {
+                        bottomSheetDialog.show();
                     }
+                } else {
+                    toEmojis.putExtra("switchFrom", "categories");
+                    toEmojis.putExtra("category_id", Objects.requireNonNull(_data.get(position).get("category_id")).toString());
+                    toEmojis.setClass(getApplicationContext(), EmojisActivity.class);
+                    startActivity(toEmojis);
                 }
             });
             rippleRoundStroke(textview1, "#F5F5F5", "#EEEEEE", 25, 1, "#EEEEEE");

@@ -1,45 +1,61 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/setting5"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
-    android:gravity="center_vertical"
-    android:background="@android:color/white"
-    android:orientation="horizontal">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dock2"
+    android:layout_width="240dp"
+    android:layout_height="120dp"
+    android:background="#FAECFD"
+    android:paddingLeft="8dp"
+    android:paddingTop="10dp"
+    android:paddingRight="8dp"
+    android:paddingBottom="10dp">
+
     <ImageView
-        android:id="@+id/imageview5"
-        android:layout_width="30dp"
-        android:layout_height="25dp"
-        android:layout_centerVertical="true"
-        android:src="@drawable/twotone_feedback_black_48dp"
+        android:id="@+id/ico"
+        android:layout_width="27dp"
+        android:layout_height="27dp"
         android:scaleType="fitCenter"
-        app:tint="#F44336" />
-        <TextView
-            android:id="@+id/textview15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/imageview5"
-            android:paddingLeft="8dp"
-            android:paddingTop="8dp"
-            android:paddingRight="8dp"
-            android:paddingBottom="2dp"
-            android:text="@string/settings_option_5_title"
-            android:textSize="14sp"
-            android:textColor="#212121" />
-        <TextView
-            android:id="@+id/textview16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/imageview5"
-            android:layout_below="@+id/textview15"
-            android:paddingLeft="8dp"
-            android:paddingTop="2dp"
-            android:paddingRight="8dp"
-            android:paddingBottom="8dp"
-            android:text="@string/settings_option_5_subtitle"
-            android:textSize="12sp"
-            android:textColor="#616161" />
-</RelativeLayout>
+        android:src="@drawable/round_category_black_48dp"
+        app:tint="#CC01FE" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/whitney"
+        android:singleLine="true"
+        android:text="@string/home_dock2_title"
+        android:textColor="#212121"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/ico"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/whitney"
+        android:singleLine="true"
+        android:text="0"
+        android:textColor="#757575"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintEnd_toStartOf="@id/sub"
+        android:layout_marginEnd="2dp"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/sub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:fontFamily="@font/whitney"
+        android:singleLine="true"
+        android:text="@string/home_dock2_subtitle"
+        android:textColor="#757575"
+        app:layout_constraintLeft_toLeftOf="@+id/counter"
+        app:layout_constraintBaseline_toBaselineOf="@id/counter"
+
+        android:textSize="14sp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

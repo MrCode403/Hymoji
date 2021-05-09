@@ -42,8 +42,7 @@ public class MainUIMethods {
         android.graphics.drawable.GradientDrawable GG = new android.graphics.drawable.GradientDrawable();
         GG.setColor(Color.parseColor(focus));
         GG.setCornerRadius((float) round);
-        GG.setStroke((int) stroke,
-                Color.parseColor("#" + strokeclr.replace("#", "")));
+        GG.setStroke((int) stroke, Color.parseColor("#" + strokeclr.replace("#", "")));
         android.graphics.drawable.RippleDrawable RE = new android.graphics.drawable.RippleDrawable(new android.content.res.ColorStateList(new int[][]{new int[]{}}, new int[]{Color.parseColor(pressed)}), GG, null);
         view.setBackground(RE);
     }

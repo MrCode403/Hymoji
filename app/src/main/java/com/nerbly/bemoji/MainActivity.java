@@ -1,5 +1,6 @@
 package com.nerbly.bemoji;
 
+import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusNavBar;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
+        loadLocale(this);
         setContentView(R.layout.main);
         initialize();
         com.google.firebase.FirebaseApp.initializeApp(this);
@@ -60,14 +62,6 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewPager);
         continueBtn = findViewById(R.id.continueBtn);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
-
-        splashView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                intent.setClass(getApplicationContext(), HomeActivity.class);
-                startActivity(intent);
-            }
-        });
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -90,16 +84,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        continueBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                if (viewPager.getCurrentItem() == 2) {
-                    sharedPref.edit().putString("firstUse", "true").apply();
-                    intent.setClass(getApplicationContext(), HomeActivity.class);
-                    startActivity(intent);
-                } else {
-                    viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-                }
+        continueBtn.setOnClickListener(_view -> {
+            if (viewPager.getCurrentItem() == 2) {
+                sharedPref.edit().putString("firstUse", "true").apply();
+                intent.setClass(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
+            } else {
+                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
             }
         });
     }
@@ -157,16 +148,13 @@ public class MainActivity extends AppCompatActivity {
             TimerTask splashTmr = new TimerTask() {
                 @Override
                 public void run() {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            intent.setClass(getApplicationContext(), HomeActivity.class);
-                            startActivity(intent);
-                        }
+                    runOnUiThread(() -> {
+                        intent.setClass(getApplicationContext(), HomeActivity.class);
+                        startActivity(intent);
                     });
                 }
             };
-            timer.schedule(splashTmr, 2000);
+            timer.schedule(splashTmr, 1500);
         }
     }
 

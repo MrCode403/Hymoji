@@ -68,6 +68,7 @@
                             android:textColorHint="#757575"
                             android:textSize="14sp"
                             android:fontFamily="@font/whitney"
+                            android:enabled="false"
                             tools:ignore="TouchTargetSizeCheck" />
 
                         <ImageView

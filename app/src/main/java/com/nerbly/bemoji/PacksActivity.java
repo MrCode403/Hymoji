@@ -1,5 +1,6 @@
 package com.nerbly.bemoji;
 
+import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
@@ -12,7 +13,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -64,8 +64,6 @@ public class PacksActivity extends AppCompatActivity {
     private LinearLayout background;
     private LinearLayout adview;
     private LinearLayout slider;
-    private TextView textview3;
-    private TextView textview4;
     private RecyclerView packsRecycler;
     private RecyclerView loadingRecycler;
     private RequestNetwork startGettingPacks;
@@ -75,6 +73,7 @@ public class PacksActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
+        loadLocale(this);
         setContentView(R.layout.packs);
         initialize();
         com.google.firebase.FirebaseApp.initializeApp(this);
@@ -87,19 +86,12 @@ public class PacksActivity extends AppCompatActivity {
         background = findViewById(R.id.background);
         adview = findViewById(R.id.adview);
         slider = findViewById(R.id.slider);
-        textview3 = findViewById(R.id.download_tv);
-        textview4 = findViewById(R.id.activityDescription);
         packsRecycler = findViewById(R.id.packsRecycler);
         loadingRecycler = findViewById(R.id.loadingRecycler);
         startGettingPacks = new RequestNetwork(this);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
-        linear1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            }
-        });
+        linear1.setOnClickListener(_view -> sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN));
 
         PacksRequestListener = new RequestNetwork.RequestListener() {
             @Override
@@ -255,13 +247,10 @@ public class PacksActivity extends AppCompatActivity {
                 TimerTask loadingTmr = new TimerTask() {
                     @Override
                     public void run() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                packsRecycler.setVisibility(View.VISIBLE);
-                                loadingRecycler.setVisibility(View.GONE);
-                                sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                            }
+                        runOnUiThread(() -> {
+                            packsRecycler.setVisibility(View.VISIBLE);
+                            loadingRecycler.setVisibility(View.GONE);
+                            sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                         });
                     }
                 };
@@ -303,35 +292,32 @@ public class PacksActivity extends AppCompatActivity {
             textview2.setText(Objects.requireNonNull(data.get(position).get("description")).toString());
             textview3.setText(String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("amount")).toString()))));
             _setImageFromUrl(imageview1, Objects.requireNonNull(data.get(position).get("image")).toString());
-            cardview1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View _view) {
-                    try {
-                        packsTempArrayString = new Gson().toJson(packsList);
-                        JSONArray backPacksArray = new JSONArray(packsTempArrayString);
-                        JSONObject packsObject = backPacksArray.getJSONObject(position);
+            cardview1.setOnClickListener(_view -> {
+                try {
+                    packsTempArrayString = new Gson().toJson(packsList);
+                    JSONArray backPacksArray = new JSONArray(packsTempArrayString);
+                    JSONObject packsObject = backPacksArray.getJSONObject(position);
 
-                        JSONArray frontPacksArray = packsObject.getJSONArray("emojis");
-                        for (int frontPacksInt = 0; frontPacksInt < frontPacksArray.length(); frontPacksInt++) {
-                            packsArrayList.add(frontPacksArray.getString(frontPacksInt));
-                        }
-                        currentPositionPackArray = new Gson().toJson(packsArrayList);
-                        packsArrayList.clear();
-                    } catch (Exception ignored) {
-
+                    JSONArray frontPacksArray = packsObject.getJSONArray("emojis");
+                    for (int frontPacksInt = 0; frontPacksInt < frontPacksArray.length(); frontPacksInt++) {
+                        packsArrayList.add(frontPacksArray.getString(frontPacksInt));
                     }
-                    toPreview.putExtra("switchType", "pack");
-                    toPreview.putExtra("title", "BemojiPack_".concat(String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("id")).toString())))));
-                    toPreview.putExtra("subtitle", Objects.requireNonNull(data.get(position).get("description")).toString());
-                    toPreview.putExtra("imageUrl", Objects.requireNonNull(data.get(position).get("image")).toString());
-                    toPreview.putExtra("fileName", Objects.requireNonNull(data.get(position).get("slug")).toString());
-                    toPreview.putExtra("packEmojisArray", currentPositionPackArray);
-                    toPreview.putExtra("packEmojisAmount", Objects.requireNonNull(data.get(position).get("amount")).toString());
-                    toPreview.putExtra("packName", _capitalizedFirstWord(Objects.requireNonNull(data.get(position).get("name")).toString().replace("_", " ")));
-                    toPreview.putExtra("packId", Objects.requireNonNull(data.get(position).get("id")).toString());
-                    toPreview.setClass(getApplicationContext(), PackPreviewActivity.class);
-                    startActivity(toPreview);
+                    currentPositionPackArray = new Gson().toJson(packsArrayList);
+                    packsArrayList.clear();
+                } catch (Exception ignored) {
+
                 }
+                toPreview.putExtra("switchType", "pack");
+                toPreview.putExtra("title", "BemojiPack_".concat(String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("id")).toString())))));
+                toPreview.putExtra("subtitle", Objects.requireNonNull(data.get(position).get("description")).toString());
+                toPreview.putExtra("imageUrl", Objects.requireNonNull(data.get(position).get("image")).toString());
+                toPreview.putExtra("fileName", Objects.requireNonNull(data.get(position).get("slug")).toString());
+                toPreview.putExtra("packEmojisArray", currentPositionPackArray);
+                toPreview.putExtra("packEmojisAmount", Objects.requireNonNull(data.get(position).get("amount")).toString());
+                toPreview.putExtra("packName", _capitalizedFirstWord(Objects.requireNonNull(data.get(position).get("name")).toString().replace("_", " ")));
+                toPreview.putExtra("packId", Objects.requireNonNull(data.get(position).get("id")).toString());
+                toPreview.setClass(getApplicationContext(), PackPreviewActivity.class);
+                startActivity(toPreview);
             });
         }
 

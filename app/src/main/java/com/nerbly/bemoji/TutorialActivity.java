@@ -1,5 +1,6 @@
 package com.nerbly.bemoji;
 
+import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
@@ -57,8 +58,9 @@ public class TutorialActivity extends AppCompatActivity {
     private TimerTask loadTutorialTmr;
 
     @Override
-    protected void onCreate(Bundle _savedInstanceState) {
-        super.onCreate(_savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        loadLocale(this);
         setContentView(R.layout.tutorial);
         initialize();
         com.google.firebase.FirebaseApp.initializeApp(this);
@@ -75,12 +77,7 @@ public class TutorialActivity extends AppCompatActivity {
         loadingRecycler = findViewById(R.id.loadingRecycler);
         requestTutorial = new RequestNetwork(this);
 
-        linear1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            }
-        });
+        linear1.setOnClickListener(_view -> sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN));
 
         TutorialRequestListener = new RequestNetwork.RequestListener() {
             @Override
@@ -95,12 +92,9 @@ public class TutorialActivity extends AppCompatActivity {
                 loadTutorialTmr = new TimerTask() {
                     @Override
                     public void run() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                recyclerview1.setVisibility(View.VISIBLE);
-                                loadingRecycler.setVisibility(View.GONE);
-                            }
+                        runOnUiThread(() -> {
+                            recyclerview1.setVisibility(View.VISIBLE);
+                            loadingRecycler.setVisibility(View.GONE);
                         });
                     }
                 };
@@ -142,7 +136,7 @@ public class TutorialActivity extends AppCompatActivity {
         loadingRecycler.setHasFixedSize(true);
 
         AudienceNetworkAds.initialize(this);
-        AdView bannerAd = new AdView(this, "3773974092696684_3774022966025130", AdSize.BANNER_HEIGHT_50);
+        AdView bannerAd = new AdView(this, getString(R.string.banner_id), AdSize.BANNER_HEIGHT_50);
         adView.addView(bannerAd);
         bannerAd.loadAd();
     }

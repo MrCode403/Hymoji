@@ -52,26 +52,20 @@ public class MainEmojisAdapter {
             final ImageView imageview1 = _view.findViewById(R.id.emoji);
 
             setImgURL(Objects.requireNonNull(_data.get(_position).get("image")).toString(), imageview1);
-            linear1.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View _view) {
-                    Utils.showToast(_view.getContext(), Objects.requireNonNull(_data.get(_position).get("title")).toString());
-                    return true;
-                }
+            linear1.setOnLongClickListener(_view12 -> {
+                Utils.showToast(_view12.getContext(), Objects.requireNonNull(_data.get(_position).get("title")).toString());
+                return true;
             });
-            linear1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View _view) {
-                    toPreview.putExtra("switchType", "emoji");
-                    toPreview.putExtra("title", Objects.requireNonNull(_data.get(_position).get("title")).toString());
-                    toPreview.putExtra("submitted_by", Objects.requireNonNull(_data.get(_position).get("submitted_by")).toString());
-                    toPreview.putExtra("category", Objects.requireNonNull(_data.get(_position).get("category")).toString());
-                    toPreview.putExtra("fileName", Objects.requireNonNull(_data.get(_position).get("slug")).toString());
-                    toPreview.putExtra("description", Objects.requireNonNull(_data.get(_position).get("description")).toString());
-                    toPreview.putExtra("imageUrl", Objects.requireNonNull(_data.get(_position).get("image")).toString());
-                    toPreview.setClass(_view.getContext(), PreviewActivity.class);
-                    _view.getContext().startActivity(toPreview);
-                }
+            linear1.setOnClickListener(_view1 -> {
+                toPreview.putExtra("switchType", "emoji");
+                toPreview.putExtra("title", Objects.requireNonNull(_data.get(_position).get("title")).toString());
+                toPreview.putExtra("submitted_by", Objects.requireNonNull(_data.get(_position).get("submitted_by")).toString());
+                toPreview.putExtra("category", Objects.requireNonNull(_data.get(_position).get("category")).toString());
+                toPreview.putExtra("fileName", Objects.requireNonNull(_data.get(_position).get("slug")).toString());
+                toPreview.putExtra("description", Objects.requireNonNull(_data.get(_position).get("description")).toString());
+                toPreview.putExtra("imageUrl", Objects.requireNonNull(_data.get(_position).get("image")).toString());
+                toPreview.setClass(_view1.getContext(), PreviewActivity.class);
+                _view1.getContext().startActivity(toPreview);
             });
             linear2.setVisibility(View.GONE);
             AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);

@@ -6,7 +6,6 @@ import static com.nerbly.bemoji.Functions.SideFunctions.setImageFromUrl;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,12 +104,9 @@ public class HomePacksAdapter {
             } else {
                 cardview2.setVisibility(View.GONE);
             }
-            cardview2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View _view) {
-                    toPacks.setClass(imageview1.getContext(), PacksActivity.class);
-                    imageview1.getContext().startActivity(toPacks);
-                }
+            cardview2.setOnClickListener(_view -> {
+                toPacks.setClass(imageview1.getContext(), PacksActivity.class);
+                imageview1.getContext().startActivity(toPacks);
             });
         }
 
