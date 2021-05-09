@@ -38,11 +38,12 @@ public class MainFunctions {
         SharedPreferences shared = context.getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
         if (shared.getString("language", "") != null) {
-            setLocale(shared.getString("language", ""), shared.getString("language_position", ""), context);
+            if (!shared.getString("language", "").equals("")) {
+                setLocale(shared.getString("language", ""), shared.getString("language_position", ""), context);
+            }
         }
 
     }
-
 
     //naming
     public static String capitalizedFirstWord(final String _data) {
