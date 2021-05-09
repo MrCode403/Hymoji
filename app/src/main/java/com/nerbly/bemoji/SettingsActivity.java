@@ -133,23 +133,6 @@ public class SettingsActivity extends AppCompatActivity {
         setting11.setOnClickListener(_view -> showLanguagesSheet());
     }
 
-    private void showLanguagesSheet() {
-        final String[] languages = {"English", "Deutsche"};
-
-        MaterialAlertDialogBuilder languagesDialog = new MaterialAlertDialogBuilder(this, R.style.RoundShapeTheme);
-        languagesDialog.setTitle("Choose your language")
-                .setSingleChoiceItems(languages, -1, (dialog, i) -> {
-                    if (i == 0) {
-                        setLocale("en", SettingsActivity.this);
-                    } else if (i == 1) {
-                        setLocale("de", SettingsActivity.this);
-                    }
-                    sharedPref.edit().putString("isAskingForReload", "true").apply();
-                    recreate();
-                })
-                .show();
-    }
-
     private void initializeLogic() {
         LOGIC_FRONTEND();
         LOGIC_BACKEND();
@@ -183,6 +166,27 @@ public class SettingsActivity extends AppCompatActivity {
         rippleRoundStroke(setting11, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
     }
 
+    private void showLanguagesSheet() {
+        final String[] languages = {"English", "Deutsche"};
+        MaterialAlertDialogBuilder languagesDialog = new MaterialAlertDialogBuilder(this, R.style.RoundShapeTheme);
+        int languagePosition = -1;
+        if (sharedPref.getString("language_position", "") != null) {
+            if (!sharedPref.getString("language_position", "").equals("")) {
+                languagePosition = Integer.parseInt(sharedPref.getString("language_position", ""));
+            }
+        }
+        languagesDialog.setTitle("Choose your language")
+                .setSingleChoiceItems(languages, languagePosition, (dialog, i) -> {
+                    if (i == 0) {
+                        setLocale("en", Integer.toString(i), SettingsActivity.this);
+                    } else if (i == 1) {
+                        setLocale("de", Integer.toString(i), SettingsActivity.this);
+                    }
+                    sharedPref.edit().putString("isAskingForReload", "true").apply();
+                    recreate();
+                })
+                .show();
+    }
 
     public void bottomSheetBehaviorListener() {
         sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {

@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 public class MainFunctions {
 
     //languages
-    public static void setLocale(String lang, Activity context) {
+    public static void setLocale(String lang, String position, Activity context) {
         Locale locale = new Locale(lang);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
@@ -29,6 +29,7 @@ public class MainFunctions {
         context.getBaseContext().getResources().updateConfiguration(config, context.getBaseContext().getResources().getDisplayMetrics());
         SharedPreferences.Editor shared1 = context.getSharedPreferences("AppData", Activity.MODE_PRIVATE).edit();
         shared1.putString("language", lang);
+        shared1.putString("language_position", String.valueOf(position));
         shared1.apply();
     }
 
@@ -37,7 +38,7 @@ public class MainFunctions {
         SharedPreferences shared = context.getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
         if (shared.getString("language", "") != null) {
-            setLocale(shared.getString("language", ""), context);
+            setLocale(shared.getString("language", ""), shared.getString("language_position", ""), context);
         }
 
     }
