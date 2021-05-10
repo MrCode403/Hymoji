@@ -443,6 +443,59 @@
                         </RelativeLayout>
 
                         <RelativeLayout
+                            android:id="@+id/setting12"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@android:color/white"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingLeft="5dp"
+                            android:paddingTop="7dp"
+                            android:paddingRight="5dp"
+                            android:paddingBottom="7dp">
+
+                            <ImageView
+                                android:id="@+id/setting12_ic"
+                                android:layout_width="30dp"
+                                android:layout_height="25dp"
+                                android:layout_centerVertical="true"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/outline_translate_black_48dp"
+                                app:tint="#F44336" />
+
+                            <TextView
+                                android:id="@+id/setting12_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@+id/setting12_ic"
+                                android:fontFamily="@font/whitney"
+                                android:paddingLeft="8dp"
+                                android:paddingTop="8dp"
+                                android:paddingRight="8dp"
+                                android:paddingBottom="2dp"
+                                android:text="@string/settings_option_12_title"
+                                android:textColor="#212121"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/setting12_desc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/setting12_ic"
+                                android:layout_toEndOf="@+id/setting12_ic"
+                                android:fontFamily="@font/whitney"
+                                android:paddingLeft="8dp"
+                                android:paddingTop="2dp"
+                                android:paddingRight="8dp"
+                                android:paddingBottom="8dp"
+                                android:text="@string/settings_option_12_subtitle"
+                                android:textColor="#616161"
+                                android:textSize="12sp" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
                             android:id="@+id/setting8"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

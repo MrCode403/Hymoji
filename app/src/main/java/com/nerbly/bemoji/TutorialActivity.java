@@ -1,21 +1,9 @@
 package com.nerbly.bemoji;
 
-import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
-import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
-import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
-import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
-import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
-
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.os.Handler;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +11,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
 import com.facebook.ads.AudienceNetworkAds;
@@ -31,18 +18,21 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nerbly.bemoji.Adapters.LoadingPacksAdapter;
+import com.nerbly.bemoji.Adapters.TutorialAdapter;
 import com.nerbly.bemoji.Functions.RequestNetwork;
 import com.nerbly.bemoji.Functions.RequestNetworkController;
-import com.nerbly.bemoji.Functions.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
+
+import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
+import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
+import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
+import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
+import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
 
 public class TutorialActivity extends AppCompatActivity {
-    private final Timer timer = new Timer();
     private final ArrayList<HashMap<String, Object>> shimmerList = new ArrayList<>();
     private BottomSheetBehavior<LinearLayout> sheetBehavior;
     private ArrayList<HashMap<String, Object>> tutorialList = new ArrayList<>();
@@ -55,7 +45,6 @@ public class TutorialActivity extends AppCompatActivity {
 
     private RequestNetwork requestTutorial;
     private RequestNetwork.RequestListener TutorialRequestListener;
-    private TimerTask loadTutorialTmr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,21 +74,14 @@ public class TutorialActivity extends AppCompatActivity {
                 try {
                     tutorialList = new Gson().fromJson(response, new TypeToken<ArrayList<HashMap<String, Object>>>() {
                     }.getType());
-                    recyclerview1.setAdapter(new Recyclerview1Adapter(tutorialList));
-                } catch (Exception e) {
-                    Utils.showToast(getApplicationContext(), (e.toString()));
+                    recyclerview1.setAdapter(new TutorialAdapter.Recyclerview1Adapter(tutorialList));
+                } catch (Exception ignored) {
                 }
-                loadTutorialTmr = new TimerTask() {
-                    @Override
-                    public void run() {
-                        runOnUiThread(() -> {
-                            recyclerview1.setVisibility(View.VISIBLE);
-                            loadingRecycler.setVisibility(View.GONE);
-                        });
-                    }
-                };
-                timer.schedule(loadTutorialTmr, 1000);
                 sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                new Handler().postDelayed(() -> {
+                    recyclerview1.setVisibility(View.VISIBLE);
+                    loadingRecycler.setVisibility(View.GONE);
+                }, 1200);
             }
 
             @Override
@@ -186,74 +168,4 @@ public class TutorialActivity extends AppCompatActivity {
 
     }
 
-
-    public void setImageFromUrl(final ImageView image, final String url) {
-        Glide.with(this)
-
-                .load(url)
-                .fitCenter()
-                .into(image);
-
-    }
-
-
-    public class Recyclerview1Adapter extends RecyclerView.Adapter<Recyclerview1Adapter.ViewHolder> {
-        ArrayList<HashMap<String, Object>> data;
-
-        public Recyclerview1Adapter(ArrayList<HashMap<String, Object>> _arr) {
-            data = _arr;
-        }
-
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater _inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            @SuppressLint("InflateParams") View _v = _inflater.inflate(R.layout.tutorialview, null);
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _v.setLayoutParams(_lp);
-            return new ViewHolder(_v);
-        }
-
-        @Override
-        public void onBindViewHolder(ViewHolder holder, final int position) {
-            View view = holder.itemView;
-
-            final TextView tutorialTitle = view.findViewById(R.id.tutorialTitle);
-            final TextView tutorialSubtitle = view.findViewById(R.id.tutorialSubtitle);
-            final ImageView tutorialImage = view.findViewById(R.id.tutorialImage);
-
-            if (Objects.requireNonNull(data.get(position).get("isTitled")).toString().equals("true")) {
-                tutorialTitle.setVisibility(View.VISIBLE);
-                tutorialTitle.setText(Objects.requireNonNull(data.get(position).get("title")).toString());
-            } else {
-                tutorialTitle.setVisibility(View.GONE);
-            }
-            if (Objects.requireNonNull(data.get(position).get("isSubtitled")).toString().equals("true")) {
-                tutorialSubtitle.setVisibility(View.VISIBLE);
-                tutorialSubtitle.setText(Objects.requireNonNull(data.get(position).get("subtitle")).toString());
-            } else {
-                tutorialSubtitle.setVisibility(View.GONE);
-            }
-            if (Objects.requireNonNull(data.get(position).get("isImaged")).toString().equals("true")) {
-                tutorialImage.setVisibility(View.VISIBLE);
-                setImageFromUrl(tutorialImage, Objects.requireNonNull(data.get(position).get("image")).toString());
-            } else {
-                tutorialImage.setVisibility(View.GONE);
-            }
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            view.setLayoutParams(_lp);
-        }
-
-        @Override
-        public int getItemCount() {
-            return data.size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public ViewHolder(View v) {
-                super(v);
-            }
-        }
-
-    }
 }

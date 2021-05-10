@@ -1,10 +1,5 @@
 package com.nerbly.bemoji;
 
-import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
-import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
-import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusNavBar;
-
 import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,11 +26,13 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
+
+import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
+import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
+import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusNavBar;
 
 public class MainActivity extends AppCompatActivity {
-    private final Timer timer = new Timer();
     private final ArrayList<HashMap<String, Object>> viewPagerList = new ArrayList<>();
     private final Intent intent = new Intent();
     FirebaseAnalytics mFirebaseAnalytics;
@@ -145,16 +143,12 @@ public class MainActivity extends AppCompatActivity {
         } else {
             splashView.setVisibility(View.VISIBLE);
             dataView.setVisibility(View.GONE);
-            TimerTask splashTmr = new TimerTask() {
-                @Override
-                public void run() {
-                    runOnUiThread(() -> {
-                        intent.setClass(getApplicationContext(), HomeActivity.class);
-                        startActivity(intent);
-                    });
-                }
-            };
-            timer.schedule(splashTmr, 1500);
+
+            new Handler().postDelayed(() -> {
+                intent.setClass(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
+            }, 2000);
+
         }
     }
 

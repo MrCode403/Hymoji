@@ -1,13 +1,5 @@
 package com.nerbly.bemoji;
 
-import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
-import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
-import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
-import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
-import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
-import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
-
 import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -15,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,11 +35,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
+
+import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
+import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
+import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
+import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
+import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
+import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
 
 public class CategoriesActivity extends AppCompatActivity {
-    private final Timer _timer = new Timer();
     private final ArrayList<HashMap<String, Object>> shimmerList = new ArrayList<>();
     private final Intent toEmojis = new Intent();
     private BottomSheetBehavior<LinearLayout> sheetBehavior;
@@ -60,7 +58,6 @@ public class CategoriesActivity extends AppCompatActivity {
     private RequestNetwork RequestCategories;
     private RequestNetwork.RequestListener CategoriesRequestListener;
     private SharedPreferences sharedPref;
-    private TimerTask loadingTmr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +69,6 @@ public class CategoriesActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        CoordinatorLayout linear1 = findViewById(R.id.tutorialBg);
         bsheetbehavior = findViewById(R.id.sheetBehavior);
         background = findViewById(R.id.background);
         slider = findViewById(R.id.slider);
@@ -80,8 +76,9 @@ public class CategoriesActivity extends AppCompatActivity {
         loadingRecycler = findViewById(R.id.loadingRecycler);
         RequestCategories = new RequestNetwork(this);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
+        CoordinatorLayout coordinator = findViewById(R.id.coordinator);
 
-        linear1.setOnClickListener(_view -> sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN));
+        coordinator.setOnClickListener(_view -> sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN));
 
         CategoriesRequestListener = new RequestNetwork.RequestListener() {
             @Override
@@ -108,17 +105,12 @@ public class CategoriesActivity extends AppCompatActivity {
                 sharedPref.edit().putString("categoriesData", new Gson().toJson(categoriesList)).apply();
                 Utils.sortListMap(categoriesList, "category_name", false, true);
                 categoriesRecycler.setAdapter(new CategoriesRecyclerAdapter(categoriesList));
-                loadingTmr = new TimerTask() {
-                    @Override
-                    public void run() {
-                        runOnUiThread(() -> {
-                            loadingRecycler.setVisibility(View.GONE);
-                            categoriesRecycler.setVisibility(View.VISIBLE);
-                            sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                        });
-                    }
-                };
-                _timer.schedule(loadingTmr, 800);
+                new Handler().postDelayed(() -> sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED), 500);
+
+                new Handler().postDelayed(() -> {
+                    loadingRecycler.setVisibility(View.GONE);
+                    categoriesRecycler.setVisibility(View.VISIBLE);
+                }, 1000);
             }
 
             @Override
@@ -155,17 +147,13 @@ public class CategoriesActivity extends AppCompatActivity {
             }.getType());
             Utils.sortListMap(categoriesList, "category_name", false, true);
             categoriesRecycler.setAdapter(new CategoriesRecyclerAdapter(categoriesList));
-            loadingTmr = new TimerTask() {
-                @Override
-                public void run() {
-                    runOnUiThread(() -> {
-                        loadingRecycler.setVisibility(View.GONE);
-                        categoriesRecycler.setVisibility(View.VISIBLE);
-                        sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    });
-                }
-            };
-            _timer.schedule(loadingTmr, 1000);
+
+            new Handler().postDelayed(() -> sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED), 500);
+
+            new Handler().postDelayed(() -> {
+                loadingRecycler.setVisibility(View.GONE);
+                categoriesRecycler.setVisibility(View.VISIBLE);
+            }, 1000);
         }
         bottomSheetBehaviorListener();
         background.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);

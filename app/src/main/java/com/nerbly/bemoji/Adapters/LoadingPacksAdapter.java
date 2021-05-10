@@ -1,7 +1,5 @@
 package com.nerbly.bemoji.Adapters;
 
-import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,6 +14,8 @@ import com.nerbly.bemoji.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
 
 public class LoadingPacksAdapter {
 

@@ -1,12 +1,5 @@
 package com.nerbly.bemoji;
 
-import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
-import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
-import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
-import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
-import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
-
 import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -15,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,13 +40,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
+import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
+import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
+import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
+import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
+
 public class PacksActivity extends AppCompatActivity {
-    private final Timer timer = new Timer();
     private final ArrayList<String> packsArrayList = new ArrayList<>();
     private final ArrayList<HashMap<String, Object>> shimmerList = new ArrayList<>();
     private final Intent toPreview = new Intent();
@@ -244,17 +242,11 @@ public class PacksActivity extends AppCompatActivity {
         protected void onPostExecute(String _result) {
             if (!sharedPref.getString("packsData", "").isEmpty()) {
                 packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
-                TimerTask loadingTmr = new TimerTask() {
-                    @Override
-                    public void run() {
-                        runOnUiThread(() -> {
-                            packsRecycler.setVisibility(View.VISIBLE);
-                            loadingRecycler.setVisibility(View.GONE);
-                            sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                        });
-                    }
-                };
-                timer.schedule(loadingTmr, 1000);
+                new Handler().postDelayed(() -> {
+                    packsRecycler.setVisibility(View.VISIBLE);
+                    loadingRecycler.setVisibility(View.GONE);
+                    sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }, 1000);
             }
         }
     }

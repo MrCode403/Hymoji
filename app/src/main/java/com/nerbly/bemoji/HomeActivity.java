@@ -1,14 +1,5 @@
 package com.nerbly.bemoji;
 
-import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
-import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.numbersAnimator;
-import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
-import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
-import static com.nerbly.bemoji.UI.MainUIMethods.statusBarColor;
-import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,12 +36,22 @@ import com.nerbly.bemoji.Functions.Utils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Objects;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+
+import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
+import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.numbersAnimator;
+import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
+import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
+import static com.nerbly.bemoji.UI.MainUIMethods.statusBarColor;
+import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -226,8 +227,7 @@ public class HomeActivity extends AppCompatActivity {
                         }
                         sharedPref.edit().putString("emojisData", new Gson().toJson(emojisList)).apply();
                         numbersAnimator(emojisCounter, 0, emojisList.size(), 1000);
-                    } catch (Exception e) {
-                        Utils.showToast(getApplicationContext(), (e.toString()));
+                    } catch (Exception ignored) {
                     }
                 } else {
                     if (tag.equals("CATEGORIES")) {
@@ -365,7 +365,6 @@ public class HomeActivity extends AppCompatActivity {
         AdView bannerAd = new AdView(this, getString(R.string.banner_id), AdSize.BANNER_HEIGHT_50);
         adview.addView(bannerAd);
         bannerAd.loadAd();
-        //throw new RuntimeException("lmao lmao");
     }
 
     public void LOGIC_FRONTEND() {
@@ -393,8 +392,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void getLocalEmojis() {
+        try {
+            localEmojisList.clear();
+        } catch (Exception ignored) {
+        }
         fileManager = new FileManager();
-        localEmojisList.clear();
         new Thread(() -> {
 
             localEmojisList = fileManager.getList();
@@ -405,7 +407,7 @@ public class HomeActivity extends AppCompatActivity {
                     localEmojisScanPosition = 0;
                     for (int i = 0; i < (localEmojisList.size() - 1); i++) {
                         localEmojisScanPath = Objects.requireNonNull(localEmojisList.get((int) localEmojisScanPosition).get("filePath")).toString();
-                        final java.io.File file1 = new java.io.File(localEmojisScanPath);
+                        final File file1 = new File(localEmojisScanPath);
                         try {
 
                             long length = file1.length();
@@ -421,10 +423,11 @@ public class HomeActivity extends AppCompatActivity {
                     if (localEmojisList.size() == 0) {
                         localemojisview.setVisibility(View.GONE);
                     } else {
-                        localemojisview.setVisibility(View.VISIBLE);
                         Utils.sortListMap(localEmojisList, "modi_time", false, false);
                         local_recycler.setAdapter(new LocalEmojisAdapter.Local_recyclerAdapter(localEmojisList));
-                        //initDragNDropRecycler(local_recycler, localEmojisList);
+
+                        new Handler().postDelayed(() -> localemojisview.setVisibility(View.VISIBLE), 1000);
+
                     }
                 } catch (Exception ignored) {
                 }

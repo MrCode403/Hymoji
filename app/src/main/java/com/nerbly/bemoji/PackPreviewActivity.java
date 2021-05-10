@@ -1,16 +1,5 @@
 package com.nerbly.bemoji;
 
-import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
-import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
-import static com.nerbly.bemoji.Functions.Utils.ZIP;
-import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
-import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
-import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
-import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
-import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
-import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
-
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
@@ -20,9 +9,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.media.MediaScannerConnection;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,11 +41,19 @@ import com.nerbly.bemoji.Functions.FileUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
+
+import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
+import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
+import static com.nerbly.bemoji.Functions.Utils.ZIP;
+import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
+import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
+import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
+import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
+import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
+import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 
 public class PackPreviewActivity extends AppCompatActivity {
-    private final Timer timer = new Timer();
     private final ArrayList<HashMap<String, Object>> emojisListMap = new ArrayList<>();
     private final Intent toPreview = new Intent();
     private final ObjectAnimator downAnim = new ObjectAnimator();
@@ -62,6 +61,7 @@ public class PackPreviewActivity extends AppCompatActivity {
     private BottomSheetBehavior<LinearLayout> sheetBehavior;
     private boolean isDownloading = false;
     private double downloadPackPosition = 0;
+    private boolean isPackDownloaded = false;
     private String tempPackName = "";
     private boolean isGoingToZipPack = false;
     private String downloadPackPath = "";
@@ -78,7 +78,6 @@ public class PackPreviewActivity extends AppCompatActivity {
     private ImageView download_ic;
     private TextView download_tv;
     private SharedPreferences sharedPref;
-    private TimerTask fixUIIssues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +109,7 @@ public class PackPreviewActivity extends AppCompatActivity {
         });
 
         download.setOnClickListener(_view -> {
-            if (!isDownloading && !download_tv.getText().toString().contains("Saved")) {
+            if (!isDownloading && !isPackDownloaded) {
                 if (sharedPref.getString("downloadPath", "").isEmpty()) {
                     downloadPath = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/Bemojis";
                 } else {
@@ -237,13 +236,10 @@ public class PackPreviewActivity extends AppCompatActivity {
                             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                         } else {
                             shadAnim(coordinator, "alpha", 0, 200);
-                            fixUIIssues = new TimerTask() {
-                                @Override
-                                public void run() {
-                                    runOnUiThread(PackPreviewActivity.this::finish);
-                                }
-                            };
-                            timer.schedule(fixUIIssues, 150);
+
+                            new Handler().postDelayed(() -> finish(), 150);
+
+
                         }
                         break;
                     case BottomSheetBehavior.STATE_HALF_EXPANDED:
@@ -261,7 +257,7 @@ public class PackPreviewActivity extends AppCompatActivity {
     }
 
 
-    public void _startPackDownload(final String _name, final String _path, final String _url) {
+    public void startPackDownload(final String name, final String path, final String url) {
         if (!isDownloading) {
             isDownloading = true;
             download_tv.setText(R.string.downloading);
@@ -274,7 +270,7 @@ public class PackPreviewActivity extends AppCompatActivity {
             downAnim.setRepeatMode(ValueAnimator.REVERSE);
             downAnim.start();
         }
-        PRDownloader.download(_url, _path, _name)
+        PRDownloader.download(url, path, name)
                 .build()
                 .setOnStartOrResumeListener(() -> {
 
@@ -286,16 +282,15 @@ public class PackPreviewActivity extends AppCompatActivity {
 
                 })
                 .setOnProgressListener(progress -> {
-                    long progressPercent = progress.currentBytes * 100 / progress.totalBytes;
                 })
                 .start(new OnDownloadListener() {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onDownloadComplete() {
-
                         downloadPackPosition++;
                         download_tv.setText(getString(R.string.pack_downloading_progress) + " " + (long) (downloadPackPosition) + "/" + (long) (downloadPackArrayList.size()));
                         downloadPack(new Gson().toJson(downloadPackArrayList), tempPackName);
+                        isPackDownloaded = true;
 
                     }
 
@@ -314,8 +309,8 @@ public class PackPreviewActivity extends AppCompatActivity {
 
     }
 
-    public void downloadPack(final String _array, final String _packname) {
-        downloadPackArrayList = new Gson().fromJson(_array, new TypeToken<ArrayList<String>>() {
+    public void downloadPack(final String array, final String packName) {
+        downloadPackArrayList = new Gson().fromJson(array, new TypeToken<ArrayList<String>>() {
         }.getType());
         if (downloadPackPosition == downloadPackArrayList.size()) {
             if (isGoingToZipPack) {
@@ -327,12 +322,18 @@ public class PackPreviewActivity extends AppCompatActivity {
                 download_ic.setRotation((float) (0));
                 showCustomSnackBar(getString(R.string.full_download_path) + " " + downloadPackPath, this);
                 downAnim.cancel();
+
+                MediaScannerConnection.scanFile(PackPreviewActivity.this,
+                        new String[]{downloadPackPath}, null,
+                        (path1, uri) -> {
+
+                        });
             }
         } else {
             String downloadPackUrl = "https://emoji.gg/assets/emoji/" + downloadPackArrayList.get((int) (downloadPackPosition));
-            downloadPackPath = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + ("/Bemojis/" + _packname);
+            downloadPackPath = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + ("/Bemojis/" + packName);
             String downloadPackName = "Bemoji_" + downloadPackArrayList.get((int) (downloadPackPosition));
-            _startPackDownload(downloadPackName, downloadPackPath, downloadPackUrl);
+            startPackDownload(downloadPackName, downloadPackPath, downloadPackUrl);
         }
     }
 

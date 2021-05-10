@@ -1,16 +1,6 @@
 package com.nerbly.bemoji;
 
 
-import static com.nerbly.bemoji.Adapters.MainEmojisAdapter.Recycler1Adapter;
-import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
-import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
-import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.RippleEffects;
-import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
-import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
-import static com.nerbly.bemoji.UI.MainUIMethods.setImageViewRipple;
-import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -18,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -56,6 +47,16 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+
+import static com.nerbly.bemoji.Adapters.MainEmojisAdapter.Recycler1Adapter;
+import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
+import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
+import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.RippleEffects;
+import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
+import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
+import static com.nerbly.bemoji.UI.MainUIMethods.setImageViewRipple;
+import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
 
 public class EmojisActivity extends AppCompatActivity {
     private static AppBarLayout appBar;
@@ -341,31 +342,19 @@ public class EmojisActivity extends AppCompatActivity {
     }
 
     private void whenEmojisAreReady() {
-        TimerTask loadingTmr = new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(() -> {
-                    shadAnim(emptyview, "translationY", -1000, 300);
-                    shadAnim(emptyview, "alpha", 0, 300);
-                    searchBoxField.setEnabled(true);
-
-
-                    if (Objects.equals(getIntent().getStringExtra("switchFrom"), "search")) {
-
-                        transitionComplete(searchBox, "searchbox");
-                        searchBoxField.requestFocus();
-                        TimerTask fixUIIssues = new TimerTask() {
-                            @Override
-                            public void run() {
-                                runOnUiThread(() -> hideShowKeyboard(true, searchBoxField));
-                            }
-                        };
-                        timer.schedule(fixUIIssues, 500);
-                    }
-                });
+        new Handler().postDelayed(() -> {
+            shadAnim(emptyview, "translationY", -1000, 300);
+            shadAnim(emptyview, "alpha", 0, 300);
+            searchBoxField.setEnabled(true);
+            if (Objects.equals(getIntent().getStringExtra("switchFrom"), "search")) {
+                transitionComplete(searchBox, "searchbox");
+                searchBoxField.requestFocus();
+                new Handler().postDelayed(() -> {
+                    runOnUiThread(() -> hideShowKeyboard(true, searchBoxField));
+                }, 1000);
             }
-        };
-        timer.schedule(loadingTmr, 1500);
+
+        }, 1000);
     }
 
     public void showFilterMenu(final View view) {

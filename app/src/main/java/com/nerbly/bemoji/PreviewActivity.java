@@ -1,22 +1,15 @@
 package com.nerbly.bemoji;
 
-import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
-import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
-import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
-import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
-import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
-import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
-import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
-
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,20 +30,26 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.nerbly.bemoji.Functions.FileUtil;
 import com.nerbly.bemoji.Functions.Utils;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import jp.wasabeef.glide.transformations.BlurTransformation;
+
+import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
+import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
+import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
+import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
+import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
+import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
+import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 
 public class PreviewActivity extends AppCompatActivity {
 
-    private final Timer timer = new Timer();
     private final ObjectAnimator downloadAnimation = new ObjectAnimator();
     private BottomSheetBehavior<LinearLayout> sheetBehavior;
     private String downloadPath = "";
     private String downloadUrl = "";
     private boolean isDownloading = false;
-    private CoordinatorLayout linear1;
+    private boolean isEmojiDownloaded = false;
+    private CoordinatorLayout coordinatorLayout;
     private LinearLayout bsheetbehavior;
     private LinearLayout relativeview;
     private TextView activityTitle;
@@ -61,7 +60,6 @@ public class PreviewActivity extends AppCompatActivity {
     private ImageView imageview7;
     private ImageView download_ic;
     private TextView download_tv;
-    private TimerTask fixUIIssues;
     private SharedPreferences sharedPref;
 
     @Override
@@ -75,7 +73,7 @@ public class PreviewActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        linear1 = findViewById(R.id.tutorialBg);
+        coordinatorLayout = findViewById(R.id.coordinator);
         bsheetbehavior = findViewById(R.id.sheetBehavior);
         relativeview = findViewById(R.id.relativeView);
         activityTitle = findViewById(R.id.activityTitle);
@@ -88,12 +86,12 @@ public class PreviewActivity extends AppCompatActivity {
         download_tv = findViewById(R.id.download_tv);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
-        linear1.setOnClickListener(_view -> sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN));
+        coordinatorLayout.setOnClickListener(_view -> sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN));
 
         download.setOnClickListener(_view -> {
-            if (!isDownloading && !download_tv.getText().toString().contains("Saved")) {
+            if (!isDownloading && !isEmojiDownloaded) {
                 if (sharedPref.getString("downloadPath", "").isEmpty()) {
-                    downloadPath = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS).concat("/Bemojis");
+                    downloadPath = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/Bemojis";
                 } else {
                     downloadPath = sharedPref.getString("downloadPath", "");
                 }
@@ -117,19 +115,14 @@ public class PreviewActivity extends AppCompatActivity {
     public void LOGIC_BACKEND() {
         sheetBehavior = BottomSheetBehavior.from(bsheetbehavior);
         sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        fixUIIssues = new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(() -> sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED));
-            }
-        };
-        timer.schedule(fixUIIssues, 200);
+
+        new Handler().postDelayed(() -> sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED), 200);
         setBlurImageUrl(emoji, 25, getIntent().getStringExtra("imageUrl"));
         setImageFromUrl(imageview7, getIntent().getStringExtra("imageUrl"));
         activityTitle.setText(getIntent().getStringExtra("title"));
         activitySubtitle.setText(getString(R.string.submitted_by) + " " + getIntent().getStringExtra("submitted_by"));
         bottomBehaviourListener();
-        shadAnim(linear1, "alpha", 1, 200);
+        shadAnim(coordinatorLayout, "alpha", 1, 200);
     }
 
 
@@ -146,7 +139,7 @@ public class PreviewActivity extends AppCompatActivity {
         JJACCAI.setColors(JJACCAIADD);
         JJACCAI.setOrientation(android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM);
         JJACCAI.setCornerRadius(0);
-        linear1.setBackground(JJACCAI);
+        coordinatorLayout.setBackground(JJACCAI);
     }
 
 
@@ -158,14 +151,8 @@ public class PreviewActivity extends AppCompatActivity {
                     if (isDownloading) {
                         sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                     } else {
-                        shadAnim(linear1, "alpha", 0, 200);
-                        fixUIIssues = new TimerTask() {
-                            @Override
-                            public void run() {
-                                runOnUiThread(PreviewActivity.this::finish);
-                            }
-                        };
-                        timer.schedule(fixUIIssues, 150);
+                        shadAnim(coordinatorLayout, "alpha", 0, 200);
+                        new Handler().postDelayed(() -> finish(), 150);
                     }
                 }
             }
@@ -213,12 +200,19 @@ public class PreviewActivity extends AppCompatActivity {
                         public void onDownloadComplete() {
 
                             isDownloading = false;
+                            isEmojiDownloaded = true;
                             download_tv.setText(R.string.download_success);
                             download_ic.setImageResource(R.drawable.round_done_white_48dp);
                             download_ic.setRotation((float) (0));
                             information.setText(getString(R.string.full_download_path).concat(downloadPath + "/" + name));
                             information.setVisibility(View.VISIBLE);
                             downloadAnimation.cancel();
+
+                            MediaScannerConnection.scanFile(PreviewActivity.this,
+                                    new String[]{path}, null,
+                                    (path1, uri) -> {
+
+                                    });
 
                         }
 
@@ -249,7 +243,6 @@ public class PreviewActivity extends AppCompatActivity {
             }
         }
     }
-
 
     public void performClick(View view) {
         view.performClick();

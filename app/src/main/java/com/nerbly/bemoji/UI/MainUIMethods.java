@@ -38,6 +38,15 @@ public class MainUIMethods {
         view.setClipToOutline(true);
     }
 
+    public static void setClippedStrokeView(final View view, final String color1, final double radius, final String color2, final double stroke) {
+        android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
+        gd.setColor(Color.parseColor(color1));
+        gd.setCornerRadius((int) radius);
+        gd.setStroke((int) stroke, Color.parseColor("#" + color2.replace("#", "")));
+        view.setBackground(gd);
+        view.setClipToOutline(true);
+    }
+
     public static void rippleRoundStroke(View view, String focus, String pressed, double round, double stroke, String strokeclr) {
         android.graphics.drawable.GradientDrawable GG = new android.graphics.drawable.GradientDrawable();
         GG.setColor(Color.parseColor(focus));

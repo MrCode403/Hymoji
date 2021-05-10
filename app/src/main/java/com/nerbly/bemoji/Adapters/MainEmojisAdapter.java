@@ -1,7 +1,5 @@
 package com.nerbly.bemoji.Adapters;
 
-import static com.nerbly.bemoji.Functions.SideFunctions.setImgURL;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +20,8 @@ import com.nerbly.bemoji.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+
+import static com.nerbly.bemoji.Functions.SideFunctions.setImgURL;
 
 public class MainEmojisAdapter {
 
@@ -56,7 +56,7 @@ public class MainEmojisAdapter {
                 Utils.showToast(_view12.getContext(), Objects.requireNonNull(_data.get(_position).get("title")).toString());
                 return true;
             });
-            linear1.setOnClickListener(_view1 -> {
+            linear1.setOnClickListener(view1 -> {
                 toPreview.putExtra("switchType", "emoji");
                 toPreview.putExtra("title", Objects.requireNonNull(_data.get(_position).get("title")).toString());
                 toPreview.putExtra("submitted_by", Objects.requireNonNull(_data.get(_position).get("submitted_by")).toString());
@@ -64,8 +64,8 @@ public class MainEmojisAdapter {
                 toPreview.putExtra("fileName", Objects.requireNonNull(_data.get(_position).get("slug")).toString());
                 toPreview.putExtra("description", Objects.requireNonNull(_data.get(_position).get("description")).toString());
                 toPreview.putExtra("imageUrl", Objects.requireNonNull(_data.get(_position).get("image")).toString());
-                toPreview.setClass(_view1.getContext(), PreviewActivity.class);
-                _view1.getContext().startActivity(toPreview);
+                toPreview.setClass(view1.getContext(), PreviewActivity.class);
+                view1.getContext().startActivity(toPreview);
             });
             linear2.setVisibility(View.GONE);
             AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);

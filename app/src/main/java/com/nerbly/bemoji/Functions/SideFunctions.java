@@ -48,6 +48,16 @@ public class SideFunctions {
 
     }
 
+    public static void setTutorialImages(final ImageView image, final String url) {
+        Glide.with(image.getContext())
+
+                .load(url)
+                .fitCenter()
+                .into(image);
+
+    }
+
+
     public static void initDragNDropRecycler(final RecyclerView recycler, final ArrayList<HashMap<String, Object>> arraylist) {
         //this is an easter egg to play with downloaded emojis a little bit. Have fun!
 

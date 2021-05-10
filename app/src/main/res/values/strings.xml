@@ -34,12 +34,12 @@
     <string name="emojis_loading">One second, we\'re getting emojis…</string>
     <string name="packs_included_emojis">included emojis</string>
     <string name="animated_emojis_warning_title">Hold up, wait a minute!</string>
-    <string name="animated_emojis_warning_subtitle">You\'re about to enter a category contains flashing images that may potentially trigger seizures for people with photosensitive epilepsy.</string>
+    <string name="animated_emojis_warning_subtitle">You\'re about to enter a category that contains flashing images that may potentially trigger seizures for people with photosensitive epilepsy.</string>
     <string name="animated_emojis_warning_btncancel">Nope, I\'m out</string>
     <string name="animated_emojis_warning_btnok">Let me in</string>
     <string name="welcome_continue">Continue</string>
     <string name="welcome_title_1">Bemoji</string>
-    <string name="welcome_subtitle_0">Unlimited collection of Discord and Slack emojis</string>
+    <string name="welcome_subtitle_0">Unlimited collection of Discord, Twitch, and Slack emojis</string>
     <string name="welcome_subtitle_1">Tired of boring emojis? Let me introduce myself…</string>
     <string name="welcome_title_2">Another dimension of emojis</string>
     <string name="welcome_subtitle_2">Memes, animations, faces, expressions, any emoji. We literally have them all.</string>
@@ -51,7 +51,7 @@
     <string name="sort_by_oldest">Oldest</string>
     <string name="sort_by_alphabetically">Alphabetically</string>
     <string name="preview_pack_title">Preview pack</string>
-    <string name="preview_pack_subtitle">You can see what emojis this pack contains and guess what? you can download them individually too!!</string>
+    <string name="preview_pack_subtitle">You can see what emojis this pack contains and guess what? you can download them individually too!</string>
     <string name="preview_pack_download_btn">Download full pack</string>
     <string name="explore_packs_title">Explore packs</string>
     <string name="explore_packs_subtitle">Packs of different emojis of the same type</string>
@@ -70,20 +70,20 @@
     <string name="settings_option_5_title">Feedback</string>
     <string name="settings_option_5_subtitle">Is something missing or you need a feature? let us know. Also, don\'t forget to give us a nice rating.</string>
     <string name="settings_option_6_title">Bemoji</string>
-    <string name="settings_option_6_subtitle">We are in no way affiliated with Discord or Slack. Bemoji wasn\'t created to compete with any other service.</string>
+    <string name="settings_option_6_subtitle">We are in no way affiliated with Discord, Slack, or Twitch. Bemoji wasn\'t created to compete with any other service.</string>
     <string name="settings_section_3_title">COPYRIGHT</string>
     <string name="settings_option_7_title">Content copyright</string>
     <string name="settings_option_7_subtitle">Emojis are user-submitted and are copyright of their respective owners. Click here if you have questions or copyright concerns.</string>
     <string name="settings_option_8_title">Content source</string>
     <string name="settings_option_8_subtitle">All emojis are provided by emoji.gg.</string>
     <string name="help_center_title">Help center</string>
-    <string name="help_center_subtitle">Step-by-step instructions to add emojis to your own discord or slack server</string>
+    <string name="help_center_subtitle">Step-by-step instructions to add emojis to your own Discord, Twitch, or Slack server</string>
     <string name="welcome_start">Start</string>
     <string name="settings_option_10_title">Bemoji on Github</string>
     <string name="settings_option_10_subtitle">Feel free to check out Bemoji\'s source code on Github.</string>
     <string name="submitted_by">Submitted by: </string>
     <string name="downloading">Downloading…</string>
-    <string name="full_download_path">Full download path: </string>
+    <string name="full_download_path">"Download path: "</string>
     <string name="permission_denied_emojis">You can\'t download emojis without storage access permission. Please allow it.</string>
     <string name="permission_denied_packs">You can\'t download packs without storage access permission. Please allow it.</string>
     <string name="ask_for_permission">Please give us permission to access your storage to continue.</string>
@@ -94,4 +94,6 @@
     <string name="emojis_still_loading_msg">Please wait, we\'re getting emojis…</string>
     <string name="settings_option_11_title">Language</string>
     <string name="settings_option_11_subtitle">Let Bemoji speak your language</string>
+    <string name="settings_option_12_title">Help to translate Bemoji</string>
+    <string name="settings_option_12_subtitle">Our mission is to make Bemoji accessible for all emoji lovers around the world. Help us in that mission.</string>
 </resources>

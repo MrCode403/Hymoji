@@ -1,8 +1,5 @@
 package com.nerbly.bemoji.Adapters;
 
-import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
-import static com.nerbly.bemoji.Functions.SideFunctions.setImageFromUrl;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -29,12 +26,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
+import static com.nerbly.bemoji.Functions.SideFunctions.setImageFromUrl;
+
 public class HomePacksAdapter {
 
     public static class Packs_recyclerAdapter extends RecyclerView.Adapter<Packs_recyclerAdapter.ViewHolder> {
         private final Intent toPreview = new Intent();
         private final Intent toPacks = new Intent();
-        private final ArrayList<HashMap<String, Object>> packsList = new ArrayList<>();
         private final ArrayList<String> packsArrayList = new ArrayList<>();
         ArrayList<HashMap<String, Object>> _data;
         private String packsTempArrayString = "";
@@ -69,35 +68,32 @@ public class HomePacksAdapter {
             textview1.setText(capitalizedFirstWord(Objects.requireNonNull(_data.get(position).get("name")).toString().replace("_", " ")));
             textview2.setText(Objects.requireNonNull(_data.get(position).get("description")).toString());
             setImageFromUrl(imageview1, Objects.requireNonNull(_data.get(position).get("image")).toString());
-            cardview1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View _view) {
-                    try {
-                        packsTempArrayString = HomeActivity.PacksArray();
-                        JSONArray backPacksArray = new JSONArray(packsTempArrayString);
-                        JSONObject packsObject = backPacksArray.getJSONObject(position);
+            cardview1.setOnClickListener(_view -> {
+                try {
+                    packsTempArrayString = HomeActivity.PacksArray();
+                    JSONArray backPacksArray = new JSONArray(packsTempArrayString);
+                    JSONObject packsObject = backPacksArray.getJSONObject(position);
 
-                        JSONArray frontPacksArray = packsObject.getJSONArray("emojis");
-                        for (int frontPacksInt = 0; frontPacksInt < frontPacksArray.length(); frontPacksInt++) {
-                            packsArrayList.add(frontPacksArray.getString(frontPacksInt));
-                        }
-                        currentPositionPackArray = new Gson().toJson(packsArrayList);
-                        packsArrayList.clear();
-                    } catch (Exception e) {
-                        Log.e("Pack Array Crashed", e.toString());
+                    JSONArray frontPacksArray = packsObject.getJSONArray("emojis");
+                    for (int frontPacksInt = 0; frontPacksInt < frontPacksArray.length(); frontPacksInt++) {
+                        packsArrayList.add(frontPacksArray.getString(frontPacksInt));
                     }
-                    toPreview.putExtra("switchType", "pack");
-                    toPreview.putExtra("title", "BemojiPack_" + (long) (Double.parseDouble(Objects.requireNonNull(_data.get(position).get("id")).toString())));
-                    toPreview.putExtra("subtitle", Objects.requireNonNull(_data.get(position).get("description")).toString());
-                    toPreview.putExtra("imageUrl", Objects.requireNonNull(_data.get(position).get("image")).toString());
-                    toPreview.putExtra("fileName", Objects.requireNonNull(_data.get(position).get("slug")).toString());
-                    toPreview.putExtra("packEmojisArray", currentPositionPackArray);
-                    toPreview.putExtra("packEmojisAmount", Objects.requireNonNull(_data.get(position).get("amount")).toString());
-                    toPreview.putExtra("packName", capitalizedFirstWord(Objects.requireNonNull(_data.get(position).get("name")).toString().replace("_", " ")));
-                    toPreview.putExtra("packId", Objects.requireNonNull(_data.get(position).get("id")).toString());
-                    toPreview.setClass(imageview1.getContext(), PackPreviewActivity.class);
-                    imageview1.getContext().startActivity(toPreview);
+                    currentPositionPackArray = new Gson().toJson(packsArrayList);
+                    packsArrayList.clear();
+                } catch (Exception e) {
+                    Log.e("Pack Array Crashed", e.toString());
                 }
+                toPreview.putExtra("switchType", "pack");
+                toPreview.putExtra("title", "BemojiPack_" + (long) (Double.parseDouble(Objects.requireNonNull(_data.get(position).get("id")).toString())));
+                toPreview.putExtra("subtitle", Objects.requireNonNull(_data.get(position).get("description")).toString());
+                toPreview.putExtra("imageUrl", Objects.requireNonNull(_data.get(position).get("image")).toString());
+                toPreview.putExtra("fileName", Objects.requireNonNull(_data.get(position).get("slug")).toString());
+                toPreview.putExtra("packEmojisArray", currentPositionPackArray);
+                toPreview.putExtra("packEmojisAmount", Objects.requireNonNull(_data.get(position).get("amount")).toString());
+                toPreview.putExtra("packName", capitalizedFirstWord(Objects.requireNonNull(_data.get(position).get("name")).toString().replace("_", " ")));
+                toPreview.putExtra("packId", Objects.requireNonNull(_data.get(position).get("id")).toString());
+                toPreview.setClass(imageview1.getContext(), PackPreviewActivity.class);
+                imageview1.getContext().startActivity(toPreview);
             });
             if (position == 0) {
                 cardview2.setVisibility(View.VISIBLE);

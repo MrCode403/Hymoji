@@ -1,12 +1,11 @@
 package com.nerbly.bemoji.Adapters;
 
-import static com.nerbly.bemoji.Functions.SideFunctions.setImageFromPath;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +15,9 @@ import com.nerbly.bemoji.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+
+import static com.nerbly.bemoji.Functions.SideFunctions.setImageFromPath;
+import static com.nerbly.bemoji.UI.MainUIMethods.setClippedStrokeView;
 
 public class LocalEmojisAdapter {
 
@@ -41,10 +43,12 @@ public class LocalEmojisAdapter {
             View view = holder.itemView;
 
             final ImageView emojis = view.findViewById(R.id.emoji);
+            final LinearLayout cardView = view.findViewById(R.id.cardView);
 
             RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             view.setLayoutParams(lp);
             setImageFromPath(emojis, Objects.requireNonNull(data.get(position).get("filePath")).toString());
+            setClippedStrokeView(cardView, "#FFFFFF", 200, "#aeaeae", 1);
         }
 
         @Override

@@ -1,7 +1,5 @@
 package com.nerbly.bemoji.Adapters;
 
-import static com.nerbly.bemoji.EmojisActivity.whenChipItemClicked;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -17,6 +15,8 @@ import com.nerbly.bemoji.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+
+import static com.nerbly.bemoji.EmojisActivity.whenChipItemClicked;
 
 public class EmojisSuggestionsAdapter {
 

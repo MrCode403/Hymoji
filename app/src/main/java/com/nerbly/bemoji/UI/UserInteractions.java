@@ -1,7 +1,5 @@
 package com.nerbly.bemoji.UI;
 
-import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
-
 import android.app.Activity;
 import android.graphics.Color;
 import android.view.View;
@@ -10,6 +8,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nerbly.bemoji.R;
+
+import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
 
 public class UserInteractions {
 

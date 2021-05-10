@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Bemoji</string>
     <string name="home_title">Entdecken Sie Emojis</string>
     <string name="home_subtitle">Entdecken Sie unsere unbegrenzte Sammlung von Emojis</string>
     <string name="local_emojis_title">EMOJIS HERUNTERGELADEN</string>
@@ -36,7 +35,7 @@
     <string name="animated_emojis_warning_btnok">Lass mich rein</string>
     <string name="welcome_continue">Fortsetzen</string>
     <string name="welcome_title_1">Bemoji</string>
-    <string name="welcome_subtitle_0">Unbegrenzte Sammlung von Discord- und Slack-Emojis</string>
+    <string name="welcome_subtitle_0">Unbegrenzte Sammlung von Discord-, Twitch- und Slack-Emojis</string>
     <string name="welcome_subtitle_1">Keine Lust mehr auf langweilige Emojis? Lassen Sie mich Ihnen vorstellen…</string>
     <string name="welcome_title_2">Eine andere Dimension von Emojis</string>
     <string name="welcome_subtitle_2">Memes, Animationen, Gesichter, Ausdrücke, jedes Emoji. Wir haben sie buchstäblich alle.</string>
@@ -91,4 +90,6 @@
     <string name="packs_still_loading_msg">Bitte warten Sie, wir bekommen Kategorien ...</string>
     <string name="settings_option_11_title">Sprache</string>
     <string name="settings_option_11_subtitle">Lass Bemoji deine Sprache sprechen</string>
+    <string name="settings_option_12_subtitle">Unsere Mission ist es, Bemoji für alle Emoji-Liebhaber auf der ganzen Welt zugänglich zu machen. Helfen Sie uns bei dieser Mission.</string>
+    <string name="settings_option_12_title">Hilfe bei der Übersetzung von Bemoji</string>
 </resources>
