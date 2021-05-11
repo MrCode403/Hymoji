@@ -10,23 +10,26 @@ android {
         applicationId "com.nerbly.bemoji"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 12
-        versionName "0.6"
+        versionCode 13
+        versionName "0.61"
     }
     buildTypes {
         release {
             debuggable false
             shrinkResources true
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             firebaseCrashlytics {
                 mappingFileUploadEnabled false
             }
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             debuggable true
             shrinkResources false
             minifyEnabled false
+            firebaseCrashlytics {
+                mappingFileUploadEnabled false
+            }
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

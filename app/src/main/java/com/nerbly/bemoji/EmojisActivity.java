@@ -140,6 +140,8 @@ public class EmojisActivity extends AppCompatActivity {
             if (searchBoxField.getText().toString().trim().length() > 0) {
                 searchBoxField.setText("");
             } else {
+                searchBoxField.setEnabled(false);
+                searchBoxField.setEnabled(true);
                 showFilterMenu(sortByBtn);
             }
         });
@@ -349,9 +351,7 @@ public class EmojisActivity extends AppCompatActivity {
             if (Objects.equals(getIntent().getStringExtra("switchFrom"), "search")) {
                 transitionComplete(searchBox, "searchbox");
                 searchBoxField.requestFocus();
-                new Handler().postDelayed(() -> {
-                    runOnUiThread(() -> hideShowKeyboard(true, searchBoxField));
-                }, 1000);
+                new Handler().postDelayed(() -> runOnUiThread(() -> hideShowKeyboard(true, searchBoxField)), 1000);
             }
 
         }, 1000);
@@ -495,6 +495,9 @@ public class EmojisActivity extends AppCompatActivity {
                 if (emojisList.size() == 0) {
                     emptyview.setVisibility(View.VISIBLE);
                     emojisRecycler.setVisibility(View.GONE);
+                    emptyAnimation.setAnimation("animations/notfound.json");
+                    emptyAnimation.playAnimation();
+                    emptyTitle.setText(getString(R.string.emojis_not_found));
                 } else {
                     emojisRecycler.setVisibility(View.VISIBLE);
                     emptyview.setVisibility(View.GONE);
@@ -508,6 +511,9 @@ public class EmojisActivity extends AppCompatActivity {
                     emojisRecycler.setAdapter(new Recycler1Adapter(emojisList));
                     emojisRecycler.setVisibility(View.VISIBLE);
                     emptyview.setVisibility(View.GONE);
+                    emptyAnimation.setAnimation("animations/notfound.json");
+                    emptyAnimation.playAnimation();
+                    emptyTitle.setText(getString(R.string.emojis_not_found));
                 }
             }
             isSearching = false;
