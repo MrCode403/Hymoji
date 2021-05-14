@@ -113,6 +113,7 @@ public class PreviewActivity extends AppCompatActivity {
     }
 
     public void LOGIC_BACKEND() {
+        overridePendingTransition(R.anim.fade_in, 0);
         sheetBehavior = BottomSheetBehavior.from(bsheetbehavior);
         sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 

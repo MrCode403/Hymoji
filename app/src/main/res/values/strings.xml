@@ -32,7 +32,7 @@
     <string name="emojis_search_box_txt">For best results, search like a memer…</string>
     <string name="emojis_not_found">Oh boy, we couldn\'t find anything.</string>
     <string name="emojis_loading">One second, we\'re getting emojis…</string>
-    <string name="packs_included_emojis">included emojis</string>
+    <string name="packs_included_emojis">included\nemojis</string>
     <string name="animated_emojis_warning_title">Hold up, wait a minute!</string>
     <string name="animated_emojis_warning_subtitle">You\'re about to enter a category that contains flashing images that may potentially trigger seizures for people with photosensitive epilepsy.</string>
     <string name="animated_emojis_warning_btncancel">Nope, I\'m out</string>
@@ -96,4 +96,5 @@
     <string name="settings_option_11_subtitle">Let Bemoji speak your language</string>
     <string name="settings_option_12_title">Help to translate Bemoji</string>
     <string name="settings_option_12_subtitle">Our mission is to make Bemoji accessible for all emoji lovers around the world. Help us in that mission.</string>
+    <string name="bemoji_news_notifications_channel">Bemoji\'s News</string>
 </resources>

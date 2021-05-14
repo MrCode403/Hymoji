@@ -45,19 +45,19 @@ import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
 import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
 
 public class CategoriesActivity extends AppCompatActivity {
-    private final ArrayList<HashMap<String, Object>> shimmerList = new ArrayList<>();
-    private final Intent toEmojis = new Intent();
-    private BottomSheetBehavior<LinearLayout> sheetBehavior;
-    private HashMap<String, Object> categoriesMap = new HashMap<>();
-    private ArrayList<HashMap<String, Object>> categoriesList = new ArrayList<>();
-    private LinearLayout bsheetbehavior;
-    private LinearLayout background;
-    private LinearLayout slider;
-    private RecyclerView categoriesRecycler;
-    private RecyclerView loadingRecycler;
-    private RequestNetwork RequestCategories;
-    private RequestNetwork.RequestListener CategoriesRequestListener;
-    private SharedPreferences sharedPref;
+    ArrayList<HashMap<String, Object>> shimmerList = new ArrayList<>();
+    Intent toEmojis = new Intent();
+    BottomSheetBehavior<LinearLayout> sheetBehavior;
+    HashMap<String, Object> categoriesMap = new HashMap<>();
+    ArrayList<HashMap<String, Object>> categoriesList = new ArrayList<>();
+    LinearLayout bsheetbehavior;
+    LinearLayout background;
+    LinearLayout slider;
+    RecyclerView categoriesRecycler;
+    RecyclerView loadingRecycler;
+    RequestNetwork RequestCategories;
+    RequestNetwork.RequestListener CategoriesRequestListener;
+    SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,7 @@ public class CategoriesActivity extends AppCompatActivity {
         initializeLogic();
     }
 
-    private void initialize() {
+    void initialize() {
         bsheetbehavior = findViewById(R.id.sheetBehavior);
         background = findViewById(R.id.background);
         slider = findViewById(R.id.slider);
@@ -120,7 +120,7 @@ public class CategoriesActivity extends AppCompatActivity {
         };
     }
 
-    private void initializeLogic() {
+    void initializeLogic() {
         LOGIC_BACKEND();
         LOGIC_FRONTEND();
     }
@@ -131,6 +131,7 @@ public class CategoriesActivity extends AppCompatActivity {
     }
 
     public void LOGIC_BACKEND() {
+        overridePendingTransition(R.anim.fade_in, 0);
         sheetBehavior = BottomSheetBehavior.from(bsheetbehavior);
         loadingRecycler.setLayoutManager(new LinearLayoutManager(this));
         categoriesRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -224,17 +225,17 @@ public class CategoriesActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
+        public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
             View view = holder.itemView;
 
-            final TextView textview1 = view.findViewById(R.id.emptyTitle);
+            TextView textview1 = view.findViewById(R.id.emptyTitle);
 
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             view.setLayoutParams(_lp);
             textview1.setText(Objects.requireNonNull(_data.get(position).get("category_name")).toString());
             textview1.setOnClickListener(_view -> {
                 if (Objects.requireNonNull(_data.get(position).get("category_name")).toString().equals("Animated")) {
-                    final com.google.android.material.bottomsheet.BottomSheetDialog bottomSheetDialog = new com.google.android.material.bottomsheet.BottomSheetDialog(CategoriesActivity.this, R.style.materialsheet);
+                    com.google.android.material.bottomsheet.BottomSheetDialog bottomSheetDialog = new com.google.android.material.bottomsheet.BottomSheetDialog(CategoriesActivity.this, R.style.materialsheet);
 
                     View bottomSheetView;
                     bottomSheetView = getLayoutInflater().inflate(R.layout.infosheet, null);
@@ -242,10 +243,10 @@ public class CategoriesActivity extends AppCompatActivity {
 
                     bottomSheetDialog.getWindow().findViewById(R.id.design_bottom_sheet).setBackgroundResource(android.R.color.transparent);
 
-                    final TextView infook = bottomSheetView.findViewById(R.id.infosheet_ok);
-                    final TextView infocancel = bottomSheetView.findViewById(R.id.infosheet_cancel);
-                    final LinearLayout infoback = bottomSheetView.findViewById(R.id.infosheet_back);
-                    final LinearLayout slider = bottomSheetView.findViewById(R.id.slider);
+                    TextView infook = bottomSheetView.findViewById(R.id.infosheet_ok);
+                    TextView infocancel = bottomSheetView.findViewById(R.id.infosheet_cancel);
+                    LinearLayout infoback = bottomSheetView.findViewById(R.id.infosheet_back);
+                    LinearLayout slider = bottomSheetView.findViewById(R.id.slider);
 
                     advancedCorners(infoback, "#ffffff", 38, 38, 0, 0);
 

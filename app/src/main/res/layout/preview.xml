@@ -1,12 +1,12 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="ContentDescription"
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:alpha="0"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="ContentDescription">
 
     <LinearLayout
         android:id="@+id/sheetBehavior"
@@ -65,27 +65,27 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
+                android:fontFamily="@font/whitney"
+                android:paddingStart="8dp"
                 android:paddingTop="4dp"
                 android:paddingEnd="8dp"
-                android:paddingStart="8dp"
                 android:paddingBottom="8dp"
                 android:text="TextView"
                 android:textColor="#000000"
-                android:fontFamily="@font/whitney"
-                android:textStyle="bold"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/activitySubtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:paddingEnd="8dp"
+                android:fontFamily="@font/whitney"
                 android:paddingStart="8dp"
+                android:paddingEnd="8dp"
                 android:paddingBottom="8dp"
                 android:text="TextView"
                 android:textColor="#757575"
-                android:fontFamily="@font/whitney"
                 android:textSize="14sp" />
 
             <TextView
@@ -93,13 +93,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:paddingEnd="8dp"
+                android:fontFamily="@font/whitney"
                 android:paddingStart="8dp"
+                android:paddingEnd="8dp"
                 android:paddingBottom="8dp"
                 android:text="@string/app_name"
                 android:textColor="#757575"
                 android:textSize="12sp"
-                android:fontFamily="@font/whitney"
                 android:visibility="invisible" />
 
             <LinearLayout
@@ -130,6 +130,7 @@
                     android:id="@+id/download_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/whitney"
                     android:gravity="center_horizontal|center_vertical"
                     android:paddingStart="8dp"
                     android:paddingTop="8dp"
@@ -137,7 +138,6 @@
                     android:paddingBottom="8dp"
                     android:text="@string/download_btn_txt"
                     android:textColor="#FFFFFF"
-                    android:fontFamily="@font/whitney"
                     android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>

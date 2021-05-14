@@ -22,7 +22,8 @@
                 android:layout_height="wrap_content"
                 android:fitsSystemWindows="true"
                 app:contentScrim="#FFFFFF"
-                app:layout_scrollFlags="scroll|enterAlways|snap">
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:scrimAnimationDuration="0">
 
                 <LinearLayout
                     android:id="@+id/space"
@@ -44,7 +45,7 @@
                         android:padding="6dp">
 
                         <ImageView
-                            android:id="@+id/emoji"
+                            android:id="@+id/searchBtn"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:padding="8dp"
@@ -58,6 +59,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:background="@android:color/transparent"
+                            android:enabled="false"
+                            android:fontFamily="@font/whitney"
                             android:hint="@string/emojis_search_box_txt"
                             android:imeOptions="actionSearch"
                             android:importantForAutofill="no"
@@ -67,8 +70,6 @@
                             android:textColor="#000000"
                             android:textColorHint="#757575"
                             android:textSize="14sp"
-                            android:fontFamily="@font/whitney"
-                            android:enabled="false"
                             tools:ignore="TouchTargetSizeCheck" />
 
                         <ImageView
@@ -82,12 +83,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="?attr/colorPrimary"
-                    app:popupTheme="@style/AppTheme.PopupOverlay" />
+
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -155,24 +151,24 @@
             android:layout_height="150dp"
             android:scaleType="fitCenter"
             app:lottie_autoPlay="true"
-            app:lottie_repeatMode="reverse"
-            app:lottie_renderMode="automatic"
-            app:lottie_progress="0"
             app:lottie_fileName="animations/loading.json"
-            app:lottie_loop="true" />
+            app:lottie_loop="true"
+            app:lottie_progress="0"
+            app:lottie_renderMode="automatic"
+            app:lottie_repeatMode="reverse" />
 
         <TextView
             android:id="@+id/emptyTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:fontFamily="@font/whitney"
             android:gravity="center_horizontal|center_vertical"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:paddingBottom="8dp"
             android:text="@string/emojis_loading"
             android:textColor="#424242"
-            android:fontFamily="@font/whitney"
             android:textSize="16sp" />
     </LinearLayout>
 </RelativeLayout>

@@ -2,21 +2,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-	<TextView
-		android:id="@+id/emptyTitle"
-		android:focusable="false"
-		android:layout_width="match_parent"
-		android:layout_height="60dp"
-		android:layout_marginLeft="10dp"
-		android:layout_marginTop="5dp"
-		android:layout_marginRight="10dp"
-		android:layout_marginBottom="5dp"
-		android:paddingLeft="8dp"
-		android:paddingRight="8dp"
-		android:background="#FFFFFF"
-		android:gravity="center_vertical"
-		android:text="@string/categories_screen_title"
-		android:textSize="16sp"
-		android:fontFamily="@font/whitney"
-		android:textColor="#212121" />
+
+    <TextView
+        android:id="@+id/emptyTitle"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:background="#FFFFFF"
+        android:focusable="false"
+        android:fontFamily="@font/whitney"
+        android:gravity="center_vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="@string/categories_screen_title"
+        android:textColor="#212121"
+        android:textSize="16sp" />
 </LinearLayout>

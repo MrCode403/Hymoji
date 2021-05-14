@@ -3,34 +3,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-	<com.google.android.material.card.MaterialCardView
-		android:id="@+id/cardView"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_marginStart="10dp"
-		android:paddingTop="2dp"
-		android:paddingBottom="2dp"
-		app:cardCornerRadius="17dp"
-		app:strokeColor="#E0E0E0"
-		app:strokeWidth="1dp"
-		app:cardElevation="0dp"
-		android:clickable="true"
-		android:focusable="true"
-		app:rippleColor="#EEEEEE"
-		app:cardBackgroundColor="#F5F5F5"
-		android:theme="@style/Theme.MaterialComponents.Light">
-		<TextView
-			android:id="@+id/emptyTitle"
-			android:focusable="false"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="9dp"
-			android:layout_marginRight="9dp"
-			android:padding="8dp"
-			android:text="@string/app_name"
-			android:textSize="14sp"
-			android:textColor="#424242"
-			android:fontFamily="@font/whitney"
-			android:singleLine="true" />
-	</com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:theme="@style/Theme.MaterialComponents.Light"
+        app:cardBackgroundColor="#F5F5F5"
+        app:cardCornerRadius="17dp"
+        app:cardElevation="0dp"
+        app:rippleColor="#EEEEEE"
+        app:strokeColor="#E0E0E0"
+        app:strokeWidth="1dp">
+
+        <TextView
+            android:id="@+id/emptyTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="9dp"
+            android:layout_marginRight="9dp"
+            android:focusable="false"
+            android:fontFamily="@font/whitney"
+            android:padding="8dp"
+            android:singleLine="true"
+            android:text="@string/app_name"
+            android:textColor="#424242"
+            android:textSize="14sp" />
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

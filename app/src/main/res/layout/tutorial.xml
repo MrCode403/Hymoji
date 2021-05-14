@@ -45,12 +45,12 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="6dp"
                     android:layout_marginRight="10dp"
+                    android:fontFamily="@font/whitney"
                     android:padding="8dp"
                     android:text="@string/help_center_title"
                     android:textColor="#000000"
-                    android:fontFamily="@font/whitney"
-                    android:textStyle="bold"
-                    android:textSize="30sp" />
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/activityDescription"
@@ -58,12 +58,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
+                    android:fontFamily="@font/whitney"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:paddingBottom="8dp"
                     android:text="@string/help_center_subtitle"
                     android:textColor="#616161"
-                    android:fontFamily="@font/whitney"
                     android:textSize="14sp" />
 
                 <LinearLayout
@@ -89,8 +89,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp" />
             </LinearLayout>
 
             <LinearLayout

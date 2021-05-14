@@ -25,11 +25,11 @@
     <string name="home_pack_seemore2">Weitere Packungen</string>
     <string name="categories_screen_title">Kategorien erkunden</string>
     <string name="categories_screen_subtitle">Faul zu suchen? Wählen Sie, was zu Ihrem Shiny-Server passt. Einige Kategorien sind übrigens leer.</string>
-    <string name="emojis_search_box_txt">Suche...</string>
+    <string name="emojis_search_box_txt">Suche…</string>
     <string name="emojis_not_found">Ups, wir konnten nichts finden.</string>
-    <string name="emojis_loading">Eine Sekunde, wir bekommen Emojis ...</string>
+    <string name="emojis_loading">Eine Sekunde, wir bekommen Emojis …</string>
     <string name="animated_emojis_warning_title">Warte, warte eine Minute!</string>
-    <string name="packs_included_emojis">inklusive Emojis</string>
+    <string name="packs_included_emojis">inklusive\nEmojis</string>
     <string name="animated_emojis_warning_subtitle">Sie sind dabei, eine Kategorie einzugeben, die blinkende Bilder enthält, die möglicherweise Anfälle bei Personen mit lichtempfindlicher Epilepsie auslösen können.</string>
     <string name="animated_emojis_warning_btncancel">Nein, ich bin raus</string>
     <string name="animated_emojis_warning_btnok">Lass mich rein</string>
@@ -78,7 +78,7 @@
     <string name="settings_option_10_title">Bemoji auf Github</string>
     <string name="settings_option_10_subtitle">Schauen Sie sich Bemojis Quellcode auf Github an.</string>
     <string name="submitted_by">Eingereicht von:</string>
-    <string name="downloading">Wird heruntergeladen...</string>
+    <string name="downloading">Wird heruntergeladen…</string>
     <string name="full_download_path">Vollständiger Download-Pfad:</string>
     <string name="permission_denied_emojis">Sie können Emojis nicht ohne Speicherzugriffsberechtigung herunterladen. Bitte erlauben Sie es.</string>
     <string name="permission_denied_packs">Sie können keine Pakete ohne Speicherzugriffsberechtigung herunterladen. Bitte erlauben Sie es.</string>
@@ -86,10 +86,11 @@
     <string name="error_msg">Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.</string>
     <string name="cache_cleared_success">Der Cache wurde erfolgreich geleert.</string>
     <string name="emojis_reloaded_success">Getan. Die Homepage wird neu geladen, wenn Sie zurückkommen</string>
-    <string name="emojis_still_loading_msg">Bitte warten Sie, wir bekommen Emojis ...</string>
-    <string name="packs_still_loading_msg">Bitte warten Sie, wir bekommen Kategorien ...</string>
+    <string name="emojis_still_loading_msg">Bitte warten Sie, wir bekommen Emojis …</string>
+    <string name="packs_still_loading_msg">Bitte warten Sie, wir bekommen Kategorien …</string>
     <string name="settings_option_11_title">Sprache</string>
     <string name="settings_option_11_subtitle">Lass Bemoji deine Sprache sprechen</string>
     <string name="settings_option_12_subtitle">Unsere Mission ist es, Bemoji für alle Emoji-Liebhaber auf der ganzen Welt zugänglich zu machen. Helfen Sie uns bei dieser Mission.</string>
     <string name="settings_option_12_title">Hilfe bei der Übersetzung von Bemoji</string>
+    <string name="bemoji_news_notifications_channel">Bemojis Nachrichten</string>
 </resources>

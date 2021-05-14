@@ -21,17 +21,17 @@ import static com.nerbly.bemoji.EmojisActivity.whenChipItemClicked;
 public class EmojisSuggestionsAdapter {
 
     public static class ChipRecyclerAdapter extends RecyclerView.Adapter<ChipRecyclerAdapter.ViewHolder> {
-        ArrayList<HashMap<String, Object>> _data;
+        ArrayList<HashMap<String, Object>> data;
 
         public ChipRecyclerAdapter(ArrayList<HashMap<String, Object>> _arr) {
-            _data = _arr;
+            data = _arr;
         }
 
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater _inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            @SuppressLint("InflateParams") View view = _inflater.inflate(R.layout.chipview, null);
+            LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view = inflater.inflate(R.layout.chipview, parent, false);
             RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             view.setLayoutParams(layoutParams);
             return new ViewHolder(view);
@@ -46,13 +46,13 @@ public class EmojisSuggestionsAdapter {
 
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             view.setLayoutParams(_lp);
-            cardview3.setOnClickListener(_view -> whenChipItemClicked(Objects.requireNonNull(_data.get(position).get("title")).toString()));
-            textview1.setText(Objects.requireNonNull(_data.get(position).get("title")).toString());
+            cardview3.setOnClickListener(_view -> whenChipItemClicked(Objects.requireNonNull(data.get(position).get("title")).toString()));
+            textview1.setText(Objects.requireNonNull(data.get(position).get("title")).toString());
         }
 
         @Override
         public int getItemCount() {
-            return _data.size();
+            return data.size();
         }
 
         public static class ViewHolder extends RecyclerView.ViewHolder {

@@ -14,6 +14,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,7 +23,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,14 +59,13 @@ import static com.nerbly.bemoji.UI.MainUIMethods.setImageViewRipple;
 import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
 
 public class EmojisActivity extends AppCompatActivity {
+    public static boolean isChipSelected = false;
     private static AppBarLayout appBar;
     private static EditText searchBoxField;
     private final Timer timer = new Timer();
-    private final boolean isCategorized = false;
     private GridLayoutManager layoutManager1 = new GridLayoutManager(this, 3);
     private double searchPosition = 0;
     private double emojisCount = 0;
-    private boolean isSearching = false;
     private boolean isRequestingServerEmojis = false;
     private boolean isSortingNew = false;
     private boolean isSortingOld = false;
@@ -77,10 +76,12 @@ public class EmojisActivity extends AppCompatActivity {
     private LottieAnimationView emptyAnimation;
     private LinearLayout searchBox;
     private ImageView sortByBtn;
+    private ImageView searchBtn;
+
     private TextView emptyTitle;
-    private RecyclerView chiprecycler;
+    private RecyclerView chipRecycler;
     private RecyclerView emojisRecycler;
-    private LinearLayout emptyview;
+    private LinearLayout loadView;
     private RequestNetwork startGettingEmojis;
     private RequestNetwork.RequestListener RequestEmojis;
     private SharedPreferences sharedPref;
@@ -88,6 +89,7 @@ public class EmojisActivity extends AppCompatActivity {
     private RequestNetwork.RequestListener RequestSuggestions;
 
     public static void whenChipItemClicked(String suggestion) {
+        isChipSelected = true;
         searchBoxField.setText(suggestion);
         appBar.setExpanded(true, true);
     }
@@ -104,25 +106,27 @@ public class EmojisActivity extends AppCompatActivity {
 
     private void initialize() {
         appBar = findViewById(R.id._app_bar);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         adview = findViewById(R.id.adview);
         emptyTitle = findViewById(R.id.emptyTitle);
         emptyAnimation = findViewById(R.id.emptyAnimation);
         searchBox = findViewById(R.id.searchbox);
         searchBoxField = findViewById(R.id.searchField);
         sortByBtn = findViewById(R.id.imageview2);
-        chiprecycler = findViewById(R.id.chiprecycler);
+        searchBtn = findViewById(R.id.searchBtn);
+        chipRecycler = findViewById(R.id.chiprecycler);
         emojisRecycler = findViewById(R.id.packEmojisRecycler);
-        emptyview = findViewById(R.id.emptyview);
+        loadView = findViewById(R.id.emptyview);
         startGettingEmojis = new RequestNetwork(this);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
         getSuggestions = new RequestNetwork(this);
 
         searchBoxField.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onTextChanged(CharSequence charSeq, int _param2, int _param3, int _param4) {
-                new searchTask().execute();
+            public void onTextChanged(CharSequence charSeq, int start, int count, int after) {
+                if (charSeq.toString().trim().length() == 0 || isChipSelected) {
+                    new searchTask().execute();
+                    isChipSelected = false;
+                }
             }
 
             @Override
@@ -144,6 +148,10 @@ public class EmojisActivity extends AppCompatActivity {
                 searchBoxField.setEnabled(true);
                 showFilterMenu(sortByBtn);
             }
+        });
+
+        searchBtn.setOnClickListener(view -> {
+            new searchTask().execute();
         });
 
         RequestEmojis = new RequestNetwork.RequestListener() {
@@ -182,15 +190,15 @@ public class EmojisActivity extends AppCompatActivity {
                     try {
                         suggestionsList = new Gson().fromJson(response, new TypeToken<ArrayList<HashMap<String, Object>>>() {
                         }.getType());
-                        chiprecycler.setAdapter(new EmojisSuggestionsAdapter.ChipRecyclerAdapter(suggestionsList));
-                        chiprecycler.setVisibility(View.VISIBLE);
+                        chipRecycler.setAdapter(new EmojisSuggestionsAdapter.ChipRecyclerAdapter(suggestionsList));
+                        chipRecycler.setVisibility(View.VISIBLE);
                     } catch (Exception e) {
                         Utils.showToast(getApplicationContext(), (e.toString()));
                     }
                 }
                 if (response.contains("STOP_ALL")) {
                     emojisRecycler.setVisibility(View.GONE);
-                    chiprecycler.setVisibility(View.GONE);
+                    chipRecycler.setVisibility(View.GONE);
                 }
             }
 
@@ -206,14 +214,15 @@ public class EmojisActivity extends AppCompatActivity {
         LOGIC_BACKEND();
     }
 
+
     public void LOGIC_BACKEND() {
+        overridePendingTransition(R.anim.fade_in, 0);
         rotationListener();
         //set up chips
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        chiprecycler.setLayoutManager(layoutManager2);
+        chipRecycler.setLayoutManager(layoutManager2);
 
         //set up search box
-        Objects.requireNonNull(getSupportActionBar()).hide();
         androidx.core.view.ViewCompat.setNestedScrollingEnabled(emojisRecycler, true);
 
         //start getting emojis
@@ -244,7 +253,7 @@ public class EmojisActivity extends AppCompatActivity {
         }
         OverScrollDecoratorHelper.setUpOverScroll(emojisRecycler, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
 
-        OverScrollDecoratorHelper.setUpOverScroll(chiprecycler, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL);
+        OverScrollDecoratorHelper.setUpOverScroll(chipRecycler, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL);
         AudienceNetworkAds.initialize(this);
 
         AdView bannerAd = new AdView(this, getString(R.string.banner_id), AdSize.BANNER_HEIGHT_50);
@@ -252,19 +261,21 @@ public class EmojisActivity extends AppCompatActivity {
         adview.addView(bannerAd);
 
         bannerAd.loadAd();
+
+        searchBoxField.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                new searchTask().execute();
+                return true;
+            }
+            return false;
+        });
     }
 
     public void LOGIC_FRONTEND() {
-
         rippleRoundStroke(searchBox, "#FFFFFF", "#FFFFFF", 200, 1, "#C4C4C4");
-
         DARK_ICONS(this);
-
         RippleEffects("#E0E0E0", sortByBtn);
-    }
-
-    public void transitionComplete(final View view, final String transitionName) {
-        view.setTransitionName(transitionName);
+        RippleEffects("#E0E0E0", searchBtn);
     }
 
     public void hideShowKeyboard(final boolean choice, final TextView edittext) {
@@ -281,11 +292,11 @@ public class EmojisActivity extends AppCompatActivity {
     }
 
     public void rotationListener() {
-        float scalefactor = getResources().getDisplayMetrics().density * 60;
+        float scaleFactor = getResources().getDisplayMetrics().density * 60;
 
         int number = getScreenWidth(this);
 
-        int columns = (int) ((float) number / scalefactor);
+        int columns = (int) ((float) number / scaleFactor);
 
         layoutManager1 = new GridLayoutManager(this, columns);
 
@@ -298,22 +309,22 @@ public class EmojisActivity extends AppCompatActivity {
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
 
 
-            float scalefactor = getResources().getDisplayMetrics().density * 60;
+            float scaleFactor = getResources().getDisplayMetrics().density * 60;
 
             int number = getScreenWidth(this);
 
-            int columns = (int) ((float) number / scalefactor);
+            int columns = (int) ((float) number / scaleFactor);
 
             layoutManager1 = new GridLayoutManager(this, columns);
 
             emojisRecycler.setLayoutManager(layoutManager1);
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
 
-            float scalefactor = getResources().getDisplayMetrics().density * 60;
+            float scaleFactor = getResources().getDisplayMetrics().density * 60;
 
             int number = getScreenWidth(this);
 
-            int columns = (int) ((float) number / scalefactor);
+            int columns = (int) ((float) number / scaleFactor);
 
             layoutManager1 = new GridLayoutManager(this, columns);
 
@@ -345,11 +356,10 @@ public class EmojisActivity extends AppCompatActivity {
 
     private void whenEmojisAreReady() {
         new Handler().postDelayed(() -> {
-            shadAnim(emptyview, "translationY", -1000, 300);
-            shadAnim(emptyview, "alpha", 0, 300);
+            shadAnim(loadView, "translationY", -1000, 300);
+            shadAnim(loadView, "alpha", 0, 300);
             searchBoxField.setEnabled(true);
             if (Objects.equals(getIntent().getStringExtra("switchFrom"), "search")) {
-                transitionComplete(searchBox, "searchbox");
                 searchBoxField.requestFocus();
                 new Handler().postDelayed(() -> runOnUiThread(() -> hideShowKeyboard(true, searchBoxField)), 1000);
             }
@@ -436,8 +446,6 @@ public class EmojisActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            isSearching = true;
-
             if (searchBoxField.getText().toString().trim().length() > 0) {
 
                 emojisList = new Gson().fromJson(sharedPref.getString("emojisData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
@@ -493,30 +501,29 @@ public class EmojisActivity extends AppCompatActivity {
         protected void onPostExecute(String _result) {
             if (Objects.equals(getIntent().getStringExtra("switchFrom"), "categories")) {
                 if (emojisList.size() == 0) {
-                    emptyview.setVisibility(View.VISIBLE);
+                    loadView.setVisibility(View.VISIBLE);
                     emojisRecycler.setVisibility(View.GONE);
-                    emptyAnimation.setAnimation("animations/notfound.json");
+                    emptyAnimation.setAnimation("animations/not_found.json");
                     emptyAnimation.playAnimation();
                     emptyTitle.setText(getString(R.string.emojis_not_found));
                 } else {
                     emojisRecycler.setVisibility(View.VISIBLE);
-                    emptyview.setVisibility(View.GONE);
+                    loadView.setVisibility(View.GONE);
                     emojisRecycler.setAdapter(new Recycler1Adapter(emojisList));
                 }
             } else {
                 if (emojisList.size() == 0) {
-                    emptyview.setVisibility(View.VISIBLE);
+                    loadView.setVisibility(View.VISIBLE);
                     emojisRecycler.setVisibility(View.GONE);
                 } else {
                     emojisRecycler.setAdapter(new Recycler1Adapter(emojisList));
                     emojisRecycler.setVisibility(View.VISIBLE);
-                    emptyview.setVisibility(View.GONE);
-                    emptyAnimation.setAnimation("animations/notfound.json");
+                    loadView.setVisibility(View.GONE);
+                    emptyAnimation.setAnimation("animations/not_found.json");
                     emptyAnimation.playAnimation();
                     emptyTitle.setText(getString(R.string.emojis_not_found));
                 }
             }
-            isSearching = false;
             if (searchBoxField.getText().toString().trim().length() > 0) {
                 sortByBtn.setImageResource(R.drawable.round_clear_black_48dp);
             } else {
@@ -583,7 +590,7 @@ public class EmojisActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             if (Objects.equals(getIntent().getStringExtra("switchFrom"), "categories")) {
                 if (emojisList.size() == 0) {
-                    emptyview.setVisibility(View.VISIBLE);
+                    loadView.setVisibility(View.VISIBLE);
                     emojisRecycler.setVisibility(View.GONE);
                     searchBox.setVisibility(View.GONE);
                     emptyTitle.setText(getString(R.string.emojis_not_found));
@@ -593,7 +600,7 @@ public class EmojisActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             runOnUiThread(() -> {
-                                emptyAnimation.setAnimation("animations/notfound.json");
+                                emptyAnimation.setAnimation("animations/not_found.json");
                                 emptyAnimation.playAnimation();
                                 emptyAnimation.setTranslationX(200);
                                 shadAnim(emptyAnimation, "translationX", 0, 200);

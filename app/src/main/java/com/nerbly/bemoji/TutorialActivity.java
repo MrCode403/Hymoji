@@ -102,6 +102,7 @@ public class TutorialActivity extends AppCompatActivity {
     }
 
     public void LOGIC_BACKEND() {
+        overridePendingTransition(R.anim.fade_in, 0);
         sheetBehavior = BottomSheetBehavior.from(bsheetbehavior);
         recyclerview1.setLayoutManager(new LinearLayoutManager(this));
         loadingRecycler.setLayoutManager(new LinearLayoutManager(this));

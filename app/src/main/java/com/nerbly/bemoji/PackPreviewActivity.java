@@ -134,6 +134,7 @@ public class PackPreviewActivity extends AppCompatActivity {
     }
 
     public void LOGIC_BACKEND() {
+        overridePendingTransition(R.anim.fade_in, 0);
         sheetBehavior = BottomSheetBehavior.from(bsheetbehavior);
         activityTitle.setText(getIntent().getStringExtra("packName"));
         rotationListener();
@@ -331,8 +332,12 @@ public class PackPreviewActivity extends AppCompatActivity {
             }
         } else {
             String downloadPackUrl = "https://emoji.gg/assets/emoji/" + downloadPackArrayList.get((int) (downloadPackPosition));
-            downloadPackPath = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + ("/Bemojis/" + packName);
             String downloadPackName = "Bemoji_" + downloadPackArrayList.get((int) (downloadPackPosition));
+            if (isGoingToZipPack) {
+                downloadPackPath = FileUtil.getPackageDataDir(getApplicationContext()) + "/Zipper/" + packName;
+            } else {
+                downloadPackPath = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + ("/Bemojis/" + packName);
+            }
             startPackDownload(downloadPackName, downloadPackPath, downloadPackUrl);
         }
     }
@@ -405,6 +410,7 @@ public class PackPreviewActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             ZIP(downloadPackPath, FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/Bemojis/" + tempPackName + ".zip");
+            downloadPackPath = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/Bemojis/" + tempPackName + ".zip";
             return null;
         }
 

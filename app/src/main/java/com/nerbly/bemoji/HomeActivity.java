@@ -56,49 +56,49 @@ import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 public class HomeActivity extends AppCompatActivity {
 
     public static ArrayList<HashMap<String, Object>> packsList = new ArrayList<>();
-    private final Intent toSearch = new Intent();
-    private final Intent toCategories = new Intent();
-    private final Intent toHelp = new Intent();
-    private final Intent toSettings = new Intent();
-    private final Intent toPacks = new Intent();
-    private final LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-    private FileManager fileManager;
-    private HashMap<String, Object> categoriesMap = new HashMap<>();
-    private double emojisCount = 0;
-    private double emojisScanPosition = 0;
-    private double localEmojisScanPosition = 0;
-    private String localEmojisScanPath = "";
-    private ArrayList<HashMap<String, Object>> emojisList = new ArrayList<>();
-    private ArrayList<HashMap<String, Object>> categoriesList = new ArrayList<>();
-    private ArrayList<HashMap<String, Object>> localEmojisList = new ArrayList<>();
-    private ArrayList<HashMap<String, Object>> backendPacksList = new ArrayList<>();
-    private LinearLayout adview;
-    private ScrollView scrollView;
-    private LinearLayout loadingView;
-    private LinearLayout mainView;
-    private LinearLayout shimmer1;
-    private LinearLayout shimmer2;
-    private LinearLayout shimmer7;
-    private LinearLayout shimmer3;
-    private LinearLayout shimmer4;
-    private LinearLayout shimmer6;
-    private LinearLayout shimmer5;
-    private LinearLayout shimmer9;
-    private LinearLayout shimmer10;
-    private LinearLayout shimmer11;
-    private LinearLayout localemojisview;
-    private RecyclerView packs_recycler;
-    private RecyclerView local_recycler;
-    private LinearLayout dock1;
-    private LinearLayout dock2;
-    private TextView emojisCounter;
-    private TextView categoriesCounter;
-    private LinearLayout dock3;
-    private LinearLayout dock4;
-    private TextView seeMorePacks;
-    private RequestNetwork startGettingEmojis;
-    private RequestNetwork.RequestListener EmojisRequestListener;
-    private SharedPreferences sharedPref;
+    Intent toSearch = new Intent();
+    Intent toCategories = new Intent();
+    Intent toHelp = new Intent();
+    Intent toSettings = new Intent();
+    Intent toPacks = new Intent();
+    LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+    FileManager fileManager;
+    double emojisCount = 0;
+    double emojisScanPosition = 0;
+    double localEmojisScanPosition = 0;
+    String localEmojisScanPath = "";
+    HashMap<String, Object> categoriesMap = new HashMap<>();
+    ArrayList<HashMap<String, Object>> emojisList = new ArrayList<>();
+    ArrayList<HashMap<String, Object>> categoriesList = new ArrayList<>();
+    ArrayList<HashMap<String, Object>> localEmojisList = new ArrayList<>();
+    ArrayList<HashMap<String, Object>> backendPacksList = new ArrayList<>();
+    ScrollView scrollView;
+    LinearLayout adview;
+    LinearLayout loadingView;
+    LinearLayout mainView;
+    LinearLayout shimmer1;
+    LinearLayout shimmer2;
+    LinearLayout shimmer7;
+    LinearLayout shimmer3;
+    LinearLayout shimmer4;
+    LinearLayout shimmer6;
+    LinearLayout shimmer5;
+    LinearLayout shimmer9;
+    LinearLayout shimmer10;
+    LinearLayout shimmer11;
+    LinearLayout localEmojisView;
+    RecyclerView packs_recycler;
+    RecyclerView local_recycler;
+    LinearLayout dock1;
+    LinearLayout dock2;
+    TextView emojisCounter;
+    TextView categoriesCounter;
+    LinearLayout dock3;
+    LinearLayout dock4;
+    TextView seeMorePacks;
+    RequestNetwork startGettingEmojis;
+    RequestNetwork.RequestListener EmojisRequestListener;
+    SharedPreferences sharedPref;
 
     public static String PacksArray() {
         return new Gson().toJson(packsList);
@@ -114,7 +114,7 @@ public class HomeActivity extends AppCompatActivity {
         initializeLogic();
     }
 
-    private void initialize() {
+    void initialize() {
         adview = findViewById(R.id.adview);
         scrollView = findViewById(R.id.scrollView);
         loadingView = findViewById(R.id.loadingView);
@@ -130,7 +130,7 @@ public class HomeActivity extends AppCompatActivity {
         shimmer10 = findViewById(R.id.shimmer10);
         shimmer11 = findViewById(R.id.shimmer11);
         MaterialCardView searchcard = findViewById(R.id.searchcard);
-        localemojisview = findViewById(R.id.localemojisview);
+        localEmojisView = findViewById(R.id.localemojisview);
         LinearLayout goToPacks = findViewById(R.id.gotopacks);
         packs_recycler = findViewById(R.id.packs_recycler);
         local_recycler = findViewById(R.id.local_recycler);
@@ -144,7 +144,7 @@ public class HomeActivity extends AppCompatActivity {
         startGettingEmojis = new RequestNetwork(this);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
-        searchcard.setOnClickListener(_view -> {
+        searchcard.setOnClickListener(view -> {
             if (emojisCounter.getText().toString().equals("0")) {
                 showCustomSnackBar(getString(R.string.emojis_still_loading_msg), HomeActivity.this);
             } else {
@@ -154,7 +154,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        goToPacks.setOnClickListener(_view -> {
+        goToPacks.setOnClickListener(view -> {
             toPacks.setClass(getApplicationContext(), PacksActivity.class);
             startActivity(toPacks);
         });
@@ -177,7 +177,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        dock1.setOnClickListener(_view -> {
+        dock1.setOnClickListener(view -> {
             if (emojisCounter.getText().toString().equals("0")) {
                 showCustomSnackBar(getString(R.string.emojis_still_loading_msg), HomeActivity.this);
             } else {
@@ -187,7 +187,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        dock2.setOnClickListener(_view -> {
+        dock2.setOnClickListener(view -> {
             if (categoriesCounter.getText().toString().equals("0")) {
                 showCustomSnackBar(getString(R.string.packs_still_loading_msg), HomeActivity.this);
             } else {
@@ -200,12 +200,12 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        dock3.setOnClickListener(_view -> {
+        dock3.setOnClickListener(view -> {
             toSettings.setClass(getApplicationContext(), SettingsActivity.class);
             startActivity(toSettings);
         });
 
-        dock4.setOnClickListener(_view -> {
+        dock4.setOnClickListener(view -> {
             toHelp.setClass(getApplicationContext(), TutorialActivity.class);
             startActivity(toHelp);
         });
@@ -288,7 +288,7 @@ public class HomeActivity extends AppCompatActivity {
         };
     }
 
-    private void initializeLogic() {
+    void initializeLogic() {
         LOGIC_FRONTEND();
         LOGIC_BACKEND();
     }
@@ -407,7 +407,7 @@ public class HomeActivity extends AppCompatActivity {
                     localEmojisScanPosition = 0;
                     for (int i = 0; i < (localEmojisList.size() - 1); i++) {
                         localEmojisScanPath = Objects.requireNonNull(localEmojisList.get((int) localEmojisScanPosition).get("filePath")).toString();
-                        final File file1 = new File(localEmojisScanPath);
+                        File file1 = new File(localEmojisScanPath);
                         try {
 
                             long length = file1.length();
@@ -421,12 +421,12 @@ public class HomeActivity extends AppCompatActivity {
                         localEmojisScanPosition++;
                     }
                     if (localEmojisList.size() == 0) {
-                        localemojisview.setVisibility(View.GONE);
+                        localEmojisView.setVisibility(View.GONE);
                     } else {
                         Utils.sortListMap(localEmojisList, "modi_time", false, false);
                         local_recycler.setAdapter(new LocalEmojisAdapter.Local_recyclerAdapter(localEmojisList));
 
-                        new Handler().postDelayed(() -> localemojisview.setVisibility(View.VISIBLE), 1000);
+                        new Handler().postDelayed(() -> localEmojisView.setVisibility(View.VISIBLE), 1000);
 
                     }
                 } catch (Exception ignored) {

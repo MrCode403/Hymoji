@@ -25,10 +25,10 @@
     <string name="home_pack_seemore2">Plus de packs</string>
     <string name="categories_screen_title">Explorer les catégories</string>
     <string name="categories_screen_subtitle">Paresseux pour chercher? choisissez ce qui convient à votre serveur brillant. Certaines catégories sont vides entre les deux.</string>
-    <string name="emojis_search_box_txt">Rechercher...</string>
+    <string name="emojis_search_box_txt">Rechercher…</string>
     <string name="emojis_not_found">Oups, nous n\'avons rien trouvé.</string>
     <string name="emojis_loading">Une seconde, nous recevons des emojis…</string>
-    <string name="packs_included_emojis">emojis inclus</string>
+    <string name="packs_included_emojis">emojis\ninclus</string>
     <string name="animated_emojis_warning_title">Attendez, attendez une minute!</string>
     <string name="animated_emojis_warning_subtitle">Vous êtes sur le point d\'entrer dans une catégorie contenant des images clignotantes susceptibles de déclencher des crises chez les personnes atteintes d\'épilepsie photosensible.</string>
     <string name="animated_emojis_warning_btncancel">Non, je suis sorti</string>
@@ -92,4 +92,5 @@
     <string name="settings_option_11_subtitle">Laissez Bemoji parler votre langue</string>
     <string name="settings_option_12_subtitle">Notre mission est de rendre Bemoji accessible à tous les amateurs d\'emoji du monde entier. Aidez-nous dans cette mission.</string>
     <string name="settings_option_12_title">Aide à traduire Bemoji</string>
+    <string name="bemoji_news_notifications_channel">Actualités de Bemoji</string>
 </resources>

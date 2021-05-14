@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Bemoji</string>
     <string name="home_title">Explorar emojis</string>
     <string name="home_subtitle">Aqui você pode explorar nossas categorias para acessar uma coleção ilimitada de emojis</string>
     <string name="local_emojis_title">EMOJIS BAIXADOS</string>
@@ -26,10 +25,10 @@
     <string name="home_pack_seemore2">Mais pacotes</string>
     <string name="categories_screen_title">Explorar categorias</string>
     <string name="categories_screen_subtitle">Preguiçoso para pesquisar? escolha o que se adequa ao seu servidor brilhante. Algumas categorias estão vazias aliás.</string>
-    <string name="emojis_search_box_txt">Procurar...</string>
+    <string name="emojis_search_box_txt">Procurar…</string>
     <string name="emojis_not_found">Ops, não foi possível encontrar nada.</string>
-    <string name="emojis_loading">Um segundo, estamos recebendo emojis ...</string>
-    <string name="packs_included_emojis">emojis incluídos</string>
+    <string name="emojis_loading">Um segundo, estamos recebendo emojis…</string>
+    <string name="packs_included_emojis">emojis\nincluídos</string>
     <string name="animated_emojis_warning_title">Espere um minuto!</string>
     <string name="animated_emojis_warning_subtitle">Você está prestes a entrar em uma categoria que contém imagens piscantes que podem potencialmente desencadear convulsões em pessoas com epilepsia fotossensível.</string>
     <string name="animated_emojis_warning_btncancel">Não estou fora</string>
@@ -37,7 +36,7 @@
     <string name="welcome_continue">Prosseguir</string>
     <string name="welcome_title_1">Bemoji</string>
     <string name="welcome_subtitle_0">Coleção ilimitada de emojis Discord, Twitch e Slack</string>
-    <string name="welcome_subtitle_1">Cansado de emojis chatos? Deixe-me me apresentar ...</string>
+    <string name="welcome_subtitle_1">Cansado de emojis chatos? Deixe-me me apresentar…</string>
     <string name="welcome_title_2">Outra dimensão dos emojis</string>
     <string name="welcome_subtitle_2">Memes, animações, rostos, expressões, qualquer emoji. Literalmente, temos todos eles.</string>
     <string name="welcome_title_3">Vamos começar</string>
@@ -87,10 +86,11 @@
     <string name="error_msg">Algo deu errado, tente novamente mais tarde.</string>
     <string name="cache_cleared_success">O cache foi limpo com sucesso.</string>
     <string name="emojis_reloaded_success">Feito. A página inicial será recarregada quando você voltar</string>
-    <string name="packs_still_loading_msg">Aguarde, estamos recebendo categorias ...</string>
-    <string name="emojis_still_loading_msg">LínguaAguarde, estamos recebendo emojis ...</string>
+    <string name="packs_still_loading_msg">Aguarde, estamos recebendo categorias…</string>
+    <string name="emojis_still_loading_msg">LínguaAguarde, estamos recebendo emojis…</string>
     <string name="settings_option_11_title">Língua</string>
     <string name="settings_option_11_subtitle">Deixe Bemoji falar sua língua</string>
     <string name="settings_option_12_title">Ajude a traduzir o Bemoji</string>
     <string name="settings_option_12_subtitle">Nossa missão é tornar o Bemoji acessível para todos os amantes de emoji ao redor do mundo. Ajude-nos nessa missão.</string>
+    <string name="bemoji_news_notifications_channel">Notícias de Bemoji</string>
 </resources>

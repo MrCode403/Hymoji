@@ -156,6 +156,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void LOGIC_BACKEND() {
+        overridePendingTransition(R.anim.fade_in, 0);
         sheetBehavior = BottomSheetBehavior.from(bsheetbehavior);
         bottomSheetBehaviorListener();
         textview8.setText(getString(R.string.settings_option_3_title).concat(" (" + initializeCacheScan(this) + ")"));
@@ -180,7 +181,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void showLanguagesSheet() {
-        final String[] languages = {"English", "Deutsche", "Français", "Português"};
+        final String[] languages = {"English", "Português", "Français", "Deutsche", "Türkçe"};
         MaterialAlertDialogBuilder languagesDialog = new MaterialAlertDialogBuilder(this, R.style.RoundShapeTheme);
         int languagePosition = -1;
         if (sharedPref.getString("language_position", "") != null) {
@@ -193,11 +194,13 @@ public class SettingsActivity extends AppCompatActivity {
                     if (i == 0) {
                         setLocale("en", Integer.toString(i), SettingsActivity.this);
                     } else if (i == 1) {
-                        setLocale("de", Integer.toString(i), SettingsActivity.this);
+                        setLocale("pt", Integer.toString(i), SettingsActivity.this);
                     } else if (i == 2) {
                         setLocale("fr", Integer.toString(i), SettingsActivity.this);
                     } else if (i == 3) {
-                        setLocale("pt", Integer.toString(i), SettingsActivity.this);
+                        setLocale("de", Integer.toString(i), SettingsActivity.this);
+                    } else if (i == 4) {
+                        setLocale("tr", Integer.toString(i), SettingsActivity.this);
                     }
                     dialog.dismiss();
                     sharedPref.edit().putString("isAskingForReload", "true").apply();

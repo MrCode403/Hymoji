@@ -58,7 +58,7 @@ public class PacksActivity extends AppCompatActivity {
     private String packsTempArrayString = "";
     private String currentPositionPackArray = "";
     private ArrayList<HashMap<String, Object>> packsList = new ArrayList<>();
-    private LinearLayout bsheetbehavior;
+    private LinearLayout sheetBehaviorView;
     private LinearLayout background;
     private LinearLayout adview;
     private LinearLayout slider;
@@ -80,7 +80,7 @@ public class PacksActivity extends AppCompatActivity {
 
     private void initialize() {
         CoordinatorLayout linear1 = findViewById(R.id.tutorialBg);
-        bsheetbehavior = findViewById(R.id.sheetBehavior);
+        sheetBehaviorView = findViewById(R.id.sheetBehavior);
         background = findViewById(R.id.background);
         adview = findViewById(R.id.adview);
         slider = findViewById(R.id.slider);
@@ -89,7 +89,7 @@ public class PacksActivity extends AppCompatActivity {
         startGettingPacks = new RequestNetwork(this);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
-        linear1.setOnClickListener(_view -> sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN));
+        linear1.setOnClickListener(view -> sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN));
 
         PacksRequestListener = new RequestNetwork.RequestListener() {
             @Override
@@ -124,7 +124,8 @@ public class PacksActivity extends AppCompatActivity {
     }
 
     public void LOGIC_BACKEND() {
-        sheetBehavior = BottomSheetBehavior.from(bsheetbehavior);
+        overridePendingTransition(R.anim.fade_in, 0);
+        sheetBehavior = BottomSheetBehavior.from(sheetBehaviorView);
         loadingRecycler.setLayoutManager(new LinearLayoutManager(this));
         packsRecycler.setLayoutManager(new LinearLayoutManager(this));
         bottomSheetBehaviorListener();
@@ -190,7 +191,7 @@ public class PacksActivity extends AppCompatActivity {
 
     }
 
-    public void _setImageFromUrl(final ImageView image, final String url) {
+    public void setImageFromUrl(final ImageView image, final String url) {
         Glide.with(this)
 
                 .load(url)
@@ -199,7 +200,7 @@ public class PacksActivity extends AppCompatActivity {
 
     }
 
-    public String _capitalizedFirstWord(final String _data) {
+    public String capitalizedFirstWord(final String _data) {
         StringBuffer capBuffer = new StringBuffer();
         Matcher capMatcher = Pattern.compile("([a-z])([a-z]*)", Pattern.CASE_INSENSITIVE).matcher(_data);
         while (capMatcher.find()) {
@@ -261,30 +262,30 @@ public class PacksActivity extends AppCompatActivity {
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater _inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            @SuppressLint("InflateParams") View _v = _inflater.inflate(R.layout.fullpacksview, null);
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _v.setLayoutParams(_lp);
-            return new ViewHolder(_v);
+            LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view = inflater.inflate(R.layout.fullpacksview, parent, false);
+            RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            view.setLayoutParams(layoutParams);
+            return new ViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
             View view = holder.itemView;
 
-            final com.google.android.material.card.MaterialCardView cardview1 = view.findViewById(R.id.cardview1);
-            final ImageView imageview1 = view.findViewById(R.id.emoji);
-            final TextView textview1 = view.findViewById(R.id.emptyTitle);
-            final TextView textview2 = view.findViewById(R.id.tutorialSubtitle);
-            final TextView textview3 = view.findViewById(R.id.download_tv);
+            final com.google.android.material.card.MaterialCardView cardView = view.findViewById(R.id.cardView);
+            final ImageView emoji = view.findViewById(R.id.emoji);
+            final TextView title = view.findViewById(R.id.title);
+            final TextView description = view.findViewById(R.id.description);
+            final TextView amount = view.findViewById(R.id.amount);
 
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            view.setLayoutParams(_lp);
-            textview1.setText(_capitalizedFirstWord(Objects.requireNonNull(data.get(position).get("name")).toString().replace("_", " ")));
-            textview2.setText(Objects.requireNonNull(data.get(position).get("description")).toString());
-            textview3.setText(String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("amount")).toString()))));
-            _setImageFromUrl(imageview1, Objects.requireNonNull(data.get(position).get("image")).toString());
-            cardview1.setOnClickListener(_view -> {
+            RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            view.setLayoutParams(layoutParams);
+            title.setText(capitalizedFirstWord(Objects.requireNonNull(data.get(position).get("name")).toString().replace("_", " ")));
+            description.setText(Objects.requireNonNull(data.get(position).get("description")).toString());
+            amount.setText(String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("amount")).toString()))));
+            setImageFromUrl(emoji, Objects.requireNonNull(data.get(position).get("image")).toString());
+            cardView.setOnClickListener(_view -> {
                 try {
                     packsTempArrayString = new Gson().toJson(packsList);
                     JSONArray backPacksArray = new JSONArray(packsTempArrayString);
@@ -306,7 +307,7 @@ public class PacksActivity extends AppCompatActivity {
                 toPreview.putExtra("fileName", Objects.requireNonNull(data.get(position).get("slug")).toString());
                 toPreview.putExtra("packEmojisArray", currentPositionPackArray);
                 toPreview.putExtra("packEmojisAmount", Objects.requireNonNull(data.get(position).get("amount")).toString());
-                toPreview.putExtra("packName", _capitalizedFirstWord(Objects.requireNonNull(data.get(position).get("name")).toString().replace("_", " ")));
+                toPreview.putExtra("packName", capitalizedFirstWord(Objects.requireNonNull(data.get(position).get("name")).toString().replace("_", " ")));
                 toPreview.putExtra("packId", Objects.requireNonNull(data.get(position).get("id")).toString());
                 toPreview.setClass(getApplicationContext(), PackPreviewActivity.class);
                 startActivity(toPreview);
