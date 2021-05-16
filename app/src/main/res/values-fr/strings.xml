@@ -83,7 +83,7 @@
     <string name="permission_denied_emojis">Vous ne pouvez pas télécharger d\'emojis sans autorisation d\'accès au stockage. Veuillez l\'autoriser.</string>
     <string name="permission_denied_packs">Vous ne pouvez pas télécharger de packs sans autorisation d\'accès au stockage. Veuillez l\'autoriser.</string>
     <string name="ask_for_permission">Veuillez nous autoriser à accéder à votre stockage pour continuer.</string>
-    <string name="error_msg">Quelque chose c\'est mal passé. Merci d\'essayer plus tard.</string>
+    <string name="error_msg_2">Un problème est survenu. Merci d\'essayer plus tard.</string>
     <string name="cache_cleared_success">Le cache a été effacé avec succès.</string>
     <string name="emojis_reloaded_success">Fait. La page d\'accueil sera rechargée à votre retour</string>
     <string name="packs_still_loading_msg">Veuillez patienter, nous obtenons des catégories…</string>
@@ -93,4 +93,9 @@
     <string name="settings_option_12_subtitle">Notre mission est de rendre Bemoji accessible à tous les amateurs d\'emoji du monde entier. Aidez-nous dans cette mission.</string>
     <string name="settings_option_12_title">Aide à traduire Bemoji</string>
     <string name="bemoji_news_notifications_channel">Actualités de Bemoji</string>
+    <string name="request_server_data_error">Une erreur s\'est produite, nous redémarrerons l\'application pour réessayer.</string>
+    <string name="error_msg">Un problème est survenu.</string>
+    <string name="dialog_negative_text">Annuler</string>
+    <string name="dialog_positive_text">D\'accord</string>
+    <string name="mailto_device_not_supported">Il semble que votre appareil ne dispose pas d\'une application de messagerie installée, souhaitez-vous être redirigé vers Play Store pour nous envoyer des commentaires ou nous contacter?</string>
 </resources>

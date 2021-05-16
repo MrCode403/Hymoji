@@ -302,7 +302,7 @@ public class PackPreviewActivity extends AppCompatActivity {
                         isDownloading = false;
                         download_tv.setText(R.string.download_btn_txt);
                         download_ic.setImageResource(R.drawable.round_get_app_white_48dp);
-                        showCustomSnackBar(getString(R.string.error_msg), PackPreviewActivity.this);
+                        showCustomSnackBar(getString(R.string.error_msg_2), PackPreviewActivity.this);
                         download_ic.setRotation((float) (0));
                         downAnim.cancel();
                     }

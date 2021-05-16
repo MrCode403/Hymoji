@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -150,9 +148,7 @@ public class EmojisActivity extends AppCompatActivity {
             }
         });
 
-        searchBtn.setOnClickListener(view -> {
-            new searchTask().execute();
-        });
+        searchBtn.setOnClickListener(view -> new searchTask().execute());
 
         RequestEmojis = new RequestNetwork.RequestListener() {
             @Override
@@ -217,7 +213,7 @@ public class EmojisActivity extends AppCompatActivity {
 
     public void LOGIC_BACKEND() {
         overridePendingTransition(R.anim.fade_in, 0);
-        rotationListener();
+        initEmojisRecycler();
         //set up chips
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         chipRecycler.setLayoutManager(layoutManager2);
@@ -291,46 +287,13 @@ public class EmojisActivity extends AppCompatActivity {
         }
     }
 
-    public void rotationListener() {
+    public void initEmojisRecycler() {
+
         float scaleFactor = getResources().getDisplayMetrics().density * 60;
-
         int number = getScreenWidth(this);
-
         int columns = (int) ((float) number / scaleFactor);
-
         layoutManager1 = new GridLayoutManager(this, columns);
-
         emojisRecycler.setLayoutManager(layoutManager1);
-    }
-
-    @Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-
-
-            float scaleFactor = getResources().getDisplayMetrics().density * 60;
-
-            int number = getScreenWidth(this);
-
-            int columns = (int) ((float) number / scaleFactor);
-
-            layoutManager1 = new GridLayoutManager(this, columns);
-
-            emojisRecycler.setLayoutManager(layoutManager1);
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-
-            float scaleFactor = getResources().getDisplayMetrics().density * 60;
-
-            int number = getScreenWidth(this);
-
-            int columns = (int) ((float) number / scaleFactor);
-
-            layoutManager1 = new GridLayoutManager(this, columns);
-
-
-            emojisRecycler.setLayoutManager(layoutManager1);
-        }
     }
 
     public void loadCategorizedEmojis() {

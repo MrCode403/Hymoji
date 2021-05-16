@@ -88,9 +88,14 @@
     <string name="downloading">İndiriliyor…</string>
     <string name="full_download_path">İndirme yolu:</string>
     <string name="ask_for_permission">Lütfen devam etmek için bize depolama alanınıza erişme izni verin.</string>
-    <string name="error_msg">Bir şeyler yanlış oldu. Lütfen sonra tekrar deneyiniz.</string>
+    <string name="error_msg_2">Bir şeyler yanlış oldu. Lütfen sonra tekrar deneyiniz.</string>
     <string name="cache_cleared_success">Önbellek başarıyla temizlendi.</string>
     <string name="emojis_reloaded_success">Bitti. Geri döndüğünüzde ana sayfa yeniden yüklenecek</string>
     <string name="emojis_still_loading_msg">Lütfen bekleyin, emoji alıyoruz…</string>
     <string name="bemoji_news_notifications_channel">Bemoji\'den Haberler</string>
+    <string name="request_server_data_error">Bir şeyler ters gitti, tekrar denemek için uygulamayı yeniden başlatacağız.</string>
+    <string name="error_msg">Bir şeyler yanlış gitti.</string>
+    <string name="dialog_negative_text">İptal etmek</string>
+    <string name="dialog_positive_text">Tamam</string>
+    <string name="mailto_device_not_supported">Görünüşe göre cihazınızda yüklü bir posta uygulaması yok, bize geri bildirim göndermek veya bizimle iletişime geçmek için Play Store\'a yönlendirilmek ister misiniz?</string>
 </resources>

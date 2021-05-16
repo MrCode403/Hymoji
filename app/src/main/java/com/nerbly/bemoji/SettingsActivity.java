@@ -28,6 +28,7 @@ import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
 import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
 import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
 import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
+import static com.nerbly.bemoji.UI.UserInteractions.showMessageDialog;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -105,9 +106,21 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         setting4.setOnClickListener(_view -> {
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("mailto:nerblyteam@gmail.com"));
-            startActivity(intent);
+            intent.setAction(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:"));
+            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"nerblyteam@gmail.com"});
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Bemoji App - Contact Us");
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            } else {
+                showMessageDialog(getString(R.string.error_msg), getString(R.string.mailto_device_not_supported), getString(R.string.dialog_positive_text), getString(R.string.dialog_negative_text), this,
+                        (dialog, which) -> {
+                            intent.setAction(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.nerbly.bemoji"));
+                            startActivity(intent);
+                        },
+                        (dialog, which) -> dialog.dismiss());
+            }
         });
 
         setting5.setOnClickListener(_view -> {
@@ -141,6 +154,14 @@ public class SettingsActivity extends AppCompatActivity {
             intent.putExtra(Intent.EXTRA_SUBJECT, "Bemoji Translation Contribution");
             if (intent.resolveActivity(getPackageManager()) != null) {
                 startActivity(intent);
+            } else {
+                showMessageDialog(getString(R.string.error_msg), getString(R.string.mailto_device_not_supported), getString(R.string.dialog_positive_text), getString(R.string.dialog_negative_text), this,
+                        (dialog, which) -> {
+                            intent.setAction(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.nerbly.bemoji"));
+                            startActivity(intent);
+                        },
+                        (dialog, which) -> dialog.dismiss());
             }
         });
     }

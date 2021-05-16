@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -247,7 +248,8 @@ public class HomeActivity extends AppCompatActivity {
                             }
 
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            recreate();
+                            Toast.makeText(HomeActivity.this, getString(R.string.request_server_data_error), Toast.LENGTH_SHORT).show();
                         }
 
                         sharedPref.edit().putString("categoriesData", new Gson().toJson(categoriesList)).apply();
@@ -262,16 +264,22 @@ public class HomeActivity extends AppCompatActivity {
                                 packs_recycler.setAdapter(new HomePacksAdapter.Packs_recyclerAdapter(packsList));
 
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                recreate();
+                                Toast.makeText(HomeActivity.this, getString(R.string.request_server_data_error), Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             if (tag.equals("PACKS_1")) {
-                                backendPacksList = new Gson().fromJson(response, new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                                }.getType());
-                                if (new Gson().toJson(backendPacksList).equals(new Gson().toJson(packsList))) {
-                                    sharedPref.edit().putString("isNewEmojisAvailable", "").apply();
-                                } else {
-                                    sharedPref.edit().putString("isNewEmojisAvailable", "true").apply();
+                                try {
+                                    backendPacksList = new Gson().fromJson(response, new TypeToken<ArrayList<HashMap<String, Object>>>() {
+                                    }.getType());
+                                    if (new Gson().toJson(backendPacksList).equals(new Gson().toJson(packsList))) {
+                                        sharedPref.edit().putString("isNewEmojisAvailable", "").apply();
+                                    } else {
+                                        sharedPref.edit().putString("isNewEmojisAvailable", "true").apply();
+                                    }
+                                } catch (Exception ignored) {
+                                    recreate();
+                                    Toast.makeText(HomeActivity.this, getString(R.string.request_server_data_error), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }

@@ -1,12 +1,14 @@
 package com.nerbly.bemoji.UI;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.nerbly.bemoji.R;
 
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
@@ -31,5 +33,14 @@ public class UserInteractions {
         snackbar_tv.setText(message);
         sblayout.addView(inflate, 0);
         snackBarView.show();
+    }
+
+    public static void showMessageDialog(String title, String message, String positiveButtonText, String negativeButtonText, Activity context, DialogInterface.OnClickListener positiveAction, DialogInterface.OnClickListener negativeAction) {
+        MaterialAlertDialogBuilder msgDialog = new MaterialAlertDialogBuilder(context, R.style.RoundShapeTheme);
+        msgDialog.setTitle(title)
+                .setMessage(message)
+                .setNegativeButton(negativeButtonText, negativeAction)
+                .setPositiveButton(positiveButtonText, positiveAction);
+        msgDialog.show();
     }
 }

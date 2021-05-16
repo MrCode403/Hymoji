@@ -83,7 +83,7 @@
     <string name="permission_denied_emojis">Sie können Emojis nicht ohne Speicherzugriffsberechtigung herunterladen. Bitte erlauben Sie es.</string>
     <string name="permission_denied_packs">Sie können keine Pakete ohne Speicherzugriffsberechtigung herunterladen. Bitte erlauben Sie es.</string>
     <string name="ask_for_permission">Bitte geben Sie uns die Erlaubnis, auf Ihren Speicher zuzugreifen, um fortzufahren.</string>
-    <string name="error_msg">Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.</string>
+    <string name="error_msg_2">Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.</string>
     <string name="cache_cleared_success">Der Cache wurde erfolgreich geleert.</string>
     <string name="emojis_reloaded_success">Getan. Die Homepage wird neu geladen, wenn Sie zurückkommen</string>
     <string name="emojis_still_loading_msg">Bitte warten Sie, wir bekommen Emojis …</string>
@@ -93,4 +93,9 @@
     <string name="settings_option_12_subtitle">Unsere Mission ist es, Bemoji für alle Emoji-Liebhaber auf der ganzen Welt zugänglich zu machen. Helfen Sie uns bei dieser Mission.</string>
     <string name="settings_option_12_title">Hilfe bei der Übersetzung von Bemoji</string>
     <string name="bemoji_news_notifications_channel">Bemojis Nachrichten</string>
+    <string name="request_server_data_error">Es ist ein Fehler aufgetreten. Wir werden die App neu starten, um es erneut zu versuchen.</string>
+    <string name="error_msg">Etwas ist schief gelaufen.</string>
+    <string name="dialog_positive_text">Okay</string>
+    <string name="dialog_negative_text">Stornieren</string>
+    <string name="mailto_device_not_supported">Anscheinend ist auf Ihrem Gerät keine E-Mail-App installiert. Möchten Sie zum Play Store weitergeleitet werden, um uns Feedback zu senden oder uns zu kontaktieren?</string>
 </resources>

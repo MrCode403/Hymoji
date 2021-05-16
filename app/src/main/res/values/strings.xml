@@ -87,7 +87,8 @@
     <string name="permission_denied_emojis">You can\'t download emojis without storage access permission. Please allow it.</string>
     <string name="permission_denied_packs">You can\'t download packs without storage access permission. Please allow it.</string>
     <string name="ask_for_permission">Please give us permission to access your storage to continue.</string>
-    <string name="error_msg">Something went wrong, please try again later.</string>
+    <string name="error_msg">Something went wrong.</string>
+    <string name="error_msg_2">Something went wrong, please try again later.</string>
     <string name="cache_cleared_success">Cache has been cleared successfully.</string>
     <string name="emojis_reloaded_success">Done. Home page will be reloaded when you get back</string>
     <string name="packs_still_loading_msg">Please wait, we\'re getting categories…</string>
@@ -97,4 +98,8 @@
     <string name="settings_option_12_title">Help to translate Bemoji</string>
     <string name="settings_option_12_subtitle">Our mission is to make Bemoji accessible for all emoji lovers around the world. Help us in that mission.</string>
     <string name="bemoji_news_notifications_channel">Bemoji\'s News</string>
+    <string name="request_server_data_error">Something went wrong, we will restart the app to try again.</string>
+    <string name="dialog_negative_text">Cancel</string>
+    <string name="dialog_positive_text">Okay</string>
+    <string name="mailto_device_not_supported">It seems like your device doesn\'t have a mail app installed, would you like to be redirected to Play Store to send us feedback or to contact us?</string>
 </resources>
