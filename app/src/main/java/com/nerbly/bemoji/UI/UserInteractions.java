@@ -5,12 +5,17 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.nerbly.bemoji.R;
 
+import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
+import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
 
 public class UserInteractions {
@@ -35,12 +40,49 @@ public class UserInteractions {
         snackBarView.show();
     }
 
-    public static void showMessageDialog(String title, String message, String positiveButtonText, String negativeButtonText, Activity context, DialogInterface.OnClickListener positiveAction, DialogInterface.OnClickListener negativeAction) {
-        MaterialAlertDialogBuilder msgDialog = new MaterialAlertDialogBuilder(context, R.style.RoundShapeTheme);
-        msgDialog.setTitle(title)
+    public static AlertDialog showMessageDialog(String title, String message, String positiveButtonText, String negativeButtonText, Activity context, DialogInterface.OnClickListener positiveAction, DialogInterface.OnClickListener negativeAction) {
+        return new MaterialAlertDialogBuilder(context, R.style.RoundShapeTheme)
+                .setTitle(title)
                 .setMessage(message)
                 .setNegativeButton(negativeButtonText, negativeAction)
-                .setPositiveButton(positiveButtonText, positiveAction);
-        msgDialog.show();
+                .setPositiveButton(positiveButtonText, positiveAction)
+                .show();
     }
+
+    public static void showMessageSheet(String title, int drawable, String positiveButtonText, String negativeButtonText, String message, Activity context, View.OnClickListener positiveAction, View.OnClickListener negativeAction) {
+
+        com.google.android.material.bottomsheet.BottomSheetDialog bottomSheetDialog = new com.google.android.material.bottomsheet.BottomSheetDialog(context, R.style.materialsheet);
+        View bottomSheetView;
+        bottomSheetView = context.getLayoutInflater().inflate(R.layout.infosheet, null);
+        bottomSheetDialog.setContentView(bottomSheetView);
+
+        bottomSheetDialog.getWindow().findViewById(R.id.design_bottom_sheet).setBackgroundResource(android.R.color.transparent);
+
+        ImageView image = bottomSheetView.findViewById(R.id.image);
+        TextView infook = bottomSheetView.findViewById(R.id.infosheet_ok);
+        TextView infocancel = bottomSheetView.findViewById(R.id.infosheet_cancel);
+        LinearLayout infoback = bottomSheetView.findViewById(R.id.infosheet_back);
+        TextView infotitle = bottomSheetView.findViewById(R.id.infosheet_title);
+        TextView infosub = bottomSheetView.findViewById(R.id.infosheet_description);
+        LinearLayout slider = bottomSheetView.findViewById(R.id.slider);
+
+        infook.setText(positiveButtonText);
+        infocancel.setText(negativeButtonText);
+        infotitle.setText(title);
+        infosub.setText(message);
+        image.setImageResource(drawable);
+
+        advancedCorners(infoback, "#ffffff", 38, 38, 0, 0);
+        rippleRoundStroke(infook, "#7289DA", "#6275BB", 20, 0, "#007EEF");
+        rippleRoundStroke(infocancel, "#424242", "#181818", 20, 0, "#007EEF");
+        setViewRadius(slider, 180, "#BDBDBD");
+
+        infook.setOnClickListener(positiveAction);
+        infocancel.setOnClickListener(negativeAction);
+
+        if (!context.isFinishing()) {
+            bottomSheetDialog.show();
+        }
+    }
+
 }

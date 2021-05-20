@@ -14,9 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
-import com.nerbly.bemoji.HomeActivity;
-import com.nerbly.bemoji.PackPreviewActivity;
-import com.nerbly.bemoji.PacksActivity;
+import com.nerbly.bemoji.Activities.HomeActivity;
+import com.nerbly.bemoji.Activities.PackPreviewActivity;
+import com.nerbly.bemoji.Activities.PacksActivity;
 import com.nerbly.bemoji.R;
 
 import org.json.JSONArray;
@@ -32,8 +32,6 @@ import static com.nerbly.bemoji.Functions.SideFunctions.setImageFromUrl;
 public class HomePacksAdapter {
 
     public static class Packs_recyclerAdapter extends RecyclerView.Adapter<Packs_recyclerAdapter.ViewHolder> {
-        private final Intent toPreview = new Intent();
-        private final Intent toPacks = new Intent();
         private final ArrayList<String> packsArrayList = new ArrayList<>();
         ArrayList<HashMap<String, Object>> _data;
         private String packsTempArrayString = "";
@@ -54,14 +52,14 @@ public class HomePacksAdapter {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder _holder, @SuppressLint("RecyclerView") final int position) {
+        public void onBindViewHolder(ViewHolder _holder, @SuppressLint("RecyclerView") int position) {
             View view = _holder.itemView;
 
-            final com.google.android.material.card.MaterialCardView cardview2 = view.findViewById(R.id.cardview2);
-            final com.google.android.material.card.MaterialCardView cardview1 = view.findViewById(R.id.cardview1);
-            final TextView textview1 = view.findViewById(R.id.emptyTitle);
-            final TextView textview2 = view.findViewById(R.id.tutorialSubtitle);
-            final ImageView imageview1 = view.findViewById(R.id.emoji);
+            com.google.android.material.card.MaterialCardView cardview2 = view.findViewById(R.id.cardview2);
+            com.google.android.material.card.MaterialCardView cardview1 = view.findViewById(R.id.cardview1);
+            TextView textview1 = view.findViewById(R.id.emptyTitle);
+            TextView textview2 = view.findViewById(R.id.tutorialSubtitle);
+            ImageView imageview1 = view.findViewById(R.id.emoji);
 
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             view.setLayoutParams(_lp);
@@ -83,6 +81,7 @@ public class HomePacksAdapter {
                 } catch (Exception e) {
                     Log.e("Pack Array Crashed", e.toString());
                 }
+                Intent toPreview = new Intent();
                 toPreview.putExtra("switchType", "pack");
                 toPreview.putExtra("title", "BemojiPack_" + (long) (Double.parseDouble(Objects.requireNonNull(_data.get(position).get("id")).toString())));
                 toPreview.putExtra("subtitle", Objects.requireNonNull(_data.get(position).get("description")).toString());
@@ -101,6 +100,7 @@ public class HomePacksAdapter {
                 cardview2.setVisibility(View.GONE);
             }
             cardview2.setOnClickListener(_view -> {
+                Intent toPacks = new Intent();
                 toPacks.setClass(imageview1.getContext(), PacksActivity.class);
                 imageview1.getContext().startActivity(toPacks);
             });

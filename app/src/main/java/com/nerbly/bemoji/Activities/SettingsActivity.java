@@ -1,4 +1,4 @@
-package com.nerbly.bemoji;
+package com.nerbly.bemoji.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.nerbly.bemoji.R;
 
 import static com.nerbly.bemoji.Functions.MainFunctions.initializeCacheScan;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
@@ -102,7 +103,6 @@ public class SettingsActivity extends AppCompatActivity {
         setting2.setOnClickListener(_view -> {
             trimCache(SettingsActivity.this);
             textview8.setText(getString(R.string.settings_option_3_title).concat(" (" + initializeCacheScan(SettingsActivity.this) + ")"));
-            showCustomSnackBar(getString(R.string.cache_cleared_success), SettingsActivity.this);
         });
 
         setting4.setOnClickListener(_view -> {

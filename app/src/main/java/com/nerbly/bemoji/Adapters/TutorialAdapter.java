@@ -39,12 +39,12 @@ public class TutorialAdapter {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, final int position) {
+        public void onBindViewHolder(ViewHolder holder, int position) {
             View view = holder.itemView;
 
-            final TextView tutorialTitle = view.findViewById(R.id.tutorialTitle);
-            final TextView tutorialSubtitle = view.findViewById(R.id.tutorialSubtitle);
-            final ImageView tutorialImage = view.findViewById(R.id.tutorialImage);
+            TextView tutorialTitle = view.findViewById(R.id.tutorialTitle);
+            TextView tutorialSubtitle = view.findViewById(R.id.tutorialSubtitle);
+            ImageView tutorialImage = view.findViewById(R.id.tutorialImage);
 
             if (Objects.requireNonNull(data.get(position).get("isTitled")).toString().equals("true")) {
                 tutorialTitle.setVisibility(View.VISIBLE);

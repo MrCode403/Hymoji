@@ -1,4 +1,4 @@
-package com.nerbly.bemoji;
+package com.nerbly.bemoji.Activities;
 
 
 import android.annotation.SuppressLint;
@@ -36,6 +36,7 @@ import com.nerbly.bemoji.Adapters.EmojisSuggestionsAdapter;
 import com.nerbly.bemoji.Functions.RequestNetwork;
 import com.nerbly.bemoji.Functions.RequestNetworkController;
 import com.nerbly.bemoji.Functions.Utils;
+import com.nerbly.bemoji.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,6 +48,9 @@ import java.util.TimerTask;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 import static com.nerbly.bemoji.Adapters.MainEmojisAdapter.Recycler1Adapter;
+import static com.nerbly.bemoji.Configurations.BANNER_AD_ID;
+import static com.nerbly.bemoji.Configurations.EMOJIS_API_LINK;
+import static com.nerbly.bemoji.Configurations.EMOJIS_SUGGESTIONS_SOURCE;
 import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
@@ -75,7 +79,6 @@ public class EmojisActivity extends AppCompatActivity {
     private LinearLayout searchBox;
     private ImageView sortByBtn;
     private ImageView searchBtn;
-
     private TextView emptyTitle;
     private RecyclerView chipRecycler;
     private RecyclerView emojisRecycler;
@@ -226,7 +229,7 @@ public class EmojisActivity extends AppCompatActivity {
 
             if (sharedPref.getString("emojisData", "").isEmpty()) {
                 isSortingNew = true;
-                startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, "https://emoji.gg/api/", "", RequestEmojis);
+                startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, EMOJIS_API_LINK, "", RequestEmojis);
             } else {
                 isRequestingServerEmojis = false;
                 isSortingNew = true;
@@ -238,7 +241,7 @@ public class EmojisActivity extends AppCompatActivity {
             //the user is coming from search box
             //start getting emojis
             if (sharedPref.getString("emojisData", "").isEmpty()) {
-                startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, "https://emoji.gg/api/", "", RequestEmojis);
+                startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, EMOJIS_API_LINK, "", RequestEmojis);
                 Log.i("task", "Emojis data is empty, we're getting emojis from the API");
             } else {
                 isRequestingServerEmojis = false;
@@ -248,14 +251,11 @@ public class EmojisActivity extends AppCompatActivity {
             }
         }
         OverScrollDecoratorHelper.setUpOverScroll(emojisRecycler, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
-
         OverScrollDecoratorHelper.setUpOverScroll(chipRecycler, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL);
+
         AudienceNetworkAds.initialize(this);
-
-        AdView bannerAd = new AdView(this, getString(R.string.banner_id), AdSize.BANNER_HEIGHT_50);
-
+        AdView bannerAd = new AdView(this, BANNER_AD_ID, AdSize.BANNER_HEIGHT_50);
         adview.addView(bannerAd);
-
         bannerAd.loadAd();
 
         searchBoxField.setOnEditorActionListener((v, actionId, event) -> {
@@ -579,7 +579,7 @@ public class EmojisActivity extends AppCompatActivity {
                 }
             } else {
                 emojisRecycler.setAdapter(new Recycler1Adapter(emojisList));
-                getSuggestions.startRequestNetwork(RequestNetworkController.GET, "https://nerbly.com/bemoji/suggestions.json", "", RequestSuggestions);
+                getSuggestions.startRequestNetwork(RequestNetworkController.GET, EMOJIS_SUGGESTIONS_SOURCE, "", RequestSuggestions);
                 whenEmojisAreReady();
             }
         }

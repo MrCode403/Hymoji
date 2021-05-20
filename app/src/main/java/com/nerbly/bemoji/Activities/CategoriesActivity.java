@@ -1,4 +1,4 @@
-package com.nerbly.bemoji;
+package com.nerbly.bemoji.Activities;
 
 import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
@@ -27,6 +27,7 @@ import com.nerbly.bemoji.Adapters.LoadingPacksAdapter;
 import com.nerbly.bemoji.Functions.RequestNetwork;
 import com.nerbly.bemoji.Functions.RequestNetworkController;
 import com.nerbly.bemoji.Functions.Utils;
+import com.nerbly.bemoji.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,6 +37,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Objects;
 
+import static com.nerbly.bemoji.Configurations.CATEGORIES_API_LINK;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
@@ -43,6 +45,7 @@ import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
 import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
 import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
+import static com.nerbly.bemoji.UI.UserInteractions.showMessageSheet;
 
 public class CategoriesActivity extends AppCompatActivity {
     ArrayList<HashMap<String, Object>> shimmerList = new ArrayList<>();
@@ -142,7 +145,7 @@ public class CategoriesActivity extends AppCompatActivity {
         }
         loadingRecycler.setAdapter(new LoadingPacksAdapter.LoadingRecyclerAdapter(shimmerList));
         if (sharedPref.getString("categoriesData", "").isEmpty()) {
-            RequestCategories.startRequestNetwork(RequestNetworkController.GET, "https://emoji.gg/api/?request=categories", "", CategoriesRequestListener);
+            RequestCategories.startRequestNetwork(RequestNetworkController.GET, CATEGORIES_API_LINK, "", CategoriesRequestListener);
         } else {
             categoriesList = new Gson().fromJson(sharedPref.getString("categoriesData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
             }.getType());
@@ -208,10 +211,10 @@ public class CategoriesActivity extends AppCompatActivity {
     }
 
     public class CategoriesRecyclerAdapter extends RecyclerView.Adapter<CategoriesRecyclerAdapter.ViewHolder> {
-        ArrayList<HashMap<String, Object>> _data;
+        ArrayList<HashMap<String, Object>> data;
 
         public CategoriesRecyclerAdapter(ArrayList<HashMap<String, Object>> _arr) {
-            _data = _arr;
+            data = _arr;
         }
 
         @NonNull
@@ -232,9 +235,25 @@ public class CategoriesActivity extends AppCompatActivity {
 
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             view.setLayoutParams(_lp);
-            textview1.setText(Objects.requireNonNull(_data.get(position).get("category_name")).toString());
+            textview1.setText(Objects.requireNonNull(data.get(position).get("category_name")).toString());
             textview1.setOnClickListener(_view -> {
-                if (Objects.requireNonNull(_data.get(position).get("category_name")).toString().equals("Animated")) {
+                if (Objects.requireNonNull(data.get(position).get("category_name")).toString().equals("Animated")) {
+
+
+                    showMessageSheet(getString(R.string.animated_emojis_warning_title), R.drawable.smiley_face_flatline,
+                            getString(R.string.animated_emojis_warning_btnok), getString(R.string.animated_emojis_warning_btncancel),
+                            getString(R.string.animated_emojis_warning_subtitle), CategoriesActivity.this, View -> {
+
+                                toEmojis.putExtra("switchFrom", "categories");
+                                toEmojis.putExtra("category_id", Objects.requireNonNull(data.get(position).get("category_id")).toString());
+                                toEmojis.setClass(getApplicationContext(), EmojisActivity.class);
+                                startActivity(toEmojis);
+
+
+                    }, View -> {
+                    });
+
+/*
                     com.google.android.material.bottomsheet.BottomSheetDialog bottomSheetDialog = new com.google.android.material.bottomsheet.BottomSheetDialog(CategoriesActivity.this, R.style.materialsheet);
 
                     View bottomSheetView;
@@ -257,7 +276,7 @@ public class CategoriesActivity extends AppCompatActivity {
                     setViewRadius(slider, 180, "#BDBDBD");
                     infook.setOnClickListener(v -> {
                         toEmojis.putExtra("switchFrom", "categories");
-                        toEmojis.putExtra("category_id", Objects.requireNonNull(_data.get(position).get("category_id")).toString());
+                        toEmojis.putExtra("category_id", Objects.requireNonNull(data.get(position).get("category_id")).toString());
                         toEmojis.setClass(getApplicationContext(), EmojisActivity.class);
                         startActivity(toEmojis);
                         bottomSheetDialog.dismiss();
@@ -266,9 +285,11 @@ public class CategoriesActivity extends AppCompatActivity {
                     if (!isFinishing()) {
                         bottomSheetDialog.show();
                     }
+
+ */
                 } else {
                     toEmojis.putExtra("switchFrom", "categories");
-                    toEmojis.putExtra("category_id", Objects.requireNonNull(_data.get(position).get("category_id")).toString());
+                    toEmojis.putExtra("category_id", Objects.requireNonNull(data.get(position).get("category_id")).toString());
                     toEmojis.setClass(getApplicationContext(), EmojisActivity.class);
                     startActivity(toEmojis);
                 }
@@ -278,7 +299,7 @@ public class CategoriesActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return _data.size();
+            return data.size();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {

@@ -1,4 +1,4 @@
-package com.nerbly.bemoji;
+package com.nerbly.bemoji.Activities;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -37,6 +37,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nerbly.bemoji.Functions.FileUtil;
+import com.nerbly.bemoji.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,7 +58,7 @@ public class PackPreviewActivity extends AppCompatActivity {
     private final ArrayList<HashMap<String, Object>> emojisListMap = new ArrayList<>();
     private final Intent toPreview = new Intent();
     private final ObjectAnimator downAnim = new ObjectAnimator();
-    GridLayoutManager layoutManager1 = new GridLayoutManager(this, 3);
+    private GridLayoutManager layoutManager1 = new GridLayoutManager(this, 3);
     private BottomSheetBehavior<LinearLayout> sheetBehavior;
     private boolean isDownloading = false;
     private double downloadPackPosition = 0;

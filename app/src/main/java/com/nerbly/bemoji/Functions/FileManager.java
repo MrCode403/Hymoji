@@ -61,11 +61,8 @@ public class FileManager {
 
         if (file.getName().startsWith("Bemoji") && (file.getName().endsWith(".jpg") || (file.getName().endsWith(".png") || file.getName().endsWith(".gif")))) {
             HashMap<String, Object> fileMap = new HashMap<>();
-
             fileMap.put("filePath", file.getPath());
-
-            fileMap.put("modi_time", file.lastModified());
-
+            fileMap.put("lastModifiedTime", file.lastModified());
             filesList.add(fileMap);
         }
     }

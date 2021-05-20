@@ -1,4 +1,4 @@
-package com.nerbly.bemoji;
+package com.nerbly.bemoji.Activities;
 
 import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
@@ -33,6 +33,7 @@ import com.nerbly.bemoji.Adapters.LoadingPacksAdapter;
 import com.nerbly.bemoji.Functions.RequestNetwork;
 import com.nerbly.bemoji.Functions.RequestNetworkController;
 import com.nerbly.bemoji.Functions.Utils;
+import com.nerbly.bemoji.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,6 +44,7 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.nerbly.bemoji.Configurations.PACKS_API_LINK;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
@@ -221,7 +223,7 @@ public class PacksActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             if (sharedPref.getString("packsData", "").isEmpty()) {
-                startGettingPacks.startRequestNetwork(RequestNetworkController.GET, "https://emoji.gg/api/packs", "", PacksRequestListener);
+                startGettingPacks.startRequestNetwork(RequestNetworkController.GET, PACKS_API_LINK, "", PacksRequestListener);
             } else {
                 try {
                     packsList = new Gson().fromJson(sharedPref.getString("packsData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {

@@ -13,8 +13,8 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.nerbly.bemoji.Activities.PreviewActivity;
 import com.nerbly.bemoji.Functions.Utils;
-import com.nerbly.bemoji.PreviewActivity;
 import com.nerbly.bemoji.R;
 
 import java.util.ArrayList;
@@ -26,7 +26,6 @@ import static com.nerbly.bemoji.Functions.SideFunctions.setImgURL;
 public class MainEmojisAdapter {
 
     public static class Recycler1Adapter extends RecyclerView.Adapter<Recycler1Adapter.ViewHolder> {
-        private final Intent toPreview = new Intent();
         ArrayList<HashMap<String, Object>> data;
 
         public Recycler1Adapter(ArrayList<HashMap<String, Object>> _arr) {
@@ -44,12 +43,12 @@ public class MainEmojisAdapter {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder _holder, @SuppressLint("RecyclerView") final int position) {
+        public void onBindViewHolder(ViewHolder _holder, @SuppressLint("RecyclerView") int position) {
             View view = _holder.itemView;
 
-            final LinearLayout linear1 = view.findViewById(R.id.tutorialBg);
-            final LinearLayout linear2 = view.findViewById(R.id.space);
-            final ImageView imageview1 = view.findViewById(R.id.emoji);
+            LinearLayout linear1 = view.findViewById(R.id.tutorialBg);
+            LinearLayout linear2 = view.findViewById(R.id.space);
+            ImageView imageview1 = view.findViewById(R.id.emoji);
 
             setImgURL(Objects.requireNonNull(data.get(position).get("image")).toString(), imageview1);
             linear1.setOnLongClickListener(_view12 -> {
@@ -57,6 +56,7 @@ public class MainEmojisAdapter {
                 return true;
             });
             linear1.setOnClickListener(view1 -> {
+                Intent toPreview = new Intent();
                 toPreview.putExtra("switchType", "emoji");
                 toPreview.putExtra("title", Objects.requireNonNull(data.get(position).get("title")).toString());
                 toPreview.putExtra("submitted_by", Objects.requireNonNull(data.get(position).get("submitted_by")).toString());

@@ -1,4 +1,4 @@
-package com.nerbly.bemoji;
+package com.nerbly.bemoji.Activities;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,10 +21,13 @@ import com.nerbly.bemoji.Adapters.LoadingPacksAdapter;
 import com.nerbly.bemoji.Adapters.TutorialAdapter;
 import com.nerbly.bemoji.Functions.RequestNetwork;
 import com.nerbly.bemoji.Functions.RequestNetworkController;
+import com.nerbly.bemoji.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static com.nerbly.bemoji.Configurations.BANNER_AD_ID;
+import static com.nerbly.bemoji.Configurations.TUTORIAL_SOURCE;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
@@ -106,7 +109,7 @@ public class TutorialActivity extends AppCompatActivity {
         sheetBehavior = BottomSheetBehavior.from(bsheetbehavior);
         recyclerview1.setLayoutManager(new LinearLayoutManager(this));
         loadingRecycler.setLayoutManager(new LinearLayoutManager(this));
-        requestTutorial.startRequestNetwork(RequestNetworkController.GET, "https://nerbly.com/bemoji/tutorial.json", "", TutorialRequestListener);
+        requestTutorial.startRequestNetwork(RequestNetworkController.GET, TUTORIAL_SOURCE, "", TutorialRequestListener);
         for (int i = 0; i < 20; i++) {
             HashMap<String, Object> shimmerMap = new HashMap<>();
             shimmerMap.put("key", "value");
@@ -119,7 +122,7 @@ public class TutorialActivity extends AppCompatActivity {
         loadingRecycler.setHasFixedSize(true);
 
         AudienceNetworkAds.initialize(this);
-        AdView bannerAd = new AdView(this, getString(R.string.banner_id), AdSize.BANNER_HEIGHT_50);
+        AdView bannerAd = new AdView(this, BANNER_AD_ID, AdSize.BANNER_HEIGHT_50);
         adView.addView(bannerAd);
         bannerAd.loadAd();
     }

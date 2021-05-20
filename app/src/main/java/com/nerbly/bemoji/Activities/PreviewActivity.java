@@ -1,4 +1,4 @@
-package com.nerbly.bemoji;
+package com.nerbly.bemoji.Activities;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -29,6 +29,7 @@ import com.downloader.PRDownloader;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.nerbly.bemoji.Functions.FileUtil;
 import com.nerbly.bemoji.Functions.Utils;
+import com.nerbly.bemoji.R;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
@@ -36,7 +37,6 @@ import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
-import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
 import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
 import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
 import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
@@ -51,7 +51,6 @@ public class PreviewActivity extends AppCompatActivity {
     private boolean isEmojiDownloaded = false;
     private CoordinatorLayout coordinatorLayout;
     private LinearLayout bsheetbehavior;
-    private LinearLayout relativeview;
     private TextView activityTitle;
     private TextView activitySubtitle;
     private TextView information;
@@ -75,7 +74,6 @@ public class PreviewActivity extends AppCompatActivity {
     private void initialize() {
         coordinatorLayout = findViewById(R.id.coordinator);
         bsheetbehavior = findViewById(R.id.sheetBehavior);
-        relativeview = findViewById(R.id.relativeView);
         activityTitle = findViewById(R.id.activityTitle);
         activitySubtitle = findViewById(R.id.activitySubtitle);
         information = findViewById(R.id.information);
@@ -96,7 +94,7 @@ public class PreviewActivity extends AppCompatActivity {
                     downloadPath = sharedPref.getString("downloadPath", "");
                 }
                 downloadUrl = getIntent().getStringExtra("imageUrl");
-                startDownload("Bemoji_".concat(downloadUrl.substring(downloadUrl.lastIndexOf('/') + 1)), downloadUrl, downloadPath);
+                startDownload("Bemoji_" + downloadUrl.substring(downloadUrl.lastIndexOf('/') + 1), downloadUrl, downloadPath);
             }
         });
     }
@@ -115,15 +113,13 @@ public class PreviewActivity extends AppCompatActivity {
     public void LOGIC_BACKEND() {
         overridePendingTransition(R.anim.fade_in, 0);
         sheetBehavior = BottomSheetBehavior.from(bsheetbehavior);
-        sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
         new Handler().postDelayed(() -> sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED), 200);
         setBlurImageUrl(emoji, 25, getIntent().getStringExtra("imageUrl"));
         setImageFromUrl(imageview7, getIntent().getStringExtra("imageUrl"));
         activityTitle.setText(getIntent().getStringExtra("title"));
-        activitySubtitle.setText(getString(R.string.submitted_by) + " " + getIntent().getStringExtra("submitted_by"));
+        activitySubtitle.setText(getString(R.string.submitted_by).concat(" " + getIntent().getStringExtra("submitted_by")));
         bottomBehaviourListener();
-        shadAnim(coordinatorLayout, "alpha", 1, 200);
     }
 
 
@@ -132,15 +128,13 @@ public class PreviewActivity extends AppCompatActivity {
 
         transparentStatusBar(this);
 
-        setClippedView(relativeview, "#FFFFFF", 25, 7);
-
         rippleRoundStroke(download, "#7289DA", "#687DC8", 25, 0, "#7289DA");
-        android.graphics.drawable.GradientDrawable JJACCAI = new android.graphics.drawable.GradientDrawable();
-        int[] JJACCAIADD = new int[]{Color.parseColor("#00000000"), Color.parseColor("#80000000")};
-        JJACCAI.setColors(JJACCAIADD);
-        JJACCAI.setOrientation(android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM);
-        JJACCAI.setCornerRadius(0);
-        coordinatorLayout.setBackground(JJACCAI);
+        android.graphics.drawable.GradientDrawable gradientDrawable = new android.graphics.drawable.GradientDrawable();
+        int[] colors = new int[]{Color.parseColor("#00000000"), Color.parseColor("#80000000")};
+        gradientDrawable.setColors(colors);
+        gradientDrawable.setOrientation(android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM);
+        gradientDrawable.setCornerRadius(0);
+        coordinatorLayout.setBackground(gradientDrawable);
     }
 
 
@@ -219,8 +213,6 @@ public class PreviewActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(Error error) {
-
-
                             isDownloading = false;
                             download_tv.setText(R.string.download_btn_txt);
                             download_ic.setImageResource(R.drawable.round_get_app_white_48dp);

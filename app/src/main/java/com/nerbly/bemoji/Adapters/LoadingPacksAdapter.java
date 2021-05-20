@@ -37,13 +37,13 @@ public class LoadingPacksAdapter {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, final int position) {
+        public void onBindViewHolder(ViewHolder holder, int position) {
             View view = holder.itemView;
 
-            final LinearLayout categoriesShimmer = view.findViewById(R.id.categoriesShimmer);
-            final LinearLayout shimmer2 = view.findViewById(R.id.shimmer2);
-            final LinearLayout shimmer3 = view.findViewById(R.id.shimmer3);
-            final LinearLayout shimmer4 = view.findViewById(R.id.shimmer4);
+            LinearLayout categoriesShimmer = view.findViewById(R.id.categoriesShimmer);
+            LinearLayout shimmer2 = view.findViewById(R.id.shimmer2);
+            LinearLayout shimmer3 = view.findViewById(R.id.shimmer3);
+            LinearLayout shimmer4 = view.findViewById(R.id.shimmer4);
 
             categoriesShimmer.setVisibility(View.GONE);
             setClippedView(shimmer2, "#FFFFFF", 30, 0);

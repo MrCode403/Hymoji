@@ -2,8 +2,6 @@
 
 <resources>
     <string name="app_name" translatable="false">Bemoji</string>
-    <string name="banner_id" translatable="false">3773974092696684_3774022966025130</string>
-
     <string name="home_title">Explore emojis</string>
     <string name="home_subtitle">Here you can explore our categories to access an unlimited collection of emojis</string>
     <string name="local_emojis_title">DOWNLOADED EMOJIS</string>

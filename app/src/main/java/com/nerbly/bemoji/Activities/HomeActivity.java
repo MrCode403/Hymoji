@@ -1,4 +1,4 @@
-package com.nerbly.bemoji;
+package com.nerbly.bemoji.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -33,6 +33,7 @@ import com.nerbly.bemoji.Functions.FileManager;
 import com.nerbly.bemoji.Functions.RequestNetwork;
 import com.nerbly.bemoji.Functions.RequestNetworkController;
 import com.nerbly.bemoji.Functions.Utils;
+import com.nerbly.bemoji.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,6 +46,10 @@ import java.util.Objects;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
+import static com.nerbly.bemoji.Configurations.BANNER_AD_ID;
+import static com.nerbly.bemoji.Configurations.CATEGORIES_API_LINK;
+import static com.nerbly.bemoji.Configurations.EMOJIS_API_LINK;
+import static com.nerbly.bemoji.Configurations.PACKS_API_LINK;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
@@ -341,21 +346,21 @@ public class HomeActivity extends AppCompatActivity {
         OverScrollDecoratorHelper.setUpOverScroll(scrollView);
 
         if (sharedPref.getString("emojisData", "").isEmpty() || sharedPref.getString("isNewEmojisAvailable", "").equals("true")) {
-            startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, "https://emoji.gg/api/", "EMOJIS", EmojisRequestListener);
+            startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, EMOJIS_API_LINK, "EMOJIS", EmojisRequestListener);
         } else {
             emojisList = new Gson().fromJson(sharedPref.getString("emojisData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
             }.getType());
             emojisCounter.setText(String.valueOf((long) (emojisList.size())));
         }
         if (sharedPref.getString("categoriesData", "").isEmpty() || sharedPref.getString("isNewEmojisAvailable", "").equals("true")) {
-            startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, "https://emoji.gg/api/?request=categories", "CATEGORIES", EmojisRequestListener);
+            startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, CATEGORIES_API_LINK, "CATEGORIES", EmojisRequestListener);
         } else {
             categoriesList = new Gson().fromJson(sharedPref.getString("categoriesData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
             }.getType());
             categoriesCounter.setText(String.valueOf((long) (categoriesList.size())));
         }
         if (sharedPref.getString("packsData", "").isEmpty() || sharedPref.getString("isNewEmojisAvailable", "").equals("true")) {
-            startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, "https://emoji.gg/api/packs", "PACKS", EmojisRequestListener);
+            startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, PACKS_API_LINK, "PACKS", EmojisRequestListener);
         } else {
             try {
                 packsList = new Gson().fromJson(sharedPref.getString("packsData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
@@ -365,12 +370,12 @@ public class HomeActivity extends AppCompatActivity {
             } catch (Exception e) {
                 Utils.showToast(getApplicationContext(), (e.toString()));
             }
-            startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, "https://emoji.gg/api/packs", "PACKS_1", EmojisRequestListener);
+            startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, PACKS_API_LINK, "PACKS_1", EmojisRequestListener);
         }
 
 
         AudienceNetworkAds.initialize(this);
-        AdView bannerAd = new AdView(this, getString(R.string.banner_id), AdSize.BANNER_HEIGHT_50);
+        AdView bannerAd = new AdView(this, BANNER_AD_ID, AdSize.BANNER_HEIGHT_50);
         adview.addView(bannerAd);
         bannerAd.loadAd();
     }
@@ -431,7 +436,7 @@ public class HomeActivity extends AppCompatActivity {
                     if (localEmojisList.size() == 0) {
                         localEmojisView.setVisibility(View.GONE);
                     } else {
-                        Utils.sortListMap(localEmojisList, "modi_time", false, false);
+                        Utils.sortListMap(localEmojisList, "lastModifiedTime", false, false);
                         local_recycler.setAdapter(new LocalEmojisAdapter.Local_recyclerAdapter(localEmojisList));
 
                         new Handler().postDelayed(() -> localEmojisView.setVisibility(View.VISIBLE), 1000);

@@ -1,4 +1,4 @@
-package com.nerbly.bemoji;
+package com.nerbly.bemoji.Activities;
 
 import android.animation.LayoutTransition;
 import android.app.Activity;
@@ -22,6 +22,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.nerbly.bemoji.R;
 
 import java.io.InputStream;
 import java.util.ArrayList;

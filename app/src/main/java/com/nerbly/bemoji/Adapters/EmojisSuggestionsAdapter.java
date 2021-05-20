@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
-import static com.nerbly.bemoji.EmojisActivity.whenChipItemClicked;
+import static com.nerbly.bemoji.Activities.EmojisActivity.whenChipItemClicked;
 
 public class EmojisSuggestionsAdapter {
 

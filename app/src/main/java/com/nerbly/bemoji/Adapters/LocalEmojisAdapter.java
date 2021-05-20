@@ -39,11 +39,11 @@ public class LocalEmojisAdapter {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, final int position) {
+        public void onBindViewHolder(ViewHolder holder, int position) {
             View view = holder.itemView;
 
-            final ImageView emojis = view.findViewById(R.id.emoji);
-            final LinearLayout cardView = view.findViewById(R.id.cardView);
+            ImageView emojis = view.findViewById(R.id.emoji);
+            LinearLayout cardView = view.findViewById(R.id.cardView);
 
             RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             view.setLayoutParams(lp);
