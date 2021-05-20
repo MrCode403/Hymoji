@@ -83,3 +83,20 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+.gradle/6.8/executionHistory/executionHistory.bin
+.gradle/6.8/executionHistory/executionHistory.lock
+.gradle/6.8/fileHashes/fileHashes.bin
+.gradle/6.8/fileHashes/fileHashes.lock
+.gradle/6.8/fileHashes/resourceHashesCache.bin
+.gradle/6.8/javaCompile/classAnalysis.bin
+.gradle/6.8/javaCompile/javaCompile.lock
+.gradle/6.8/javaCompile/taskHistory.bin
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+.gradle/buildOutputCleanup/outputFiles.bin
+.idea/compiler.xml
+.idea/discord.xml
+.idea/gradle.xml
+.idea/jarRepositories.xml
+.idea/misc.xml
+.idea/runConfigurations.xml
+app/release/output.json
