@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.media.MediaScannerConnection;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -161,7 +160,7 @@ public class PackPreviewActivity extends AppCompatActivity {
         rippleRoundStroke(download, "#7289DA", "#687DC8", 25, 0, "#7289DA");
     }
 
-    public void setImgURL(final String url, final ImageView image) {
+    private void setImgURL(final String url, final ImageView image) {
         RequestOptions options = new RequestOptions()
                 .placeholder(R.drawable.loading)
                 .priority(Priority.HIGH);
@@ -173,7 +172,7 @@ public class PackPreviewActivity extends AppCompatActivity {
 
     }
 
-    public void rotationListener() {
+    private void rotationListener() {
         float scaleFactor = getResources().getDisplayMetrics().density * 60;
         int number = getScreenWidth(this);
         int columns = (int) ((float) number / scaleFactor);
@@ -191,6 +190,7 @@ public class PackPreviewActivity extends AppCompatActivity {
             int columns = (int) ((float) screenWidth / scaleFactor);
             layoutManager1 = new GridLayoutManager(this, columns);
             packsRecycler.setLayoutManager(layoutManager1);
+
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
 
             float scaleFactor = getResources().getDisplayMetrics().density * 60;
@@ -201,7 +201,7 @@ public class PackPreviewActivity extends AppCompatActivity {
         }
     }
 
-    public void bottomSheetBehaviorListener() {
+    private void bottomSheetBehaviorListener() {
         sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -259,7 +259,7 @@ public class PackPreviewActivity extends AppCompatActivity {
     }
 
 
-    public void startPackDownload(final String name, final String path, final String url) {
+    private void startPackDownload(String name, String path, String url) {
         if (!isDownloading) {
             isDownloading = true;
             download_tv.setText(R.string.downloading);
@@ -290,16 +290,12 @@ public class PackPreviewActivity extends AppCompatActivity {
                     @Override
                     public void onDownloadComplete() {
                         downloadPackPosition++;
-                        download_tv.setText(getString(R.string.pack_downloading_progress) + " " + (long) (downloadPackPosition) + "/" + (long) (downloadPackArrayList.size()));
+                        download_tv.setText(getString(R.string.pack_downloading_progress).concat(" ") + (int) downloadPackPosition + "/" + downloadPackArrayList.size());
                         downloadPack(new Gson().toJson(downloadPackArrayList), tempPackName);
-                        isPackDownloaded = true;
-
                     }
 
                     @Override
                     public void onError(Error error) {
-
-
                         isDownloading = false;
                         download_tv.setText(R.string.download_btn_txt);
                         download_ic.setImageResource(R.drawable.round_get_app_white_48dp);
@@ -311,29 +307,24 @@ public class PackPreviewActivity extends AppCompatActivity {
 
     }
 
-    public void downloadPack(final String array, final String packName) {
+    public void downloadPack(String array, String packName) {
         downloadPackArrayList = new Gson().fromJson(array, new TypeToken<ArrayList<String>>() {
         }.getType());
         if (downloadPackPosition == downloadPackArrayList.size()) {
             if (isGoingToZipPack) {
-                new zippingTask().execute("");
+                new zippingTask().execute();
             } else {
                 isDownloading = false;
+                isPackDownloaded = true;
                 download_tv.setText(R.string.download_success);
                 download_ic.setImageResource(R.drawable.round_done_white_48dp);
-                download_ic.setRotation((float) (0));
+                download_ic.setRotation(0);
                 showCustomSnackBar(getString(R.string.full_download_path) + " " + downloadPackPath, this);
                 downAnim.cancel();
-
-                MediaScannerConnection.scanFile(PackPreviewActivity.this,
-                        new String[]{downloadPackPath}, null,
-                        (path1, uri) -> {
-
-                        });
             }
         } else {
             String downloadPackUrl = "https://emoji.gg/assets/emoji/" + downloadPackArrayList.get((int) (downloadPackPosition));
-            String downloadPackName = "Bemoji_" + downloadPackArrayList.get((int) (downloadPackPosition));
+            String downloadPackName = "Bemoji_" + downloadPackArrayList.get((int) downloadPackPosition);
             if (isGoingToZipPack) {
                 downloadPackPath = FileUtil.getPackageDataDir(getApplicationContext()) + "/Zipper/" + packName;
             } else {
@@ -343,7 +334,6 @@ public class PackPreviewActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("InflateParams")
     public void askForZippingSheet() {
         if (androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == android.content.pm.PackageManager.PERMISSION_DENIED || androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == android.content.pm.PackageManager.PERMISSION_DENIED) {
             androidx.core.app.ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
@@ -392,14 +382,18 @@ public class PackPreviewActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         if (requestCode == 1) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 download.performClick();
             } else {
                 showCustomSnackBar(getString(R.string.permission_denied_packs), this);
+
             }
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+
+
     }
 
     private class zippingTask extends AsyncTask<String, Integer, String> {
@@ -450,12 +444,12 @@ public class PackPreviewActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
+        public void onBindViewHolder(ViewHolder holder, int position) {
             View view = holder.itemView;
 
-            final LinearLayout emojisBackground = view.findViewById(R.id.tutorialBg);
-            final LinearLayout space = view.findViewById(R.id.space);
-            final ImageView emoji = view.findViewById(R.id.emoji);
+            LinearLayout emojisBackground = view.findViewById(R.id.tutorialBg);
+            LinearLayout space = view.findViewById(R.id.space);
+            ImageView emoji = view.findViewById(R.id.emoji);
 
             setImgURL(Objects.requireNonNull(data.get(position).get("emoji_link")).toString(), emoji);
             emojisBackground.setOnClickListener(_view -> {
@@ -469,7 +463,7 @@ public class PackPreviewActivity extends AppCompatActivity {
                 toPreview.setClass(getApplicationContext(), PreviewActivity.class);
                 startActivity(toPreview);
             });
-            if (position == (data.size() - 1)) {
+            if (position == getItemCount() - 1) {
                 space.setVisibility(View.VISIBLE);
             } else {
                 space.setVisibility(View.GONE);

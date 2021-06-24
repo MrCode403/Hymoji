@@ -42,7 +42,7 @@
     <string name="settings_option_10_subtitle">Bemoji\'nin Github\'daki kaynak kodunu kontrol etmekten çekinmeyin.</string>
     <string name="settings_option_1_title">Emojileri yeniden yükleyin</string>
     <string name="settings_option_1_subtitle">Buraya tıklayarak en son emojileri edinebilirsiniz (geri döndüğünüzde ana sayfa yeniden yüklenecektir).</string>
-    <string name="preview_pack_title">Paketi önizle</string>
+    <string name="preview_pack_title">paket içeriği</string>
     <string name="preview_pack_subtitle">Bu paketin hangi emojileri içerdiğini görebilir ve tahmin edebilirsiniz ne? bunları tek tek de indirebilirsiniz!</string>
     <string name="preview_pack_download_btn">Tam paketi indirin</string>
     <string name="permission_denied_packs">Depolama erişim izni olmadan paketleri indiremezsiniz. Lütfen izin verin.</string>
@@ -98,4 +98,6 @@
     <string name="dialog_negative_text">İptal etmek</string>
     <string name="dialog_positive_text">Tamam</string>
     <string name="mailto_device_not_supported">Görünüşe göre cihazınızda yüklü bir posta uygulaması yok, bize geri bildirim göndermek veya bizimle iletişime geçmek için Play Store\'a yönlendirilmek ister misiniz?</string>
+    <string name="webview_device_not_supported">Görünüşe göre cihazınızda yüklü bir tarayıcı uygulaması yok, maalesef bağlantıyı açamıyoruz. \\nBağlantıyı panonuza kopyalamak ister misiniz?</string>
+    <string name="copy_text">Kopyala</string>
 </resources>

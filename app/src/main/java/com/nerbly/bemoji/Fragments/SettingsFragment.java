@@ -1,44 +1,47 @@
-package com.nerbly.bemoji.Activities;
+package com.nerbly.bemoji.Fragments;
 
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.nerbly.bemoji.R;
 
+import java.util.Objects;
+
+import static com.nerbly.bemoji.Activities.HomeActivity.userIsAskingForActivityToReload;
 import static com.nerbly.bemoji.Functions.MainFunctions.initializeCacheScan;
-import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
-import static com.nerbly.bemoji.Functions.MainFunctions.setLocale;
+import static com.nerbly.bemoji.Functions.MainFunctions.setFragmentLocale;
 import static com.nerbly.bemoji.Functions.MainFunctions.trimCache;
-import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
-import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
-import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
 import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 import static com.nerbly.bemoji.UI.UserInteractions.showMessageDialog;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsFragment extends BottomSheetDialogFragment {
 
     private final Intent intent = new Intent();
-    private BottomSheetBehavior<LinearLayout> sheetBehavior;
-    private LinearLayout bsheetbehavior;
-    private LinearLayout background;
+
     private LinearLayout slider;
     private RelativeLayout setting1;
     private RelativeLayout setting3;
@@ -53,37 +56,40 @@ public class SettingsActivity extends AppCompatActivity {
     private RelativeLayout setting12;
     private TextView textview8;
     private SharedPreferences sharedPref;
+    private boolean isAskingForReload = false;
 
+    @NonNull
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        loadLocale(this);
-        setContentView(R.layout.settings);
-        initialize();
-        com.google.firebase.FirebaseApp.initializeApp(this);
-        initializeLogic();
+
+    public View onCreateView(@NonNull LayoutInflater _inflater, @Nullable ViewGroup _container, @Nullable final Bundle _savedInstanceState) {
+        Objects.requireNonNull(getDialog()).setOnShowListener(dialog -> {
+            BottomSheetDialog d = (BottomSheetDialog) dialog;
+            View _view = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            assert _view != null;
+            BottomSheetBehavior.from(_view);
+            initialize(_view);
+            com.google.firebase.FirebaseApp.initializeApp(requireContext());
+            initializeLogic();
+        });
+        return _inflater.inflate(R.layout.settings, _container, false);
+
     }
 
-    private void initialize() {
-        CoordinatorLayout linear1 = findViewById(R.id.tutorialBg);
-        bsheetbehavior = findViewById(R.id.sheetBehavior);
-        background = findViewById(R.id.background);
-        slider = findViewById(R.id.slider);
-        setting1 = findViewById(R.id.setting1);
-        setting3 = findViewById(R.id.setting3);
-        setting2 = findViewById(R.id.setting2);
-        setting4 = findViewById(R.id.setting4);
-        setting5 = findViewById(R.id.setting5);
-        setting8 = findViewById(R.id.setting8);
-        setting6 = findViewById(R.id.setting6);
-        setting7 = findViewById(R.id.setting7);
-        setting10 = findViewById(R.id.setting10);
-        setting11 = findViewById(R.id.setting11);
-        setting12 = findViewById(R.id.setting12);
-        textview8 = findViewById(R.id.textview8);
-        sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
-
-        linear1.setOnClickListener(_view -> sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN));
+    private void initialize(View view) {
+        slider = view.findViewById(R.id.slider);
+        setting1 = view.findViewById(R.id.setting1);
+        setting3 = view.findViewById(R.id.setting3);
+        setting2 = view.findViewById(R.id.setting2);
+        setting4 = view.findViewById(R.id.setting4);
+        setting5 = view.findViewById(R.id.setting5);
+        setting8 = view.findViewById(R.id.setting8);
+        setting6 = view.findViewById(R.id.setting6);
+        setting7 = view.findViewById(R.id.setting7);
+        setting10 = view.findViewById(R.id.setting10);
+        setting11 = view.findViewById(R.id.setting11);
+        setting12 = view.findViewById(R.id.setting12);
+        textview8 = view.findViewById(R.id.textview8);
+        sharedPref = requireActivity().getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
         setting1.setOnClickListener(_view -> {
             sharedPref.edit().putString("emojisData", "").apply();
@@ -93,7 +99,7 @@ public class SettingsActivity extends AppCompatActivity {
             sharedPref.edit().putString("packsData", "").apply();
 
             sharedPref.edit().putString("isAskingForReload", "true").apply();
-            showCustomSnackBar(getString(R.string.emojis_reloaded_success), SettingsActivity.this);
+            showCustomSnackBar(getString(R.string.emojis_reloaded_success), requireActivity());
         });
 
         setting3.setOnClickListener(_view -> {
@@ -103,8 +109,8 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         setting2.setOnClickListener(_view -> {
-            trimCache(SettingsActivity.this);
-            textview8.setText(getString(R.string.settings_option_3_title).concat(" (" + initializeCacheScan(SettingsActivity.this) + ")"));
+            trimCache(getActivity());
+            textview8.setText(getString(R.string.settings_option_3_title).concat(" (" + initializeCacheScan(getActivity()) + ")"));
         });
 
         setting4.setOnClickListener(_view -> {
@@ -112,10 +118,10 @@ public class SettingsActivity extends AppCompatActivity {
             intent.setData(Uri.parse("mailto:"));
             intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"nerblyteam@gmail.com"});
             intent.putExtra(Intent.EXTRA_SUBJECT, "Bemoji App - Contact Us");
-            if (intent.resolveActivity(getPackageManager()) != null) {
+            if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
                 startActivity(intent);
             } else {
-                showMessageDialog(getString(R.string.error_msg), getString(R.string.mailto_device_not_supported), getString(R.string.dialog_positive_text), getString(R.string.dialog_negative_text), this,
+                showMessageDialog(getString(R.string.error_msg), getString(R.string.mailto_device_not_supported), getString(R.string.dialog_positive_text), getString(R.string.dialog_negative_text), getActivity(),
                         (dialog, which) -> {
                             intent.setAction(Intent.ACTION_VIEW);
                             intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.nerbly.bemoji"));
@@ -131,9 +137,9 @@ public class SettingsActivity extends AppCompatActivity {
                 intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.nerbly.bemoji"));
                 startActivity(intent);
             } catch (Exception e) {
-                showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), this,
+                showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
                         (dialog, which) -> {
-                            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                            ClipboardManager clipboard = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                             ClipData clip = ClipData.newPlainText("Bemoji", "https://play.google.com/store/apps/details?id=com.nerbly.bemoji");
                             clipboard.setPrimaryClip(clip);
                         },
@@ -147,9 +153,9 @@ public class SettingsActivity extends AppCompatActivity {
                 intent.setData(Uri.parse("https://emoji.gg/copyright"));
                 startActivity(intent);
             } catch (Exception e) {
-                showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), this,
+                showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
                         (dialog, which) -> {
-                            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                            ClipboardManager clipboard = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                             ClipData clip = ClipData.newPlainText("Bemoji", "https://emoji.gg/copyright");
                             clipboard.setPrimaryClip(clip);
                         },
@@ -163,9 +169,9 @@ public class SettingsActivity extends AppCompatActivity {
                 intent.setData(Uri.parse("https://emoji.gg/"));
                 startActivity(intent);
             } catch (Exception e) {
-                showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), this,
+                showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
                         (dialog, which) -> {
-                            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                            ClipboardManager clipboard = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                             ClipData clip = ClipData.newPlainText("Bemoji", "https://emoji.gg/");
                             clipboard.setPrimaryClip(clip);
                         },
@@ -178,9 +184,9 @@ public class SettingsActivity extends AppCompatActivity {
                 intent.setData(Uri.parse("https://github.com/ilyassesalama/bemoji"));
                 startActivity(intent);
             } catch (Exception e) {
-                showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), this,
+                showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
                         (dialog, which) -> {
-                            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                            ClipboardManager clipboard = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                             ClipData clip = ClipData.newPlainText("Bemoji", "https://github.com/ilyassesalama/bemoji");
                             clipboard.setPrimaryClip(clip);
                         },
@@ -189,15 +195,15 @@ public class SettingsActivity extends AppCompatActivity {
         });
         setting11.setOnClickListener(_view -> showLanguagesSheet());
 
-        setting12.setOnClickListener(view -> {
+        setting12.setOnClickListener(_view -> {
             intent.setAction(Intent.ACTION_SENDTO);
             intent.setData(Uri.parse("mailto:"));
             intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"nerblyteam@gmail.com"});
             intent.putExtra(Intent.EXTRA_SUBJECT, "Bemoji Translation Contribution");
-            if (intent.resolveActivity(getPackageManager()) != null) {
+            if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
                 startActivity(intent);
             } else {
-                showMessageDialog(getString(R.string.error_msg), getString(R.string.mailto_device_not_supported), getString(R.string.dialog_positive_text), getString(R.string.dialog_negative_text), this,
+                showMessageDialog(getString(R.string.error_msg), getString(R.string.mailto_device_not_supported), getString(R.string.dialog_positive_text), getString(R.string.dialog_negative_text), getActivity(),
                         (dialog, which) -> {
                             intent.setAction(Intent.ACTION_VIEW);
                             intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.nerbly.bemoji"));
@@ -208,28 +214,18 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+
     private void initializeLogic() {
         LOGIC_FRONTEND();
         LOGIC_BACKEND();
     }
 
-    @Override
-    public void onBackPressed() {
-        sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-    }
-
     public void LOGIC_BACKEND() {
-        overridePendingTransition(R.anim.fade_in, 0);
-        sheetBehavior = BottomSheetBehavior.from(bsheetbehavior);
-        bottomSheetBehaviorListener();
-        textview8.setText(getString(R.string.settings_option_3_title).concat(" (" + initializeCacheScan(this) + ")"));
+        textview8.setText(getString(R.string.settings_option_3_title).concat(" (" + initializeCacheScan(getActivity()) + ")"));
     }
 
     public void LOGIC_FRONTEND() {
-        advancedCorners(background, "#FFFFFF", 40, 40, 0, 0);
         setViewRadius(slider, 90, "#E0E0E0");
-        DARK_ICONS(this);
-        transparentStatusBar(this);
         rippleRoundStroke(setting1, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
         rippleRoundStroke(setting2, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
         rippleRoundStroke(setting3, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
@@ -244,8 +240,8 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void showLanguagesSheet() {
-        final String[] languages = {"English", "Português", "Français", "Deutsche", "Türkçe"};
-        MaterialAlertDialogBuilder languagesDialog = new MaterialAlertDialogBuilder(this, R.style.RoundShapeTheme);
+        final String[] languages = {"English", "Português", "Français", "Deutsche", "Türkçe", "русский"};
+        MaterialAlertDialogBuilder languagesDialog = new MaterialAlertDialogBuilder(requireActivity(), R.style.RoundShapeTheme);
         int languagePosition = -1;
         if (sharedPref.getString("language_position", "") != null) {
             if (!sharedPref.getString("language_position", "").equals("")) {
@@ -254,58 +250,43 @@ public class SettingsActivity extends AppCompatActivity {
         }
         languagesDialog.setTitle("Choose your language")
                 .setSingleChoiceItems(languages, languagePosition, (dialog, i) -> {
+                    isAskingForReload = true;
                     if (i == 0) {
-                        setLocale("en", Integer.toString(i), SettingsActivity.this);
+                        setFragmentLocale("en", Integer.toString(i), requireView());
                     } else if (i == 1) {
-                        setLocale("pt", Integer.toString(i), SettingsActivity.this);
+                        setFragmentLocale("pt", Integer.toString(i), requireView());
                     } else if (i == 2) {
-                        setLocale("fr", Integer.toString(i), SettingsActivity.this);
+                        setFragmentLocale("fr", Integer.toString(i), requireView());
                     } else if (i == 3) {
-                        setLocale("de", Integer.toString(i), SettingsActivity.this);
+                        setFragmentLocale("de", Integer.toString(i), requireView());
                     } else if (i == 4) {
-                        setLocale("tr", Integer.toString(i), SettingsActivity.this);
+                        setFragmentLocale("tr", Integer.toString(i), requireView());
+                    } else if (i == 5) {
+                        setFragmentLocale("ru", Integer.toString(i), requireView());
                     }
                     dialog.dismiss();
                     sharedPref.edit().putString("isAskingForReload", "true").apply();
-                    recreate();
+                    dismiss();
                 })
                 .show();
     }
 
-    public void bottomSheetBehaviorListener() {
-        sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
 
-                switch (newState) {
-                    case BottomSheetBehavior.STATE_COLLAPSED:
-                    case BottomSheetBehavior.STATE_DRAGGING:
-                        shadAnim(background, "elevation", 20, 200);
-                        shadAnim(slider, "translationY", 0, 200);
-                        shadAnim(slider, "alpha", 1, 200);
-                        slider.setVisibility(View.VISIBLE);
-                        break;
+    @Override
+    public void onStart() {
+        super.onStart();
+        Window window = Objects.requireNonNull(getDialog()).getWindow();
+        WindowManager.LayoutParams windowParams = window.getAttributes();
+        windowParams.dimAmount = 0.2f;
+        windowParams.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        window.setAttributes(windowParams);
+    }
 
-                    case BottomSheetBehavior.STATE_EXPANDED:
-                        shadAnim(background, "elevation", 0, 200);
-                        shadAnim(slider, "translationY", -200, 200);
-                        shadAnim(slider, "alpha", 0, 200);
-                        slider.setVisibility(View.INVISIBLE);
-                        break;
-                    case BottomSheetBehavior.STATE_HIDDEN:
-                        finish();
-                        break;
-                    case BottomSheetBehavior.STATE_HALF_EXPANDED:
-                    case BottomSheetBehavior.STATE_SETTLING:
-                        break;
-
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-            }
-        });
-
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (isAskingForReload) {
+            userIsAskingForActivityToReload(requireActivity());
+        }
     }
 }

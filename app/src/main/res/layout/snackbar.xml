@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/tutorialBg"
+        android:id="@+id/snackbar_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
@@ -15,7 +15,7 @@
         tools:ignore="UselessParent">
 
         <TextView
-            android:id="@+id/emptyTitle"
+            android:id="@+id/snackbar_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusable="false"

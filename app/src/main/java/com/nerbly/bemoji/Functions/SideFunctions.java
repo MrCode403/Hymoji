@@ -29,8 +29,7 @@ public class SideFunctions {
 
     public static void setImgURL(final String url, final ImageView image) {
         RequestOptions options = new RequestOptions()
-                .placeholder(R.drawable.loading)
-                .priority(Priority.HIGH);
+                .placeholder(R.drawable.loading);
 
         Glide.with(image.getContext())
                 .load(url)

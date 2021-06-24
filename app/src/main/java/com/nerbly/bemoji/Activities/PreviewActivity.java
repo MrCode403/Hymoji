@@ -37,6 +37,7 @@ import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
+import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
 import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
 import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
 import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
@@ -51,14 +52,15 @@ public class PreviewActivity extends AppCompatActivity {
     private boolean isEmojiDownloaded = false;
     private CoordinatorLayout coordinatorLayout;
     private LinearLayout bsheetbehavior;
-    private TextView activityTitle;
-    private TextView activitySubtitle;
+    private TextView emoji_title;
+    private TextView emoji_publisher;
     private TextView information;
     private LinearLayout download;
     private ImageView emoji;
     private ImageView imageview7;
     private ImageView download_ic;
     private TextView download_tv;
+    private LinearLayout relativeview;
     private SharedPreferences sharedPref;
 
     @Override
@@ -74,8 +76,9 @@ public class PreviewActivity extends AppCompatActivity {
     private void initialize() {
         coordinatorLayout = findViewById(R.id.coordinator);
         bsheetbehavior = findViewById(R.id.sheetBehavior);
-        activityTitle = findViewById(R.id.activityTitle);
-        activitySubtitle = findViewById(R.id.activitySubtitle);
+        relativeview = findViewById(R.id.relativeView);
+        emoji_title = findViewById(R.id.emoji_title);
+        emoji_publisher = findViewById(R.id.emoji_publisher);
         information = findViewById(R.id.information);
         download = findViewById(R.id.download);
         emoji = findViewById(R.id.emoji);
@@ -117,14 +120,16 @@ public class PreviewActivity extends AppCompatActivity {
         new Handler().postDelayed(() -> sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED), 200);
         setBlurImageUrl(emoji, 25, getIntent().getStringExtra("imageUrl"));
         setImageFromUrl(imageview7, getIntent().getStringExtra("imageUrl"));
-        activityTitle.setText(getIntent().getStringExtra("title"));
-        activitySubtitle.setText(getString(R.string.submitted_by).concat(" " + getIntent().getStringExtra("submitted_by")));
+        emoji_title.setText(getIntent().getStringExtra("title"));
+        emoji_publisher.setText(getString(R.string.submitted_by).concat(" " + getIntent().getStringExtra("submitted_by")));
         bottomBehaviourListener();
     }
 
 
     public void LOGIC_FRONTEND() {
         DARK_ICONS(this);
+
+        setClippedView(relativeview, "#FFFFFF", 25, 7);
 
         transparentStatusBar(this);
 
@@ -158,7 +163,6 @@ public class PreviewActivity extends AppCompatActivity {
         });
 
     }
-
 
     public void startDownload(final String name, String url, String path) {
         if (androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == android.content.pm.PackageManager.PERMISSION_DENIED || androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == android.content.pm.PackageManager.PERMISSION_DENIED) {
@@ -221,7 +225,6 @@ public class PreviewActivity extends AppCompatActivity {
                             downloadAnimation.cancel();
                         }
                     });
-
         }
     }
 
@@ -259,7 +262,6 @@ public class PreviewActivity extends AppCompatActivity {
         }
 
     }
-
 
     public void setImageFromUrl(ImageView image, String url) {
         RequestOptions options = new RequestOptions()

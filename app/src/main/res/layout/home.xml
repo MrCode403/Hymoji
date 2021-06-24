@@ -1,28 +1,26 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:orientation="vertical"
     tools:ignore="ContentDescription">
 
-    <LinearLayout
-        android:id="@+id/linear34"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_to_refresh"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="#FFFFFF"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        app:swipeRefreshLayoutProgressSpinnerBackgroundColor="@color/colorPrimary">
 
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none"
-            tools:ignore="UselessParent">
+            android:scrollbars="none">
 
             <LinearLayout
-                android:id="@+id/rootview"
+                android:id="@+id/rootView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
@@ -57,235 +55,10 @@
                     android:textColor="#616161"
                     android:textSize="14sp" />
 
-                <LinearLayout
-                    android:id="@+id/loadingView"
+                <include
+                    layout="@layout/home_loading"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <LinearLayout
-                        android:id="@+id/shimmer1"
-                        android:layout_width="match_parent"
-                        android:layout_height="52dp"
-                        android:layout_margin="16dp"
-                        android:orientation="vertical">
-
-                        <com.facebook.shimmer.ShimmerFrameLayout
-                            android:id="@+id/shimmer"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="#EEEEEE"
-                            android:orientation="vertical"
-                            android:padding="8dp"
-                            app:shimmer_auto_start="true" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/shimmer2"
-                        android:layout_width="100dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginBottom="16dp"
-                        android:orientation="vertical">
-
-                        <com.facebook.shimmer.ShimmerFrameLayout
-                            android:id="@+id/shimmer2_1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="#EEEEEE"
-                            android:orientation="vertical"
-                            android:padding="8dp"
-                            app:shimmer_auto_start="true" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/linear43"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="14dp"
-                        android:layout_marginRight="14dp"
-                        android:baselineAligned="false"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:id="@+id/shimmer3"
-                            android:layout_width="match_parent"
-                            android:layout_height="120dp"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginEnd="5dp"
-                            android:layout_marginBottom="4dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <com.facebook.shimmer.ShimmerFrameLayout
-                                android:id="@+id/linear42"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="#EEEEEE"
-                                android:orientation="vertical"
-                                android:padding="8dp"
-                                app:shimmer_auto_start="true" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/shimmer4"
-                            android:layout_width="match_parent"
-                            android:layout_height="120dp"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginEnd="4dp"
-                            android:layout_marginBottom="4dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <com.facebook.shimmer.ShimmerFrameLayout
-                                android:id="@+id/shimmer4_1"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="#EEEEEE"
-                                android:orientation="vertical"
-                                android:padding="8dp"
-                                app:shimmer_auto_start="true" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/linear46"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="14dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="14dp"
-                        android:baselineAligned="false"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:id="@+id/shimmer6"
-                            android:layout_width="match_parent"
-                            android:layout_height="120dp"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginEnd="5dp"
-                            android:layout_marginBottom="4dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <com.facebook.shimmer.ShimmerFrameLayout
-                                android:id="@+id/linear49"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="#EEEEEE"
-                                android:orientation="vertical"
-                                android:padding="8dp"
-                                app:shimmer_auto_start="true" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/shimmer5"
-                            android:layout_width="match_parent"
-                            android:layout_height="120dp"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginEnd="4dp"
-                            android:layout_marginBottom="4dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <com.facebook.shimmer.ShimmerFrameLayout
-                                android:id="@+id/linear50"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="#EEEEEE"
-                                android:orientation="vertical"
-                                android:padding="8dp"
-                                app:shimmer_auto_start="true" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/shimmer7"
-                        android:layout_width="100dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginBottom="16dp"
-                        android:orientation="vertical">
-
-                        <com.facebook.shimmer.ShimmerFrameLayout
-                            android:id="@+id/shimmer_7_1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="#EEEEEE"
-                            android:orientation="vertical"
-                            android:padding="8dp"
-                            app:shimmer_auto_start="true" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/packsloading"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:id="@+id/shimmer9"
-                            android:layout_width="match_parent"
-                            android:layout_height="200dp"
-                            android:orientation="vertical">
-
-                            <com.facebook.shimmer.ShimmerFrameLayout
-                                android:id="@+id/linear87"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="#EEEEEE"
-                                android:orientation="vertical"
-                                android:padding="8dp"
-                                app:shimmer_auto_start="true" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/shimmer10"
-                            android:layout_width="200dp"
-                            android:layout_height="20dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:orientation="vertical">
-
-                            <com.facebook.shimmer.ShimmerFrameLayout
-                                android:id="@+id/linear40"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="#EEEEEE"
-                                android:orientation="vertical"
-                                android:padding="8dp"
-                                app:shimmer_auto_start="true" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/shimmer11"
-                            android:layout_width="100dp"
-                            android:layout_height="20dp"
-                            android:layout_marginBottom="16dp"
-                            android:orientation="vertical">
-
-                            <com.facebook.shimmer.ShimmerFrameLayout
-                                android:id="@+id/linear48"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="#EEEEEE"
-                                android:orientation="vertical"
-                                android:padding="8dp"
-                                app:shimmer_auto_start="true" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
+                    android:layout_height="match_parent" />
 
                 <LinearLayout
                     android:id="@+id/mainView"
@@ -293,7 +66,7 @@
                     android:layout_height="match_parent"
                     android:animateLayoutChanges="true"
                     android:orientation="vertical"
-                    android:paddingBottom="30dp">
+                    android:paddingBottom="100dp">
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/searchcard"
@@ -702,19 +475,26 @@
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
-    </LinearLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <LinearLayout
-        android:id="@+id/adviewline"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#E0E0E0"
-        android:orientation="horizontal" />
-
-    <LinearLayout
-        android:id="@+id/adview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        android:orientation="vertical" />
-</LinearLayout>
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0"
+            android:orientation="horizontal" />
+
+        <LinearLayout
+            android:id="@+id/adview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:orientation="vertical" />
+    </LinearLayout>
+</RelativeLayout>

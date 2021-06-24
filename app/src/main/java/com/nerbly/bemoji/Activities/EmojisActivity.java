@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -54,18 +55,19 @@ import static com.nerbly.bemoji.Configurations.EMOJIS_SUGGESTIONS_SOURCE;
 import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.RippleEffects;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
 import static com.nerbly.bemoji.UI.MainUIMethods.setImageViewRipple;
 import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
+import static com.nerbly.bemoji.UI.MainUIMethods.statusBarColor;
 
 public class EmojisActivity extends AppCompatActivity {
     public static boolean isChipSelected = false;
     private static AppBarLayout appBar;
     private static EditText searchBoxField;
     private final Timer timer = new Timer();
-    private GridLayoutManager layoutManager1 = new GridLayoutManager(this, 3);
     private double searchPosition = 0;
     private double emojisCount = 0;
     private boolean isRequestingServerEmojis = false;
@@ -216,6 +218,8 @@ public class EmojisActivity extends AppCompatActivity {
 
     public void LOGIC_BACKEND() {
         overridePendingTransition(R.anim.fade_in, 0);
+        emojisRecycler.setItemAnimator(null);
+        chipRecycler.setItemAnimator(null);
         initEmojisRecycler();
         //set up chips
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -269,18 +273,22 @@ public class EmojisActivity extends AppCompatActivity {
 
     public void LOGIC_FRONTEND() {
         rippleRoundStroke(searchBox, "#FFFFFF", "#FFFFFF", 200, 1, "#C4C4C4");
-        DARK_ICONS(this);
+        if (Build.VERSION.SDK_INT < 23) {
+            statusBarColor("#7289DA", this);
+            LIGHT_ICONS(this);
+        } else {
+            statusBarColor("#FFFFFF", this);
+            DARK_ICONS(this);
+        }
         RippleEffects("#E0E0E0", sortByBtn);
         RippleEffects("#E0E0E0", searchBtn);
     }
 
-    public void hideShowKeyboard(final boolean choice, final TextView edittext) {
+    public void hideShowKeyboard(boolean choice, TextView edittext) {
         if (choice) {
-
             android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(edittext, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT);
         } else {
-
             android.view.View view = this.getCurrentFocus();
             android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -292,7 +300,7 @@ public class EmojisActivity extends AppCompatActivity {
         float scaleFactor = getResources().getDisplayMetrics().density * 60;
         int number = getScreenWidth(this);
         int columns = (int) ((float) number / scaleFactor);
-        layoutManager1 = new GridLayoutManager(this, columns);
+        GridLayoutManager layoutManager1 = new GridLayoutManager(this, columns);
         emojisRecycler.setLayoutManager(layoutManager1);
     }
 

@@ -46,7 +46,7 @@
     <string name="sort_by_newest">Neueste</string>
     <string name="sort_by_oldest">Älteste</string>
     <string name="sort_by_alphabetically">Alphabetisch</string>
-    <string name="preview_pack_title">Vorschau-Paket</string>
+    <string name="preview_pack_title">Packungsinhalt</string>
     <string name="preview_pack_subtitle">Sie können sehen, welche Emojis dieses Paket enthält und wissen Sie was? Sie können sie auch einzeln herunterladen!</string>
     <string name="preview_pack_download_btn">Pack herunterladen</string>
     <string name="explore_packs_title">Entdecken Sie Packs</string>
@@ -98,4 +98,6 @@
     <string name="dialog_positive_text">Okay</string>
     <string name="dialog_negative_text">Stornieren</string>
     <string name="mailto_device_not_supported">Anscheinend ist auf Ihrem Gerät keine E-Mail-App installiert. Möchten Sie zum Play Store weitergeleitet werden, um uns Feedback zu senden oder uns zu kontaktieren?</string>
+    <string name="webview_device_not_supported">Anscheinend ist auf Ihrem Gerät keine Browser-App installiert. Leider können wir den Link nicht öffnen. \\nMöchten Sie den Link in Ihre Zwischenablage kopieren?</string>
+    <string name="copy_text">Kopieren</string>
 </resources>

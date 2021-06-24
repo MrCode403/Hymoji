@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,7 +82,7 @@ public class PacksActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        CoordinatorLayout linear1 = findViewById(R.id.tutorialBg);
+        CoordinatorLayout coordinator = findViewById(R.id.coordinator);
         sheetBehaviorView = findViewById(R.id.sheetBehavior);
         background = findViewById(R.id.background);
         adview = findViewById(R.id.adview);
@@ -91,7 +92,7 @@ public class PacksActivity extends AppCompatActivity {
         startGettingPacks = new RequestNetwork(this);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
-        linear1.setOnClickListener(view -> sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN));
+        coordinator.setOnClickListener(view -> sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN));
 
         PacksRequestListener = new RequestNetwork.RequestListener() {
             @Override
@@ -127,27 +128,30 @@ public class PacksActivity extends AppCompatActivity {
 
     public void LOGIC_BACKEND() {
         overridePendingTransition(R.anim.fade_in, 0);
+
         sheetBehavior = BottomSheetBehavior.from(sheetBehaviorView);
+        bottomSheetBehaviorListener();
+
         loadingRecycler.setLayoutManager(new LinearLayoutManager(this));
         packsRecycler.setLayoutManager(new LinearLayoutManager(this));
-        bottomSheetBehaviorListener();
+        packsRecycler.setHasFixedSize(true);
+        loadingRecycler.setHasFixedSize(true);
+
         background.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
+
         AudienceNetworkAds.initialize(this);
-
         AdView bannerAd = new AdView(this, "3773974092696684_3774022966025130", AdSize.BANNER_HEIGHT_50);
-
         adview.addView(bannerAd);
-
         bannerAd.loadAd();
+
         for (int i = 0; i < 30; i++) {
             HashMap<String, Object> shimmerMap = new HashMap<>();
             shimmerMap.put("key", "value");
             shimmerList.add(shimmerMap);
         }
         loadingRecycler.setAdapter(new LoadingPacksAdapter.LoadingRecyclerAdapter(shimmerList));
+
         new getPacksTask().execute("");
-        packsRecycler.setHasFixedSize(true);
-        loadingRecycler.setHasFixedSize(true);
     }
 
     public void LOGIC_FRONTEND() {
@@ -169,7 +173,6 @@ public class PacksActivity extends AppCompatActivity {
                         shadAnim(slider, "alpha", 1, 200);
                         slider.setVisibility(View.VISIBLE);
                         break;
-
                     case BottomSheetBehavior.STATE_EXPANDED:
                         shadAnim(background, "elevation", 0, 200);
                         shadAnim(slider, "translationY", -200, 200);
@@ -272,35 +275,35 @@ public class PacksActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
+        public void onBindViewHolder(ViewHolder holder, int position) {
             View view = holder.itemView;
-
             final com.google.android.material.card.MaterialCardView cardView = view.findViewById(R.id.cardView);
             final ImageView emoji = view.findViewById(R.id.emoji);
             final TextView title = view.findViewById(R.id.title);
             final TextView description = view.findViewById(R.id.description);
             final TextView amount = view.findViewById(R.id.amount);
 
-            RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            view.setLayoutParams(layoutParams);
             title.setText(capitalizedFirstWord(Objects.requireNonNull(data.get(position).get("name")).toString().replace("_", " ")));
             description.setText(Objects.requireNonNull(data.get(position).get("description")).toString());
             amount.setText(String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("amount")).toString()))));
             setImageFromUrl(emoji, Objects.requireNonNull(data.get(position).get("image")).toString());
+
             cardView.setOnClickListener(_view -> {
                 try {
                     packsTempArrayString = new Gson().toJson(packsList);
                     JSONArray backPacksArray = new JSONArray(packsTempArrayString);
                     JSONObject packsObject = backPacksArray.getJSONObject(position);
-
                     JSONArray frontPacksArray = packsObject.getJSONArray("emojis");
+
                     for (int frontPacksInt = 0; frontPacksInt < frontPacksArray.length(); frontPacksInt++) {
                         packsArrayList.add(frontPacksArray.getString(frontPacksInt));
                     }
+
                     currentPositionPackArray = new Gson().toJson(packsArrayList);
                     packsArrayList.clear();
-                } catch (Exception ignored) {
 
+                } catch (Exception e) {
+                    Log.d("Recycler Error", e.toString());
                 }
                 toPreview.putExtra("switchType", "pack");
                 toPreview.putExtra("title", "BemojiPack_".concat(String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("id")).toString())))));

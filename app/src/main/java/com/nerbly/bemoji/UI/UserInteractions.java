@@ -31,9 +31,9 @@ public class UserInteractions {
         View inflate = context.getLayoutInflater().inflate(R.layout.snackbar, parentLayout, false);
         sblayout.setPadding(0, 0, 0, 0);
         sblayout.setBackgroundColor(Color.argb(0, 0, 0, 0));
-        LinearLayout back = inflate.findViewById(R.id.tutorialBg);
+        LinearLayout back = inflate.findViewById(R.id.snackbar_bg);
 
-        TextView snackbar_tv = inflate.findViewById(R.id.emptyTitle);
+        TextView snackbar_tv = inflate.findViewById(R.id.snackbar_text);
         setViewRadius(back, 20, "#202125");
         snackbar_tv.setText(message);
         sblayout.addView(inflate, 0);

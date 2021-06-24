@@ -7,11 +7,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
@@ -29,6 +30,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nerbly.bemoji.Adapters.HomePacksAdapter;
 import com.nerbly.bemoji.Adapters.LocalEmojisAdapter;
+import com.nerbly.bemoji.Fragments.CategoriesFragment;
+import com.nerbly.bemoji.Fragments.SettingsFragment;
+import com.nerbly.bemoji.Fragments.TutorialFragment;
 import com.nerbly.bemoji.Functions.FileManager;
 import com.nerbly.bemoji.Functions.RequestNetwork;
 import com.nerbly.bemoji.Functions.RequestNetworkController;
@@ -62,49 +66,47 @@ import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 public class HomeActivity extends AppCompatActivity {
 
     public static ArrayList<HashMap<String, Object>> packsList = new ArrayList<>();
-    Intent toSearch = new Intent();
-    Intent toCategories = new Intent();
-    Intent toHelp = new Intent();
-    Intent toSettings = new Intent();
-    Intent toPacks = new Intent();
-    LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-    FileManager fileManager;
+    private final Intent toSearch = new Intent();
+    private final Intent toCategories = new Intent();
+    private final Intent toPacks = new Intent();
+    private final LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+    private FileManager fileManager;
     double emojisCount = 0;
     double emojisScanPosition = 0;
-    double localEmojisScanPosition = 0;
-    String localEmojisScanPath = "";
-    HashMap<String, Object> categoriesMap = new HashMap<>();
-    ArrayList<HashMap<String, Object>> emojisList = new ArrayList<>();
-    ArrayList<HashMap<String, Object>> categoriesList = new ArrayList<>();
-    ArrayList<HashMap<String, Object>> localEmojisList = new ArrayList<>();
-    ArrayList<HashMap<String, Object>> backendPacksList = new ArrayList<>();
-    ScrollView scrollView;
-    LinearLayout adview;
-    LinearLayout loadingView;
-    LinearLayout mainView;
-    LinearLayout shimmer1;
-    LinearLayout shimmer2;
-    LinearLayout shimmer7;
-    LinearLayout shimmer3;
-    LinearLayout shimmer4;
-    LinearLayout shimmer6;
-    LinearLayout shimmer5;
-    LinearLayout shimmer9;
-    LinearLayout shimmer10;
-    LinearLayout shimmer11;
-    LinearLayout localEmojisView;
-    RecyclerView packs_recycler;
-    RecyclerView local_recycler;
-    LinearLayout dock1;
-    LinearLayout dock2;
-    TextView emojisCounter;
-    TextView categoriesCounter;
-    LinearLayout dock3;
-    LinearLayout dock4;
-    TextView seeMorePacks;
-    RequestNetwork startGettingEmojis;
-    RequestNetwork.RequestListener EmojisRequestListener;
-    SharedPreferences sharedPref;
+    private String localEmojisScanPath = "";
+    private HashMap<String, Object> categoriesMap = new HashMap<>();
+    private ArrayList<HashMap<String, Object>> emojisList = new ArrayList<>();
+    private ArrayList<HashMap<String, Object>> categoriesList = new ArrayList<>();
+    private ArrayList<HashMap<String, Object>> localEmojisList = new ArrayList<>();
+    private ArrayList<HashMap<String, Object>> backendPacksList = new ArrayList<>();
+    private ScrollView scrollView;
+    private LinearLayout adview;
+    private LinearLayout loadingView;
+    private LinearLayout mainView;
+    private LinearLayout shimmer1;
+    private LinearLayout shimmer2;
+    private LinearLayout shimmer7;
+    private LinearLayout shimmer3;
+    private LinearLayout shimmer4;
+    private LinearLayout shimmer6;
+    private LinearLayout shimmer5;
+    private LinearLayout shimmer9;
+    private LinearLayout shimmer10;
+    private LinearLayout shimmer11;
+    private LinearLayout localEmojisView;
+    private RecyclerView packs_recycler;
+    private RecyclerView local_recycler;
+    private LinearLayout dock1;
+    private LinearLayout dock2;
+    private TextView emojisCounter;
+    private TextView categoriesCounter;
+    private LinearLayout dock3;
+    private LinearLayout dock4;
+    private TextView seeMorePacks;
+    private RequestNetwork startGettingEmojis;
+    private RequestNetwork.RequestListener EmojisRequestListener;
+    private SharedPreferences sharedPref;
+    private SwipeRefreshLayout swipe_to_refresh;
 
     public static String PacksArray() {
         return new Gson().toJson(packsList);
@@ -120,7 +122,7 @@ public class HomeActivity extends AppCompatActivity {
         initializeLogic();
     }
 
-    void initialize() {
+    private void initialize() {
         adview = findViewById(R.id.adview);
         scrollView = findViewById(R.id.scrollView);
         loadingView = findViewById(R.id.loadingView);
@@ -135,6 +137,7 @@ public class HomeActivity extends AppCompatActivity {
         shimmer9 = findViewById(R.id.shimmer9);
         shimmer10 = findViewById(R.id.shimmer10);
         shimmer11 = findViewById(R.id.shimmer11);
+        swipe_to_refresh = findViewById(R.id.swipe_to_refresh);
         MaterialCardView searchcard = findViewById(R.id.searchcard);
         localEmojisView = findViewById(R.id.localemojisview);
         LinearLayout goToPacks = findViewById(R.id.gotopacks);
@@ -200,50 +203,70 @@ public class HomeActivity extends AppCompatActivity {
                 if (emojisCounter.getText().toString().equals("0")) {
                     showCustomSnackBar(getString(R.string.emojis_still_loading_msg), HomeActivity.this);
                 } else {
-                    toCategories.setClass(getApplicationContext(), CategoriesActivity.class);
-                    startActivity(toCategories);
+                    CategoriesFragment bottomSheet = new CategoriesFragment();
+                    bottomSheet.show(HomeActivity.this.getSupportFragmentManager(), "Categories");
                 }
             }
         });
 
         dock3.setOnClickListener(view -> {
-            toSettings.setClass(getApplicationContext(), SettingsActivity.class);
-            startActivity(toSettings);
+
+            SettingsFragment bottomSheet = new SettingsFragment();
+            bottomSheet.show(HomeActivity.this.getSupportFragmentManager(), "Settings");
+//            toSettings.setClass(getApplicationContext(), SettingsActivity.class);
+//            startActivity(toSettings);
         });
 
         dock4.setOnClickListener(view -> {
-            toHelp.setClass(getApplicationContext(), TutorialActivity.class);
-            startActivity(toHelp);
+            TutorialFragment bottomSheet = new TutorialFragment();
+            bottomSheet.show(HomeActivity.this.getSupportFragmentManager(), "Tutorial");
+//            toHelp.setClass(getApplicationContext(), TutorialActivity.class);
+//            startActivity(toHelp);
         });
 
         EmojisRequestListener = new RequestNetwork.RequestListener() {
             @Override
             public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
+                swipe_to_refresh.setRefreshing(false);
+
+
                 if (tag.equals("EMOJIS")) {
                     try {
                         emojisList = new Gson().fromJson(response, new TypeToken<ArrayList<HashMap<String, Object>>>() {
                         }.getType());
+
                         emojisCount = emojisList.size();
+
                         emojisScanPosition = emojisCount - 1;
+
                         for (int i = 0; i < (int) (emojisCount); i++) {
+
                             if (Objects.requireNonNull(emojisList.get((int) emojisScanPosition).get("category")).toString().equals("9.0")) {
                                 emojisList.remove((int) (emojisScanPosition));
                             }
+
                             emojisScanPosition--;
                         }
+
                         sharedPref.edit().putString("emojisData", new Gson().toJson(emojisList)).apply();
+
                         numbersAnimator(emojisCounter, 0, emojisList.size(), 1000);
-                    } catch (Exception ignored) {
+
+                    } catch (Exception e) {
+                        Log.d("EmojisRequestListener", e.toString());
                     }
                 } else {
                     if (tag.equals("CATEGORIES")) {
+                        if (!categoriesList.isEmpty()) {
+                            categoriesList.clear();
+                        }
                         try {
-                            JSONObject obj = new JSONObject(response);
-                            Iterator<String> keys = obj.keys();
+                            JSONObject object = new JSONObject(response);
+                            Iterator<String> keys = object.keys();
 
                             while (keys.hasNext()) {
                                 String key = keys.next();
-                                String value = String.valueOf(obj.get(key));
+                                String value = String.valueOf(object.get(key));
                                 if (!value.equals("NSFW")) {
                                     categoriesMap = new HashMap<>();
                                     categoriesMap.put("category_id", key);
@@ -253,8 +276,7 @@ public class HomeActivity extends AppCompatActivity {
                             }
 
                         } catch (JSONException e) {
-                            recreate();
-                            Toast.makeText(HomeActivity.this, getString(R.string.request_server_data_error), Toast.LENGTH_SHORT).show();
+                            getOnlineEmojis();
                         }
 
                         sharedPref.edit().putString("categoriesData", new Gson().toJson(categoriesList)).apply();
@@ -269,23 +291,7 @@ public class HomeActivity extends AppCompatActivity {
                                 packs_recycler.setAdapter(new HomePacksAdapter.Packs_recyclerAdapter(packsList));
 
                             } catch (Exception e) {
-                                recreate();
-                                Toast.makeText(HomeActivity.this, getString(R.string.request_server_data_error), Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            if (tag.equals("PACKS_1")) {
-                                try {
-                                    backendPacksList = new Gson().fromJson(response, new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                                    }.getType());
-                                    if (new Gson().toJson(backendPacksList).equals(new Gson().toJson(packsList))) {
-                                        sharedPref.edit().putString("isNewEmojisAvailable", "").apply();
-                                    } else {
-                                        sharedPref.edit().putString("isNewEmojisAvailable", "true").apply();
-                                    }
-                                } catch (Exception ignored) {
-                                    recreate();
-                                    Toast.makeText(HomeActivity.this, getString(R.string.request_server_data_error), Toast.LENGTH_SHORT).show();
-                                }
+                                getOnlineEmojis();
                             }
                         }
                     }
@@ -299,9 +305,19 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         };
+
+        swipe_to_refresh.setOnRefreshListener(() -> {
+            startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, CATEGORIES_API_LINK, "CATEGORIES", EmojisRequestListener);
+            startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, EMOJIS_API_LINK, "EMOJIS", EmojisRequestListener);
+            startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, PACKS_API_LINK, "PACKS", EmojisRequestListener);
+            loadingView.setVisibility(View.VISIBLE);
+            mainView.setVisibility(View.GONE);
+        });
+
+
     }
 
-    void initializeLogic() {
+    private void initializeLogic() {
         LOGIC_FRONTEND();
         LOGIC_BACKEND();
     }
@@ -318,14 +334,17 @@ public class HomeActivity extends AppCompatActivity {
             sharedPref.edit().putString("isAskingForReload", "").apply();
             recreate();
         }
-        if (androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != android.content.pm.PackageManager.PERMISSION_DENIED && androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != android.content.pm.PackageManager.PERMISSION_DENIED) {
-            getLocalEmojis();
+        if (androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != android.content.pm.PackageManager.PERMISSION_DENIED) {
+            getLocalEmojis(false);
         }
     }
 
     public void LOGIC_BACKEND() {
         FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         overridePendingTransition(R.anim.fade_in, 0);
+
+        local_recycler.setItemAnimator(null);
+        packs_recycler.setItemAnimator(null);
 
         SnapHelper snapHelper = new PagerSnapHelper();
         packs_recycler.setLayoutManager(layoutManager);
@@ -345,33 +364,7 @@ public class HomeActivity extends AppCompatActivity {
         OverScrollDecoratorHelper.setUpOverScroll(local_recycler, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL);
         OverScrollDecoratorHelper.setUpOverScroll(scrollView);
 
-        if (sharedPref.getString("emojisData", "").isEmpty() || sharedPref.getString("isNewEmojisAvailable", "").equals("true")) {
-            startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, EMOJIS_API_LINK, "EMOJIS", EmojisRequestListener);
-        } else {
-            emojisList = new Gson().fromJson(sharedPref.getString("emojisData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-            }.getType());
-            emojisCounter.setText(String.valueOf((long) (emojisList.size())));
-        }
-        if (sharedPref.getString("categoriesData", "").isEmpty() || sharedPref.getString("isNewEmojisAvailable", "").equals("true")) {
-            startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, CATEGORIES_API_LINK, "CATEGORIES", EmojisRequestListener);
-        } else {
-            categoriesList = new Gson().fromJson(sharedPref.getString("categoriesData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-            }.getType());
-            categoriesCounter.setText(String.valueOf((long) (categoriesList.size())));
-        }
-        if (sharedPref.getString("packsData", "").isEmpty() || sharedPref.getString("isNewEmojisAvailable", "").equals("true")) {
-            startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, PACKS_API_LINK, "PACKS", EmojisRequestListener);
-        } else {
-            try {
-                packsList = new Gson().fromJson(sharedPref.getString("packsData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                }.getType());
-                sharedPref.edit().putString("packsData", new Gson().toJson(packsList)).apply();
-                packs_recycler.setAdapter(new HomePacksAdapter.Packs_recyclerAdapter(packsList));
-            } catch (Exception e) {
-                Utils.showToast(getApplicationContext(), (e.toString()));
-            }
-            startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, PACKS_API_LINK, "PACKS_1", EmojisRequestListener);
-        }
+        getOnlineEmojis();
 
 
         AudienceNetworkAds.initialize(this);
@@ -404,11 +397,46 @@ public class HomeActivity extends AppCompatActivity {
         setClippedView(shimmer11, "#FFFFFF", 200, 0);
     }
 
-    public void getLocalEmojis() {
-        try {
-            localEmojisList.clear();
-        } catch (Exception ignored) {
+    private void getOnlineEmojis() {
+        if (sharedPref.getString("emojisData", "").isEmpty()) {
+            startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, EMOJIS_API_LINK, "EMOJIS", EmojisRequestListener);
+        } else {
+            emojisList = new Gson().fromJson(sharedPref.getString("emojisData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
+            }.getType());
+            emojisCounter.setText(String.valueOf((long) (emojisList.size())));
+            loadingView.setVisibility(View.GONE);
+            mainView.setVisibility(View.VISIBLE);
         }
+
+        if (sharedPref.getString("categoriesData", "").isEmpty()) {
+            startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, CATEGORIES_API_LINK, "CATEGORIES", EmojisRequestListener);
+        } else {
+            categoriesList = new Gson().fromJson(sharedPref.getString("categoriesData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
+            }.getType());
+            categoriesCounter.setText(String.valueOf((long) (categoriesList.size())));
+        }
+        if (sharedPref.getString("packsData", "").isEmpty()) {
+            startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, PACKS_API_LINK, "PACKS", EmojisRequestListener);
+        } else {
+            try {
+                packsList = new Gson().fromJson(sharedPref.getString("packsData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
+                }.getType());
+                sharedPref.edit().putString("packsData", new Gson().toJson(packsList)).apply();
+                packs_recycler.setAdapter(new HomePacksAdapter.Packs_recyclerAdapter(packsList));
+            } catch (Exception e) {
+                Utils.showToast(getApplicationContext(), (e.toString()));
+            }
+        }
+    }
+
+    public void getLocalEmojis(boolean isGettingDataFirstTime) {
+        if (!isGettingDataFirstTime) {
+            try {
+                localEmojisList.clear();
+            } catch (Exception ignored) {
+            }
+        }
+
         fileManager = new FileManager();
         new Thread(() -> {
 
@@ -417,21 +445,18 @@ public class HomeActivity extends AppCompatActivity {
             new Handler(Looper.getMainLooper()).post(() -> {
 
                 try {
-                    localEmojisScanPosition = 0;
                     for (int i = 0; i < (localEmojisList.size() - 1); i++) {
-                        localEmojisScanPath = Objects.requireNonNull(localEmojisList.get((int) localEmojisScanPosition).get("filePath")).toString();
+                        localEmojisScanPath = Objects.requireNonNull(localEmojisList.get(i).get("filePath")).toString();
                         File file1 = new File(localEmojisScanPath);
                         try {
-
                             long length = file1.length();
                             length = length / 1024;
                             if (length == 0) {
-                                localEmojisList.remove((int) (localEmojisScanPosition));
+                                localEmojisList.remove(i);
                             }
                         } catch (Exception e) {
-                            localEmojisList.remove((int) (localEmojisScanPosition));
+                            localEmojisList.remove(i);
                         }
-                        localEmojisScanPosition++;
                     }
                     if (localEmojisList.size() == 0) {
                         localEmojisView.setVisibility(View.GONE);
@@ -442,12 +467,17 @@ public class HomeActivity extends AppCompatActivity {
                         new Handler().postDelayed(() -> localEmojisView.setVisibility(View.VISIBLE), 1000);
 
                     }
-                } catch (Exception ignored) {
+                } catch (Exception e) {
+                    Log.d("recycler error", e.toString());
                 }
 
             });
         }).start();
 
+    }
+
+    public static void userIsAskingForActivityToReload(Activity context) {
+        context.recreate();
     }
 
 }

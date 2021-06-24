@@ -100,4 +100,6 @@
     <string name="dialog_negative_text">Cancel</string>
     <string name="dialog_positive_text">Okay</string>
     <string name="mailto_device_not_supported">It seems like your device doesn\'t have a mail app installed, would you like to be redirected to Play Store to send us feedback or to contact us?</string>
+    <string name="webview_device_not_supported">It seems like your device doesn\'t have a browser app installed, sorry we can\'t open the link. \n Would you like to copy the link to your clipboard?</string>
+    <string name="copy_text">Copy</string>
 </resources>

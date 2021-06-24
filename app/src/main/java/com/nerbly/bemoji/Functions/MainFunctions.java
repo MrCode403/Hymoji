@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.graphics.Insets;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowMetrics;
 
@@ -31,6 +32,28 @@ public class MainFunctions {
         shared1.putString("language", lang);
         shared1.putString("language_position", String.valueOf(position));
         shared1.apply();
+    }
+
+    public static void setFragmentLocale(String lang, String position, View view) {
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        view.getContext().getResources().updateConfiguration(config, view.getContext().getResources().getDisplayMetrics());
+        SharedPreferences.Editor shared1 = view.getContext().getSharedPreferences("AppData", Activity.MODE_PRIVATE).edit();
+        shared1.putString("language", lang);
+        shared1.putString("language_position", String.valueOf(position));
+        shared1.apply();
+    }
+
+    public static void loadFragmentLocale(View view) {
+        SharedPreferences shared = view.getContext().getSharedPreferences("AppData", Activity.MODE_PRIVATE);
+
+        if (shared.getString("language", "") != null) {
+            if (!shared.getString("language", "").equals("")) {
+                setFragmentLocale(shared.getString("language", ""), shared.getString("language_position", ""), view);
+            }
+        }
     }
 
     public static void loadLocale(Activity context) {

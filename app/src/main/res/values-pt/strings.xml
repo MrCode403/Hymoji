@@ -8,7 +8,7 @@
     <string name="download_btn_txt">Baixar</string>
     <string name="pack_confirmation_sheet_title">Espere um segundo, tem mais!</string>
     <string name="pack_confirmation_sheet_subtitle">Deseja que eu baixe este pacote como um arquivo ZIP (adequado para Desktop ou compartilhamento) ou simplesmente baixe como uma pasta?</string>
-    <string name="pack_confirmation_sheet_btn1">Baixe como zip</string>
+    <string name="pack_confirmation_sheet_btn1">Baixe como ZIP</string>
     <string name="pack_confirmation_sheet_btn2">Baixar como uma diretório</string>
     <string name="home_searchbox">Procurar…</string>
     <string name="home_sections_title">SEÇÕES</string>
@@ -46,7 +46,7 @@
     <string name="sort_by_newest">O mais novo</string>
     <string name="sort_by_oldest">Mais velho</string>
     <string name="sort_by_alphabetically">Alfabeticamente</string>
-    <string name="preview_pack_title">Pacote de amostra</string>
+    <string name="preview_pack_title">Conteúdo da embalagem</string>
     <string name="preview_pack_subtitle">Você pode ver quais emojis este pacote contém e adivinhe? você pode baixá-los individualmente também!</string>
     <string name="preview_pack_download_btn">Baixe o pacote completo</string>
     <string name="explore_packs_title">Explorar pacotes</string>
@@ -98,4 +98,6 @@
     <string name="dialog_positive_text">OK</string>
     <string name="dialog_negative_text">Cancelar</string>
     <string name="mailto_device_not_supported">Parece que seu dispositivo não tem um aplicativo de e-mail instalado. Você gostaria de ser redirecionado para a Play Store para nos enviar comentários ou entrar em contato?</string>
+    <string name="webview_device_not_supported">Parece que seu dispositivo não tem um aplicativo de navegador instalado, desculpe, não podemos abrir o link. \\nVocê gostaria de copiar o link para a sua área de transferência?</string>
+    <string name="copy_text">Cópia</string>
 </resources>
