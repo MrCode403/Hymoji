@@ -101,4 +101,7 @@
     <string name="mailto_device_not_supported">Похоже, на вашем устройстве не установлено почтовое приложение. Хотите, чтобы вас перенаправили в Play Store, чтобы отправить нам отзыв или связаться с нами?</string>
     <string name="webview_device_not_supported">Похоже, на вашем устройстве не установлено приложение браузера, извините, мы не можем открыть ссылку. \\nХотите скопировать ссылку в буфер обмена?</string>
     <string name="copy_text">Копировать</string>
+    <string name="new_update_downloaded">Новое обновление загружено и готово к установке. Пожалуйста, нажмите на установку, чтобы продолжить. Это займет не более секунды.</string>
+    <string name="update_now_button">Установить</string>
+    <string name="update_now_dialog_title">Обновление готово</string>
 </resources>

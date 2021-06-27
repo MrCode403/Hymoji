@@ -100,4 +100,7 @@
     <string name="mailto_device_not_supported">Görünüşe göre cihazınızda yüklü bir posta uygulaması yok, bize geri bildirim göndermek veya bizimle iletişime geçmek için Play Store\'a yönlendirilmek ister misiniz?</string>
     <string name="webview_device_not_supported">Görünüşe göre cihazınızda yüklü bir tarayıcı uygulaması yok, maalesef bağlantıyı açamıyoruz. \\nBağlantıyı panonuza kopyalamak ister misiniz?</string>
     <string name="copy_text">Kopyala</string>
+    <string name="new_update_downloaded">Yeni güncelleme indirildi ve yüklenmeye hazır. Devam etmek için lütfen yükle\'ye tıklayın. Tamamlanması bir saniyeden fazla sürmez.</string>
+    <string name="update_now_button">Yüklemek</string>
+    <string name="update_now_dialog_title">Güncelleme hazır</string>
 </resources>

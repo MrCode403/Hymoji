@@ -100,4 +100,7 @@
     <string name="mailto_device_not_supported">Anscheinend ist auf Ihrem Gerät keine E-Mail-App installiert. Möchten Sie zum Play Store weitergeleitet werden, um uns Feedback zu senden oder uns zu kontaktieren?</string>
     <string name="webview_device_not_supported">Anscheinend ist auf Ihrem Gerät keine Browser-App installiert. Leider können wir den Link nicht öffnen. \\nMöchten Sie den Link in Ihre Zwischenablage kopieren?</string>
     <string name="copy_text">Kopieren</string>
+    <string name="new_update_downloaded">Das neue Update wird heruntergeladen und kann installiert werden. Bitte klicken Sie auf Installieren, um fortzufahren. Die Fertigstellung dauert nicht länger als eine Sekunde.</string>
+    <string name="update_now_button">Installieren</string>
+    <string name="update_now_dialog_title">Update ist fertig</string>
 </resources>

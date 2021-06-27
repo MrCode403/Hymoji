@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
+import static com.nerbly.bemoji.Functions.SideFunctions.setHighPriorityImageFromUrl;
 import static com.nerbly.bemoji.Functions.SideFunctions.setImageFromUrl;
 
 public class HomePacksAdapter {
@@ -65,7 +66,7 @@ public class HomePacksAdapter {
             view.setLayoutParams(_lp);
             textview1.setText(capitalizedFirstWord(Objects.requireNonNull(_data.get(position).get("name")).toString().replace("_", " ")));
             textview2.setText(Objects.requireNonNull(_data.get(position).get("description")).toString());
-            setImageFromUrl(imageview1, Objects.requireNonNull(_data.get(position).get("image")).toString());
+            setHighPriorityImageFromUrl(imageview1, Objects.requireNonNull(_data.get(position).get("image")).toString());
             cardview1.setOnClickListener(_view -> {
                 try {
                     packsTempArrayString = HomeActivity.PacksArray();

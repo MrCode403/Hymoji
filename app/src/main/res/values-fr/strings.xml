@@ -100,4 +100,7 @@
     <string name="mailto_device_not_supported">Il semble que votre appareil ne dispose pas d\'une application de messagerie installée, souhaitez-vous être redirigé vers Play Store pour nous envoyer des commentaires ou nous contacter?</string>
     <string name="webview_device_not_supported">Il semble que votre appareil ne dispose pas d\'une application de navigateur, désolé, nous ne pouvons pas ouvrir le lien. \\nSouhaitez-vous copier le lien dans votre presse-papiers?</string>
     <string name="copy_text">Copier</string>
+    <string name="new_update_downloaded">La nouvelle mise à jour est téléchargée et prête à être installée. Veuillez cliquer sur installer pour continuer. Cela ne prendra pas plus d\'une seconde.</string>
+    <string name="update_now_button">Installer</string>
+    <string name="update_now_dialog_title">La mise à jour est prête</string>
 </resources>

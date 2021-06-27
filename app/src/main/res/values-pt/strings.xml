@@ -100,4 +100,7 @@
     <string name="mailto_device_not_supported">Parece que seu dispositivo não tem um aplicativo de e-mail instalado. Você gostaria de ser redirecionado para a Play Store para nos enviar comentários ou entrar em contato?</string>
     <string name="webview_device_not_supported">Parece que seu dispositivo não tem um aplicativo de navegador instalado, desculpe, não podemos abrir o link. \\nVocê gostaria de copiar o link para a sua área de transferência?</string>
     <string name="copy_text">Cópia</string>
+    <string name="new_update_downloaded">A nova atualização foi baixada e está pronta para ser instalada. Clique em instalar para continuar. Não levará mais de um segundo para ser concluído.</string>
+    <string name="update_now_button">Instalar</string>
+    <string name="update_now_dialog_title">A atualização está pronta</string>
 </resources>

@@ -2,6 +2,7 @@ package com.nerbly.bemoji.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +27,14 @@ import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
 import com.facebook.ads.AudienceNetworkAds;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.InstallStateUpdatedListener;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.InstallStatus;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -62,6 +72,7 @@ import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
 import static com.nerbly.bemoji.UI.MainUIMethods.statusBarColor;
 import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
+import static com.nerbly.bemoji.UI.UserInteractions.showMessageDialog;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -78,6 +89,8 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<HashMap<String, Object>> emojisList = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> categoriesList = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> localEmojisList = new ArrayList<>();
+    private AppUpdateManager mAppUpdateManager;
+    private static final int RC_APP_UPDATE = 11;
     private ArrayList<HashMap<String, Object>> backendPacksList = new ArrayList<>();
     private ScrollView scrollView;
     private LinearLayout adview;
@@ -107,6 +120,9 @@ public class HomeActivity extends AppCompatActivity {
     private RequestNetwork.RequestListener EmojisRequestListener;
     private SharedPreferences sharedPref;
     private SwipeRefreshLayout swipe_to_refresh;
+    private AppUpdateManager appUpdateManager;
+    private static final int FLEXIBLE_APP_UPDATE_REQ_CODE = 123;
+    private InstallStateUpdatedListener installStateUpdatedListener;
 
     public static String PacksArray() {
         return new Gson().toJson(packsList);
@@ -341,6 +357,22 @@ public class HomeActivity extends AppCompatActivity {
 
     public void LOGIC_BACKEND() {
         FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        appUpdateManager = AppUpdateManagerFactory.create(getApplicationContext());
+        installStateUpdatedListener = state -> {
+            if (state.installStatus() == InstallStatus.DOWNLOADED) {
+                popupSnackBarForCompleteUpdate();
+            } else if (state.installStatus() == InstallStatus.INSTALLED) {
+                removeInstallStateUpdateListener();
+            } else {
+                Toast.makeText(getApplicationContext(), "InstallStateUpdatedListener: state: " + state.installStatus(), Toast.LENGTH_LONG).show();
+            }
+        };
+
+
+        checkUpdate();
+
+
+
         overridePendingTransition(R.anim.fade_in, 0);
 
         local_recycler.setItemAnimator(null);
@@ -476,8 +508,69 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+
     public static void userIsAskingForActivityToReload(Activity context) {
         context.recreate();
     }
 
+
+    private void checkUpdate() {
+
+        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+
+        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
+                startUpdateFlow(appUpdateInfo);
+            } else if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                popupSnackBarForCompleteUpdate();
+            }
+        });
+    }
+
+    private void startUpdateFlow(AppUpdateInfo appUpdateInfo) {
+        try {
+            appUpdateManager.startUpdateFlowForResult(appUpdateInfo, AppUpdateType.FLEXIBLE, this, FLEXIBLE_APP_UPDATE_REQ_CODE);
+        } catch (IntentSender.SendIntentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == FLEXIBLE_APP_UPDATE_REQ_CODE) {
+            if (resultCode == RESULT_CANCELED) {
+            } else if (resultCode == RESULT_OK) {
+            } else {
+                checkUpdate();
+            }
+        }
+    }
+
+    private void popupSnackBarForCompleteUpdate() {
+
+        showMessageDialog(getString(R.string.update_now_dialog_title), getString(R.string.new_update_downloaded), getString(R.string.update_now_button), getString(R.string.dialog_negative_text), this,
+                (dialog, which) -> {
+                    if (appUpdateManager != null) {
+                        appUpdateManager.completeUpdate();
+                    }
+                    dialog.dismiss();
+                },
+                (dialog, which) -> dialog.dismiss());
+    }
+
+    private void removeInstallStateUpdateListener() {
+        if (appUpdateManager != null) {
+            appUpdateManager.unregisterListener(installStateUpdatedListener);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        removeInstallStateUpdateListener();
+    }
 }
+
+

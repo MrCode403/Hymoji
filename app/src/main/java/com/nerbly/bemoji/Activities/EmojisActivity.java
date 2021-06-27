@@ -297,7 +297,7 @@ public class EmojisActivity extends AppCompatActivity {
 
     public void initEmojisRecycler() {
 
-        float scaleFactor = getResources().getDisplayMetrics().density * 60;
+        float scaleFactor = getResources().getDisplayMetrics().density * 70;
         int number = getScreenWidth(this);
         int columns = (int) ((float) number / scaleFactor);
         GridLayoutManager layoutManager1 = new GridLayoutManager(this, columns);

@@ -47,6 +47,7 @@ import java.util.regex.Pattern;
 
 import static com.nerbly.bemoji.Configurations.PACKS_API_LINK;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
+import static com.nerbly.bemoji.Functions.SideFunctions.setHighPriorityImageFromUrl;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
@@ -286,7 +287,7 @@ public class PacksActivity extends AppCompatActivity {
             title.setText(capitalizedFirstWord(Objects.requireNonNull(data.get(position).get("name")).toString().replace("_", " ")));
             description.setText(Objects.requireNonNull(data.get(position).get("description")).toString());
             amount.setText(String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("amount")).toString()))));
-            setImageFromUrl(emoji, Objects.requireNonNull(data.get(position).get("image")).toString());
+            setHighPriorityImageFromUrl(emoji, Objects.requireNonNull(data.get(position).get("image")).toString());
 
             cardView.setOnClickListener(_view -> {
                 try {

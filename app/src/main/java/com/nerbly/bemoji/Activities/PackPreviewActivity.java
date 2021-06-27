@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.media.MediaScannerConnection;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -292,6 +293,11 @@ public class PackPreviewActivity extends AppCompatActivity {
                         downloadPackPosition++;
                         download_tv.setText(getString(R.string.pack_downloading_progress).concat(" ") + (int) downloadPackPosition + "/" + downloadPackArrayList.size());
                         downloadPack(new Gson().toJson(downloadPackArrayList), tempPackName);
+                        MediaScannerConnection.scanFile(PackPreviewActivity.this,
+                                new String[]{path}, null,
+                                (path1, uri) -> {
+
+                                });
                     }
 
                     @Override

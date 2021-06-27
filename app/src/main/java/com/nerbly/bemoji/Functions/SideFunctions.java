@@ -29,7 +29,8 @@ public class SideFunctions {
 
     public static void setImgURL(final String url, final ImageView image) {
         RequestOptions options = new RequestOptions()
-                .placeholder(R.drawable.loading);
+                .placeholder(R.drawable.loading)
+                .priority(Priority.IMMEDIATE);
 
         Glide.with(image.getContext())
                 .load(url)
@@ -47,6 +48,16 @@ public class SideFunctions {
 
     }
 
+    public static void setHighPriorityImageFromUrl(final ImageView image, final String url) {
+        Glide.with(image.getContext())
+                .load(url)
+                .centerCrop()
+                .dontAnimate()
+                .priority(Priority.IMMEDIATE)
+                .into(image);
+
+    }
+
     public static void setTutorialImages(final ImageView image, final String url) {
         Glide.with(image.getContext())
 
@@ -55,29 +66,4 @@ public class SideFunctions {
                 .into(image);
 
     }
-
-
-    public static void initDragNDropRecycler(final RecyclerView recycler, final ArrayList<HashMap<String, Object>> arraylist) {
-        //this is an easter egg to play with downloaded emojis a little bit. Have fun!
-
-        androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback simpleCallback = new androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback(
-                androidx.recyclerview.widget.ItemTouchHelper.UP | androidx.recyclerview.widget.ItemTouchHelper.DOWN | androidx.recyclerview.widget.ItemTouchHelper.START | androidx.recyclerview.widget.ItemTouchHelper.END, 0) {
-            @Override
-            public boolean onMove(@androidx.annotation.NonNull androidx.recyclerview.widget.RecyclerView recyclerView, @androidx.annotation.NonNull androidx.recyclerview.widget.RecyclerView.ViewHolder viewHolder, @androidx.annotation.NonNull androidx.recyclerview.widget.RecyclerView.ViewHolder target) {
-                int fromPosition = viewHolder.getAdapterPosition();
-                int toPosition = target.getAdapterPosition();
-                Collections.swap(arraylist, fromPosition, toPosition);
-                Objects.requireNonNull(recycler.getAdapter()).notifyItemMoved(fromPosition, toPosition);
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@androidx.annotation.NonNull androidx.recyclerview.widget.RecyclerView.ViewHolder viewHolder, int direction) {
-            }
-        };
-
-        androidx.recyclerview.widget.ItemTouchHelper itemTouchHelper = new androidx.recyclerview.widget.ItemTouchHelper(simpleCallback);
-        itemTouchHelper.attachToRecyclerView(recycler);
-    }
-
 }
