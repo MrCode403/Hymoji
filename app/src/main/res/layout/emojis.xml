@@ -74,7 +74,7 @@
                             tools:ignore="TouchTargetSizeCheck" />
 
                         <ImageView
-                            android:id="@+id/imageview2"
+                            android:id="@+id/ic_filter_clear"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:padding="8dp"
@@ -172,4 +172,5 @@
             android:textColor="#424242"
             android:textSize="16sp" />
     </LinearLayout>
+
 </RelativeLayout>

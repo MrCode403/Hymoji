@@ -103,4 +103,7 @@
     <string name="new_update_downloaded">A nova atualização foi baixada e está pronta para ser instalada. Clique em instalar para continuar. Não levará mais de um segundo para ser concluído.</string>
     <string name="update_now_button">Instalar</string>
     <string name="update_now_dialog_title">A atualização está pronta</string>
+    <string name="pro_tip_1">Você pode obter novos emojis deslizando para baixo nesta página, nossa comunidade carrega novos emojis todos os dias.</string>
+    <string name="settings_option_13_subtitle">Junte-se ao nosso servidor Discord e conheça novos amigos incríveis. Não se atrase, estamos esperando por você.</string>
+    <string name="pro_tip_2">Junte-se ao nosso servidor Discord e conheça novos amigos incríveis. O link de convite na página de configurações, Não se atrase, estamos esperando por você.</string>
 </resources>

@@ -54,6 +54,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
     private RelativeLayout setting10;
     private RelativeLayout setting11;
     private RelativeLayout setting12;
+    private RelativeLayout setting13;
     private TextView textview8;
     private SharedPreferences sharedPref;
     private boolean isAskingForReload = false;
@@ -88,6 +89,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
         setting10 = view.findViewById(R.id.setting10);
         setting11 = view.findViewById(R.id.setting11);
         setting12 = view.findViewById(R.id.setting12);
+        setting13 = view.findViewById(R.id.setting13);
         textview8 = view.findViewById(R.id.textview8);
         sharedPref = requireActivity().getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
@@ -103,9 +105,19 @@ public class SettingsFragment extends BottomSheetDialogFragment {
         });
 
         setting3.setOnClickListener(_view -> {
+            try {
             intent.setAction(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("https://emoji.gg/submit"));
             startActivity(intent);
+            } catch (Exception e) {
+                showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
+                        (dialog, which) -> {
+                            ClipboardManager clipboard = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                            ClipData clip = ClipData.newPlainText("Bemoji", "https://emoji.gg/submit");
+                            clipboard.setPrimaryClip(clip);
+                        },
+                        (dialog, which) -> dialog.dismiss());
+            }
         });
 
         setting2.setOnClickListener(_view -> {
@@ -212,6 +224,23 @@ public class SettingsFragment extends BottomSheetDialogFragment {
                         (dialog, which) -> dialog.dismiss());
             }
         });
+
+        setting13.setOnClickListener(_view -> {
+            try {
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://discord.gg/nxy2Qq4YP4"));
+                startActivity(intent);
+            } catch (Exception e) {
+                showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
+                        (dialog, which) -> {
+                            ClipboardManager clipboard = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                            ClipData clip = ClipData.newPlainText("Bemoji", "https://discord.gg/nxy2Qq4YP4");
+                            clipboard.setPrimaryClip(clip);
+                        },
+                        (dialog, which) -> dialog.dismiss());
+            }
+        });
+
     }
 
 
@@ -237,6 +266,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
         rippleRoundStroke(setting10, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
         rippleRoundStroke(setting11, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
         rippleRoundStroke(setting12, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
+        rippleRoundStroke(setting13, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
     }
 
     private void showLanguagesSheet() {

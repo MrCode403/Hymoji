@@ -332,7 +332,57 @@
                             android:textColor="#616161"
                             android:textSize="12sp"
                             android:textStyle="bold" />
+                        <RelativeLayout
+                            android:id="@+id/setting13"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingLeft="5dp"
+                            android:paddingTop="7dp"
+                            android:paddingRight="5dp"
+                            android:paddingBottom="7dp">
 
+                            <ImageView
+                                android:id="@+id/setting13_ic"
+                                android:layout_width="30dp"
+                                android:layout_height="25dp"
+                                android:layout_centerVertical="true"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_discord"
+                                app:tint="#5865F2" />
+
+                            <TextView
+                                android:id="@+id/setting13_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@+id/setting13_ic"
+                                android:fontFamily="@font/whitney"
+                                android:paddingLeft="8dp"
+                                android:paddingTop="8dp"
+                                android:paddingRight="8dp"
+                                android:paddingBottom="2dp"
+                                android:text="@string/discord_title"
+                                android:textColor="#212121"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/setting13_desc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/setting13_ic"
+                                android:layout_toEndOf="@+id/setting13_ic"
+                                android:fontFamily="@font/whitney"
+                                android:paddingLeft="8dp"
+                                android:paddingTop="2dp"
+                                android:paddingRight="8dp"
+                                android:paddingBottom="8dp"
+                                android:text="@string/settings_option_13_subtitle"
+                                android:textColor="#616161"
+                                android:textSize="12sp" />
+                        </RelativeLayout>
                         <RelativeLayout
                             android:id="@+id/setting4"
                             android:layout_width="match_parent"
@@ -352,7 +402,7 @@
                                 android:layout_centerVertical="true"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/twotone_support_black_48dp"
-                                app:tint="#3E64FF" />
+                                app:tint="#FF7B00" />
 
                             <TextView
                                 android:id="@+id/textview13"
@@ -405,7 +455,7 @@
                                 android:layout_centerVertical="true"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/twotone_feedback_black_48dp"
-                                app:tint="#F44336" />
+                                app:tint="#009688" />
 
                             <TextView
                                 android:id="@+id/textview15"
@@ -510,7 +560,7 @@
                                 android:layout_centerVertical="true"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/logo_min"
-                                app:tint="#FFC107" />
+                                app:tint="#7289DA" />
 
                             <TextView
                                 android:id="@+id/textview18"

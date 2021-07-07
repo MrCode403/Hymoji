@@ -103,4 +103,7 @@
     <string name="new_update_downloaded">Das neue Update wird heruntergeladen und kann installiert werden. Bitte klicken Sie auf Installieren, um fortzufahren. Die Fertigstellung dauert nicht länger als eine Sekunde.</string>
     <string name="update_now_button">Installieren</string>
     <string name="update_now_dialog_title">Update ist fertig</string>
+    <string name="pro_tip_1">Sie können neue Emojis erhalten, indem Sie diese Seite nach unten wischen. Unsere Community lädt jeden Tag neue Emojis hoch.</string>
+    <string name="settings_option_13_subtitle">Treten Sie unserem Discord-Server bei und treffen Sie neue tolle Freunde. Kommen Sie nicht zu spät, wir warten auf Sie.</string>
+    <string name="pro_tip_2">Treten Sie unserem Discord-Server bei und treffen Sie neue tolle Freunde. Der Einladungslink auf der Einstellungsseite, Komm nicht zu spät, wir warten auf dich.</string>
 </resources>

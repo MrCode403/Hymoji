@@ -71,7 +71,7 @@ public class EmojisActivity extends AppCompatActivity {
     private double searchPosition = 0;
     private double emojisCount = 0;
     private boolean isRequestingServerEmojis = false;
-    private boolean isSortingNew = false;
+    private boolean isSortingNew = true;
     private boolean isSortingOld = false;
     private boolean isSortingAlphabet = false;
     private ArrayList<HashMap<String, Object>> emojisList = new ArrayList<>();
@@ -90,6 +90,8 @@ public class EmojisActivity extends AppCompatActivity {
     private SharedPreferences sharedPref;
     private RequestNetwork getSuggestions;
     private RequestNetwork.RequestListener RequestSuggestions;
+    private boolean isSearching = false;
+    private boolean isGettingDataFirstTime = true;
 
     public static void whenChipItemClicked(String suggestion) {
         isChipSelected = true;
@@ -114,7 +116,7 @@ public class EmojisActivity extends AppCompatActivity {
         emptyAnimation = findViewById(R.id.emptyAnimation);
         searchBox = findViewById(R.id.searchbox);
         searchBoxField = findViewById(R.id.searchField);
-        sortByBtn = findViewById(R.id.imageview2);
+        sortByBtn = findViewById(R.id.ic_filter_clear);
         searchBtn = findViewById(R.id.searchBtn);
         chipRecycler = findViewById(R.id.chiprecycler);
         emojisRecycler = findViewById(R.id.packEmojisRecycler);
@@ -126,10 +128,21 @@ public class EmojisActivity extends AppCompatActivity {
         searchBoxField.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence charSeq, int start, int count, int after) {
-                if (charSeq.toString().trim().length() == 0 || isChipSelected) {
-                    new searchTask().execute();
+                if (charSeq.toString().trim().length() == 0 && isSearching) {
+                    isSearching = false;
+                    getEmojis();
+                } else if (isChipSelected) {
                     isChipSelected = false;
+                    isSearching = true;
+                    new searchTask().execute();
                 }
+
+                if (searchBoxField.getText().toString().trim().length() > 0) {
+                    sortByBtn.setImageResource(R.drawable.round_clear_black_48dp);
+                } else {
+                    sortByBtn.setImageResource(R.drawable.outline_filter_alt_black_48dp);
+                }
+
             }
 
             @Override
@@ -153,7 +166,13 @@ public class EmojisActivity extends AppCompatActivity {
             }
         });
 
-        searchBtn.setOnClickListener(view -> new searchTask().execute());
+        searchBtn.setOnClickListener(_view -> {
+            if (searchBoxField.getText().toString().trim().length() > 0) {
+                hideShowKeyboard(false, searchBoxField);
+                isSearching = true;
+                new searchTask().execute();
+            }
+        });
 
         RequestEmojis = new RequestNetwork.RequestListener() {
             @Override
@@ -218,9 +237,11 @@ public class EmojisActivity extends AppCompatActivity {
 
     public void LOGIC_BACKEND() {
         overridePendingTransition(R.anim.fade_in, 0);
+
         emojisRecycler.setItemAnimator(null);
         chipRecycler.setItemAnimator(null);
         initEmojisRecycler();
+
         //set up chips
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         chipRecycler.setLayoutManager(layoutManager2);
@@ -229,31 +250,9 @@ public class EmojisActivity extends AppCompatActivity {
         androidx.core.view.ViewCompat.setNestedScrollingEnabled(emojisRecycler, true);
 
         //start getting emojis
-        if (getIntent().getStringExtra("switchFrom").equals("categories")) {
 
-            if (sharedPref.getString("emojisData", "").isEmpty()) {
-                isSortingNew = true;
-                startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, EMOJIS_API_LINK, "", RequestEmojis);
-            } else {
-                isRequestingServerEmojis = false;
-                isSortingNew = true;
-                //start getting emojis task
-                new getEmojisTask().execute();
-            }
-        } else {
-            isSortingNew = true;
-            //the user is coming from search box
-            //start getting emojis
-            if (sharedPref.getString("emojisData", "").isEmpty()) {
-                startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, EMOJIS_API_LINK, "", RequestEmojis);
-                Log.i("task", "Emojis data is empty, we're getting emojis from the API");
-            } else {
-                isRequestingServerEmojis = false;
-                //start getting emojis task
-                new getEmojisTask().execute();
-                Log.i("task", "Emojis are available, we're filtering emojis using AsyncTask");
-            }
-        }
+        getEmojis();
+
         OverScrollDecoratorHelper.setUpOverScroll(emojisRecycler, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
         OverScrollDecoratorHelper.setUpOverScroll(chipRecycler, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL);
 
@@ -264,8 +263,13 @@ public class EmojisActivity extends AppCompatActivity {
 
         searchBoxField.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                new searchTask().execute();
-                return true;
+                if (searchBoxField.getText().toString().trim().length() > 0) {
+                    hideShowKeyboard(false, searchBoxField);
+                    isSearching = true;
+                    new searchTask().execute();
+                    return true;
+                }
+
             }
             return false;
         });
@@ -317,8 +321,12 @@ public class EmojisActivity extends AppCompatActivity {
                 }
                 searchPosition--;
             }
-            if (isSortingOld) {
+            if (isSortingNew) {
+                Utils.sortListMap2(emojisList, "id", false, false);
+            } else if (isSortingOld) {
                 Collections.reverse(emojisList);
+            } else if (isSortingAlphabet) {
+                Utils.sortListMap(emojisList, "title", false, true);
             }
         } catch (Exception e) {
             Utils.showToast(getApplicationContext(), (e.toString()));
@@ -495,11 +503,6 @@ public class EmojisActivity extends AppCompatActivity {
                     emptyTitle.setText(getString(R.string.emojis_not_found));
                 }
             }
-            if (searchBoxField.getText().toString().trim().length() > 0) {
-                sortByBtn.setImageResource(R.drawable.round_clear_black_48dp);
-            } else {
-                sortByBtn.setImageResource(R.drawable.outline_filter_alt_black_48dp);
-            }
         }
     }
 
@@ -523,8 +526,12 @@ public class EmojisActivity extends AppCompatActivity {
                         }
                         emojisScanPosition--;
                     }
-                    if (isSortingOld) {
+                    if (isSortingNew) {
+                        Utils.sortListMap2(emojisList, "id", false, false);
+                    } else if (isSortingOld) {
                         Collections.reverse(emojisList);
+                    } else if (isSortingAlphabet) {
+                        Utils.sortListMap(emojisList, "title", false, true);
                     }
                 } else {
                     loadCategorizedEmojis();
@@ -547,6 +554,10 @@ public class EmojisActivity extends AppCompatActivity {
                 }
                 if (isSortingNew) {
                     Utils.sortListMap2(emojisList, "id", false, false);
+                } else if (isSortingOld) {
+                    Collections.reverse(emojisList);
+                } else if (isSortingAlphabet) {
+                    Utils.sortListMap(emojisList, "title", false, true);
                 }
             }
             return null;
@@ -592,4 +603,40 @@ public class EmojisActivity extends AppCompatActivity {
             }
         }
     }
+
+
+    private void getEmojis() {
+
+        if (getIntent().getStringExtra("switchFrom").equals("categories")) {
+
+            if (isGettingDataFirstTime) {
+                isGettingDataFirstTime = false;
+                isSortingNew = true;
+            } else {
+
+            }
+
+            if (sharedPref.getString("emojisData", "").isEmpty()) {
+                startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, EMOJIS_API_LINK, "", RequestEmojis);
+            } else {
+                isRequestingServerEmojis = false;
+                //start getting emojis task
+                new getEmojisTask().execute();
+            }
+        } else {
+            //the user is coming from search box
+            //start getting emojis
+            if (sharedPref.getString("emojisData", "").isEmpty()) {
+                startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, EMOJIS_API_LINK, "", RequestEmojis);
+                Log.i("task", "Emojis data is empty, we're getting emojis from the API");
+            } else {
+                isRequestingServerEmojis = false;
+                //start getting emojis task
+                new getEmojisTask().execute();
+                Log.i("task", "Emojis are available, we're filtering emojis using AsyncTask");
+            }
+        }
+
+    }
+
 }

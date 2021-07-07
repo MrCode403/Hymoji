@@ -105,4 +105,8 @@
     <string name="update_now_dialog_title">Update is ready</string>
     <string name="update_now_button">Install</string>
     <string name="new_update_downloaded">The new update is downloaded and ready to be installed. Please click on install to continue. It will not take more than a second to complete.</string>
+    <string name="discord_title" translatable="false">Discord</string>
+    <string name="settings_option_13_subtitle">Join our Discord server and meet new amazing friends. Don\'t be late, we\'re waiting for you.</string>
+    <string name="pro_tip_1">You can get new emojis by swiping down this page, our community uploads new emojis every day.</string>
+    <string name="pro_tip_2">Join our Discord server and meet new amazing friends. The invite link on the settings page, Don\'t be late, we\'re waiting for you.</string>
 </resources>

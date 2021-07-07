@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/default_image"
+        android:src="@drawable/splash"
         tools:ignore="ContentDescription" />
 
     <LinearLayout
@@ -48,23 +48,25 @@
             android:orientation="vertical"
             android:padding="8dp" />
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/continueBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="120dp"
-            android:background="#FFFFFF"
             android:elevation="3dp"
             android:fontFamily="@font/whitney"
             android:paddingLeft="40dp"
             android:paddingTop="14dp"
             android:paddingRight="40dp"
             android:paddingBottom="14dp"
-            android:text="@string/welcome_continue"
-            android:textColor="#1976D2"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:text="@string/welcome_start"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:backgroundTint="#FFFFFF"
+            app:cornerRadius="80dp"
+            app:rippleColor="#D9D9D9" />
     </LinearLayout>
 
     <LinearLayout
@@ -122,5 +124,5 @@
         android:padding="8dp"
         android:text="@string/welcome_artwork_creator"
         android:textColor="#FAFAFA"
-        android:textSize="11sp" />
+        android:textSize="12sp" />
 </RelativeLayout>

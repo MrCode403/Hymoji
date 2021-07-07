@@ -103,4 +103,7 @@
     <string name="new_update_downloaded">Yeni güncelleme indirildi ve yüklenmeye hazır. Devam etmek için lütfen yükle\'ye tıklayın. Tamamlanması bir saniyeden fazla sürmez.</string>
     <string name="update_now_button">Yüklemek</string>
     <string name="update_now_dialog_title">Güncelleme hazır</string>
+    <string name="pro_tip_1">Bu sayfayı aşağı kaydırarak yeni emojiler alabilirsiniz, topluluğumuz her gün yeni emojiler yükler.</string>
+    <string name="settings_option_13_subtitle">Discord sunucumuza katılın ve yeni harika arkadaşlarla tanışın. Geç kalmayın, sizi bekliyoruz.</string>
+    <string name="pro_tip_2">Discord sunucumuza katılın ve yeni harika arkadaşlarla tanışın. Ayarlar sayfasındaki davet linki, Geç kalmayın, sizi bekliyoruz.</string>
 </resources>

@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -20,33 +19,32 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.nerbly.bemoji.R;
+import com.nerbly.bemoji.UI.MainUIMethods;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusNavBar;
 
 public class MainActivity extends AppCompatActivity {
     private final ArrayList<HashMap<String, Object>> viewPagerList = new ArrayList<>();
     private final Intent intent = new Intent();
-    FirebaseAnalytics mFirebaseAnalytics;
     private ImageView welcomeImage;
     private LinearLayout dataView;
     private LinearLayout splashView;
     private ViewPager viewPager;
-    private TextView continueBtn;
+    private MaterialButton continueBtn;
     private SharedPreferences sharedPref;
 
     @Override
-    protected void onCreate(Bundle _savedInstanceState) {
-        super.onCreate(_savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         loadLocale(this);
         setContentView(R.layout.main);
         initialize();
@@ -70,9 +68,17 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                if (position == 2) {
+                if (position == 0) {
+                    MainUIMethods.shadAnim(welcomeImage, "scaleY", 1.0, 200);
+                    MainUIMethods.shadAnim(welcomeImage, "scaleX", 1.0, 200);
                     continueBtn.setText(R.string.welcome_start);
-                } else {
+                } else if (position == 1) {
+                    MainUIMethods.shadAnim(welcomeImage, "scaleY", 1.1, 200);
+                    MainUIMethods.shadAnim(welcomeImage, "scaleX", 1.1, 200);
+                    continueBtn.setText(R.string.welcome_continue);
+                } else if (position == 2) {
+                    MainUIMethods.shadAnim(welcomeImage, "scaleY", 1.2, 200);
+                    MainUIMethods.shadAnim(welcomeImage, "scaleX", 1.2, 200);
                     continueBtn.setText(R.string.welcome_continue);
                 }
             }
@@ -108,16 +114,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void LOGIC_FRONTEND() {
-        try {
-            InputStream ims = getAssets().open("images/splash.png");
-            Drawable d = Drawable.createFromStream(ims, null);
-            welcomeImage.setImageDrawable(d);
-        } catch (Exception e) {
-            return;
-        }
         transparentStatusNavBar(this);
         LIGHT_ICONS(this);
-        rippleRoundStroke(continueBtn, "#FFFFFF", "#EEEEEE", 200, 0, "#FFFFFF");
     }
 
 
@@ -127,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception ignored) {
         }
         try {
-            mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+            FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         } catch (Exception ignored) {
         }
         for (int i = 0; i < 3; i++) {
@@ -144,7 +142,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             splashView.setVisibility(View.VISIBLE);
             dataView.setVisibility(View.GONE);
-
+            MainUIMethods.shadAnim(welcomeImage, "scaleY", 1.1, 4000);
+            MainUIMethods.shadAnim(welcomeImage, "scaleX", 1.1, 4000);
             new Handler().postDelayed(() -> {
                 intent.setClass(getApplicationContext(), HomeActivity.class);
                 startActivity(intent);
@@ -168,18 +167,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public boolean isViewFromObject(@NonNull View _view, @NonNull Object _object) {
-            return _view == _object;
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+            return view == object;
         }
 
         @Override
-        public void destroyItem(ViewGroup _container, int _position, @NonNull Object _object) {
-            _container.removeView((View) _object);
+        public void destroyItem(ViewGroup container, int _position, @NonNull Object object) {
+            container.removeView((View) object);
         }
 
         @Override
-        public int getItemPosition(@NonNull Object _object) {
-            return super.getItemPosition(_object);
+        public int getItemPosition(@NonNull Object object) {
+            return super.getItemPosition(object);
         }
 
         @Override

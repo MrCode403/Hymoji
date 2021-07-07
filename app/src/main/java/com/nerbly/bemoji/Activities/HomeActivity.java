@@ -57,6 +57,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.Random;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
@@ -78,7 +79,6 @@ public class HomeActivity extends AppCompatActivity {
 
     public static ArrayList<HashMap<String, Object>> packsList = new ArrayList<>();
     private final Intent toSearch = new Intent();
-    private final Intent toCategories = new Intent();
     private final Intent toPacks = new Intent();
     private final LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
     private FileManager fileManager;
@@ -89,9 +89,7 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<HashMap<String, Object>> emojisList = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> categoriesList = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> localEmojisList = new ArrayList<>();
-    private AppUpdateManager mAppUpdateManager;
-    private static final int RC_APP_UPDATE = 11;
-    private ArrayList<HashMap<String, Object>> backendPacksList = new ArrayList<>();
+    private final ArrayList<HashMap<String, Object>> backendPacksList = new ArrayList<>();
     private ScrollView scrollView;
     private LinearLayout adview;
     private LinearLayout loadingView;
@@ -116,6 +114,7 @@ public class HomeActivity extends AppCompatActivity {
     private LinearLayout dock3;
     private LinearLayout dock4;
     private TextView seeMorePacks;
+    private TextView activityDescription;
     private RequestNetwork startGettingEmojis;
     private RequestNetwork.RequestListener EmojisRequestListener;
     private SharedPreferences sharedPref;
@@ -140,6 +139,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void initialize() {
         adview = findViewById(R.id.adview);
+        activityDescription = findViewById(R.id.activityDescription);
         scrollView = findViewById(R.id.scrollView);
         loadingView = findViewById(R.id.loadingView);
         mainView = findViewById(R.id.mainView);
@@ -323,6 +323,7 @@ public class HomeActivity extends AppCompatActivity {
         };
 
         swipe_to_refresh.setOnRefreshListener(() -> {
+            generateActivityDescription();
             startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, CATEGORIES_API_LINK, "CATEGORIES", EmojisRequestListener);
             startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, EMOJIS_API_LINK, "EMOJIS", EmojisRequestListener);
             startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, PACKS_API_LINK, "PACKS", EmojisRequestListener);
@@ -370,7 +371,6 @@ public class HomeActivity extends AppCompatActivity {
 
 
         checkUpdate();
-
 
 
         overridePendingTransition(R.anim.fade_in, 0);
@@ -427,6 +427,8 @@ public class HomeActivity extends AppCompatActivity {
         setClippedView(shimmer9, "#FFFFFF", 30, 0);
         setClippedView(shimmer10, "#FFFFFF", 200, 0);
         setClippedView(shimmer11, "#FFFFFF", 200, 0);
+
+        generateActivityDescription();
     }
 
     private void getOnlineEmojis() {
@@ -570,6 +572,18 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         removeInstallStateUpdateListener();
+    }
+
+    private void generateActivityDescription() {
+        try {
+            String[] tips = new String[]{getString(R.string.home_subtitle), getString(R.string.pro_tip_1), getString(R.string.pro_tip_2), getString(R.string.welcome_subtitle_1)};
+            int min = 0;
+            int max = tips.length;
+            Random random1 = new Random();
+            int random = random1.nextInt(max - min) + min;
+            activityDescription.setText(tips[random]);
+        } catch (Exception ignored) {
+        }
     }
 }
 
