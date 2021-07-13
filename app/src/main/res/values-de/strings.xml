@@ -55,7 +55,7 @@
     <string name="settings_title">die Einstellungen</string>
     <string name="settings_section_1_title">ALLGEMEINES</string>
     <string name="settings_option_1_title">Emojis neu laden</string>
-    <string name="settings_option_1_subtitle">Sie können die neuesten Emojis erhalten, indem Sie hier klicken (Home wird neu geladen, wenn Sie zurückkommen).</string>
+    <string name="settings_option_1_subtitle">Sie können die neuesten Emojis abrufen, indem Sie auf dem Startbildschirm nach unten wischen.</string>
     <string name="settings_option_2_title">Laden Sie Emojis hoch</string>
     <string name="settings_option_2_subtitle">Sie werden zu emoji.gg weitergeleitet, um Ihre Emojis dort manuell hochzuladen. Nach der Genehmigung können Sie oben auf \"Emojis neu laden\" klicken.</string>
     <string name="settings_option_3_title">Cache leeren</string>
@@ -106,4 +106,8 @@
     <string name="pro_tip_1">Sie können neue Emojis erhalten, indem Sie diese Seite nach unten wischen. Unsere Community lädt jeden Tag neue Emojis hoch.</string>
     <string name="settings_option_13_subtitle">Treten Sie unserem Discord-Server bei und treffen Sie neue tolle Freunde. Kommen Sie nicht zu spät, wir warten auf Sie.</string>
     <string name="pro_tip_2">Treten Sie unserem Discord-Server bei und treffen Sie neue tolle Freunde. Der Einladungslink auf der Einstellungsseite, Komm nicht zu spät, wir warten auf dich.</string>
+    <string name="share_main_text">Hey, ich habe dieses coole Emoji von der Bemoji-App bekommen. Schaut es euch an, es wird euch bestimmt gefallen.</string>
+    <string name="downloading_sheet_msg">Emoji wird heruntergeladen. Weitere Informationen finden Sie in den Benachrichtigungen.</string>
+    <string name="share_btn_txt">Teilen</string>
+    <string name="share_title">Teile das Emoji über</string>
 </resources>

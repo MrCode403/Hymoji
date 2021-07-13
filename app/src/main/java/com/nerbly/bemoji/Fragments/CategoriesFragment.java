@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nerbly.bemoji.Activities.EmojisActivity;
@@ -63,17 +64,17 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
     @NonNull
     @Override
 
-    public View onCreateView(@NonNull LayoutInflater _inflater, @Nullable ViewGroup _container, @Nullable final Bundle _savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
         Objects.requireNonNull(getDialog()).setOnShowListener(dialog -> {
             BottomSheetDialog d = (BottomSheetDialog) dialog;
-            View _view = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-            assert _view != null;
-            sheetBehavior = BottomSheetBehavior.from(_view);
-            initialize(_view);
+            View view = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            assert view != null;
+            sheetBehavior = BottomSheetBehavior.from(view);
+            initialize(view);
             com.google.firebase.FirebaseApp.initializeApp(requireContext());
             initializeLogic();
         });
-        return _inflater.inflate(R.layout.categories, _container, false);
+        return inflater.inflate(R.layout.categories, container, false);
 
     }
 
@@ -143,7 +144,6 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
         loadingRecycler.setAdapter(new LoadingPacksAdapter.LoadingRecyclerAdapter(shimmerList));
 
 
-
         if (sharedPref.getString("categoriesData", "").isEmpty()) {
             RequestCategories.startRequestNetwork(RequestNetworkController.GET, CATEGORIES_API_LINK, "", CategoriesRequestListener);
         } else {
@@ -163,6 +163,18 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
 
     public void LOGIC_FRONTEND() {
         setViewRadius(slider, 90, "#E0E0E0");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Window window = Objects.requireNonNull(getDialog()).getWindow();
+        WindowManager.LayoutParams windowParams = window.getAttributes();
+        windowParams.dimAmount = 0.2f;
+        windowParams.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        window.setAttributes(windowParams);
+        MainUIMethods.DARK_ICONS(getActivity());
+
     }
 
     public class CategoriesRecyclerAdapter extends RecyclerView.Adapter<CategoriesRecyclerAdapter.ViewHolder> {
@@ -216,16 +228,12 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
 
                     bottomSheetDialog.getWindow().findViewById(R.id.design_bottom_sheet).setBackgroundResource(android.R.color.transparent);
 
-                    TextView infook = bottomSheetView.findViewById(R.id.infosheet_ok);
-                    TextView infocancel = bottomSheetView.findViewById(R.id.infosheet_cancel);
+                    MaterialButton infook = bottomSheetView.findViewById(R.id.infosheet_ok);
+                    MaterialButton infocancel = bottomSheetView.findViewById(R.id.infosheet_cancel);
                     LinearLayout infoback = bottomSheetView.findViewById(R.id.infosheet_back);
                     LinearLayout slider = bottomSheetView.findViewById(R.id.slider);
 
                     advancedCorners(infoback, "#ffffff", 38, 38, 0, 0);
-
-                    rippleRoundStroke(infook, "#7289DA", "#6275BB", 20, 0, "#007EEF");
-
-                    rippleRoundStroke(infocancel, "#424242", "#181818", 20, 0, "#007EEF");
 
                     setViewRadius(slider, 180, "#BDBDBD");
                     infook.setOnClickListener(v -> {
@@ -261,18 +269,6 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
                 super(v);
             }
         }
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Window window = Objects.requireNonNull(getDialog()).getWindow();
-        WindowManager.LayoutParams windowParams = window.getAttributes();
-        windowParams.dimAmount = 0.2f;
-        windowParams.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-        window.setAttributes(windowParams);
-        MainUIMethods.DARK_ICONS(getActivity());
 
     }
 

@@ -48,17 +48,17 @@ public class TutorialFragment extends BottomSheetDialogFragment {
     @NonNull
     @Override
 
-    public View onCreateView(@NonNull LayoutInflater _inflater, @Nullable ViewGroup _container, @Nullable final Bundle _savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle _savedInstanceState) {
         Objects.requireNonNull(getDialog()).setOnShowListener(dialog -> {
             BottomSheetDialog d = (BottomSheetDialog) dialog;
-            View _view = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-            assert _view != null;
-            sheetBehavior = BottomSheetBehavior.from(_view);
-            initialize(_view);
+            View view = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            assert view != null;
+            sheetBehavior = BottomSheetBehavior.from(view);
+            initialize(view);
             com.google.firebase.FirebaseApp.initializeApp(requireContext());
             initializeLogic();
         });
-        return _inflater.inflate(R.layout.tutorial, _container, false);
+        return inflater.inflate(R.layout.tutorial, container, false);
 
     }
 

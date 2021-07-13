@@ -55,7 +55,7 @@
     <string name="settings_title">Paramètres</string>
     <string name="settings_section_1_title">GÉNÉRAL</string>
     <string name="settings_option_1_title">Recharger les emojis</string>
-    <string name="settings_option_1_subtitle">Vous pouvez obtenir les derniers émojis en cliquant ici (la maison sera rechargée à votre retour).</string>
+    <string name="settings_option_1_subtitle">Vous pouvez obtenir les derniers emojis en faisant glisser l\'écran d\'accueil vers le bas.</string>
     <string name="settings_option_2_title">Soumettre des emojis</string>
     <string name="settings_option_2_subtitle">Vous serez redirigé vers emoji.gg pour y soumettre manuellement vos emojis. Après approbation, vous pouvez cliquer sur \"Recharger les émoticônes\" ci-dessus.</string>
     <string name="settings_option_3_title">Vider le cache</string>
@@ -106,4 +106,8 @@
     <string name="pro_tip_1">Vous pouvez obtenir de nouveaux emojis en faisant glisser cette page vers le bas, notre communauté télécharge de nouveaux emojis tous les jours.</string>
     <string name="settings_option_13_subtitle">Rejoignez notre serveur Discord et rencontrez de nouveaux amis incroyables. Ne soyez pas en retard, nous vous attendons.</string>
     <string name="pro_tip_2">Rejoignez notre serveur Discord et rencontrez de nouveaux amis incroyables. Le lien d\'invitation sur la page des paramètres, Ne soyez pas en retard, nous vous attendons.</string>
+    <string name="share_main_text">Hé, j\'ai eu cet emoji cool de l\'application Bemoji. Découvrez-le, vous l\'aimerez certainement.</string>
+    <string name="downloading_sheet_msg">Emoji est en cours de téléchargement, consultez les notifications pour plus d\'informations.</string>
+    <string name="share_btn_txt">Partager</string>
+    <string name="share_title">Partager l\'emoji via</string>
 </resources>

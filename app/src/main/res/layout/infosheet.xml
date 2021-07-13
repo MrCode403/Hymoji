@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -62,57 +63,48 @@
             android:textSize="16sp" />
 
         <LinearLayout
-            android:id="@+id/infosheet_btnsholder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:gravity="center_horizontal|center_vertical"
-            android:orientation="horizontal">
+            android:layout_marginTop="17dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_horizontal">
 
-            <TextView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/infosheet_cancel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="7dp"
                 android:layout_weight="1"
-                android:background="#F44336"
-                android:focusable="false"
-                android:fontFamily="@font/whitney"
                 android:gravity="center_horizontal|center_vertical"
-                android:paddingLeft="8dp"
-                android:paddingTop="10dp"
-                android:paddingRight="8dp"
-                android:paddingBottom="10dp"
                 android:text="@string/animated_emojis_warning_btncancel"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp"
-                tools:ignore="TextContrastCheck" />
+                app:backgroundTint="#424242"
+                app:cornerRadius="6dp"
+                app:elevation="5dp"
+                app:fontFamily="@font/whitney"
+                app:rippleColor="#2D2D2D" />
 
-            <TextView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/infosheet_ok"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="7dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
                 android:layout_weight="1"
-                android:background="#7289DA"
-                android:focusable="false"
-                android:fontFamily="@font/whitney"
                 android:gravity="center_horizontal|center_vertical"
-                android:paddingLeft="8dp"
-                android:paddingTop="10dp"
-                android:paddingRight="8dp"
-                android:paddingBottom="10dp"
-                android:singleLine="true"
                 android:text="@string/animated_emojis_warning_btnok"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp"
-                tools:ignore="TextContrastCheck" />
+                app:backgroundTint="@color/colorPrimary"
+                app:cornerRadius="6dp"
+                app:elevation="5dp"
+                app:fontFamily="@font/whitney"
+                app:rippleColor="@color/colorPrimaryDark" />
+
         </LinearLayout>
+
+
     </LinearLayout>
 </LinearLayout>

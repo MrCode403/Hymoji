@@ -41,7 +41,7 @@
     <string name="settings_option_10_title">Github\'da Bemoji</string>
     <string name="settings_option_10_subtitle">Bemoji\'nin Github\'daki kaynak kodunu kontrol etmekten çekinmeyin.</string>
     <string name="settings_option_1_title">Emojileri yeniden yükleyin</string>
-    <string name="settings_option_1_subtitle">Buraya tıklayarak en son emojileri edinebilirsiniz (geri döndüğünüzde ana sayfa yeniden yüklenecektir).</string>
+    <string name="settings_option_1_subtitle">Ana ekranı aşağı kaydırarak en yeni emojileri alabilirsiniz.</string>
     <string name="preview_pack_title">paket içeriği</string>
     <string name="preview_pack_subtitle">Bu paketin hangi emojileri içerdiğini görebilir ve tahmin edebilirsiniz ne? bunları tek tek de indirebilirsiniz!</string>
     <string name="preview_pack_download_btn">Tam paketi indirin</string>
@@ -106,4 +106,8 @@
     <string name="pro_tip_1">Bu sayfayı aşağı kaydırarak yeni emojiler alabilirsiniz, topluluğumuz her gün yeni emojiler yükler.</string>
     <string name="settings_option_13_subtitle">Discord sunucumuza katılın ve yeni harika arkadaşlarla tanışın. Geç kalmayın, sizi bekliyoruz.</string>
     <string name="pro_tip_2">Discord sunucumuza katılın ve yeni harika arkadaşlarla tanışın. Ayarlar sayfasındaki davet linki, Geç kalmayın, sizi bekliyoruz.</string>
+    <string name="share_main_text">Hey, bu harika emojiyi Bemoji uygulamasından aldım. Bir göz atın, kesinlikle beğeneceksiniz.</string>
+    <string name="downloading_sheet_msg">Emoji indiriliyor, daha fazla bilgi için bildirimleri kontrol edin.</string>
+    <string name="share_btn_txt">Paylaş</string>
+    <string name="share_title">Emojiyi şununla paylaşın</string>
 </resources>

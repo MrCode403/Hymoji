@@ -28,7 +28,6 @@ import java.util.Objects;
 
 import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
 import static com.nerbly.bemoji.Functions.SideFunctions.setHighPriorityImageFromUrl;
-import static com.nerbly.bemoji.Functions.SideFunctions.setImageFromUrl;
 
 public class HomePacksAdapter {
 

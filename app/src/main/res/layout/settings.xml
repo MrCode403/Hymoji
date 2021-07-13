@@ -7,7 +7,6 @@
     tools:ignore="ContentDescription">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/tutorialBg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal|center_vertical">
@@ -332,6 +331,7 @@
                             android:textColor="#616161"
                             android:textSize="12sp"
                             android:textStyle="bold" />
+
                         <RelativeLayout
                             android:id="@+id/setting13"
                             android:layout_width="match_parent"
@@ -383,6 +383,7 @@
                                 android:textColor="#616161"
                                 android:textSize="12sp" />
                         </RelativeLayout>
+
                         <RelativeLayout
                             android:id="@+id/setting4"
                             android:layout_width="match_parent"

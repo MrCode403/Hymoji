@@ -35,7 +35,6 @@ import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nerbly.bemoji.Adapters.HomePacksAdapter;
@@ -77,19 +76,20 @@ import static com.nerbly.bemoji.UI.UserInteractions.showMessageDialog;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private static final int FLEXIBLE_APP_UPDATE_REQ_CODE = 123;
     public static ArrayList<HashMap<String, Object>> packsList = new ArrayList<>();
     private final Intent toSearch = new Intent();
     private final Intent toPacks = new Intent();
     private final LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-    private FileManager fileManager;
+    private final ArrayList<HashMap<String, Object>> backendPacksList = new ArrayList<>();
     double emojisCount = 0;
     double emojisScanPosition = 0;
+    private FileManager fileManager;
     private String localEmojisScanPath = "";
     private HashMap<String, Object> categoriesMap = new HashMap<>();
     private ArrayList<HashMap<String, Object>> emojisList = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> categoriesList = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> localEmojisList = new ArrayList<>();
-    private final ArrayList<HashMap<String, Object>> backendPacksList = new ArrayList<>();
     private ScrollView scrollView;
     private LinearLayout adview;
     private LinearLayout loadingView;
@@ -120,11 +120,14 @@ public class HomeActivity extends AppCompatActivity {
     private SharedPreferences sharedPref;
     private SwipeRefreshLayout swipe_to_refresh;
     private AppUpdateManager appUpdateManager;
-    private static final int FLEXIBLE_APP_UPDATE_REQ_CODE = 123;
     private InstallStateUpdatedListener installStateUpdatedListener;
 
     public static String PacksArray() {
         return new Gson().toJson(packsList);
+    }
+
+    public static void userIsAskingForActivityToReload(Activity context) {
+        context.recreate();
     }
 
     @Override
@@ -229,15 +232,11 @@ public class HomeActivity extends AppCompatActivity {
 
             SettingsFragment bottomSheet = new SettingsFragment();
             bottomSheet.show(HomeActivity.this.getSupportFragmentManager(), "Settings");
-//            toSettings.setClass(getApplicationContext(), SettingsActivity.class);
-//            startActivity(toSettings);
         });
 
         dock4.setOnClickListener(view -> {
             TutorialFragment bottomSheet = new TutorialFragment();
             bottomSheet.show(HomeActivity.this.getSupportFragmentManager(), "Tutorial");
-//            toHelp.setClass(getApplicationContext(), TutorialActivity.class);
-//            startActivity(toHelp);
         });
 
         EmojisRequestListener = new RequestNetwork.RequestListener() {
@@ -357,7 +356,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void LOGIC_BACKEND() {
-        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         appUpdateManager = AppUpdateManagerFactory.create(getApplicationContext());
         installStateUpdatedListener = state -> {
             if (state.installStatus() == InstallStatus.DOWNLOADED) {
@@ -371,9 +369,6 @@ public class HomeActivity extends AppCompatActivity {
 
 
         checkUpdate();
-
-
-        overridePendingTransition(R.anim.fade_in, 0);
 
         local_recycler.setItemAnimator(null);
         packs_recycler.setItemAnimator(null);
@@ -470,56 +465,50 @@ public class HomeActivity extends AppCompatActivity {
             } catch (Exception ignored) {
             }
         }
+        try {
+            fileManager = new FileManager();
+            new Thread(() -> {
 
-        fileManager = new FileManager();
-        new Thread(() -> {
+                localEmojisList = fileManager.getList();
+                new Handler(Looper.getMainLooper()).post(() -> {
 
-            localEmojisList = fileManager.getList();
-
-            new Handler(Looper.getMainLooper()).post(() -> {
-
-                try {
-                    for (int i = 0; i < (localEmojisList.size() - 1); i++) {
-                        localEmojisScanPath = Objects.requireNonNull(localEmojisList.get(i).get("filePath")).toString();
-                        File file1 = new File(localEmojisScanPath);
-                        try {
-                            long length = file1.length();
-                            length = length / 1024;
-                            if (length == 0) {
+                    try {
+                        for (int i = 0; i < (localEmojisList.size() - 1); i++) {
+                            localEmojisScanPath = Objects.requireNonNull(localEmojisList.get(i).get("filePath")).toString();
+                            File file1 = new File(localEmojisScanPath);
+                            try {
+                                long length = file1.length();
+                                length = length / 1024;
+                                if (length == 0) {
+                                    localEmojisList.remove(i);
+                                }
+                            } catch (Exception e) {
                                 localEmojisList.remove(i);
                             }
-                        } catch (Exception e) {
-                            localEmojisList.remove(i);
                         }
+                        if (localEmojisList.size() == 0) {
+                            localEmojisView.setVisibility(View.GONE);
+                        } else {
+                            Utils.sortListMap(localEmojisList, "lastModifiedTime", false, false);
+                            local_recycler.setAdapter(new LocalEmojisAdapter.Local_recyclerAdapter(localEmojisList));
+
+                            new Handler().postDelayed(() -> localEmojisView.setVisibility(View.VISIBLE), 1000);
+
+                        }
+                    } catch (Exception e) {
+                        Log.d("recycler error", e.toString());
                     }
-                    if (localEmojisList.size() == 0) {
-                        localEmojisView.setVisibility(View.GONE);
-                    } else {
-                        Utils.sortListMap(localEmojisList, "lastModifiedTime", false, false);
-                        local_recycler.setAdapter(new LocalEmojisAdapter.Local_recyclerAdapter(localEmojisList));
 
-                        new Handler().postDelayed(() -> localEmojisView.setVisibility(View.VISIBLE), 1000);
+                });
+            }).start();
+        } catch (Exception e) {
 
-                    }
-                } catch (Exception e) {
-                    Log.d("recycler error", e.toString());
-                }
-
-            });
-        }).start();
-
+        }
     }
-
-
-    public static void userIsAskingForActivityToReload(Activity context) {
-        context.recreate();
-    }
-
 
     private void checkUpdate() {
 
         Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
-
         appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                     && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
@@ -551,15 +540,18 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void popupSnackBarForCompleteUpdate() {
-
-        showMessageDialog(getString(R.string.update_now_dialog_title), getString(R.string.new_update_downloaded), getString(R.string.update_now_button), getString(R.string.dialog_negative_text), this,
-                (dialog, which) -> {
-                    if (appUpdateManager != null) {
-                        appUpdateManager.completeUpdate();
-                    }
-                    dialog.dismiss();
-                },
-                (dialog, which) -> dialog.dismiss());
+        try {
+            showMessageDialog(getString(R.string.update_now_dialog_title), getString(R.string.new_update_downloaded), getString(R.string.update_now_button), getString(R.string.dialog_negative_text), this,
+                    (dialog, which) -> {
+                        if (appUpdateManager != null) {
+                            appUpdateManager.completeUpdate();
+                        }
+                        dialog.dismiss();
+                    },
+                    (dialog, which) -> dialog.dismiss());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void removeInstallStateUpdateListener() {

@@ -14,6 +14,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+import static com.nerbly.bemoji.Functions.DownloaderSheet.showEmojiSheet;
 import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.Functions.Utils.ZIP;
@@ -435,17 +437,17 @@ public class PackPreviewActivity extends AppCompatActivity {
     public class Recycler1Adapter extends RecyclerView.Adapter<Recycler1Adapter.ViewHolder> {
         ArrayList<HashMap<String, Object>> data;
 
-        public Recycler1Adapter(ArrayList<HashMap<String, Object>> _arr) {
-            data = _arr;
+        public Recycler1Adapter(ArrayList<HashMap<String, Object>> arr) {
+            data = arr;
         }
 
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            @SuppressLint("InflateParams") View v = inflater.inflate(R.layout.emojisview, null);
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            v.setLayoutParams(_lp);
+            View v = inflater.inflate(R.layout.emojisview, null);
+            RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            v.setLayoutParams(layoutParams);
             return new ViewHolder(v);
         }
 
@@ -453,27 +455,18 @@ public class PackPreviewActivity extends AppCompatActivity {
         public void onBindViewHolder(ViewHolder holder, int position) {
             View view = holder.itemView;
 
-            LinearLayout emojisBackground = view.findViewById(R.id.tutorialBg);
-            LinearLayout space = view.findViewById(R.id.space);
+            LinearLayout emojisBackground = view.findViewById(R.id.emojiBackground);
             ImageView emoji = view.findViewById(R.id.emoji);
 
             setImgURL(Objects.requireNonNull(data.get(position).get("emoji_link")).toString(), emoji);
             emojisBackground.setOnClickListener(_view -> {
-                toPreview.putExtra("switchType", "emoji");
-                toPreview.putExtra("title", Objects.requireNonNull(data.get(position).get("slug")).toString());
-                toPreview.putExtra("submitted_by", "Emojis lovers");
-                toPreview.putExtra("category", "null");
-                toPreview.putExtra("fileName", Objects.requireNonNull(data.get(position).get("slug")).toString());
-                toPreview.putExtra("description", "null");
-                toPreview.putExtra("imageUrl", Objects.requireNonNull(data.get(position).get("emoji_link")).toString());
-                toPreview.setClass(getApplicationContext(), PreviewActivity.class);
-                startActivity(toPreview);
+                try {
+                    showEmojiSheet(PackPreviewActivity.this, Objects.requireNonNull(data.get(position).get("emoji_link")).toString(), Objects.requireNonNull(data.get(position).get("slug")).toString(), "Emoji lovers");
+                } catch (Exception e) {
+                    Log.e("downloader", e.toString());
+                    e.printStackTrace();
+                }
             });
-            if (position == getItemCount() - 1) {
-                space.setVisibility(View.VISIBLE);
-            } else {
-                space.setVisibility(View.GONE);
-            }
         }
 
         @Override

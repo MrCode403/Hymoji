@@ -55,7 +55,7 @@
     <string name="settings_title">Definições</string>
     <string name="settings_section_1_title">EM GERAL</string>
     <string name="settings_option_1_title">Recarregar emojis</string>
-    <string name="settings_option_1_subtitle">Você pode obter os emojis mais recentes clicando aqui (a página inicial será recarregada quando você voltar).</string>
+    <string name="settings_option_1_subtitle">Você pode obter os emojis mais recentes deslizando para baixo na tela inicial.</string>
     <string name="settings_option_2_title">Carregar emojis</string>
     <string name="settings_option_2_subtitle">Você será redirecionado para emoji.gg para carregar manualmente seus emojis lá. Após a aprovação, você pode clicar em \"Atualizar emojis\" acima.</string>
     <string name="settings_option_3_title">Limpar cache</string>
@@ -106,4 +106,8 @@
     <string name="pro_tip_1">Você pode obter novos emojis deslizando para baixo nesta página, nossa comunidade carrega novos emojis todos os dias.</string>
     <string name="settings_option_13_subtitle">Junte-se ao nosso servidor Discord e conheça novos amigos incríveis. Não se atrase, estamos esperando por você.</string>
     <string name="pro_tip_2">Junte-se ao nosso servidor Discord e conheça novos amigos incríveis. O link de convite na página de configurações, Não se atrase, estamos esperando por você.</string>
+    <string name="share_main_text">Ei, ganhei um emoji legal do app Bemoji. Dê uma olhada, você definitivamente vai gostar.</string>
+    <string name="downloading_sheet_msg">Emoji está sendo baixado, verifique as notificações para obter mais informações.</string>
+    <string name="share_btn_txt">Compartilhar</string>
+    <string name="share_title">Compartilhe o emoji via</string>
 </resources>

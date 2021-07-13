@@ -56,7 +56,7 @@
     <string name="settings_title">Настройки</string>
     <string name="settings_section_1_title">ГЕНЕРАЛЬНАЯ</string>
     <string name="settings_option_1_title">Перезагрузить смайлы</string>
-    <string name="settings_option_1_subtitle">Вы можете получить последние смайлы, нажав здесь (когда вы вернетесь, главная страница будет перезагружена).</string>
+    <string name="settings_option_1_subtitle">Вы можете получить последние смайлы, проведя вниз по главному экрану.</string>
     <string name="settings_option_2_title">Загрузить смайлы</string>
     <string name="settings_option_2_subtitle">Вы будете перенаправлены на emoji.gg, чтобы вручную загрузить туда свои смайлы. После утверждения вы можете нажать «Обновить смайлы» выше.</string>
     <string name="settings_option_3_title">Очистить кэш</string>
@@ -107,4 +107,8 @@
     <string name="pro_tip_1">Вы можете получить новые смайлики, проводя вниз по этой странице, наше сообщество загружает новые смайлики каждый день.</string>
     <string name="settings_option_13_subtitle">Присоединяйтесь к нашему серверу Discord и познакомьтесь с новыми замечательными друзьями. Не опаздывай, мы тебя ждем.</string>
     <string name="pro_tip_2">Присоединяйтесь к нашему серверу Discord и познакомьтесь с новыми замечательными друзьями. Ссылка для приглашения на странице настроек, не опаздывайте, мы вас ждем.</string>
+    <string name="share_main_text">Привет, у меня есть крутые смайлы из приложения Bemoji. Проверьте это, вам обязательно понравится.</string>
+    <string name="downloading_sheet_msg">Emoji загружается, проверьте уведомления для получения дополнительной информации.</string>
+    <string name="share_btn_txt">доля</string>
+    <string name="share_title">Поделитесь смайликом через</string>
 </resources>

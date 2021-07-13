@@ -57,7 +57,7 @@
     <string name="settings_title">Settings</string>
     <string name="settings_section_1_title">GENERAL</string>
     <string name="settings_option_1_title">Reload emojis</string>
-    <string name="settings_option_1_subtitle">You can get the latest emojis by clicking here (home will be reloaded when you get back).</string>
+    <string name="settings_option_1_subtitle">You can get the latest emojis by swiping down the home screen.</string>
     <string name="settings_option_2_title">Upload emojis</string>
     <string name="settings_option_2_subtitle">You\'ll be redirected to emoji.gg to manually upload your emojis there. After approval, you may click \"Reload emojis\" above.</string>
     <string name="settings_option_3_title">Clear cache</string>
@@ -108,5 +108,9 @@
     <string name="discord_title" translatable="false">Discord</string>
     <string name="settings_option_13_subtitle">Join our Discord server and meet new amazing friends. Don\'t be late, we\'re waiting for you.</string>
     <string name="pro_tip_1">You can get new emojis by swiping down this page, our community uploads new emojis every day.</string>
+    <string name="downloading_sheet_msg">Emoji is being downloaded, check notifications for more information.</string>
     <string name="pro_tip_2">Join our Discord server and meet new amazing friends. The invite link on the settings page, Don\'t be late, we\'re waiting for you.</string>
+    <string name="share_btn_txt">Share</string>
+    <string name="share_main_text">Hey, I got this cool emoji from Bemoji app. Check it out, you\'ll definitely like it.</string>
+    <string name="share_title">Share emoji via</string>
 </resources>

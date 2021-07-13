@@ -35,7 +35,6 @@ import static com.nerbly.bemoji.Functions.MainFunctions.setFragmentLocale;
 import static com.nerbly.bemoji.Functions.MainFunctions.trimCache;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
-import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 import static com.nerbly.bemoji.UI.UserInteractions.showMessageDialog;
 
 public class SettingsFragment extends BottomSheetDialogFragment {
@@ -94,21 +93,13 @@ public class SettingsFragment extends BottomSheetDialogFragment {
         sharedPref = requireActivity().getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
         setting1.setOnClickListener(_view -> {
-            sharedPref.edit().putString("emojisData", "").apply();
-
-            sharedPref.edit().putString("categoriesData", "").apply();
-
-            sharedPref.edit().putString("packsData", "").apply();
-
-            sharedPref.edit().putString("isAskingForReload", "true").apply();
-            showCustomSnackBar(getString(R.string.emojis_reloaded_success), requireActivity());
         });
 
         setting3.setOnClickListener(_view -> {
             try {
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("https://emoji.gg/submit"));
-            startActivity(intent);
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://emoji.gg/submit"));
+                startActivity(intent);
             } catch (Exception e) {
                 showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
                         (dialog, which) -> {

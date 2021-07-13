@@ -1,89 +1,90 @@
 package com.nerbly.bemoji.Adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.nerbly.bemoji.Activities.PreviewActivity;
 import com.nerbly.bemoji.Functions.Utils;
 import com.nerbly.bemoji.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import static com.nerbly.bemoji.Functions.DownloaderSheet.showEmojiSheet;
 import static com.nerbly.bemoji.Functions.SideFunctions.setImgURL;
 
 public class MainEmojisAdapter {
 
-    public static class Recycler1Adapter extends RecyclerView.Adapter<Recycler1Adapter.ViewHolder> {
+    public static boolean isEmojiSheetShown = false;
+
+    public static class Gridview1Adapter extends BaseAdapter {
         ArrayList<HashMap<String, Object>> data;
 
-        public Recycler1Adapter(ArrayList<HashMap<String, Object>> _arr) {
-            data = _arr;
-        }
-
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.emojisview, null);
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            view.setLayoutParams(_lp);
-            return new ViewHolder(view);
+        public Gridview1Adapter(ArrayList<HashMap<String, Object>> arr) {
+            data = arr;
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder _holder, @SuppressLint("RecyclerView") int position) {
-            View view = _holder.itemView;
-
-            LinearLayout linear1 = view.findViewById(R.id.tutorialBg);
-            LinearLayout linear2 = view.findViewById(R.id.space);
-            ImageView imageview1 = view.findViewById(R.id.emoji);
-
-            setImgURL(Objects.requireNonNull(data.get(position).get("image")).toString(), imageview1);
-            linear1.setOnLongClickListener(_view12 -> {
-                Utils.showToast(_view12.getContext(), Objects.requireNonNull(data.get(position).get("title")).toString());
-                return true;
-            });
-            linear1.setOnClickListener(view1 -> {
-                Intent toPreview = new Intent();
-                toPreview.putExtra("switchType", "emoji");
-                toPreview.putExtra("title", Objects.requireNonNull(data.get(position).get("title")).toString());
-                toPreview.putExtra("submitted_by", Objects.requireNonNull(data.get(position).get("submitted_by")).toString());
-                toPreview.putExtra("category", Objects.requireNonNull(data.get(position).get("category")).toString());
-                toPreview.putExtra("fileName", Objects.requireNonNull(data.get(position).get("slug")).toString());
-                toPreview.putExtra("description", Objects.requireNonNull(data.get(position).get("description")).toString());
-                toPreview.putExtra("imageUrl", Objects.requireNonNull(data.get(position).get("image")).toString());
-                toPreview.setClass(view1.getContext(), PreviewActivity.class);
-                view1.getContext().startActivity(toPreview);
-            });
-            linear2.setVisibility(View.GONE);
-            AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
-            anim.setDuration(200);
-            linear1.startAnimation(anim);
-        }
-
-        @Override
-        public int getItemCount() {
+        public int getCount() {
             return data.size();
         }
 
-        public static class ViewHolder extends RecyclerView.ViewHolder {
-            public ViewHolder(View v) {
-                super(v);
-            }
+        @Override
+        public HashMap<String, Object> getItem(int index) {
+            return data.get(index);
         }
 
-    }
+        @Override
+        public long getItemId(int index) {
+            return index;
+        }
 
+        @Override
+        public View getView(final int position, View view, ViewGroup container) {
+            LayoutInflater _inflater = (LayoutInflater) container.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View _view = view;
+            if (_view == null) {
+                _view = _inflater.inflate(R.layout.emojisview, null);
+            }
+            assert _view != null;
+            final LinearLayout emojiBackground = _view.findViewById(R.id.emojiBackground);
+            final ImageView emoji = _view.findViewById(R.id.emoji);
+
+            setImgURL(Objects.requireNonNull(data.get(position).get("image")).toString(), emoji);
+            emojiBackground.setOnLongClickListener(_view12 -> {
+                Utils.showToast(_view12.getContext(), Objects.requireNonNull(data.get(position).get("title")).toString());
+                return true;
+            });
+            View final_view = _view;
+            emojiBackground.setOnClickListener(onClick -> {
+                try {
+                    if (!isEmojiSheetShown) {
+                        isEmojiSheetShown = true;
+                        showEmojiSheet(final_view.getContext(), Objects.requireNonNull(data.get(position).get("image")).toString(), Objects.requireNonNull(data.get(position).get("title")).toString(), Objects.requireNonNull(data.get(position).get("submitted_by")).toString());
+                        new Timer().schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                isEmojiSheetShown = false;
+                            }
+                        }, 1000);
+
+                    }
+                } catch (Exception e) {
+
+                }
+            });
+            AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
+            anim.setDuration(200);
+            emojiBackground.startAnimation(anim);
+            return _view;
+        }
+    }
 }

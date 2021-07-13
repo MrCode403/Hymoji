@@ -4,7 +4,6 @@
     android:orientation="vertical">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/tutorialBg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal|center_vertical">
@@ -20,7 +19,7 @@
                 android:layout_width="40dp"
                 android:layout_height="5dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="12dp"
                 android:background="#E0E0E0"
                 android:orientation="horizontal" />
 

@@ -1,141 +1,112 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/_coordinator"
+
+    <LinearLayout
+        android:id="@+id/searchbox"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="ContentDescription">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginBottom="53dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="6dp"
+        app:layout_constraintBottom_toTopOf="@+id/emojisRecycler"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/_app_bar"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/searchBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icons8_search_60"
+            app:tint="#9E9E9E" />
+
+        <EditText
+            android:id="@+id/searchField"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            app:elevation="0dp">
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:enabled="false"
+            android:fontFamily="@font/whitney"
+            android:hint="@string/emojis_search_box_txt"
+            android:imeOptions="actionSearch"
+            android:importantForAutofill="no"
+            android:inputType="textNoSuggestions"
+            android:padding="8dp"
+            android:singleLine="true"
+            android:textColor="#000000"
+            android:textColorHint="#757575"
+            android:textSize="14sp"
+            tools:ignore="TouchTargetSizeCheck" />
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/collapse"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fitsSystemWindows="true"
-                app:contentScrim="#FFFFFF"
-                app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:scrimAnimationDuration="0">
+        <ImageView
+            android:id="@+id/ic_filter_clear"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/outline_filter_alt_black_48dp"
+            app:tint="#9E9E9E" />
+    </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/space"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#FFFFFF"
-                    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/chipview_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchbox" >
 
-                    <LinearLayout
-                        android:id="@+id/searchbox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="5dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:padding="6dp">
-
-                        <ImageView
-                            android:id="@+id/searchBtn"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:padding="8dp"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/icons8_search_60"
-                            app:tint="#9E9E9E" />
-
-                        <EditText
-                            android:id="@+id/searchField"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@android:color/transparent"
-                            android:enabled="false"
-                            android:fontFamily="@font/whitney"
-                            android:hint="@string/emojis_search_box_txt"
-                            android:imeOptions="actionSearch"
-                            android:importantForAutofill="no"
-                            android:inputType="textNoSuggestions"
-                            android:padding="8dp"
-                            android:singleLine="true"
-                            android:textColor="#000000"
-                            android:textColorHint="#757575"
-                            android:textSize="14sp"
-                            tools:ignore="TouchTargetSizeCheck" />
-
-                        <ImageView
-                            android:id="@+id/ic_filter_clear"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:padding="8dp"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/outline_filter_alt_black_48dp"
-                            app:tint="#9E9E9E" />
-                    </LinearLayout>
-                </LinearLayout>
-
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <LinearLayout
+    <LinearLayout
+        android:id="@+id/chipsasshimmerback"
+        android:layout_marginTop="9dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include
+            layout="@layout/chipsloading"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/tutorialBg"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:animateLayoutChanges="true"
-                android:background="#FFFFFF"
-                android:orientation="vertical">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chiprecycler"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:fadingEdgeLength="30dp"
+        android:requiresFadingEdge="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchbox" />
+    </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/chiprecycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
-                    android:fadingEdgeLength="30dp"
-                    android:requiresFadingEdge="horizontal"
-                    android:visibility="gone" />
+    <GridView
+        android:id="@+id/emojisRecycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fadingEdgeLength="20dp"
+        android:isScrollContainer="false"
+        android:requiresFadingEdge="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchbox" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/packEmojisRecycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fadingEdgeLength="20dp"
-                    android:requiresFadingEdge="vertical"
-                    android:visibility="visible" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/adviewline"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#E0E0E0"
-                android:orientation="horizontal" />
-
-            <LinearLayout
-                android:id="@+id/adview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#FFFFFF"
-                android:orientation="vertical" />
-        </LinearLayout>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <LinearLayout
         android:id="@+id/emptyview"
@@ -144,7 +115,12 @@
         android:background="@android:color/white"
         android:gravity="center_horizontal|center_vertical"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/emptyAnimation"
@@ -173,4 +149,28 @@
             android:textSize="16sp" />
     </LinearLayout>
 
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/adview_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#FFF"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:id="@+id/adviewline"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0"
+            android:orientation="horizontal" />
+
+        <LinearLayout
+            android:id="@+id/adview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:orientation="vertical" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
