@@ -21,4 +21,10 @@
             android:paddingBottom="24dp"
             android:src="@drawable/default_image" />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/space"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="vertical" />
 </LinearLayout>

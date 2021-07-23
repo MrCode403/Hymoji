@@ -56,6 +56,7 @@ public class MainEmojisAdapter {
             }
             assert _view != null;
             final LinearLayout emojiBackground = _view.findViewById(R.id.emojiBackground);
+            final LinearLayout space = _view.findViewById(R.id.space);
             final ImageView emoji = _view.findViewById(R.id.emoji);
 
             setImgURL(Objects.requireNonNull(data.get(position).get("image")).toString(), emoji);
@@ -81,6 +82,13 @@ public class MainEmojisAdapter {
 
                 }
             });
+
+            if(position == getCount() - 1){
+                space.setVisibility(View.VISIBLE);
+            } else {
+                space.setVisibility(View.GONE);
+            }
+
             AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
             anim.setDuration(200);
             emojiBackground.startAnimation(anim);

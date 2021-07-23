@@ -12,12 +12,10 @@ public class FileManager {
     private final ArrayList<HashMap<String, Object>> filesList = new ArrayList<>();
 
     public ArrayList<HashMap<String, Object>> getList() {
-        System.out.println(path1);
         java.io.File home = new java.io.File(path1);
         java.io.File[] listFiles = home.listFiles();
         if (listFiles != null && listFiles.length > 0) {
             for (java.io.File file : listFiles) {
-                System.out.println(file.getAbsolutePath());
                 if (file.isDirectory()) {
                     if (!file.isHidden()) {
                         scanDirectory(file);
@@ -58,7 +56,6 @@ public class FileManager {
     }
 
     private void addFileToList(java.io.File file) {
-
         if (file.getName().startsWith("Bemoji") && (file.getName().endsWith(".jpg") || (file.getName().endsWith(".png") || file.getName().endsWith(".gif")))) {
             HashMap<String, Object> fileMap = new HashMap<>();
             fileMap.put("filePath", file.getPath());
@@ -66,5 +63,4 @@ public class FileManager {
             filesList.add(fileMap);
         }
     }
-
 }

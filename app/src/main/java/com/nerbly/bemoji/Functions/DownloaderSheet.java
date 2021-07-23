@@ -91,7 +91,6 @@ public class DownloaderSheet extends AppCompatActivity {
     private static void downloadFile(Context context, String url, String name) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
-
         executor.execute(() -> {
             try {
                 DownloadManager downloadmanager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
@@ -101,12 +100,8 @@ public class DownloaderSheet extends AppCompatActivity {
                 request.setDescription(context.getString(R.string.app_name));
                 request.setTitle("Bemoji_" + URLUtil.guessFileName(url, "", ""));
                 request.allowScanningByMediaScanner();
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-                if (Build.VERSION.SDK_INT >= 29) {
-                    request.setDestinationUri(Uri.fromFile(new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/Bemoji/", "Bemoji_" + URLUtil.guessFileName(url, "", ""))));
-                } else {
-                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "Bemoji_" + URLUtil.guessFileName(url, "", ""));
-                }
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "Bemojis/Bemoji_" + URLUtil.guessFileName(url, "", ""));
                 downloadmanager.enqueue(request);
 
                 handler.post(() -> {
@@ -124,5 +119,4 @@ public class DownloaderSheet extends AppCompatActivity {
         intent.putExtra("android.intent.extra.TEXT", emoji_link);
         context.startActivity(Intent.createChooser(intent, intent_text));
     }
-
 }

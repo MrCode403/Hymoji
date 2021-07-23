@@ -455,6 +455,7 @@ public class PackPreviewActivity extends AppCompatActivity {
         public void onBindViewHolder(ViewHolder holder, int position) {
             View view = holder.itemView;
 
+            final LinearLayout space = view.findViewById(R.id.space);
             LinearLayout emojisBackground = view.findViewById(R.id.emojiBackground);
             ImageView emoji = view.findViewById(R.id.emoji);
 
@@ -467,6 +468,12 @@ public class PackPreviewActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             });
+
+            if(position == getItemCount() - 1){
+                space.setVisibility(View.VISIBLE);
+            } else {
+                space.setVisibility(View.GONE);
+            }
         }
 
         @Override

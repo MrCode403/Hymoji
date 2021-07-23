@@ -81,7 +81,6 @@ public class HomeActivity extends AppCompatActivity {
     private final Intent toSearch = new Intent();
     private final Intent toPacks = new Intent();
     private final LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-    private final ArrayList<HashMap<String, Object>> backendPacksList = new ArrayList<>();
     double emojisCount = 0;
     double emojisScanPosition = 0;
     private FileManager fileManager;
@@ -242,9 +241,9 @@ public class HomeActivity extends AppCompatActivity {
         EmojisRequestListener = new RequestNetwork.RequestListener() {
             @Override
             public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
-                swipe_to_refresh.setRefreshing(false);
-
-
+                if(swipe_to_refresh.isRefreshing()) {
+                    swipe_to_refresh.setRefreshing(false);
+                }
                 if (tag.equals("EMOJIS")) {
                     try {
                         emojisList = new Gson().fromJson(response, new TypeToken<ArrayList<HashMap<String, Object>>>() {
@@ -349,8 +348,7 @@ public class HomeActivity extends AppCompatActivity {
         if (sharedPref.getString("isAskingForReload", "").equals("true")) {
             sharedPref.edit().putString("isAskingForReload", "").apply();
             recreate();
-        }
-        if (androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != android.content.pm.PackageManager.PERMISSION_DENIED) {
+        } else if (androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != android.content.pm.PackageManager.PERMISSION_DENIED) {
             getLocalEmojis(false);
         }
     }
@@ -461,7 +459,7 @@ public class HomeActivity extends AppCompatActivity {
     public void getLocalEmojis(boolean isGettingDataFirstTime) {
         if (!isGettingDataFirstTime) {
             try {
-                localEmojisList.clear();
+                Objects.requireNonNull(local_recycler.getAdapter()).notifyDataSetChanged();
             } catch (Exception ignored) {
             }
         }
@@ -502,7 +500,7 @@ public class HomeActivity extends AppCompatActivity {
                 });
             }).start();
         } catch (Exception e) {
-
+            Log.e("local emojis error", e.toString());
         }
     }
 

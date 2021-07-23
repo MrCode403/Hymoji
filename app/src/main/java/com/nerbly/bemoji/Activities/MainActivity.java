@@ -2,9 +2,11 @@ package com.nerbly.bemoji.Activities;
 
 import android.animation.LayoutTransition;
 import android.app.Activity;
+import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -20,8 +22,6 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.button.MaterialButton;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.nerbly.bemoji.R;
 import com.nerbly.bemoji.UI.MainUIMethods;
 
@@ -120,12 +120,15 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void LOGIC_BACKEND() {
+
         try {
-            FirebaseApp.initializeApp(this);
-        } catch (Exception ignored) {
-        }
-        try {
-            FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+            if (Build.VERSION.SDK_INT >= 26) {
+                if (androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                    welcomeImage.setImageDrawable(WallpaperManager.getInstance(this).getDrawable());
+                }
+            } else {
+                welcomeImage.setImageDrawable(WallpaperManager.getInstance(this).getDrawable());
+            }
         } catch (Exception ignored) {
         }
         for (int i = 0; i < 3; i++) {
