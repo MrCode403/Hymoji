@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <GridView
+        android:id="@+id/emojisRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadingEdgeLength="20dp"
+        android:isScrollContainer="false"
+        android:requiresFadingEdge="vertical" />
+
+    <LinearLayout
+        android:id="@+id/emptyview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/emptyAnimation"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:scaleType="fitCenter"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="animations/loading.json"
+            app:lottie_loop="true"
+            app:lottie_progress="0"
+            app:lottie_renderMode="automatic"
+            app:lottie_repeatMode="reverse" />
+
+        <TextView
+            android:id="@+id/emptyTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/whitney"
+            android:gravity="center_horizontal|center_vertical"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/emojis_loading"
+            android:textColor="#424242"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</RelativeLayout>

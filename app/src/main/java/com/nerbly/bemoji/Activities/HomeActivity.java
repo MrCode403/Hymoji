@@ -1,15 +1,20 @@
 package com.nerbly.bemoji.Activities;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -47,6 +52,7 @@ import com.nerbly.bemoji.Functions.RequestNetwork;
 import com.nerbly.bemoji.Functions.RequestNetworkController;
 import com.nerbly.bemoji.Functions.Utils;
 import com.nerbly.bemoji.R;
+import com.nerbly.bemoji.UI.MainUIMethods;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -103,6 +109,7 @@ public class HomeActivity extends AppCompatActivity {
     private LinearLayout shimmer9;
     private LinearLayout shimmer10;
     private LinearLayout shimmer11;
+    private ImageView discord_img;
     private LinearLayout localEmojisView;
     private RecyclerView packs_recycler;
     private RecyclerView local_recycler;
@@ -144,6 +151,7 @@ public class HomeActivity extends AppCompatActivity {
         activityDescription = findViewById(R.id.activityDescription);
         scrollView = findViewById(R.id.scrollView);
         loadingView = findViewById(R.id.loadingView);
+        MaterialCardView discord_dock = findViewById(R.id.discord_dock);
         mainView = findViewById(R.id.mainView);
         shimmer1 = findViewById(R.id.shimmer1);
         shimmer2 = findViewById(R.id.shimmer2);
@@ -156,6 +164,7 @@ public class HomeActivity extends AppCompatActivity {
         shimmer10 = findViewById(R.id.shimmer10);
         shimmer11 = findViewById(R.id.shimmer11);
         swipe_to_refresh = findViewById(R.id.swipe_to_refresh);
+        discord_img = findViewById(R.id.discord_img);
         MaterialCardView searchcard = findViewById(R.id.searchcard);
         localEmojisView = findViewById(R.id.localemojisview);
         LinearLayout goToPacks = findViewById(R.id.gotopacks);
@@ -184,6 +193,23 @@ public class HomeActivity extends AppCompatActivity {
         goToPacks.setOnClickListener(view -> {
             toPacks.setClass(getApplicationContext(), PacksActivity.class);
             startActivity(toPacks);
+        });
+
+        discord_dock.setOnClickListener(view -> {
+            try {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://discord.gg/nxy2Qq4YP4"));
+                startActivity(intent);
+            } catch (Exception e) {
+                showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), this,
+                        (dialog, which) -> {
+                            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                            ClipData clip = ClipData.newPlainText("Bemoji", "https://discord.gg/nxy2Qq4YP4");
+                            clipboard.setPrimaryClip(clip);
+                        },
+                        (dialog, which) -> dialog.dismiss());
+            }
         });
 
         packs_recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -241,7 +267,7 @@ public class HomeActivity extends AppCompatActivity {
         EmojisRequestListener = new RequestNetwork.RequestListener() {
             @Override
             public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
-                if(swipe_to_refresh.isRefreshing()) {
+                if (swipe_to_refresh.isRefreshing()) {
                     swipe_to_refresh.setRefreshing(false);
                 }
                 if (tag.equals("EMOJIS")) {
@@ -345,8 +371,8 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if (sharedPref.getString("isAskingForReload", "").equals("true")) {
-            sharedPref.edit().putString("isAskingForReload", "").apply();
+        if (sharedPref.getBoolean("isAskingForReload", false)) {
+            sharedPref.edit().putBoolean("isAskingForReload", false).apply();
             recreate();
         } else if (androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != android.content.pm.PackageManager.PERMISSION_DENIED) {
             getLocalEmojis(false);
@@ -377,7 +403,23 @@ public class HomeActivity extends AppCompatActivity {
 
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         local_recycler.setLayoutManager(layoutManager2);
-        if (sharedPref.getString("isNewEmojisAvailable", "").equals("true") || (sharedPref.getString("categoriesData", "").isEmpty() || (sharedPref.getString("packsData", "").isEmpty() || sharedPref.getString("emojisData", "").isEmpty()))) {
+
+        if (sharedPref.getInt("opened_so_far", 0) >= 3) {
+            sharedPref.edit().putBoolean("isAskingForReload", true).apply();
+            sharedPref.edit().putInt("opened_so_far", 0).apply();
+        } else {
+            int opened_so_far = sharedPref.getInt("opened_so_far", 0) + 1;
+            sharedPref.edit().putInt("opened_so_far", opened_so_far).apply();
+        }
+
+        if (sharedPref.getBoolean("isAskingForReload", true)) {
+            sharedPref.edit().putBoolean("isAskingForReload", false).apply();
+            sharedPref.edit().putString("emojisData", "").apply();
+            sharedPref.edit().putString("categoriesData", "").apply();
+            sharedPref.edit().putString("packsData", "").apply();
+        }
+
+        if (sharedPref.getBoolean("isAskingForReload", false) || (sharedPref.getString("categoriesData", "").isEmpty() || (sharedPref.getString("packsData", "").isEmpty() || sharedPref.getString("emojisData", "").isEmpty()))) {
             loadingView.setVisibility(View.VISIBLE);
             mainView.setVisibility(View.GONE);
         } else {
@@ -420,7 +462,7 @@ public class HomeActivity extends AppCompatActivity {
         setClippedView(shimmer9, "#FFFFFF", 30, 0);
         setClippedView(shimmer10, "#FFFFFF", 200, 0);
         setClippedView(shimmer11, "#FFFFFF", 200, 0);
-
+        MainUIMethods.setViewRadius(discord_img, 30, "#FAFAFA");
         generateActivityDescription();
     }
 
@@ -505,7 +547,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void checkUpdate() {
-
         Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
         appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE

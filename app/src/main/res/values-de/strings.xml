@@ -110,4 +110,7 @@
     <string name="downloading_sheet_msg">Emoji wird heruntergeladen. Weitere Informationen finden Sie in den Benachrichtigungen.</string>
     <string name="share_btn_txt">Teilen</string>
     <string name="share_title">Teile das Emoji über</string>
+    <string name="emojis_tab1_title">Haupt-Emojis</string>
+    <string name="emojis_tab2_title">Emojis von Paketen</string>
+    <string name="getting_ready_to_share">Vorbereitung...</string>
 </resources>

@@ -23,7 +23,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 import com.nerbly.bemoji.R;
 
-import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -118,5 +117,6 @@ public class DownloaderSheet extends AppCompatActivity {
         intent.putExtra("android.intent.extra.SUBJECT", context.getString(R.string.share_main_text));
         intent.putExtra("android.intent.extra.TEXT", emoji_link);
         context.startActivity(Intent.createChooser(intent, intent_text));
+        showCustomSnackBar(context.getString(R.string.getting_ready_to_share), (Activity) context);
     }
 }

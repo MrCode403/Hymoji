@@ -111,4 +111,7 @@
     <string name="downloading_sheet_msg">Emoji загружается, проверьте уведомления для получения дополнительной информации.</string>
     <string name="share_btn_txt">доля</string>
     <string name="share_title">Поделитесь смайликом через</string>
+    <string name="emojis_tab1_title">Основные смайлы</string>
+    <string name="emojis_tab2_title">Emojis пакетов</string>
+    <string name="getting_ready_to_share">Подготовка ...</string>
 </resources>

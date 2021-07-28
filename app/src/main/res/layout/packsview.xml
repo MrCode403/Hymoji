@@ -21,7 +21,6 @@
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:clickable="true"
-
             android:focusable="true"
             android:theme="@style/Theme.MaterialComponents.Light"
             app:cardCornerRadius="12dp"

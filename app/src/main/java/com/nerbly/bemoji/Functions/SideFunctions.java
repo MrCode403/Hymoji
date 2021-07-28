@@ -1,8 +1,10 @@
 package com.nerbly.bemoji.Functions;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
@@ -16,6 +18,21 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
 import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
 public class SideFunctions {
+
+    public static void hideShowKeyboard(boolean bool, TextView edittext, Activity context) {
+        try {
+            if (bool) {
+                android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(edittext, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT);
+            } else {
+                android.view.View view = context.getCurrentFocus();
+                android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
     public static void setImageFromPath(final ImageView image, final String path) {

@@ -1,152 +1,93 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFFFF">
-
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/searchbox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="9dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="9dp"
-        android:layout_marginBottom="53dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="6dp"
-        app:layout_constraintBottom_toTopOf="@+id/emojisRecycler"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/searchBtn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="8dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/icons8_search_60"
-            app:tint="#9E9E9E" />
-
-        <EditText
-            android:id="@+id/searchField"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:enabled="false"
-            android:fontFamily="@font/whitney"
-            android:hint="@string/emojis_search_box_txt"
-            android:imeOptions="actionSearch"
-            android:importantForAutofill="no"
-            android:inputType="textNoSuggestions"
-            android:padding="8dp"
-            android:singleLine="true"
-            android:textColor="#000000"
-            android:textColorHint="#757575"
-            android:textSize="14sp"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <ImageView
-            android:id="@+id/ic_filter_clear"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="8dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/outline_filter_alt_black_48dp"
-            app:tint="#9E9E9E" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/chipview_back"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchbox" >
-
-    <LinearLayout
-        android:id="@+id/chipsasshimmerback"
-        android:layout_marginTop="9dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <include
-            layout="@layout/chipsloading"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chiprecycler"
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
-        android:fadingEdgeLength="30dp"
-        android:requiresFadingEdge="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchbox" />
-    </LinearLayout>
-
-    <GridView
-        android:id="@+id/emojisRecycler"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:fadingEdgeLength="20dp"
-        android:isScrollContainer="false"
-        android:requiresFadingEdge="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchbox" />
-
-
-    <LinearLayout
-        android:id="@+id/emptyview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:gravity="center_horizontal|center_vertical"
-        android:orientation="vertical"
-        android:padding="8dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:background="#FFFFFF"
+        android:orientation="vertical">
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/emptyAnimation"
-            android:layout_width="wrap_content"
-            android:layout_height="150dp"
-            android:scaleType="fitCenter"
-            app:lottie_autoPlay="true"
-            app:lottie_fileName="animations/loading.json"
-            app:lottie_loop="true"
-            app:lottie_progress="0"
-            app:lottie_renderMode="automatic"
-            app:lottie_repeatMode="reverse" />
-
-        <TextView
-            android:id="@+id/emptyTitle"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/searchbox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:fontFamily="@font/whitney"
-            android:gravity="center_horizontal|center_vertical"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingBottom="8dp"
-            android:text="@string/emojis_loading"
-            android:textColor="#424242"
-            android:textSize="16sp" />
+            android:layout_marginStart="9dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="9dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="6dp">
+
+            <ImageView
+                android:id="@+id/searchBtn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icons8_search_60"
+                app:tint="#9E9E9E" />
+
+            <EditText
+                android:id="@+id/searchField"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:enabled="false"
+                android:fontFamily="@font/whitney"
+                android:hint="@string/emojis_search_box_txt"
+                android:imeOptions="actionSearch"
+                android:importantForAutofill="no"
+                android:inputType="textNoSuggestions"
+                android:padding="8dp"
+                android:singleLine="true"
+                android:textColor="#000000"
+                android:textColorHint="#757575"
+                android:textSize="14sp"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <ImageView
+                android:id="@+id/ic_filter_clear"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/outline_filter_alt_black_48dp"
+                app:tint="#9E9E9E" />
+        </LinearLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tablayout"
+            style="@style/MyTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            app:tabGravity="fill"
+            app:tabIconTint="@drawable/tab_selector_color"
+            app:tabIndicator="@drawable/tab_indicator"
+            app:tabIndicatorColor="@color/colorPrimary"
+            app:tabIndicatorFullWidth="false"
+            app:tabInlineLabel="true"
+            app:tabRippleColor="@android:color/transparent"
+            app:tabSelectedTextColor="@color/colorPrimary"
+            app:tabTextColor="#616161"
+            app:tabUnboundedRipple="true" />
+
+        <LinearLayout
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0"
+            android:orientation="horizontal" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -155,8 +96,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="#FFF"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/adviewline"
@@ -173,4 +113,4 @@
             android:orientation="vertical" />
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

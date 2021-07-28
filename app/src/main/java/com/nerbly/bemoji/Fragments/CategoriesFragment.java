@@ -27,7 +27,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.nerbly.bemoji.Activities.EmojisActivity;
+import com.nerbly.bemoji.Activities.CategoriesPreviewActivity;
 import com.nerbly.bemoji.Adapters.LoadingPacksAdapter;
 import com.nerbly.bemoji.Functions.RequestNetwork;
 import com.nerbly.bemoji.Functions.RequestNetworkController;
@@ -238,9 +238,8 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
                     setViewRadius(slider, 180, "#BDBDBD");
                     infook.setOnClickListener(v -> {
                         Intent toEmojis = new Intent();
-                        toEmojis.putExtra("switchFrom", "categories");
                         toEmojis.putExtra("category_id", Objects.requireNonNull(data.get(position).get("category_id")).toString());
-                        toEmojis.setClass(getContext(), EmojisActivity.class);
+                        toEmojis.setClass(getContext(), CategoriesPreviewActivity.class);
                         startActivity(toEmojis);
                         bottomSheetDialog.dismiss();
                     });
@@ -250,9 +249,8 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
 
                 } else {
                     Intent toEmojis = new Intent();
-                    toEmojis.putExtra("switchFrom", "categories");
                     toEmojis.putExtra("category_id", Objects.requireNonNull(data.get(position).get("category_id")).toString());
-                    toEmojis.setClass(getContext(), EmojisActivity.class);
+                    toEmojis.setClass(getContext(), CategoriesPreviewActivity.class);
                     startActivity(toEmojis);
                 }
             });

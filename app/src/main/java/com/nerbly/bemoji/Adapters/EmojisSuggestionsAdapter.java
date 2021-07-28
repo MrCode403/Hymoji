@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
-import static com.nerbly.bemoji.Activities.EmojisActivity.whenChipItemClicked;
-
 public class EmojisSuggestionsAdapter {
 
     public static class ChipRecyclerAdapter extends RecyclerView.Adapter<ChipRecyclerAdapter.ViewHolder> {
@@ -46,7 +44,6 @@ public class EmojisSuggestionsAdapter {
 
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             view.setLayoutParams(_lp);
-            cardview3.setOnClickListener(_view -> whenChipItemClicked(Objects.requireNonNull(data.get(position).get("title")).toString()));
             textview1.setText(Objects.requireNonNull(data.get(position).get("title")).toString());
         }
 
