@@ -39,6 +39,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nerbly.bemoji.Functions.FileUtil;
 import com.nerbly.bemoji.R;
+import com.nerbly.bemoji.UI.UserInteractions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -142,17 +143,24 @@ public class PackPreviewActivity extends AppCompatActivity {
         activityTitle.setText(getIntent().getStringExtra("packName"));
         rotationListener();
         bottomSheetBehaviorListener();
-        tempPackName = getIntent().getStringExtra("packName");
-        packEmojisArrayString = getIntent().getStringExtra("packEmojisArray");
-        ArrayList<String> emojisStringArray = new Gson().fromJson(getIntent().getStringExtra("packEmojisArray"), new TypeToken<ArrayList<String>>() {
-        }.getType());
-        for (int i = 0; i < emojisStringArray.size(); i++) {
-            HashMap<String, Object> emojisMap = new HashMap<>();
-            emojisMap.put("emoji_link", "https://emoji.gg/assets/emoji/" + emojisStringArray.get(i));
-            emojisMap.put("slug", emojisStringArray.get(i));
-            emojisListMap.add(emojisMap);
+        try {
+            tempPackName = getIntent().getStringExtra("packName");
+            packEmojisArrayString = getIntent().getStringExtra("packEmojisArray");
+            ArrayList<String> emojisStringArray = new Gson().fromJson(getIntent().getStringExtra("packEmojisArray"), new TypeToken<ArrayList<String>>() {
+            }.getType());
+            for (int i = 0; i < emojisStringArray.size(); i++) {
+                HashMap<String, Object> emojisMap = new HashMap<>();
+                emojisMap.put("emoji_link", "https://emoji.gg/assets/emoji/" + emojisStringArray.get(i));
+                emojisMap.put("slug", emojisStringArray.get(i));
+                emojisListMap.add(emojisMap);
+            }
+            packsRecycler.setAdapter(new Recycler1Adapter(emojisListMap));
+        } catch (Exception e) {
+            UserInteractions.showCustomSnackBar(getString(R.string.failed_to_load_emojis), this);
+            new Handler().postDelayed(() -> {
+                sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            }, 3000);
         }
-        packsRecycler.setAdapter(new Recycler1Adapter(emojisListMap));
     }
 
     public void LOGIC_FRONTEND() {
@@ -469,7 +477,7 @@ public class PackPreviewActivity extends AppCompatActivity {
                 }
             });
 
-            if(position == getItemCount() - 1){
+            if (position == getItemCount() - 1) {
                 space.setVisibility(View.VISIBLE);
             } else {
                 space.setVisibility(View.GONE);

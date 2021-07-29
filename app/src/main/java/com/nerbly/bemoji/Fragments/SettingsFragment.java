@@ -25,6 +25,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.nerbly.bemoji.Activities.HomeActivity;
 import com.nerbly.bemoji.R;
 
 import java.util.Objects;
@@ -304,8 +305,15 @@ public class SettingsFragment extends BottomSheetDialogFragment {
     }
 
     @Override
+    public void onCancel(@NonNull DialogInterface dialog) {
+        super.onCancel(dialog);
+        ((HomeActivity) requireActivity()).isFragmentAttached = false;
+    }
+
+    @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
+        ((HomeActivity) requireActivity()).isFragmentAttached = false;
         if (isAskingForReload) {
             userIsAskingForActivityToReload(requireActivity());
         }

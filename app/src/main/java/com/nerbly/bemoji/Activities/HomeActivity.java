@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -127,6 +126,8 @@ public class HomeActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipe_to_refresh;
     private AppUpdateManager appUpdateManager;
     private InstallStateUpdatedListener installStateUpdatedListener;
+    public boolean isFragmentAttached = false;
+    public boolean isActivityAttached = false;
 
     public static String PacksArray() {
         return new Gson().toJson(packsList);
@@ -184,15 +185,23 @@ public class HomeActivity extends AppCompatActivity {
             if (emojisCounter.getText().toString().equals("0")) {
                 showCustomSnackBar(getString(R.string.emojis_still_loading_msg), HomeActivity.this);
             } else {
-                toSearch.putExtra("switchFrom", "search");
-                toSearch.setClass(getApplicationContext(), EmojisActivity.class);
-                startActivity(toSearch);
+                if (!isActivityAttached) {
+                    isActivityAttached = true;
+                    toSearch.putExtra("switchFrom", "search");
+                    toSearch.setClass(getApplicationContext(), EmojisActivity.class);
+                    startActivity(toSearch);
+                    new Handler().postDelayed(() -> isActivityAttached = false, 1000);
+                }
             }
         });
 
         goToPacks.setOnClickListener(view -> {
-            toPacks.setClass(getApplicationContext(), PacksActivity.class);
-            startActivity(toPacks);
+            if (!isActivityAttached) {
+                isActivityAttached = true;
+                toPacks.setClass(getApplicationContext(), PacksActivity.class);
+                startActivity(toPacks);
+                new Handler().postDelayed(() -> isActivityAttached = false, 1000);
+            }
         });
 
         discord_dock.setOnClickListener(view -> {
@@ -234,9 +243,17 @@ public class HomeActivity extends AppCompatActivity {
             if (emojisCounter.getText().toString().equals("0")) {
                 showCustomSnackBar(getString(R.string.emojis_still_loading_msg), HomeActivity.this);
             } else {
-                toSearch.putExtra("switchFrom", "dock");
-                toSearch.setClass(getApplicationContext(), EmojisActivity.class);
-                startActivity(toSearch);
+                if (emojisCounter.getText().toString().equals("0")) {
+                    showCustomSnackBar(getString(R.string.emojis_still_loading_msg), HomeActivity.this);
+                } else {
+                    if (!isActivityAttached) {
+                        isActivityAttached = true;
+                        toSearch.putExtra("switchFrom", "dock");
+                        toSearch.setClass(getApplicationContext(), EmojisActivity.class);
+                        startActivity(toSearch);
+                        new Handler().postDelayed(() -> isActivityAttached = false, 1000);
+                    }
+                }
             }
         });
 
@@ -248,7 +265,10 @@ public class HomeActivity extends AppCompatActivity {
                     showCustomSnackBar(getString(R.string.emojis_still_loading_msg), HomeActivity.this);
                 } else {
                     CategoriesFragment bottomSheet = new CategoriesFragment();
-                    bottomSheet.show(HomeActivity.this.getSupportFragmentManager(), "Categories");
+                    if (!isFragmentAttached) {
+                        isFragmentAttached = true;
+                        bottomSheet.show(HomeActivity.this.getSupportFragmentManager(), "Categories");
+                    }
                 }
             }
         });
@@ -256,12 +276,19 @@ public class HomeActivity extends AppCompatActivity {
         dock3.setOnClickListener(view -> {
 
             SettingsFragment bottomSheet = new SettingsFragment();
-            bottomSheet.show(HomeActivity.this.getSupportFragmentManager(), "Settings");
+            if (!isFragmentAttached) {
+                isFragmentAttached = true;
+                bottomSheet.show(HomeActivity.this.getSupportFragmentManager(), "Settings");
+            }
+
         });
 
         dock4.setOnClickListener(view -> {
             TutorialFragment bottomSheet = new TutorialFragment();
-            bottomSheet.show(HomeActivity.this.getSupportFragmentManager(), "Tutorial");
+            if (!isFragmentAttached) {
+                isFragmentAttached = true;
+                bottomSheet.show(HomeActivity.this.getSupportFragmentManager(), "Tutorial");
+            }
         });
 
         EmojisRequestListener = new RequestNetwork.RequestListener() {
@@ -371,8 +398,8 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if (sharedPref.getBoolean("isAskingForReload", false)) {
-            sharedPref.edit().putBoolean("isAskingForReload", false).apply();
+        if (sharedPref.getBoolean("isAskingForReloadEmojis", false)) {
+            sharedPref.edit().putBoolean("isAskingForReloadEmojis", false).apply();
             recreate();
         } else if (androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != android.content.pm.PackageManager.PERMISSION_DENIED) {
             getLocalEmojis(false);
@@ -386,8 +413,6 @@ public class HomeActivity extends AppCompatActivity {
                 popupSnackBarForCompleteUpdate();
             } else if (state.installStatus() == InstallStatus.INSTALLED) {
                 removeInstallStateUpdateListener();
-            } else {
-                Toast.makeText(getApplicationContext(), "InstallStateUpdatedListener: state: " + state.installStatus(), Toast.LENGTH_LONG).show();
             }
         };
 
@@ -405,21 +430,21 @@ public class HomeActivity extends AppCompatActivity {
         local_recycler.setLayoutManager(layoutManager2);
 
         if (sharedPref.getInt("opened_so_far", 0) >= 3) {
-            sharedPref.edit().putBoolean("isAskingForReload", true).apply();
+            sharedPref.edit().putBoolean("isAskingForReloadEmojis", true).apply();
             sharedPref.edit().putInt("opened_so_far", 0).apply();
         } else {
             int opened_so_far = sharedPref.getInt("opened_so_far", 0) + 1;
             sharedPref.edit().putInt("opened_so_far", opened_so_far).apply();
         }
 
-        if (sharedPref.getBoolean("isAskingForReload", true)) {
-            sharedPref.edit().putBoolean("isAskingForReload", false).apply();
+        if (sharedPref.getBoolean("isAskingForReloadEmojis", true)) {
+            sharedPref.edit().putBoolean("isAskingForReloadEmojis", false).apply();
             sharedPref.edit().putString("emojisData", "").apply();
             sharedPref.edit().putString("categoriesData", "").apply();
             sharedPref.edit().putString("packsData", "").apply();
         }
 
-        if (sharedPref.getBoolean("isAskingForReload", false) || (sharedPref.getString("categoriesData", "").isEmpty() || (sharedPref.getString("packsData", "").isEmpty() || sharedPref.getString("emojisData", "").isEmpty()))) {
+        if (sharedPref.getBoolean("isAskingForReloadEmojis", false) || (sharedPref.getString("categoriesData", "").isEmpty() || (sharedPref.getString("packsData", "").isEmpty() || sharedPref.getString("emojisData", "").isEmpty()))) {
             loadingView.setVisibility(View.VISIBLE);
             mainView.setVisibility(View.GONE);
         } else {

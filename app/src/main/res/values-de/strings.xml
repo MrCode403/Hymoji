@@ -113,4 +113,5 @@
     <string name="emojis_tab1_title">Haupt-Emojis</string>
     <string name="emojis_tab2_title">Emojis von Paketen</string>
     <string name="getting_ready_to_share">Vorbereitung...</string>
+    <string name="failed_to_load_emojis">Emojis konnten nicht geladen werden. Bitte versuchen Sie es später erneut.</string>
 </resources>

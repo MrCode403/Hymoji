@@ -113,4 +113,5 @@
     <string name="emojis_tab1_title">Ana emojiler</string>
     <string name="emojis_tab2_title">Paketlerin emojileri</string>
     <string name="getting_ready_to_share">hazırlanıyor...</string>
+    <string name="failed_to_load_emojis">Emojiler yüklenemedi, lütfen daha sonra tekrar deneyin.</string>
 </resources>

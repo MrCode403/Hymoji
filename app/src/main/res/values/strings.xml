@@ -115,5 +115,6 @@
     <string name="share_title">Share emoji via</string>
     <string name="emojis_tab1_title">Main emojis</string>
     <string name="emojis_tab2_title">Packs emojis</string>
-    <string name="getting_ready_to_share">Getting ready for sharing...</string>
+    <string name="getting_ready_to_share">Getting ready for sharing…</string>
+    <string name="failed_to_load_emojis">Failed to load emojis, please try again later.</string>
 </resources>

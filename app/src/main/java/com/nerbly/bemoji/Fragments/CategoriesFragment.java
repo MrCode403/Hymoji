@@ -4,6 +4,7 @@ import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +30,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nerbly.bemoji.Activities.CategoriesPreviewActivity;
+import com.nerbly.bemoji.Activities.HomeActivity;
 import com.nerbly.bemoji.Adapters.LoadingPacksAdapter;
 import com.nerbly.bemoji.Functions.RequestNetwork;
 import com.nerbly.bemoji.Functions.RequestNetworkController;
@@ -60,16 +63,18 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
     private RequestNetwork RequestCategories;
     private RequestNetwork.RequestListener CategoriesRequestListener;
     private SharedPreferences sharedPref;
+    private BottomSheetDialog d;
 
     @NonNull
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
         Objects.requireNonNull(getDialog()).setOnShowListener(dialog -> {
-            BottomSheetDialog d = (BottomSheetDialog) dialog;
+            d = (BottomSheetDialog) dialog;
             View view = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
             assert view != null;
             sheetBehavior = BottomSheetBehavior.from(view);
+
             initialize(view);
             com.google.firebase.FirebaseApp.initializeApp(requireContext());
             initializeLogic();
@@ -125,6 +130,18 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
         };
     }
 
+    @Override
+    public void onCancel(@NonNull DialogInterface dialog) {
+        ((HomeActivity) requireActivity()).isFragmentAttached = false;
+        super.onCancel(dialog);
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        ((HomeActivity) requireActivity()).isFragmentAttached = false;
+        super.onDismiss(dialog);
+    }
+
     private void initializeLogic() {
         LOGIC_BACKEND();
         LOGIC_FRONTEND();
@@ -136,13 +153,12 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
         categoriesRecycler.setHasFixedSize(true);
         loadingRecycler.setHasFixedSize(true);
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 7; i++) {
             HashMap<String, Object> shimmerMap = new HashMap<>();
             shimmerMap.put("key", "value");
             shimmerList.add(shimmerMap);
         }
         loadingRecycler.setAdapter(new LoadingPacksAdapter.LoadingRecyclerAdapter(shimmerList));
-
 
         if (sharedPref.getString("categoriesData", "").isEmpty()) {
             RequestCategories.startRequestNetwork(RequestNetworkController.GET, CATEGORIES_API_LINK, "", CategoriesRequestListener);
@@ -195,9 +211,8 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        public void onBindViewHolder(ViewHolder holder, int position) {
             View view = holder.itemView;
-
             TextView textview1 = view.findViewById(R.id.emptyTitle);
 
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -205,21 +220,6 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
             textview1.setText(Objects.requireNonNull(data.get(position).get("category_name")).toString());
             textview1.setOnClickListener(_view -> {
                 if (Objects.requireNonNull(data.get(position).get("category_name")).toString().equals("Animated")) {
-
-
-//                    showMessageSheet(getString(R.string.animated_emojis_warning_title), R.drawable.smiley_face_flatline,
-//                            getString(R.string.animated_emojis_warning_btnok), getString(R.string.animated_emojis_warning_btncancel),
-//                            getString(R.string.animated_emojis_warning_subtitle), getActivity(), View -> {
-//                                Intent toEmojis = new Intent();
-//                                toEmojis.putExtra("switchFrom", "categories");
-//                                toEmojis.putExtra("category_id", Objects.requireNonNull(data.get(position).get("category_id")).toString());
-//                                toEmojis.setClass(getContext(), EmojisActivity.class);
-//                                startActivity(toEmojis);
-//
-//
-//                            }, View -> {
-//                            });
-
                     com.google.android.material.bottomsheet.BottomSheetDialog bottomSheetDialog = new com.google.android.material.bottomsheet.BottomSheetDialog(requireContext(), R.style.materialsheet);
 
                     View bottomSheetView;

@@ -1,12 +1,10 @@
 package com.nerbly.bemoji.Fragments;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +32,6 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.nerbly.bemoji.Activities.EmojisActivity.searchBox;
 import static com.nerbly.bemoji.Activities.EmojisActivity.searchBoxField;
 import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
 import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
@@ -49,7 +46,6 @@ public class MainEmojisFragment extends Fragment {
     private GridView emojisRecycler;
     public boolean isSortingNew = true;
     public boolean isSortingOld = false;
-    public boolean isGettingDataFirstTime = true;
     public boolean isSortingAlphabet = false;
     private ArrayList<HashMap<String, Object>> emojisList = new ArrayList<>();
     private LottieAnimationView emptyAnimation;
@@ -60,13 +56,13 @@ public class MainEmojisFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater _inflater, @Nullable ViewGroup _container, @Nullable Bundle _savedInstanceState) {
         View _view = _inflater.inflate(R.layout.main_emojis_fragment, _container, false);
-        initialize(_savedInstanceState, _view);
+        initialize(_view);
         com.google.firebase.FirebaseApp.initializeApp(requireContext());
         initializeLogic();
         return _view;
     }
 
-    private void initialize(Bundle _savedInstanceState, View view) {
+    private void initialize(View view) {
         emptyTitle = view.findViewById(R.id.emptyTitle);
         emptyAnimation = view.findViewById(R.id.emptyAnimation);
         loadView = view.findViewById(R.id.emptyview);
@@ -75,7 +71,6 @@ public class MainEmojisFragment extends Fragment {
     }
 
     private void initializeLogic() {
-        LOGIC_FRONTEND();
         LOGIC_BACKEND();
     }
 
@@ -84,12 +79,9 @@ public class MainEmojisFragment extends Fragment {
         initEmojisRecycler();
         if (!sharedPref.getString("emojisData", "").isEmpty()) {
             getEmojis();
+        } else {
+            noEmojisFound();
         }
-    }
-
-
-    public void LOGIC_FRONTEND() {
-
     }
 
     private void noEmojisFound() {
@@ -122,12 +114,9 @@ public class MainEmojisFragment extends Fragment {
         Handler handler = new Handler(Looper.getMainLooper());
 
         executor.execute(() -> {
-            if (Objects.equals(requireActivity().getIntent().getStringExtra("switchFrom"), "categories")) {
-                loadCategorizedEmojis();
-            } else {
-                emojisList = new Gson().fromJson(sharedPref.getString("emojisData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                }.getType());
-            }
+
+            emojisList = new Gson().fromJson(sharedPref.getString("emojisData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
+            }.getType());
             if (isSortingNew) {
                 Utils.sortListMap2(emojisList, "id", false, false);
             } else if (isSortingOld) {
@@ -137,48 +126,12 @@ public class MainEmojisFragment extends Fragment {
             }
 
             handler.post(() -> {
-
-                if (Objects.equals(requireActivity().getIntent().getStringExtra("switchFrom"), "categories")) {
-                    if (emojisList.size() == 0) {
-                        noEmojisFound();
-                    } else {
-                        emojisRecycler.setVisibility(View.VISIBLE);
-                        emojisRecycler.setAdapter(new MainEmojisAdapter.Gridview1Adapter(emojisList));
-                        whenEmojisAreReady();
-                    }
-                    searchBox.setVisibility(View.GONE);
-                } else {
-                    emojisRecycler.setAdapter(new MainEmojisAdapter.Gridview1Adapter(emojisList));
-                    whenEmojisAreReady();
-                }
+                emojisRecycler.setAdapter(new MainEmojisAdapter.Gridview1Adapter(emojisList));
+                whenEmojisAreReady();
 
             });
         });
 
-    }
-
-    public void loadCategorizedEmojis() {
-        try {
-            emojisList = new Gson().fromJson(sharedPref.getString("emojisData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-            }.getType());
-            double emojisCount = emojisList.size();
-            double searchPosition = emojisCount - 1;
-            for (int i = 0; i < (int) (emojisCount); i++) {
-                if (!String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(emojisList.get((int) searchPosition).get("category")).toString()))).equals(requireActivity().getIntent().getStringExtra("category_id"))) {
-                    emojisList.remove((int) (searchPosition));
-                }
-                searchPosition--;
-            }
-            if (isSortingNew) {
-                Utils.sortListMap2(emojisList, "id", false, false);
-            } else if (isSortingOld) {
-                Collections.reverse(emojisList);
-            } else if (isSortingAlphabet) {
-                Utils.sortListMap(emojisList, "title", false, true);
-            }
-        } catch (Exception e) {
-            Log.e("Emojis Error", e.toString());
-        }
     }
 
     private void whenEmojisAreReady() {
@@ -186,7 +139,6 @@ public class MainEmojisFragment extends Fragment {
             shadAnim(loadView, "translationY", -1000, 300);
             shadAnim(loadView, "alpha", 0, 300);
             searchBoxField.setEnabled(true);
-
         }, 1000);
     }
 
@@ -201,21 +153,9 @@ public class MainEmojisFragment extends Fragment {
 
 
     public void getEmojis() {
-
-        if (requireActivity().getIntent().getStringExtra("switchFrom").equals("categories")) {
-
-            if (isGettingDataFirstTime) {
-                isGettingDataFirstTime = false;
-                isSortingNew = true;
-            }
+        if (!sharedPref.getString("emojisData", "").isEmpty()) {
             getEmojisTask();
-
-        } else {
-            if (!sharedPref.getString("emojisData", "").isEmpty()) {
-                getEmojisTask();
-            }
         }
-
     }
 
     public void sort_by_newest() {
@@ -261,41 +201,17 @@ public class MainEmojisFragment extends Fragment {
                 emojisCount = emojisList.size();
                 searchPosition = emojisCount - 1;
                 for (int i = 0; i < (int) (emojisCount); i++) {
-                    if (Objects.equals(requireActivity().getIntent().getStringExtra("switchFrom"), "categories")) {
 
-                        if ((!Objects.requireNonNull(emojisList.get((int) searchPosition).get("submitted_by")).toString().toLowerCase().contains(query.trim().toLowerCase())
-                                && !Objects.requireNonNull(emojisList.get((int) searchPosition).get("title")).toString().toLowerCase().contains(query.trim().toLowerCase()))
-                                || !String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(emojisList.get((int) searchPosition).get("category")).toString()))).equals(requireActivity().getIntent().getStringExtra("category_id"))) {
-                            emojisList.remove((int) (searchPosition));
-                        }
-                    } else {
-                        if (!Objects.requireNonNull(emojisList.get((int) searchPosition).get("submitted_by")).toString().toLowerCase().contains(query.trim().toLowerCase())
-                                && !Objects.requireNonNull(emojisList.get((int) searchPosition).get("title")).toString().toLowerCase().contains(query.trim().toLowerCase())) {
-                            emojisList.remove((int) (searchPosition));
-                        }
+                    if (!Objects.requireNonNull(emojisList.get((int) searchPosition).get("submitted_by")).toString().toLowerCase().contains(query.trim().toLowerCase())
+                            && !Objects.requireNonNull(emojisList.get((int) searchPosition).get("title")).toString().toLowerCase().contains(query.trim().toLowerCase())) {
+                        emojisList.remove((int) (searchPosition));
                     }
                     searchPosition--;
                 }
             } else {
-                if (Objects.equals(requireActivity().getIntent().getStringExtra("switchFrom"), "categories")) {
-                    try {
-                        emojisList = new Gson().fromJson(sharedPref.getString("emojisData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                        }.getType());
-                        emojisCount = emojisList.size();
-                        searchPosition = emojisCount - 1;
-                        for (int i = 0; i < (int) (emojisCount); i++) {
-                            if (!String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(emojisList.get((int) searchPosition).get("category")).toString()))).equals(requireActivity().getIntent().getStringExtra("category_id"))) {
-                                emojisList.remove((int) (searchPosition));
-                            }
-                            searchPosition--;
-                        }
-                    } catch (Exception e) {
-                        Utils.showToast(getActivity(), (e.toString()));
-                    }
-                } else {
-                    emojisList = new Gson().fromJson(sharedPref.getString("emojisData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                    }.getType());
-                }
+
+                emojisList = new Gson().fromJson(sharedPref.getString("emojisData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
+                }.getType());
             }
 
             handler.post(() -> {

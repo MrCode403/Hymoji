@@ -1,5 +1,6 @@
 package com.nerbly.bemoji.Fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -20,6 +21,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.nerbly.bemoji.Activities.HomeActivity;
 import com.nerbly.bemoji.Adapters.LoadingPacksAdapter;
 import com.nerbly.bemoji.Adapters.TutorialAdapter;
 import com.nerbly.bemoji.Functions.RequestNetwork;
@@ -125,7 +127,6 @@ public class TutorialFragment extends BottomSheetDialogFragment {
         });
     }
 
-
     public void LOGIC_FRONTEND() {
         setViewRadius(slider, 90, "#E0E0E0");
     }
@@ -138,6 +139,18 @@ public class TutorialFragment extends BottomSheetDialogFragment {
         windowParams.dimAmount = 0.2f;
         windowParams.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         window.setAttributes(windowParams);
+    }
+
+    @Override
+    public void onCancel(@NonNull DialogInterface dialog) {
+        ((HomeActivity) requireActivity()).isFragmentAttached = false;
+        super.onCancel(dialog);
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        ((HomeActivity) requireActivity()).isFragmentAttached = false;
+        super.onDismiss(dialog);
     }
 
 }

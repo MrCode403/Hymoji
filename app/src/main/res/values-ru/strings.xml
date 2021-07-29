@@ -114,4 +114,5 @@
     <string name="emojis_tab1_title">Основные смайлы</string>
     <string name="emojis_tab2_title">Emojis пакетов</string>
     <string name="getting_ready_to_share">Подготовка ...</string>
+    <string name="failed_to_load_emojis">Не удалось загрузить смайлы. Повторите попытку позже.</string>
 </resources>
