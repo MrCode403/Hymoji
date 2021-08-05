@@ -1,136 +1,128 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rootView"
+    android:id="@+id/relativeView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/relativeView"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:ignore="UselessParent">
-
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/coordinator"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal|center_vertical">
-
-            <LinearLayout
-                android:id="@+id/sheetBehavior"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                app:behavior_hideable="true"
-                app:behavior_peekHeight="450dp"
-                app:layout_behavior="@string/bottom_sheet_behavior">
-
-                <LinearLayout
-                    android:id="@+id/background"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:animateLayoutChanges="true"
-                    android:background="#FFFFFF"
-                    android:elevation="10dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:id="@+id/slider"
-                        android:layout_width="40dp"
-                        android:layout_height="5dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="16dp"
-                        android:background="#E0E0E0"
-                        android:orientation="horizontal" />
-
-                    <TextView
-                        android:id="@+id/activityTitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="6dp"
-                        android:layout_marginRight="10dp"
-                        android:fontFamily="@font/whitney"
-                        android:padding="8dp"
-                        android:singleLine="true"
-                        android:text="@string/preview_pack_title"
-                        android:textColor="#000000"
-                        android:textSize="30sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/activityDescription"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:fontFamily="@font/whitney"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
-                        android:paddingBottom="8dp"
-                        android:text="@string/preview_pack_subtitle"
-                        android:textColor="#616161"
-                        android:textSize="14sp" />
-
-                    <LinearLayout
-                        android:id="@+id/line"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="15dp"
-                        android:background="#E0E0E0"
-                        android:orientation="horizontal" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/packEmojisRecycler"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:fadingEdgeLength="20dp"
-                        android:requiresFadingEdge="vertical" />
-                </LinearLayout>
-            </LinearLayout>
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        android:gravity="center_horizontal|center_vertical">
 
         <LinearLayout
-            android:id="@+id/download"
+            android:id="@+id/sheetBehavior"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="#7289DA"
-            android:gravity="center_horizontal|center_vertical"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="450dp"
+            app:layout_behavior="@string/bottom_sheet_behavior">
 
-            <ImageView
-                android:id="@+id/download_ic"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/round_get_app_white_48dp"
-                tools:ignore="ContentDescription" />
+            <LinearLayout
+                android:id="@+id/background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:animateLayoutChanges="true"
+                android:background="#FFFFFF"
+                android:elevation="10dp"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/download_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/whitney"
-                android:gravity="center_horizontal|center_vertical"
-                android:paddingStart="8dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="2dp"
-                android:paddingBottom="8dp"
-                android:text="@string/preview_pack_download_btn"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp"
-                tools:ignore="TextContrastCheck" />
+                <LinearLayout
+                    android:id="@+id/slider"
+                    android:layout_width="40dp"
+                    android:layout_height="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="16dp"
+                    android:background="#E0E0E0"
+                    android:orientation="horizontal" />
+
+                <TextView
+                    android:id="@+id/activityTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginRight="10dp"
+                    android:fontFamily="@font/whitney"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:text="@string/preview_pack_title"
+                    android:textColor="#000000"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/activityDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:fontFamily="@font/whitney"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/preview_pack_subtitle"
+                    android:textColor="#616161"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:id="@+id/line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="15dp"
+                    android:background="#E0E0E0"
+                    android:orientation="horizontal" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/packEmojisRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fadingEdgeLength="20dp"
+                    android:requiresFadingEdge="vertical" />
+            </LinearLayout>
         </LinearLayout>
-    </RelativeLayout>
-</LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <LinearLayout
+        android:id="@+id/download"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="#7289DA"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/download_ic"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/round_get_app_white_48dp"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/download_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/whitney"
+            android:gravity="center_horizontal|center_vertical"
+            android:paddingStart="8dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="2dp"
+            android:paddingBottom="8dp"
+            android:text="@string/preview_pack_download_btn"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            tools:ignore="TextContrastCheck" />
+    </LinearLayout>
+</RelativeLayout>

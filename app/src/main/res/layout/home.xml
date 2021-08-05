@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         app:swipeRefreshLayoutProgressSpinnerBackgroundColor="@color/colorPrimary">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -131,6 +131,7 @@
                             android:paddingLeft="4dp"
                             android:paddingTop="8dp"
                             android:paddingRight="4dp"
+                            android:textAllCaps="true"
                             android:paddingBottom="8dp"
                             android:text="@string/local_emojis_title"
                             android:textColor="#424242"
@@ -163,6 +164,7 @@
                         android:fontFamily="@font/whitney"
                         android:paddingLeft="4dp"
                         android:paddingTop="8dp"
+                        android:textAllCaps="true"
                         android:paddingRight="4dp"
                         android:paddingBottom="8dp"
                         android:text="@string/home_sections_title"
@@ -447,6 +449,7 @@
                             android:paddingTop="8dp"
                             android:paddingRight="4dp"
                             android:paddingBottom="8dp"
+                            android:textAllCaps="true"
                             android:text="@string/home_packs_title"
                             android:textColor="#424242"
                             android:textSize="16sp" />
@@ -463,6 +466,7 @@
                             android:paddingRight="4dp"
                             android:paddingBottom="8dp"
                             android:text="@string/home_packs_seemore"
+                            android:textAllCaps="true"
                             android:textColor="#424242"
                             android:textSize="14sp"
                             android:visibility="invisible" />
@@ -560,10 +564,12 @@
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/ic_chevron_right_grey" />
                         </LinearLayout>
+
+
                     </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -579,11 +585,13 @@
             android:background="#E0E0E0"
             android:orientation="horizontal" />
 
-        <LinearLayout
+        <com.google.android.gms.ads.AdView
             android:id="@+id/adview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
-            android:orientation="vertical" />
+            android:orientation="vertical"
+            app:adSize="BANNER"
+            app:adUnitId="@string/home_admob_banner_id" />
     </LinearLayout>
 </RelativeLayout>

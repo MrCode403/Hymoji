@@ -24,9 +24,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.facebook.ads.AdSize;
-import com.facebook.ads.AdView;
-import com.facebook.ads.AudienceNetworkAds;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nerbly.bemoji.Functions.Utils;
@@ -65,7 +67,7 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
     private boolean isSortingOld = false;
     private boolean isSortingAlphabet = false;
     private ArrayList<HashMap<String, Object>> emojisList = new ArrayList<>();
-    private LinearLayout adview;
+    private AdView adview;
     private LottieAnimationView emptyAnimation;
     private LinearLayout searchBox;
     private ImageView sortByBtn;
@@ -170,10 +172,6 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
 
         getEmojis();
 
-        AudienceNetworkAds.initialize(this);
-        AdView bannerAd = new AdView(this, BANNER_AD_ID, AdSize.BANNER_HEIGHT_50);
-        adview.addView(bannerAd);
-        bannerAd.loadAd();
     }
 
     public void LOGIC_FRONTEND() {
@@ -429,4 +427,37 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
             finish();
         }
     }
+
+
+    private void loadAds() {
+        MobileAds.initialize(this, initializationStatus -> {
+        });
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adview.loadAd(adRequest);
+
+        adview.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+            }
+
+            @Override
+            public void onAdFailedToLoad(LoadAdError adError) {
+            }
+
+            @Override
+            public void onAdOpened() {
+            }
+
+            @Override
+            public void onAdClicked() {
+            }
+
+            @Override
+            public void onAdClosed() {
+            }
+        });
+    }
+
+
 }

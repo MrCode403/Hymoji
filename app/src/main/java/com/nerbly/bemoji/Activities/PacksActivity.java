@@ -24,9 +24,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.facebook.ads.AdSize;
-import com.facebook.ads.AdView;
-import com.facebook.ads.AudienceNetworkAds;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -64,7 +66,7 @@ public class PacksActivity extends AppCompatActivity {
     private ArrayList<HashMap<String, Object>> packsList = new ArrayList<>();
     private LinearLayout sheetBehaviorView;
     private LinearLayout background;
-    private LinearLayout adview;
+    private AdView adview;
     private LinearLayout slider;
     private RecyclerView packsRecycler;
     private RecyclerView loadingRecycler;
@@ -140,10 +142,7 @@ public class PacksActivity extends AppCompatActivity {
 
         background.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
 
-        AudienceNetworkAds.initialize(this);
-        AdView bannerAd = new AdView(this, "3773974092696684_3774022966025130", AdSize.BANNER_HEIGHT_50);
-        adview.addView(bannerAd);
-        bannerAd.loadAd();
+        loadAds();
 
         for (int i = 0; i < 30; i++) {
             HashMap<String, Object> shimmerMap = new HashMap<>();
@@ -331,5 +330,35 @@ public class PacksActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    private void loadAds() {
+        MobileAds.initialize(this, initializationStatus -> {
+        });
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adview.loadAd(adRequest);
+
+        adview.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+            }
+
+            @Override
+            public void onAdFailedToLoad(LoadAdError adError) {
+            }
+
+            @Override
+            public void onAdOpened() {
+            }
+
+            @Override
+            public void onAdClicked() {
+            }
+
+            @Override
+            public void onAdClosed() {
+            }
+        });
     }
 }

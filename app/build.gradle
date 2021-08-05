@@ -9,9 +9,9 @@ android {
     defaultConfig {
         applicationId "com.nerbly.bemoji"
         minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 21
-        versionName "0.2.4 - beta"
+        targetSdkVersion 30
+        versionCode 22
+        versionName "0.2.5 - beta"
     }
     buildTypes {
         release {
@@ -68,8 +68,7 @@ dependencies {
     implementation 'io.github.everythingme:overscroll-decor-android:1.1.1'
 
     //ads
-    implementation 'com.facebook.android:audience-network-sdk:6.4.0'
-    //implementation 'com.google.android.gms:play-services-ads:20.2.0'
+    implementation 'com.google.android.gms:play-services-ads:20.2.0'
 
     //other libs
     implementation 'com.mindorks.android:prdownloader:0.6.0'

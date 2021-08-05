@@ -2,14 +2,12 @@
 <resources>
     <string name="welcome_title_3">Başlayalım</string>
     <string name="welcome_title_2">Emojilerin başka bir boyutu</string>
-    <string name="welcome_title_1">Bemoji</string>
     <string name="welcome_subtitle_3">Yolculuğumuz şimdi başlasın</string>
     <string name="welcome_subtitle_2">Memler, animasyonlar, yüzler, ifadeler, herhangi bir emoji. Kelimenin tam anlamıyla hepsine sahibiz.</string>
     <string name="welcome_subtitle_1">Sıkıcı emojilerden bıktınız mı? Kendimi tanıtayım…</string>
     <string name="welcome_subtitle_0">Sınırsız Discord, Twitch ve Slack emojisi koleksiyonu</string>
     <string name="welcome_start">Başlat</string>
     <string name="welcome_continue">Devam et</string>
-    <string name="welcome_artwork_creator">Jackie Chen tarafından sanat eseri</string>
     <string name="submitted_by">Tarafından gönderilmiştir:</string>
     <string name="sort_by_title">GÖRE SIRALA</string>
     <string name="sort_by_oldest">En eski</string>
@@ -18,13 +16,11 @@
     <string name="settings_title">Ayarlar</string>
     <string name="settings_subtitle">Bemoji\'yi yönetin ve özelleştirin</string>
     <string name="settings_section_3_title">TELİF HAKKI</string>
-    <string name="settings_section_2_title">BEMOJI</string>
     <string name="settings_section_1_title">GENEL</string>
     <string name="settings_option_8_title">Içerik kaynağı</string>
     <string name="settings_option_8_subtitle">Tüm emojiler emoji.gg tarafından sağlanır.</string>
     <string name="settings_option_7_title">İçerik telif hakkı</string>
     <string name="settings_option_7_subtitle">Emojiler kullanıcı tarafından gönderilir ve ilgili sahiplerinin telif haklarıdır. Sorularınız veya telif hakkı endişeleriniz varsa burayı tıklayın.</string>
-    <string name="settings_option_6_title">Bemoji</string>
     <string name="settings_option_6_subtitle">Discord, Slack veya Twitch ile hiçbir şekilde bağlantılı değiliz. Bemoji, başka herhangi bir hizmetle rekabet etmek için yaratılmadı.</string>
     <string name="settings_option_5_title">geri bildirim</string>
     <string name="settings_option_5_subtitle">Eksik bir şey mi var veya bir özelliğe mi ihtiyacınız var? bilmemize izin ver. Ayrıca, bize güzel bir puan vermeyi unutmayın.</string>
@@ -43,7 +39,7 @@
     <string name="settings_option_1_title">Emojileri yeniden yükleyin</string>
     <string name="settings_option_1_subtitle">Ana ekranı aşağı kaydırarak en yeni emojileri alabilirsiniz.</string>
     <string name="preview_pack_title">paket içeriği</string>
-    <string name="preview_pack_subtitle">Bu paketin hangi emojileri içerdiğini görebilir ve tahmin edebilirsiniz ne? bunları tek tek de indirebilirsiniz!</string>
+    <string name="preview_pack_subtitle">Bu paketin hangi emojileri içerdiğini görebilir ve tahmin edebilirsiniz ne? bunları tek de indirebilirsiniz!</string>
     <string name="preview_pack_download_btn">Tam paketi indirin</string>
     <string name="permission_denied_packs">Depolama erişim izni olmadan paketleri indiremezsiniz. Lütfen izin verin.</string>
     <string name="permission_denied_emojis">Depolama erişim izni olmadan emojileri indiremezsiniz. Lütfen izin verin.</string>
@@ -84,7 +80,7 @@
     <string name="explore_packs_title">Paketleri keşfedin</string>
     <string name="explore_packs_subtitle">Aynı türden farklı emojilerin paketleri</string>
     <string name="help_center_title">Yardım Merkezi</string>
-    <string name="help_center_subtitle">Kendi Discord, Twitch veya Slack sunucunuza emoji eklemek için adım adım talimatlar</string>
+    <string name="help_center_subtitle">Kendi Discord, Twitch veya Slack sunucunuza emoji eklemek için adım talimatlar</string>
     <string name="downloading">İndiriliyor…</string>
     <string name="full_download_path">İndirme yolu:</string>
     <string name="ask_for_permission">Lütfen devam etmek için bize depolama alanınıza erişme izni verin.</string>
@@ -112,6 +108,14 @@
     <string name="share_title">Emojiyi şununla paylaşın</string>
     <string name="emojis_tab1_title">Ana emojiler</string>
     <string name="emojis_tab2_title">Paketlerin emojileri</string>
-    <string name="getting_ready_to_share">hazırlanıyor...</string>
+    <string name="getting_ready_to_share">hazırlanıyor…</string>
     <string name="failed_to_load_emojis">Emojiler yüklenemedi, lütfen daha sonra tekrar deneyin.</string>
+    <string name="settings_option_14_title">Uygulama teması</string>
+    <string name="settings_option_14_subtitle">Gözleriniz emojileri en iyi görünümlerinde görmeli.</string>
+    <string name="theme_dark_title">Karanlık mod</string>
+    <string name="theme_light_title">Işık modu</string>
+    <string name="theme_auto_title">Sistem temasını takip et</string>
+    <string name="contribute_go">katkıda bulunmak</string>
+    <string name="contribute_desc">Bemoji\'nin çevirisine katkıda bulunan herkese çok teşekkürler.</string>
+    <string name="contribute_title">Çeviriye Katkıda Bulunanlar</string>
 </resources>

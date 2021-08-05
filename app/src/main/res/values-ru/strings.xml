@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Bemoji</string>
     <string name="home_title">Изучите смайлы</string>
     <string name="home_subtitle">Изучите категории, чтобы получить доступ к неограниченной коллекции смайликов</string>
     <string name="local_emojis_title">СКАЧАННЫЙ ЭМОДЖИС</string>
@@ -26,7 +25,7 @@
     <string name="home_pack_seemore2">Больше пакетов</string>
     <string name="categories_screen_title">Исследуйте категории</string>
     <string name="categories_screen_subtitle">Лень искать? выберите то, что подходит вашему блестящему серверу.</string>
-    <string name="emojis_search_box_txt">Поиск...</string>
+    <string name="emojis_search_box_txt">Поиск…</string>
     <string name="emojis_not_found">К сожалению, мы ничего не нашли.</string>
     <string name="emojis_loading">Секундочку, мы получаем смайлики…</string>
     <string name="packs_included_emojis">включены\\nсмайлики</string>
@@ -35,14 +34,12 @@
     <string name="animated_emojis_warning_btncancel">Нет, я ухожу</string>
     <string name="animated_emojis_warning_btnok">Впусти меня</string>
     <string name="welcome_continue">Продолжать</string>
-    <string name="welcome_title_1">Bemoji</string>
     <string name="welcome_subtitle_0">Неограниченная коллекция смайликов Discord, Twitch и Slack</string>
     <string name="welcome_subtitle_1">Устали от скучных смайликов? Разрешите представиться…</string>
     <string name="welcome_title_2">Другое измерение смайликов</string>
     <string name="welcome_subtitle_2">Мемы, анимации, лица, выражения, любые смайлы. У нас есть буквально все.</string>
     <string name="welcome_title_3">Давайте начнем</string>
     <string name="welcome_subtitle_3">Пусть наше путешествие начнется сейчас</string>
-    <string name="welcome_artwork_creator">Работа Jackie Chen</string>
     <string name="sort_by_title">СОРТИРОВАТЬ ПО</string>
     <string name="sort_by_newest">Новейшие</string>
     <string name="sort_by_oldest">Самый старый</string>
@@ -61,12 +58,10 @@
     <string name="settings_option_2_subtitle">Вы будете перенаправлены на emoji.gg, чтобы вручную загрузить туда свои смайлы. После утверждения вы можете нажать «Обновить смайлы» выше.</string>
     <string name="settings_option_3_title">Очистить кэш</string>
     <string name="settings_option_3_subtitle">Все предварительно загруженные смайлы будут удалены. Меньший размер приложения, больше времени загрузки смайлов.</string>
-    <string name="settings_section_2_title">BEMOJI</string>
     <string name="settings_option_4_title">Служба поддержки</string>
     <string name="settings_option_4_subtitle">Прежде чем предпринимать какие-либо действия, пожалуйста, сначала свяжитесь с нами, чтобы все уладить. Спасибо.</string>
     <string name="settings_option_5_title">Обратная связь</string>
     <string name="settings_option_5_subtitle">Чего-то не хватает или вам нужна функция? дайте нам знать. Также не забудьте поставить нам хорошую оценку.</string>
-    <string name="settings_option_6_title">Bemoji</string>
     <string name="settings_option_6_subtitle">Мы никоим образом не связаны с Discord, Slack или Twitch. Bemoji не создавался для конкуренции с другими сервисами.</string>
     <string name="settings_section_3_title">АВТОРСКИЕ ПРАВА</string>
     <string name="settings_option_7_title">Авторские права на контент</string>
@@ -113,6 +108,14 @@
     <string name="share_title">Поделитесь смайликом через</string>
     <string name="emojis_tab1_title">Основные смайлы</string>
     <string name="emojis_tab2_title">Emojis пакетов</string>
-    <string name="getting_ready_to_share">Подготовка ...</string>
+    <string name="getting_ready_to_share">Подготовка…</string>
     <string name="failed_to_load_emojis">Не удалось загрузить смайлы. Повторите попытку позже.</string>
+    <string name="settings_option_14_title">Тема приложения</string>
+    <string name="settings_option_14_subtitle">Ваши глаза должны видеть смайлики в лучшем виде.</string>
+    <string name="theme_dark_title">Темный режим</string>
+    <string name="theme_light_title">Легкий режим</string>
+    <string name="theme_auto_title">Следуйте системной теме</string>
+    <string name="contribute_go">способствовать</string>
+    <string name="contribute_desc">Огромное спасибо всем, кто внес свой вклад в перевод Bemoji.</string>
+    <string name="contribute_title">Авторы переводов</string>
 </resources>

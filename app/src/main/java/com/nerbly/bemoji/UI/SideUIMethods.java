@@ -2,6 +2,7 @@ package com.nerbly.bemoji.UI;
 
 import android.graphics.Color;
 import android.view.View;
+import android.view.ViewGroup;
 
 public class SideUIMethods {
     public static void shadBackground(View view) {
@@ -12,4 +13,15 @@ public class SideUIMethods {
         JJACCAI.setCornerRadius(0);
         view.setBackground(JJACCAI);
     }
+
+
+    public static void setMargins(View view, int left, int top, int right, int bottom) {
+        if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+            p.setMargins(left, top, right, bottom);
+            view.requestLayout();
+        }
+    }
+
+
 }

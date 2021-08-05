@@ -2,6 +2,7 @@ package com.nerbly.bemoji.Functions;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -110,5 +111,14 @@ public class SideFunctions {
                 .fitCenter()
                 .into(image);
 
+    }
+
+    public static int getNavigationBarHeight(Activity context) {
+        Resources resources = context.getResources();
+        int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            return resources.getDimensionPixelSize(resourceId);
+        }
+        return 0;
     }
 }

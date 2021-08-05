@@ -12,6 +12,9 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.nerbly.bemoji.R;
+
 public class MainUIMethods {
 
     //views shape and shadows
@@ -130,14 +133,19 @@ public class MainUIMethods {
     public static void numbersAnimator(final TextView textview, double from, double to, double duration) {
         ValueAnimator animator = ValueAnimator.ofInt((int) from, (int) to);
         animator.setDuration((int) duration);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            public void onAnimationUpdate(ValueAnimator animation) {
-                textview.setText(animation.getAnimatedValue().toString());
-            }
-        });
+        animator.addUpdateListener(animation -> textview.setText(animation.getAnimatedValue().toString()));
         animator.start();
     }
 
     //mics
+
+    public  static void circularImage(ImageView image,String url, Activity context) {
+        Glide.with(context)
+                .load(url)
+                .circleCrop()
+                .placeholder(R.drawable.app_icon)
+                .into(image);
+
+    }
 }
 

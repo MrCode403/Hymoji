@@ -17,10 +17,16 @@ import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
+import com.nerbly.bemoji.Activities.EmojisActivity;
 import com.nerbly.bemoji.R;
 
 import java.util.concurrent.ExecutorService;
@@ -102,7 +108,7 @@ public class DownloaderSheet extends AppCompatActivity {
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                 request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "Bemojis/Bemoji_" + URLUtil.guessFileName(url, "", ""));
                 downloadmanager.enqueue(request);
-
+                EmojisActivity.showInterstitialAd((Activity)context);
                 handler.post(() -> {
                 });
             } catch (Exception e) {

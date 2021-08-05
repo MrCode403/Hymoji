@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -34,6 +36,7 @@ import static com.nerbly.bemoji.Activities.HomeActivity.userIsAskingForActivityT
 import static com.nerbly.bemoji.Functions.MainFunctions.initializeCacheScan;
 import static com.nerbly.bemoji.Functions.MainFunctions.setFragmentLocale;
 import static com.nerbly.bemoji.Functions.MainFunctions.trimCache;
+import static com.nerbly.bemoji.Functions.getDarkModeState.setNightModeState;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
 import static com.nerbly.bemoji.UI.UserInteractions.showMessageDialog;
@@ -55,14 +58,16 @@ public class SettingsFragment extends BottomSheetDialogFragment {
     private RelativeLayout setting11;
     private RelativeLayout setting12;
     private RelativeLayout setting13;
+    private RelativeLayout setting14;
     private TextView textview8;
+    public boolean isFragmentAttached = false;
     private SharedPreferences sharedPref;
     private boolean isAskingForReload = false;
 
     @NonNull
     @Override
 
-    public View onCreateView(@NonNull LayoutInflater _inflater, @Nullable ViewGroup _container, @Nullable final Bundle _savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup _container, @Nullable final Bundle _savedInstanceState) {
         Objects.requireNonNull(getDialog()).setOnShowListener(dialog -> {
             BottomSheetDialog d = (BottomSheetDialog) dialog;
             View _view = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
@@ -72,7 +77,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
             com.google.firebase.FirebaseApp.initializeApp(requireContext());
             initializeLogic();
         });
-        return _inflater.inflate(R.layout.settings, _container, false);
+        return inflater.inflate(R.layout.settings, _container, false);
 
     }
 
@@ -90,10 +95,13 @@ public class SettingsFragment extends BottomSheetDialogFragment {
         setting11 = view.findViewById(R.id.setting11);
         setting12 = view.findViewById(R.id.setting12);
         setting13 = view.findViewById(R.id.setting13);
+        setting14 = view.findViewById(R.id.setting14);
         textview8 = view.findViewById(R.id.textview8);
         sharedPref = requireActivity().getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
         setting1.setOnClickListener(_view -> {
+            dismiss();
+            ((HomeActivity) requireActivity()).startRefreshFromSettings();
         });
 
         setting3.setOnClickListener(_view -> {
@@ -197,23 +205,15 @@ public class SettingsFragment extends BottomSheetDialogFragment {
                         (dialog, which) -> dialog.dismiss());
             }
         });
-        setting11.setOnClickListener(_view -> showLanguagesSheet());
+        setting11.setOnClickListener(_view -> showLanguagesDialog());
 
         setting12.setOnClickListener(_view -> {
-            intent.setAction(Intent.ACTION_SENDTO);
-            intent.setData(Uri.parse("mailto:"));
-            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"nerblyteam@gmail.com"});
-            intent.putExtra(Intent.EXTRA_SUBJECT, "Bemoji Translation Contribution");
-            if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
-                startActivity(intent);
-            } else {
-                showMessageDialog(getString(R.string.error_msg), getString(R.string.mailto_device_not_supported), getString(R.string.dialog_positive_text), getString(R.string.dialog_negative_text), getActivity(),
-                        (dialog, which) -> {
-                            intent.setAction(Intent.ACTION_VIEW);
-                            intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.nerbly.bemoji"));
-                            startActivity(intent);
-                        },
-                        (dialog, which) -> dialog.dismiss());
+
+
+            TranslationContributorsFragment bottomSheet = new TranslationContributorsFragment();
+            if (!isFragmentAttached) {
+                isFragmentAttached = true;
+                bottomSheet.show(requireActivity().getSupportFragmentManager(), "Contributors");
             }
         });
 
@@ -232,9 +232,11 @@ public class SettingsFragment extends BottomSheetDialogFragment {
                         (dialog, which) -> dialog.dismiss());
             }
         });
+        setting14.setOnClickListener(_view -> {
+            showThemeDialog();
+        });
 
     }
-
 
     private void initializeLogic() {
         LOGIC_FRONTEND();
@@ -242,7 +244,16 @@ public class SettingsFragment extends BottomSheetDialogFragment {
     }
 
     public void LOGIC_BACKEND() {
+        Window window = Objects.requireNonNull(getDialog()).getWindow();
+        WindowManager.LayoutParams windowParams = window.getAttributes();
+        windowParams.dimAmount = 0.3f;
+        windowParams.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        window.setAttributes(windowParams);
         textview8.setText(getString(R.string.settings_option_3_title).concat(" (" + initializeCacheScan(getActivity()) + ")"));
+
+        if (!(Build.VERSION.SDK_INT >= 29)) {
+            setting14.setVisibility(View.GONE);
+        }
     }
 
     public void LOGIC_FRONTEND() {
@@ -259,49 +270,56 @@ public class SettingsFragment extends BottomSheetDialogFragment {
         rippleRoundStroke(setting11, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
         rippleRoundStroke(setting12, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
         rippleRoundStroke(setting13, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
+        rippleRoundStroke(setting14, "#FFFFFF", "#E0E0E0", 25, 1, "#BDBDBD");
     }
 
-    private void showLanguagesSheet() {
-        final String[] languages = {"English", "Português", "Français", "Deutsch", "Türkçe", "русский"};
+    private void showLanguagesDialog() {
+        final String[] languages = {"English", "Português", "Français", "Deutsch", "Türkçe", "русский", "Polskie"};
         MaterialAlertDialogBuilder languagesDialog = new MaterialAlertDialogBuilder(requireActivity(), R.style.RoundShapeTheme);
-        int languagePosition = -1;
-        if (sharedPref.getString("language_position", "") != null) {
-            if (!sharedPref.getString("language_position", "").equals("")) {
-                languagePosition = Integer.parseInt(sharedPref.getString("language_position", ""));
-            }
-        }
+        int languagePosition;
+        languagePosition = sharedPref.getInt("lang_pos", -1);
         languagesDialog.setTitle("Choose your language")
                 .setSingleChoiceItems(languages, languagePosition, (dialog, i) -> {
                     isAskingForReload = true;
                     if (i == 0) {
-                        setFragmentLocale("en", Integer.toString(i), requireView());
+                        setFragmentLocale("en", i, requireView());
                     } else if (i == 1) {
-                        setFragmentLocale("pt", Integer.toString(i), requireView());
+                        setFragmentLocale("pt", i, requireView());
                     } else if (i == 2) {
-                        setFragmentLocale("fr", Integer.toString(i), requireView());
+                        setFragmentLocale("fr", i, requireView());
                     } else if (i == 3) {
-                        setFragmentLocale("de", Integer.toString(i), requireView());
+                        setFragmentLocale("de", i, requireView());
                     } else if (i == 4) {
-                        setFragmentLocale("tr", Integer.toString(i), requireView());
+                        setFragmentLocale("tr", i, requireView());
                     } else if (i == 5) {
-                        setFragmentLocale("ru", Integer.toString(i), requireView());
+                        setFragmentLocale("ru", i, requireView());
+                    } else if (i == 6) {
+                        setFragmentLocale("pl", i, requireView());
                     }
                     dialog.dismiss();
-                    sharedPref.edit().putString("isAskingForReload", "true").apply();
                     dismiss();
                 })
                 .show();
     }
 
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Window window = Objects.requireNonNull(getDialog()).getWindow();
-        WindowManager.LayoutParams windowParams = window.getAttributes();
-        windowParams.dimAmount = 0.2f;
-        windowParams.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-        window.setAttributes(windowParams);
+    private void showThemeDialog() {
+        final String[] themes = {getString(R.string.theme_light_title), getString(R.string.theme_dark_title), getString(R.string.theme_auto_title)};
+        MaterialAlertDialogBuilder themeDialog = new MaterialAlertDialogBuilder(requireActivity(), R.style.RoundShapeTheme);
+        themeDialog.setTitle(getString(R.string.settings_option_14_title))
+                .setSingleChoiceItems(themes, sharedPref.getInt("currentTheme", 0), (dialog, i) -> {
+                    isAskingForReload = true;
+                    if (i == 0) {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    } else if (i == 1) {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    } else if (i == 2) {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                    }
+                    setNightModeState(i);
+                    dialog.dismiss();
+                    dismiss();
+                })
+                .show();
     }
 
     @Override
@@ -317,5 +335,17 @@ public class SettingsFragment extends BottomSheetDialogFragment {
         if (isAskingForReload) {
             userIsAskingForActivityToReload(requireActivity());
         }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        instance = this;
+    }
+
+    private static SettingsFragment instance;
+
+    public static SettingsFragment getInstance() {
+        return instance;
     }
 }

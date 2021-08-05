@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 public class MainFunctions {
 
     //languages
-    public static void setLocale(String lang, String position, Activity context) {
+    public static void setLocale(String lang, int position, Activity context) {
         Locale locale = new Locale(lang);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
@@ -30,11 +30,11 @@ public class MainFunctions {
         context.getBaseContext().getResources().updateConfiguration(config, context.getBaseContext().getResources().getDisplayMetrics());
         SharedPreferences.Editor shared1 = context.getSharedPreferences("AppData", Activity.MODE_PRIVATE).edit();
         shared1.putString("language", lang);
-        shared1.putString("language_position", String.valueOf(position));
+        shared1.putInt("language_position", position);
         shared1.apply();
     }
 
-    public static void setFragmentLocale(String lang, String position, View view) {
+    public static void setFragmentLocale(String lang, int position, View view) {
         Locale locale = new Locale(lang);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
@@ -42,7 +42,7 @@ public class MainFunctions {
         view.getContext().getResources().updateConfiguration(config, view.getContext().getResources().getDisplayMetrics());
         SharedPreferences.Editor shared1 = view.getContext().getSharedPreferences("AppData", Activity.MODE_PRIVATE).edit();
         shared1.putString("language", lang);
-        shared1.putString("language_position", String.valueOf(position));
+        shared1.putInt("lang_pos", position);
         shared1.apply();
     }
 
@@ -51,7 +51,7 @@ public class MainFunctions {
 
         if (shared.getString("language", "") != null) {
             if (!shared.getString("language", "").equals("")) {
-                setFragmentLocale(shared.getString("language", ""), shared.getString("language_position", ""), view);
+                setFragmentLocale(shared.getString("language", ""), shared.getInt("lang_pos", -1), view);
             }
         }
     }
@@ -62,7 +62,7 @@ public class MainFunctions {
 
         if (shared.getString("language", "") != null) {
             if (!shared.getString("language", "").equals("")) {
-                setLocale(shared.getString("language", ""), shared.getString("language_position", ""), context);
+                setLocale(shared.getString("language", ""), shared.getInt("lang_pos", -1), context);
             }
         }
 

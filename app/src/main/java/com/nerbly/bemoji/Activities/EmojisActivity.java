@@ -1,6 +1,7 @@
 package com.nerbly.bemoji.Activities;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,9 +25,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.facebook.ads.AdSize;
-import com.facebook.ads.AdView;
-import com.facebook.ads.AudienceNetworkAds;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.tabs.TabLayout;
 import com.nerbly.bemoji.Fragments.MainEmojisFragment;
 import com.nerbly.bemoji.Fragments.PacksEmojisFragment;
@@ -35,7 +40,6 @@ import com.nerbly.bemoji.R;
 import java.util.Objects;
 
 import static com.nerbly.bemoji.Adapters.MainEmojisAdapter.isEmojiSheetShown;
-import static com.nerbly.bemoji.Configurations.BANNER_AD_ID;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.Functions.SideFunctions.hideShowKeyboard;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
@@ -48,11 +52,11 @@ import static com.nerbly.bemoji.UI.MainUIMethods.statusBarColor;
 
 public class EmojisActivity extends AppCompatActivity {
     public static EditText searchBoxField;
+    public LinearLayout searchBox;
     public boolean isSortingNew = true;
     public boolean isSortingOld = false;
     public boolean isSortingAlphabet = false;
-    private LinearLayout adview;
-    public static LinearLayout searchBox;
+    private AdView adview;
     private ImageView sortByBtn;
     private ImageView searchBtn;
     private ViewPager viewpager;
@@ -60,6 +64,7 @@ public class EmojisActivity extends AppCompatActivity {
     private boolean isSearching = false;
     private MainEmojisFragment main_emojis_fragment;
     private PacksEmojisFragment packs_emojis_fragment;
+    public static InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,14 +140,10 @@ public class EmojisActivity extends AppCompatActivity {
         tablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                final int position = tab.getPosition();
-
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                final int position = tab.getPosition();
-
             }
 
             @Override
@@ -170,10 +171,7 @@ public class EmojisActivity extends AppCompatActivity {
         tablayout.setTabTextColors(Color.parseColor("#616161"), ContextCompat.getColor(this, R.color.colorPrimary));
         tablayout.setupWithViewPager(viewpager);
 
-        AudienceNetworkAds.initialize(this);
-        AdView bannerAd = new AdView(this, BANNER_AD_ID, AdSize.BANNER_HEIGHT_50);
-        adview.addView(bannerAd);
-        bannerAd.loadAd();
+        loadAds();
     }
 
     public void LOGIC_FRONTEND() {
@@ -294,6 +292,42 @@ public class EmojisActivity extends AppCompatActivity {
         }
     }
 
+    private void loadAds() {
+        MobileAds.initialize(this, initializationStatus -> {
+        });
+
+        loadInterstitialAd();
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adview.loadAd(adRequest);
+
+
+        adview.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError adError) {
+
+            }
+
+            @Override
+            public void onAdOpened() {
+
+            }
+
+            @Override
+            public void onAdClicked() {
+
+            }
+
+            @Override
+            public void onAdClosed() {
+            }
+        });
+    }
 
     public class MyFragmentAdapter extends FragmentStatePagerAdapter {
         Context context;
@@ -334,4 +368,29 @@ public class EmojisActivity extends AppCompatActivity {
         }
 
     }
+
+    public void loadInterstitialAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        InterstitialAd.load(this, getString(R.string.admob_interstitial_id), adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        mInterstitialAd = interstitialAd;
+
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        mInterstitialAd = null;
+                    }
+                });
+    }
+
+    public static void showInterstitialAd(Activity context) {
+        if (mInterstitialAd != null) {
+            mInterstitialAd.show(context);
+        }
+    }
+
 }

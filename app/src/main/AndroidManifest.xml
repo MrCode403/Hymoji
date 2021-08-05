@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage" />
+        android:maxSdkVersion="29" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -21,17 +21,21 @@
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        android:windowSoftInputMode="stateHidden">
+        android:windowSoftInputMode="stateHidden"
+        tools:targetApi="m">
 
         <activity
             android:name=".Activities.MainActivity"
+            android:configChanges="uiMode"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.HomeActivity"
+            android:configChanges="uiMode" />
         <activity
             android:name=".Activities.EmojisActivity"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />

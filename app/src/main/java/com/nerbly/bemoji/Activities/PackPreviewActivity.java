@@ -48,6 +48,7 @@ import java.util.Objects;
 import static com.nerbly.bemoji.Functions.DownloaderSheet.showEmojiSheet;
 import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
+import static com.nerbly.bemoji.Functions.SideFunctions.getNavigationBarHeight;
 import static com.nerbly.bemoji.Functions.Utils.ZIP;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
@@ -55,6 +56,7 @@ import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
 import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
 import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
+import static com.nerbly.bemoji.UI.SideUIMethods.setMargins;
 import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 
 public class PackPreviewActivity extends AppCompatActivity {
@@ -169,6 +171,7 @@ public class PackPreviewActivity extends AppCompatActivity {
         DARK_ICONS(this);
         transparentStatusBar(this);
         rippleRoundStroke(download, "#7289DA", "#687DC8", 25, 0, "#7289DA");
+        setMargins(download, 20, 20, 20, getNavigationBarHeight(this) + 20);
     }
 
     private void setImgURL(final String url, final ImageView image) {

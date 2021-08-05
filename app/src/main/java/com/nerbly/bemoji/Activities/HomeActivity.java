@@ -16,20 +16,22 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.facebook.ads.AdSize;
-import com.facebook.ads.AdView;
-import com.facebook.ads.AudienceNetworkAds;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
@@ -50,6 +52,7 @@ import com.nerbly.bemoji.Functions.FileManager;
 import com.nerbly.bemoji.Functions.RequestNetwork;
 import com.nerbly.bemoji.Functions.RequestNetworkController;
 import com.nerbly.bemoji.Functions.Utils;
+import com.nerbly.bemoji.Functions.getDarkModeState;
 import com.nerbly.bemoji.R;
 import com.nerbly.bemoji.UI.MainUIMethods;
 
@@ -65,7 +68,6 @@ import java.util.Random;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
-import static com.nerbly.bemoji.Configurations.BANNER_AD_ID;
 import static com.nerbly.bemoji.Configurations.CATEGORIES_API_LINK;
 import static com.nerbly.bemoji.Configurations.EMOJIS_API_LINK;
 import static com.nerbly.bemoji.Configurations.PACKS_API_LINK;
@@ -94,8 +96,7 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<HashMap<String, Object>> emojisList = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> categoriesList = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> localEmojisList = new ArrayList<>();
-    private ScrollView scrollView;
-    private LinearLayout adview;
+    private AdView adview;
     private LinearLayout loadingView;
     private LinearLayout mainView;
     private LinearLayout shimmer1;
@@ -137,9 +138,20 @@ public class HomeActivity extends AppCompatActivity {
         context.recreate();
     }
 
+    getDarkModeState state;
+
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
+        state = new getDarkModeState(this);
+        if (state.loadNightModeState() == 0) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        } else if (state.loadNightModeState() == 1) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else if (state.loadNightModeState() == 2) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        }
+
         loadLocale(this);
         setContentView(R.layout.home);
         initialize();
@@ -150,7 +162,6 @@ public class HomeActivity extends AppCompatActivity {
     private void initialize() {
         adview = findViewById(R.id.adview);
         activityDescription = findViewById(R.id.activityDescription);
-        scrollView = findViewById(R.id.scrollView);
         loadingView = findViewById(R.id.loadingView);
         MaterialCardView discord_dock = findViewById(R.id.discord_dock);
         mainView = findViewById(R.id.mainView);
@@ -380,6 +391,7 @@ public class HomeActivity extends AppCompatActivity {
             startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, PACKS_API_LINK, "PACKS", EmojisRequestListener);
             loadingView.setVisibility(View.VISIBLE);
             mainView.setVisibility(View.GONE);
+            loadAds();
         });
 
 
@@ -429,7 +441,7 @@ public class HomeActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         local_recycler.setLayoutManager(layoutManager2);
 
-        if (sharedPref.getInt("opened_so_far", 0) >= 3) {
+        if (sharedPref.getInt("opened_so_far", 0) >= 2) {
             sharedPref.edit().putBoolean("isAskingForReloadEmojis", true).apply();
             sharedPref.edit().putInt("opened_so_far", 0).apply();
         } else {
@@ -454,16 +466,11 @@ public class HomeActivity extends AppCompatActivity {
 
         OverScrollDecoratorHelper.setUpOverScroll(packs_recycler, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL);
         OverScrollDecoratorHelper.setUpOverScroll(local_recycler, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL);
-        OverScrollDecoratorHelper.setUpOverScroll(scrollView);
 
         getOnlineEmojis();
-
-
-        AudienceNetworkAds.initialize(this);
-        AdView bannerAd = new AdView(this, BANNER_AD_ID, AdSize.BANNER_HEIGHT_50);
-        adview.addView(bannerAd);
-        bannerAd.loadAd();
+        loadAds();
     }
+
 
     public void LOGIC_FRONTEND() {
         if (Build.VERSION.SDK_INT < 23) {
@@ -641,6 +648,45 @@ public class HomeActivity extends AppCompatActivity {
         } catch (Exception ignored) {
         }
     }
+
+    private void loadAds() {
+        MobileAds.initialize(this, initializationStatus -> {
+        });
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adview.loadAd(adRequest);
+
+
+        adview.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError adError) {
+            }
+
+            @Override
+            public void onAdOpened() {
+            }
+
+            @Override
+            public void onAdClicked() {
+            }
+
+            @Override
+            public void onAdClosed() {
+            }
+        });
+    }
+
+    public void startRefreshFromSettings() {
+        startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, CATEGORIES_API_LINK, "CATEGORIES", EmojisRequestListener);
+        startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, EMOJIS_API_LINK, "EMOJIS", EmojisRequestListener);
+        startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, PACKS_API_LINK, "PACKS", EmojisRequestListener);
+        loadingView.setVisibility(View.VISIBLE);
+        mainView.setVisibility(View.GONE);
+        swipe_to_refresh.setRefreshing(true);
+    }
+
 }
-
-

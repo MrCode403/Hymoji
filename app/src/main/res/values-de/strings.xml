@@ -34,14 +34,12 @@
     <string name="animated_emojis_warning_btncancel">Nein, ich bin raus</string>
     <string name="animated_emojis_warning_btnok">Lass mich rein</string>
     <string name="welcome_continue">Fortsetzen</string>
-    <string name="welcome_title_1">Bemoji</string>
     <string name="welcome_subtitle_0">Unbegrenzte Sammlung von Discord-, Twitch- und Slack-Emojis</string>
     <string name="welcome_subtitle_1">Keine Lust mehr auf langweilige Emojis? Lassen Sie mich Ihnen vorstellen…</string>
     <string name="welcome_title_2">Eine andere Dimension von Emojis</string>
     <string name="welcome_subtitle_2">Memes, Animationen, Gesichter, Ausdrücke, jedes Emoji. Wir haben sie buchstäblich alle.</string>
     <string name="welcome_title_3">Lass uns anfangen</string>
     <string name="welcome_subtitle_3">Lass unsere Reise jetzt beginnen</string>
-    <string name="welcome_artwork_creator">Grafik durch Jackie Chan</string>
     <string name="sort_by_title">SORTIEREN NACH</string>
     <string name="sort_by_newest">Neueste</string>
     <string name="sort_by_oldest">Älteste</string>
@@ -60,12 +58,10 @@
     <string name="settings_option_2_subtitle">Sie werden zu emoji.gg weitergeleitet, um Ihre Emojis dort manuell hochzuladen. Nach der Genehmigung können Sie oben auf \"Emojis neu laden\" klicken.</string>
     <string name="settings_option_3_title">Cache leeren</string>
     <string name="settings_option_3_subtitle">Alle vorinstallierten Emojis werden gelöscht. Weniger App-Größe, mehr Ladezeit für Emojis.</string>
-    <string name="settings_section_2_title">BEMOJI</string>
     <string name="settings_option_4_title">Unterstützung</string>
     <string name="settings_option_4_subtitle">Bevor Sie Maßnahmen ergreifen, kontaktieren Sie uns bitte zuerst, um alles zu regeln. Vielen Dank.</string>
     <string name="settings_option_5_title">Feedback</string>
     <string name="settings_option_5_subtitle">Fehlt etwas oder benötigen Sie eine Funktion? Lass uns wissen. Vergessen Sie auch nicht, uns eine schöne Bewertung zu geben.</string>
-    <string name="settings_option_6_title">Bemoji</string>
     <string name="settings_option_6_subtitle">Wir sind in keiner Weise mit Discord oder Slack verbunden. Bemoji wurde nicht geschaffen, um mit anderen Diensten zu konkurrieren.</string>
     <string name="settings_section_3_title">URHEBERRECHTE</string>
     <string name="settings_option_7_title">Urheberrecht für Inhalte</string>
@@ -112,6 +108,14 @@
     <string name="share_title">Teile das Emoji über</string>
     <string name="emojis_tab1_title">Haupt-Emojis</string>
     <string name="emojis_tab2_title">Emojis von Paketen</string>
-    <string name="getting_ready_to_share">Vorbereitung...</string>
+    <string name="getting_ready_to_share">Vorbereitung…</string>
     <string name="failed_to_load_emojis">Emojis konnten nicht geladen werden. Bitte versuchen Sie es später erneut.</string>
+    <string name="settings_option_14_title">App-Theme</string>
+    <string name="settings_option_14_subtitle">Ihre Augen sollten Emojis in ihrer besten Form sehen.</string>
+    <string name="theme_dark_title">Dunkelmodus</string>
+    <string name="theme_light_title">Lichtmodus</string>
+    <string name="theme_auto_title">Systemthema folgen</string>
+    <string name="contribute_go">jetzt beitragen</string>
+    <string name="contribute_desc">Vielen Dank an alle, die zur Übersetzung von Bemoji beigetragen haben.</string>
+    <string name="contribute_title">Mitwirkende an Übersetzungen</string>
 </resources>

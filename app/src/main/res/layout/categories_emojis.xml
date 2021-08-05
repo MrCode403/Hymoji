@@ -130,12 +130,14 @@
             android:background="#E0E0E0"
             android:orientation="horizontal" />
 
-        <LinearLayout
+        <com.google.android.gms.ads.AdView
             android:id="@+id/adview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
-            android:orientation="vertical" />
+            android:orientation="vertical"
+            app:adSize="BANNER"
+            app:adUnitId="@string/home_admob_banner_id" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

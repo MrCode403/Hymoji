@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +26,8 @@ import com.nerbly.bemoji.UI.MainUIMethods;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout splashView;
     private ViewPager viewPager;
     private MaterialButton continueBtn;
+    private final Timer timer = new Timer();
     private SharedPreferences sharedPref;
 
     @Override
@@ -91,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
         continueBtn.setOnClickListener(_view -> {
             if (viewPager.getCurrentItem() == 2) {
-                sharedPref.edit().putString("firstUse", "true").apply();
+                sharedPref.edit().putBoolean("isFirstTime", false).apply();
                 intent.setClass(getApplicationContext(), HomeActivity.class);
                 startActivity(intent);
             } else {
@@ -107,8 +109,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (!(viewPager.getCurrentItem() == 0)) {
-            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+        if (sharedPref.getBoolean("isFirstTime", true)) {
+            if (!(viewPager.getCurrentItem() == 0)) {
+                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+            }
+        } else {
+            timer.cancel();
+            finishAffinity();
         }
     }
 
@@ -131,15 +138,17 @@ public class MainActivity extends AppCompatActivity {
             }
         } catch (Exception ignored) {
         }
-        for (int i = 0; i < 3; i++) {
-            HashMap<String, Object> viewPagerMap = new HashMap<>();
-            viewPagerMap.put("title", "data");
-            viewPagerMap.put("subtitle", "data");
-            viewPagerList.add(viewPagerMap);
-        }
-        viewPager.setAdapter(new ViewPager1Adapter(viewPagerList));
+
         dataView.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
-        if (sharedPref.getString("firstUse", "").isEmpty()) {
+
+        if (sharedPref.getBoolean("isFirstTime", true)) {
+            for (int i = 0; i < 3; i++) {
+                HashMap<String, Object> viewPagerMap = new HashMap<>();
+                viewPagerMap.put("title", "data");
+                viewPagerMap.put("subtitle", "data");
+                viewPagerList.add(viewPagerMap);
+            }
+            viewPager.setAdapter(new ViewPager1Adapter(viewPagerList));
             splashView.setVisibility(View.GONE);
             dataView.setVisibility(View.VISIBLE);
         } else {
@@ -147,10 +156,19 @@ public class MainActivity extends AppCompatActivity {
             dataView.setVisibility(View.GONE);
             MainUIMethods.shadAnim(welcomeImage, "scaleY", 1.1, 4000);
             MainUIMethods.shadAnim(welcomeImage, "scaleX", 1.1, 4000);
-            new Handler().postDelayed(() -> {
-                intent.setClass(getApplicationContext(), HomeActivity.class);
-                startActivity(intent);
-            }, 2000);
+            TimerTask splashTmr = new TimerTask() {
+                @Override
+                public void run() {
+                    runOnUiThread(() -> {
+
+                        intent.setClass(getApplicationContext(), HomeActivity.class);
+                        startActivity(intent);
+
+                    });
+                }
+            };
+            timer.schedule(splashTmr, 2000);
+
 
         }
     }
@@ -197,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
             final TextView welcomeDescription2 = view.findViewById(R.id.welcomeDescription2);
 
             if (position == 0) {
-                welcomeTitle2.setText(R.string.welcome_title_1);
+                welcomeTitle2.setText(R.string.app_name);
                 welcomeDescription2.setText(R.string.welcome_subtitle_1);
             } else {
                 if (position == 1) {

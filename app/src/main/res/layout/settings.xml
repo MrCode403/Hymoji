@@ -21,9 +21,7 @@
                 android:id="@+id/background"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
                 android:animateLayoutChanges="true"
-                android:background="#FFFFFF"
                 android:orientation="vertical"
                 tools:ignore="UselessParent">
 
@@ -32,7 +30,7 @@
                     android:layout_width="40dp"
                     android:layout_height="5dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="10dp"
                     android:background="#E0E0E0"
                     android:orientation="horizontal" />
 
@@ -97,6 +95,7 @@
                             android:paddingEnd="3dp"
                             android:paddingBottom="8dp"
                             android:text="@string/settings_section_1_title"
+                            android:textAllCaps="true"
                             android:textColor="#616161"
                             android:textSize="12sp"
                             android:textStyle="bold" />
@@ -309,6 +308,58 @@
                                 android:textSize="12sp" />
                         </RelativeLayout>
 
+                        <RelativeLayout
+                            android:id="@+id/setting14"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingLeft="5dp"
+                            android:paddingTop="7dp"
+                            android:paddingRight="5dp"
+                            android:paddingBottom="7dp">
+
+                            <ImageView
+                                android:id="@+id/setting14_ic"
+                                android:layout_width="30dp"
+                                android:layout_height="25dp"
+                                android:layout_centerVertical="true"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/twotone_dark_mode_black_48dp"
+                                app:tint="#00A0B4" />
+
+                            <TextView
+                                android:id="@+id/setting14_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@+id/setting14_ic"
+                                android:fontFamily="@font/whitney"
+                                android:paddingLeft="8dp"
+                                android:paddingTop="8dp"
+                                android:paddingRight="8dp"
+                                android:paddingBottom="2dp"
+                                android:text="@string/settings_option_14_title"
+                                android:textColor="#212121"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/setting14_desc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/setting14_ic"
+                                android:layout_toEndOf="@+id/setting14_ic"
+                                android:fontFamily="@font/whitney"
+                                android:paddingLeft="8dp"
+                                android:paddingTop="2dp"
+                                android:paddingRight="8dp"
+                                android:paddingBottom="8dp"
+                                android:text="@string/settings_option_14_subtitle"
+                                android:textColor="#616161"
+                                android:textSize="12sp" />
+                        </RelativeLayout>
+
                         <LinearLayout
                             android:id="@+id/line1"
                             android:layout_width="match_parent"
@@ -327,7 +378,8 @@
                             android:paddingTop="8dp"
                             android:paddingEnd="3dp"
                             android:paddingBottom="8dp"
-                            android:text="@string/settings_section_2_title"
+                            android:text="@string/app_name"
+                            android:textAllCaps="true"
                             android:textColor="#616161"
                             android:textSize="12sp"
                             android:textStyle="bold" />
@@ -573,7 +625,7 @@
                                 android:paddingTop="8dp"
                                 android:paddingRight="8dp"
                                 android:paddingBottom="2dp"
-                                android:text="@string/settings_option_6_title"
+                                android:text="@string/app_name"
                                 android:textColor="#212121"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
@@ -666,6 +718,7 @@
                             android:paddingEnd="3dp"
                             android:paddingBottom="8dp"
                             android:text="@string/settings_section_3_title"
+                            android:textAllCaps="true"
                             android:textColor="#616161"
                             android:textSize="12sp"
                             android:textStyle="bold" />

@@ -8,9 +8,7 @@
         android:id="@+id/cardView"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_margin="10dp"
-
-        android:theme="@style/Theme.MaterialComponents.Light">
+        android:layout_margin="10dp">
 
         <ImageView
             android:id="@+id/emoji"

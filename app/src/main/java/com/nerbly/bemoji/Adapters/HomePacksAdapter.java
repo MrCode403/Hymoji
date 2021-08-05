@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
 import com.nerbly.bemoji.Activities.HomeActivity;
 import com.nerbly.bemoji.Activities.PackPreviewActivity;
@@ -55,16 +56,16 @@ public class HomePacksAdapter {
         public void onBindViewHolder(ViewHolder _holder, @SuppressLint("RecyclerView") int position) {
             View view = _holder.itemView;
 
-            com.google.android.material.card.MaterialCardView cardview2 = view.findViewById(R.id.cardview2);
-            com.google.android.material.card.MaterialCardView cardview1 = view.findViewById(R.id.cardview1);
-            TextView textview1 = view.findViewById(R.id.emptyTitle);
-            TextView textview2 = view.findViewById(R.id.tutorialSubtitle);
+            MaterialCardView cardview2 = view.findViewById(R.id.cardview2);
+            MaterialCardView cardview1 = view.findViewById(R.id.cardview1);
+            TextView pack_title = view.findViewById(R.id.pack_title);
+            TextView pack_desc = view.findViewById(R.id.pack_desc);
             ImageView imageview1 = view.findViewById(R.id.emoji);
 
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             view.setLayoutParams(_lp);
-            textview1.setText(capitalizedFirstWord(Objects.requireNonNull(_data.get(position).get("name")).toString().replace("_", " ")));
-            textview2.setText(Objects.requireNonNull(_data.get(position).get("description")).toString());
+            pack_title.setText(capitalizedFirstWord(Objects.requireNonNull(_data.get(position).get("name")).toString().replace("_", " ")));
+            pack_desc.setText(Objects.requireNonNull(_data.get(position).get("description")).toString());
             setHighPriorityImageFromUrl(imageview1, Objects.requireNonNull(_data.get(position).get("image")).toString());
             cardview1.setOnClickListener(_view -> {
                 try {
@@ -82,7 +83,6 @@ public class HomePacksAdapter {
                     Log.e("Pack Array Crashed", e.toString());
                 }
                 Intent toPreview = new Intent();
-                toPreview.putExtra("switchType", "pack");
                 toPreview.putExtra("title", "BemojiPack_" + (long) (Double.parseDouble(Objects.requireNonNull(_data.get(position).get("id")).toString())));
                 toPreview.putExtra("subtitle", Objects.requireNonNull(_data.get(position).get("description")).toString());
                 toPreview.putExtra("imageUrl", Objects.requireNonNull(_data.get(position).get("image")).toString());

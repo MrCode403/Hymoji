@@ -2,6 +2,12 @@
 
 <resources>
     <string name="app_name" translatable="false">Bemoji</string>
+    <string name="home_admob_banner_id" translatable="false">ca-app-pub-7692699628033489/8854157312</string>
+    <string name="mainemojis_admob_banner_id" translatable="false">ca-app-pub-7692699628033489/7701869504</string>
+    <string name="packs_admob_banner_id" translatable="false">ca-app-pub-7692699628033489/7283707731</string>
+    <string name="categories_admob_banner_id" translatable="false">ca-app-pub-7692699628033489/3410258942</string>
+    <string name="admob_interstitial_id" translatable="false">ca-app-pub-7692699628033489/7714952571</string>
+
     <string name="home_title">Explore emojis</string>
     <string name="home_subtitle">Here you can explore our categories to access an unlimited collection of emojis</string>
     <string name="local_emojis_title">DOWNLOADED EMOJIS</string>
@@ -24,7 +30,7 @@
     <string name="home_dock4_title">Help</string>
     <string name="home_packs_title">EMOJI PACKS</string>
     <string name="home_packs_seemore">SEE ALL</string>
-    <string name="home_pack_seemore2">More packs</string>
+    <string name="home_pack_seemore2">More packs</string>h
     <string name="categories_screen_title">Explore categories</string>
     <string name="categories_screen_subtitle">Lazy to search? choose what suits your shiny server. Some categories are empty btw.</string>
     <string name="emojis_search_box_txt">For best results, search like a memer…</string>
@@ -36,14 +42,12 @@
     <string name="animated_emojis_warning_btncancel">Nope, I\'m out</string>
     <string name="animated_emojis_warning_btnok">Let me in</string>
     <string name="welcome_continue">Continue</string>
-    <string name="welcome_title_1">Bemoji</string>
     <string name="welcome_subtitle_0">Unlimited collection of Discord, Twitch, and Slack emojis</string>
     <string name="welcome_subtitle_1">Tired of boring emojis? Let me introduce myself…</string>
     <string name="welcome_title_2">Another dimension of emojis</string>
     <string name="welcome_subtitle_2">Memes, animations, faces, expressions, any emoji. We literally have them all.</string>
     <string name="welcome_title_3">Let\'s get started</string>
     <string name="welcome_subtitle_3">Let our journey begins now</string>
-    <string name="welcome_artwork_creator">Artwork by Jackie Chen</string>
     <string name="sort_by_title">SORT BY</string>
     <string name="sort_by_newest">Newest</string>
     <string name="sort_by_oldest">Oldest</string>
@@ -62,12 +66,10 @@
     <string name="settings_option_2_subtitle">You\'ll be redirected to emoji.gg to manually upload your emojis there. After approval, you may click \"Reload emojis\" above.</string>
     <string name="settings_option_3_title">Clear cache</string>
     <string name="settings_option_3_subtitle">All preloaded emojis will be erased. Less app size, more emojis loading time.</string>
-    <string name="settings_section_2_title">BEMOJI</string>
     <string name="settings_option_4_title">Support</string>
     <string name="settings_option_4_subtitle">Before taking any action, please contact us first to settle everything down. Thanks.</string>
     <string name="settings_option_5_title">Feedback</string>
     <string name="settings_option_5_subtitle">Is something missing or you need a feature? let us know. Also, don\'t forget to give us a nice rating.</string>
-    <string name="settings_option_6_title">Bemoji</string>
     <string name="settings_option_6_subtitle">We are in no way affiliated with Discord, Slack, or Twitch. Bemoji wasn\'t created to compete with any other service.</string>
     <string name="settings_section_3_title">COPYRIGHT</string>
     <string name="settings_option_7_title">Content copyright</string>
@@ -117,4 +119,12 @@
     <string name="emojis_tab2_title">Packs emojis</string>
     <string name="getting_ready_to_share">Getting ready for sharing…</string>
     <string name="failed_to_load_emojis">Failed to load emojis, please try again later.</string>
+    <string name="settings_option_14_title">App theme</string>
+    <string name="settings_option_14_subtitle">Your eyes should see emojis in their best look.</string>
+    <string name="theme_dark_title">Dark mode</string>
+    <string name="theme_light_title">Light mode</string>
+    <string name="theme_auto_title">Follow system theme</string>
+    <string name="contribute_go">contribute now</string>
+    <string name="contribute_desc">Huge thanks to everyone who contributed to translating Bemoji.</string>
+    <string name="contribute_title">Translation Contributors</string>
 </resources>

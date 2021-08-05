@@ -179,18 +179,11 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
 
     public void LOGIC_FRONTEND() {
         setViewRadius(slider, 90, "#E0E0E0");
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         Window window = Objects.requireNonNull(getDialog()).getWindow();
         WindowManager.LayoutParams windowParams = window.getAttributes();
-        windowParams.dimAmount = 0.2f;
+        windowParams.dimAmount = 0.3f;
         windowParams.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         window.setAttributes(windowParams);
-        MainUIMethods.DARK_ICONS(getActivity());
-
     }
 
     public class CategoriesRecyclerAdapter extends RecyclerView.Adapter<CategoriesRecyclerAdapter.ViewHolder> {

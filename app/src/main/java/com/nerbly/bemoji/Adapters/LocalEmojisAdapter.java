@@ -48,7 +48,7 @@ public class LocalEmojisAdapter {
             RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             view.setLayoutParams(lp);
             setImageFromPath(emojis, Objects.requireNonNull(data.get(position).get("filePath")).toString());
-            setClippedStrokeView(cardView, "#FFFFFF", 200, "#aeaeae", 1);
+            setClippedStrokeView(cardView, "#00FFFFFF", 200, "#aeaeae", 1);
         }
 
         @Override
