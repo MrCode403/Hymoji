@@ -124,7 +124,8 @@
     <string name="theme_dark_title">Dark mode</string>
     <string name="theme_light_title">Light mode</string>
     <string name="theme_auto_title">Follow system theme</string>
-    <string name="contribute_go">contribute now</string>
+    <string name="contribute_go">Contribute now</string>
     <string name="contribute_desc">Huge thanks to everyone who contributed to translating Bemoji.</string>
     <string name="contribute_title">Translation Contributors</string>
+    <string name="contrbute_contact_us">You\'ll be redirected to your mail app to contact us</string>
 </resources>

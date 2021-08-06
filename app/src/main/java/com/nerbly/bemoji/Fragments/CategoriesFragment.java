@@ -16,7 +16,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,7 +35,6 @@ import com.nerbly.bemoji.Functions.RequestNetwork;
 import com.nerbly.bemoji.Functions.RequestNetworkController;
 import com.nerbly.bemoji.Functions.Utils;
 import com.nerbly.bemoji.R;
-import com.nerbly.bemoji.UI.MainUIMethods;
 
 import org.json.JSONException;
 import org.json.JSONObject;

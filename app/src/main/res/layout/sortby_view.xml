@@ -23,9 +23,9 @@
             android:layout_height="match_parent"
             android:focusable="false"
             android:fontFamily="@font/whitney"
-            android:textAllCaps="true"
             android:padding="8dp"
             android:text="@string/sort_by_title"
+            android:textAllCaps="true"
             android:textColor="#616161"
             android:textSize="12sp"
             android:textStyle="bold" />

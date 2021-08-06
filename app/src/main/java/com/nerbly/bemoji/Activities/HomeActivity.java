@@ -88,8 +88,11 @@ public class HomeActivity extends AppCompatActivity {
     private final Intent toSearch = new Intent();
     private final Intent toPacks = new Intent();
     private final LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+    public boolean isFragmentAttached = false;
+    public boolean isActivityAttached = false;
     double emojisCount = 0;
     double emojisScanPosition = 0;
+    getDarkModeState state;
     private FileManager fileManager;
     private String localEmojisScanPath = "";
     private HashMap<String, Object> categoriesMap = new HashMap<>();
@@ -127,8 +130,6 @@ public class HomeActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipe_to_refresh;
     private AppUpdateManager appUpdateManager;
     private InstallStateUpdatedListener installStateUpdatedListener;
-    public boolean isFragmentAttached = false;
-    public boolean isActivityAttached = false;
 
     public static String PacksArray() {
         return new Gson().toJson(packsList);
@@ -137,8 +138,6 @@ public class HomeActivity extends AppCompatActivity {
     public static void userIsAskingForActivityToReload(Activity context) {
         context.recreate();
     }
-
-    getDarkModeState state;
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {

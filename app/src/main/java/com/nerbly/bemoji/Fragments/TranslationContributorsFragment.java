@@ -1,8 +1,6 @@
 package com.nerbly.bemoji.Fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,9 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,10 +21,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.nerbly.bemoji.Activities.HomeActivity;
+import com.nerbly.bemoji.Adapters.TranslationContributorsAdapter;
 import com.nerbly.bemoji.R;
 
 import java.io.IOException;
@@ -38,13 +34,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
-import static com.nerbly.bemoji.UI.MainUIMethods.circularImage;
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
 import static com.nerbly.bemoji.UI.UserInteractions.showMessageDialog;
 
 public class TranslationContributorsFragment extends BottomSheetDialogFragment {
 
     private LinearLayout slider;
+    private LinearLayout view_leftline;
     private RecyclerView recyclerview;
     private BottomSheetBehavior sheetBehavior;
     private SharedPreferences sharedPref;
@@ -69,8 +65,9 @@ public class TranslationContributorsFragment extends BottomSheetDialogFragment {
     }
 
     private void initialize(View view) {
-        MaterialButton contribute_go = view.findViewById(R.id.contribute_go);
+        MaterialCardView contribute_go = view.findViewById(R.id.contribute_go);
         slider = view.findViewById(R.id.slider);
+        view_leftline = view.findViewById(R.id.view_leftline);
         recyclerview = view.findViewById(R.id.recyclerview);
         sharedPref = requireActivity().getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
@@ -120,12 +117,12 @@ public class TranslationContributorsFragment extends BottomSheetDialogFragment {
         ArrayList<HashMap<String, Object>> contributorsList = new Gson().fromJson(getContributorsFromAsset(), new TypeToken<ArrayList<HashMap<String, Object>>>() {
         }.getType());
 
-        recyclerview.setAdapter(new ContributorsRecyclerAdapter(contributorsList));
+        recyclerview.setAdapter(new TranslationContributorsAdapter(contributorsList));
     }
-
 
     public void LOGIC_FRONTEND() {
         setViewRadius(slider, 90, "#E0E0E0");
+        setViewRadius(view_leftline, 90, "#009688");
         Window window = Objects.requireNonNull(getDialog()).getWindow();
         WindowManager.LayoutParams windowParams = window.getAttributes();
         windowParams.dimAmount = 0.3f;
@@ -147,50 +144,6 @@ public class TranslationContributorsFragment extends BottomSheetDialogFragment {
             return null;
         }
         return json;
-    }
-
-    public class ContributorsRecyclerAdapter extends RecyclerView.Adapter<ContributorsRecyclerAdapter.ViewHolder> {
-        ArrayList<HashMap<String, Object>> data;
-
-        public ContributorsRecyclerAdapter(ArrayList<HashMap<String, Object>> _arr) {
-            data = _arr;
-        }
-
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater _inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-          View _v = _inflater.inflate(R.layout.contributorsview, null);
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            _v.setLayoutParams(_lp);
-            return new ViewHolder(_v);
-        }
-
-        @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
-            View view = holder.itemView;
-            TextView name = view.findViewById(R.id.name);
-            TextView language = view.findViewById(R.id.language);
-            ImageView image = view.findViewById(R.id.image);
-
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            view.setLayoutParams(_lp);
-            name.setText(Objects.requireNonNull(data.get(position).get("name")).toString());
-            language.setText(Objects.requireNonNull(data.get(position).get("language")).toString());
-            circularImage(image, Objects.requireNonNull(data.get(position).get("language")).toString(), getActivity());
-        }
-
-        @Override
-        public int getItemCount() {
-            return data.size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public ViewHolder(View v) {
-                super(v);
-            }
-        }
-
     }
 
 }

@@ -39,18 +39,18 @@ import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
 
 public class MainEmojisFragment extends Fragment {
 
+    private final Timer timer = new Timer();
+    public boolean isSortingNew = true;
+    public boolean isSortingOld = false;
+    public boolean isSortingAlphabet = false;
     private TextView emptyTitle;
     private LinearLayout loadView;
     private double searchPosition = 0;
     private double emojisCount = 0;
     private GridView emojisRecycler;
-    public boolean isSortingNew = true;
-    public boolean isSortingOld = false;
-    public boolean isSortingAlphabet = false;
     private ArrayList<HashMap<String, Object>> emojisList = new ArrayList<>();
     private LottieAnimationView emptyAnimation;
     private SharedPreferences sharedPref;
-    private final Timer timer = new Timer();
 
     @NonNull
     @Override

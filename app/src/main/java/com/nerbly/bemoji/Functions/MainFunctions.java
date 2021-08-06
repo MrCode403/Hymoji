@@ -30,7 +30,7 @@ public class MainFunctions {
         context.getBaseContext().getResources().updateConfiguration(config, context.getBaseContext().getResources().getDisplayMetrics());
         SharedPreferences.Editor shared1 = context.getSharedPreferences("AppData", Activity.MODE_PRIVATE).edit();
         shared1.putString("language", lang);
-        shared1.putInt("language_position", position);
+        shared1.putInt("lang_pos", position);
         shared1.apply();
     }
 

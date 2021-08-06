@@ -115,7 +115,8 @@
     <string name="theme_dark_title">Mode sombre</string>
     <string name="theme_light_title">Mode lumière</string>
     <string name="theme_auto_title">Suivre le thème du système</string>
-    <string name="contribute_go">contribuer maintenant</string>
+    <string name="contribute_go">Contribuer maintenant</string>
     <string name="contribute_desc">Un grand merci à tous ceux qui ont contribué à la traduction de Bemoji.</string>
     <string name="contribute_title">Contributeurs à la traduction</string>
+    <string name="contrbute_contact_us">Vous serez redirigé vers votre application de messagerie pour nous contacter</string>
 </resources>

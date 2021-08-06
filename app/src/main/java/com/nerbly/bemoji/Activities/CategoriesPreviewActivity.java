@@ -45,7 +45,6 @@ import java.util.concurrent.Executors;
 
 import static com.nerbly.bemoji.Adapters.MainEmojisAdapter.Gridview1Adapter;
 import static com.nerbly.bemoji.Adapters.MainEmojisAdapter.isEmojiSheetShown;
-import static com.nerbly.bemoji.Configurations.BANNER_AD_ID;
 import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.Functions.SideFunctions.hideShowKeyboard;

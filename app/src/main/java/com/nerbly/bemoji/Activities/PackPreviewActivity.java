@@ -5,7 +5,6 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -45,10 +44,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+import static com.nerbly.bemoji.Configurations.ASSETS_SOURCE_LINK;
 import static com.nerbly.bemoji.Functions.DownloaderSheet.showEmojiSheet;
 import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
-import static com.nerbly.bemoji.Functions.SideFunctions.getNavigationBarHeight;
 import static com.nerbly.bemoji.Functions.Utils.ZIP;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
@@ -56,12 +55,10 @@ import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
 import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
 import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
-import static com.nerbly.bemoji.UI.SideUIMethods.setMargins;
 import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 
 public class PackPreviewActivity extends AppCompatActivity {
     private final ArrayList<HashMap<String, Object>> emojisListMap = new ArrayList<>();
-    private final Intent toPreview = new Intent();
     private final ObjectAnimator downAnim = new ObjectAnimator();
     private GridLayoutManager layoutManager1 = new GridLayoutManager(this, 3);
     private BottomSheetBehavior<LinearLayout> sheetBehavior;
@@ -152,7 +149,7 @@ public class PackPreviewActivity extends AppCompatActivity {
             }.getType());
             for (int i = 0; i < emojisStringArray.size(); i++) {
                 HashMap<String, Object> emojisMap = new HashMap<>();
-                emojisMap.put("emoji_link", "https://emoji.gg/assets/emoji/" + emojisStringArray.get(i));
+                emojisMap.put("emoji_link", ASSETS_SOURCE_LINK + emojisStringArray.get(i));
                 emojisMap.put("slug", emojisStringArray.get(i));
                 emojisListMap.add(emojisMap);
             }
@@ -171,7 +168,6 @@ public class PackPreviewActivity extends AppCompatActivity {
         DARK_ICONS(this);
         transparentStatusBar(this);
         rippleRoundStroke(download, "#7289DA", "#687DC8", 25, 0, "#7289DA");
-        setMargins(download, 20, 20, 20, getNavigationBarHeight(this) + 20);
     }
 
     private void setImgURL(final String url, final ImageView image) {
@@ -342,7 +338,7 @@ public class PackPreviewActivity extends AppCompatActivity {
                 downAnim.cancel();
             }
         } else {
-            String downloadPackUrl = "https://emoji.gg/assets/emoji/" + downloadPackArrayList.get((int) (downloadPackPosition));
+            String downloadPackUrl = ASSETS_SOURCE_LINK + downloadPackArrayList.get((int) (downloadPackPosition));
             String downloadPackName = "Bemoji_" + downloadPackArrayList.get((int) downloadPackPosition);
             if (isGoingToZipPack) {
                 downloadPackPath = FileUtil.getPackageDataDir(getApplicationContext()) + "/Zipper/" + packName;

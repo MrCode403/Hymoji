@@ -83,7 +83,7 @@ public class MainEmojisAdapter {
                 }
             });
 
-            if(position == getCount() - 1){
+            if (position == getCount() - 1) {
                 space.setVisibility(View.VISIBLE);
             } else {
                 space.setVisibility(View.GONE);

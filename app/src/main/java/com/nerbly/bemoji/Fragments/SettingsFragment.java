@@ -43,8 +43,9 @@ import static com.nerbly.bemoji.UI.UserInteractions.showMessageDialog;
 
 public class SettingsFragment extends BottomSheetDialogFragment {
 
+    private static SettingsFragment instance;
     private final Intent intent = new Intent();
-
+    public boolean isFragmentAttached = false;
     private LinearLayout slider;
     private RelativeLayout setting1;
     private RelativeLayout setting3;
@@ -60,9 +61,12 @@ public class SettingsFragment extends BottomSheetDialogFragment {
     private RelativeLayout setting13;
     private RelativeLayout setting14;
     private TextView textview8;
-    public boolean isFragmentAttached = false;
     private SharedPreferences sharedPref;
     private boolean isAskingForReload = false;
+
+    public static SettingsFragment getInstance() {
+        return instance;
+    }
 
     @NonNull
     @Override
@@ -341,11 +345,5 @@ public class SettingsFragment extends BottomSheetDialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         instance = this;
-    }
-
-    private static SettingsFragment instance;
-
-    public static SettingsFragment getInstance() {
-        return instance;
     }
 }

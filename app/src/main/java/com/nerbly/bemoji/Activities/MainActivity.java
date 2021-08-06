@@ -36,12 +36,12 @@ import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusNavBar;
 public class MainActivity extends AppCompatActivity {
     private final ArrayList<HashMap<String, Object>> viewPagerList = new ArrayList<>();
     private final Intent intent = new Intent();
+    private final Timer timer = new Timer();
     private ImageView welcomeImage;
     private LinearLayout dataView;
     private LinearLayout splashView;
     private ViewPager viewPager;
     private MaterialButton continueBtn;
-    private final Timer timer = new Timer();
     private SharedPreferences sharedPref;
 
     @Override

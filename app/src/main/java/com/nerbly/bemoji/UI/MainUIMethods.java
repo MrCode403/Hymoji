@@ -3,6 +3,7 @@ package com.nerbly.bemoji.UI;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.view.View;
@@ -139,7 +140,7 @@ public class MainUIMethods {
 
     //mics
 
-    public  static void circularImage(ImageView image,String url, Activity context) {
+    public static void circularImage(ImageView image, String url, Context context) {
         Glide.with(context)
                 .load(url)
                 .circleCrop()

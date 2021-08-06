@@ -115,7 +115,8 @@
     <string name="theme_dark_title">Karanlık mod</string>
     <string name="theme_light_title">Işık modu</string>
     <string name="theme_auto_title">Sistem temasını takip et</string>
-    <string name="contribute_go">katkıda bulunmak</string>
+    <string name="contribute_go">Katkıda bulunmak</string>
     <string name="contribute_desc">Bemoji\'nin çevirisine katkıda bulunan herkese çok teşekkürler.</string>
     <string name="contribute_title">Çeviriye Katkıda Bulunanlar</string>
+    <string name="contrbute_contact_us">Bizimle iletişime geçmek için posta uygulamanıza yönlendirileceksiniz</string>
 </resources>

@@ -115,7 +115,8 @@
     <string name="theme_dark_title">Темный режим</string>
     <string name="theme_light_title">Легкий режим</string>
     <string name="theme_auto_title">Следуйте системной теме</string>
-    <string name="contribute_go">способствовать</string>
+    <string name="contribute_go">Cпособствовать</string>
     <string name="contribute_desc">Огромное спасибо всем, кто внес свой вклад в перевод Bemoji.</string>
     <string name="contribute_title">Авторы переводов</string>
+    <string name="contrbute_contact_us">Вы будете перенаправлены в свое почтовое приложение, чтобы связаться с нами.</string>
 </resources>

@@ -43,20 +43,20 @@ import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
 
 public class PacksEmojisFragment extends Fragment {
 
+    private final Timer timer = new Timer();
+    public boolean isSortingNew = true;
+    public boolean isSortingOld = false;
+    public boolean isGettingDataFirstTime = true;
+    public boolean isSortingAlphabet = false;
     private GridView emojisRecycler;
     private int searchPosition = 0;
     private TextView emptyTitle;
     private LinearLayout loadView;
-    private final Timer timer = new Timer();
     private int emojisCount = 0;
     private ArrayList<HashMap<String, Object>> emojisList = new ArrayList<>();
     private LottieAnimationView emptyAnimation;
     private HashMap<String, Object> emojisMap = new HashMap<>();
     private SharedPreferences sharedPref;
-    public boolean isSortingNew = true;
-    public boolean isSortingOld = false;
-    public boolean isGettingDataFirstTime = true;
-    public boolean isSortingAlphabet = false;
 
     @NonNull
     @Override
@@ -130,15 +130,15 @@ public class PacksEmojisFragment extends Fragment {
             if (!sharedPref.getString("packsData", "").isEmpty()) {
                 try {
                     JSONArray backPacksArray = new JSONArray(sharedPref.getString("packsData", ""));
-                    for (int backPacksArrayInt = 0; backPacksArrayInt < (int) (backPacksArray.length()); backPacksArrayInt++) {
-                        JSONObject packsObject = backPacksArray.getJSONObject((int) backPacksArrayInt);
+                    for (int backPacksArrayInt = 0; backPacksArrayInt < backPacksArray.length(); backPacksArrayInt++) {
+                        JSONObject packsObject = backPacksArray.getJSONObject(backPacksArrayInt);
                         JSONArray frontPacksArray = packsObject.getJSONArray("emojis");
-                        for (int frontPacksInt = 0; frontPacksInt < (int) (frontPacksArray.length()); frontPacksInt++) {
+                        for (int frontPacksInt = 0; frontPacksInt < frontPacksArray.length(); frontPacksInt++) {
                             emojisMap = new HashMap<>();
                             emojisMap.put("image", ASSETS_SOURCE_LINK + frontPacksArray.getString(frontPacksInt));
                             emojisMap.put("title", frontPacksArray.getString(frontPacksInt));
                             emojisMap.put("submitted_by", "Emoji lovers");
-                            emojisMap.put("id", (int) scanPosition);
+                            emojisMap.put("id", scanPosition);
                             emojisList.add(emojisMap);
                             scanPosition++;
                         }
@@ -150,9 +150,9 @@ public class PacksEmojisFragment extends Fragment {
             handler.post(() -> {
                 if (isSortingNew) {
                     Utils.sortListMap2(emojisList, "id", true, true);
-                } else  if (isSortingOld) {
+                } else if (isSortingOld) {
                     Utils.sortListMap2(emojisList, "id", true, false);
-                } else  if (isSortingAlphabet) {
+                } else if (isSortingAlphabet) {
                     Utils.sortListMap(emojisList, "title", false, true);
                 }
                 emojisRecycler.setAdapter(new MainEmojisAdapter.Gridview1Adapter(emojisList));
@@ -192,10 +192,10 @@ public class PacksEmojisFragment extends Fragment {
                 }.getType());
                 emojisCount = emojisList.size();
                 searchPosition = emojisCount - 1;
-                for (int i = 0; i < (int) (emojisCount); i++) {
+                for (int i = 0; i < emojisCount; i++) {
 
-                    if (!Objects.requireNonNull(emojisList.get((int) searchPosition).get("title")).toString().toLowerCase().contains(query.trim().toLowerCase())) {
-                        emojisList.remove((int) (searchPosition));
+                    if (!Objects.requireNonNull(emojisList.get(searchPosition).get("title")).toString().toLowerCase().contains(query.trim().toLowerCase())) {
+                        emojisList.remove(searchPosition);
                     }
                     searchPosition--;
                 }

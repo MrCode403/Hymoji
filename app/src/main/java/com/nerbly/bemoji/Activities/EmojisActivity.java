@@ -52,6 +52,7 @@ import static com.nerbly.bemoji.UI.MainUIMethods.statusBarColor;
 
 public class EmojisActivity extends AppCompatActivity {
     public static EditText searchBoxField;
+    public static InterstitialAd mInterstitialAd;
     public LinearLayout searchBox;
     public boolean isSortingNew = true;
     public boolean isSortingOld = false;
@@ -64,7 +65,12 @@ public class EmojisActivity extends AppCompatActivity {
     private boolean isSearching = false;
     private MainEmojisFragment main_emojis_fragment;
     private PacksEmojisFragment packs_emojis_fragment;
-    public static InterstitialAd mInterstitialAd;
+
+    public static void showInterstitialAd(Activity context) {
+        if (mInterstitialAd != null) {
+            mInterstitialAd.show(context);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,7 +169,6 @@ public class EmojisActivity extends AppCompatActivity {
         LOGIC_BACKEND();
     }
 
-
     public void LOGIC_BACKEND() {
         viewpager.setOffscreenPageLimit(2);
         viewpager.setAdapter(new MyFragmentAdapter(getApplicationContext(), getSupportFragmentManager(), 2));
@@ -261,7 +266,6 @@ public class EmojisActivity extends AppCompatActivity {
         popup.showAsDropDown(view, 0, 0);
     }
 
-
     private void searchTask() {
         if (searchBoxField.getText().toString().trim().length() > 0) {
             hideShowKeyboard(false, searchBoxField, this);
@@ -329,6 +333,24 @@ public class EmojisActivity extends AppCompatActivity {
         });
     }
 
+    public void loadInterstitialAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        InterstitialAd.load(this, getString(R.string.admob_interstitial_id), adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        mInterstitialAd = interstitialAd;
+
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        mInterstitialAd = null;
+                    }
+                });
+    }
+
     public class MyFragmentAdapter extends FragmentStatePagerAdapter {
         Context context;
         int tabCount;
@@ -367,30 +389,6 @@ public class EmojisActivity extends AppCompatActivity {
             return null;
         }
 
-    }
-
-    public void loadInterstitialAd() {
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        InterstitialAd.load(this, getString(R.string.admob_interstitial_id), adRequest,
-                new InterstitialAdLoadCallback() {
-                    @Override
-                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                        mInterstitialAd = interstitialAd;
-
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        mInterstitialAd = null;
-                    }
-                });
-    }
-
-    public static void showInterstitialAd(Activity context) {
-        if (mInterstitialAd != null) {
-            mInterstitialAd.show(context);
-        }
     }
 
 }

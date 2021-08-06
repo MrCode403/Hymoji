@@ -216,6 +216,36 @@ public class PacksActivity extends AppCompatActivity {
 
     }
 
+    private void loadAds() {
+        MobileAds.initialize(this, initializationStatus -> {
+        });
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adview.loadAd(adRequest);
+
+        adview.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+            }
+
+            @Override
+            public void onAdFailedToLoad(LoadAdError adError) {
+            }
+
+            @Override
+            public void onAdOpened() {
+            }
+
+            @Override
+            public void onAdClicked() {
+            }
+
+            @Override
+            public void onAdClosed() {
+            }
+        });
+    }
+
     @SuppressLint("StaticFieldLeak")
     private class getPacksTask extends AsyncTask<String, Integer, String> {
         @Override
@@ -330,35 +360,5 @@ public class PacksActivity extends AppCompatActivity {
             }
         }
 
-    }
-
-    private void loadAds() {
-        MobileAds.initialize(this, initializationStatus -> {
-        });
-
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adview.loadAd(adRequest);
-
-        adview.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-            }
-
-            @Override
-            public void onAdFailedToLoad(LoadAdError adError) {
-            }
-
-            @Override
-            public void onAdOpened() {
-            }
-
-            @Override
-            public void onAdClicked() {
-            }
-
-            @Override
-            public void onAdClosed() {
-            }
-        });
     }
 }
