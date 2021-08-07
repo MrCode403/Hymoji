@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.media.MediaScannerConnection;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -168,6 +169,10 @@ public class PackPreviewActivity extends AppCompatActivity {
         DARK_ICONS(this);
         transparentStatusBar(this);
         rippleRoundStroke(download, "#7289DA", "#687DC8", 25, 0, "#7289DA");
+
+        if (Build.VERSION.SDK_INT >= 30) {
+            download.setVisibility(View.GONE);
+        }
     }
 
     private void setImgURL(final String url, final ImageView image) {

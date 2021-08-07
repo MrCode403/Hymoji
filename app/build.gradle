@@ -10,7 +10,7 @@ android {
         applicationId "com.nerbly.bemoji"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 22
+        versionCode 23
         versionName "0.2.5 - beta"
     }
     buildTypes {
@@ -69,6 +69,7 @@ dependencies {
 
     //ads
     implementation 'com.google.android.gms:play-services-ads:20.2.0'
+    implementation 'com.google.ads.mediation:facebook:6.5.1.0'
 
     //other libs
     implementation 'com.mindorks.android:prdownloader:0.6.0'
