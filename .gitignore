@@ -6,22 +6,7 @@ gradle-app.setting
 
 # IntelliJ
 *.iml
-.idea/caches/
-.idea/dictionaries/
-.idea/inspectionProfiles/Project_Default.xml
-.idea/libraries/
-.idea/modules/
-.idea/shelf/
-.idea/assetWizardSettings.xml
-.idea/compiler.xml
-.idea/discord.xml
-.idea/gradle.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/runConfigurations.xml
-.idea/tasks.xml
-.idea/vcs.xml
-.idea/workspace.xml
+/.idea/
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
