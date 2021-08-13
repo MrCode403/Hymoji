@@ -1,5 +1,7 @@
 package com.nerbly.bemoji.Adapters;
 
+import static com.nerbly.bemoji.UI.MainUIMethods.circularImage;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +17,6 @@ import com.nerbly.bemoji.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
-
-import static com.nerbly.bemoji.UI.MainUIMethods.circularImage;
 
 public class TranslationContributorsAdapter extends RecyclerView.Adapter<TranslationContributorsAdapter.ViewHolder> {
     ArrayList<HashMap<String, Object>> data;

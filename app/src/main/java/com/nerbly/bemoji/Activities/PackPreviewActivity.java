@@ -1,5 +1,18 @@
 package com.nerbly.bemoji.Activities;
 
+import static com.nerbly.bemoji.Configurations.ASSETS_SOURCE_LINK;
+import static com.nerbly.bemoji.Functions.DownloaderSheet.showEmojiSheet;
+import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
+import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
+import static com.nerbly.bemoji.Functions.Utils.ZIP;
+import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
+import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
+import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
+import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
+import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
+import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
+
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
@@ -44,19 +57,6 @@ import com.nerbly.bemoji.UI.UserInteractions;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
-
-import static com.nerbly.bemoji.Configurations.ASSETS_SOURCE_LINK;
-import static com.nerbly.bemoji.Functions.DownloaderSheet.showEmojiSheet;
-import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
-import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
-import static com.nerbly.bemoji.Functions.Utils.ZIP;
-import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
-import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
-import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
-import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
-import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
-import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 
 public class PackPreviewActivity extends AppCompatActivity {
     private final ArrayList<HashMap<String, Object>> emojisListMap = new ArrayList<>();
@@ -138,7 +138,6 @@ public class PackPreviewActivity extends AppCompatActivity {
     }
 
     public void LOGIC_BACKEND() {
-        overridePendingTransition(R.anim.fade_in, 0);
         sheetBehavior = BottomSheetBehavior.from(bsheetbehavior);
         activityTitle.setText(getIntent().getStringExtra("packName"));
         rotationListener();

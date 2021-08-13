@@ -1,8 +1,12 @@
 package com.nerbly.bemoji.Functions;
 
 import android.app.Activity;
+import android.os.Handler;
+import android.os.Looper;
 
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class RequestNetwork {
     private final Activity activity;
@@ -40,7 +44,17 @@ public class RequestNetwork {
     }
 
     public void startRequestNetwork(String method, String url, String tag, RequestListener requestListener) {
-        RequestNetworkController.getInstance().execute(this, method, url, tag, requestListener);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+            RequestNetworkController.getInstance().execute(this, method, url, tag, requestListener);
+            handler.post(() -> {
+                //UI Thread work here
+            });
+        });
+
+
     }
 
     public interface RequestListener {

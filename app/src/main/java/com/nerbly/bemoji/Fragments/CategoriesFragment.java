@@ -1,5 +1,10 @@
 package com.nerbly.bemoji.Fragments;
 
+import static com.nerbly.bemoji.Configurations.CATEGORIES_API_LINK;
+import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
+import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
+import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
+
 import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -43,11 +48,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Objects;
-
-import static com.nerbly.bemoji.Configurations.CATEGORIES_API_LINK;
-import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
-import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
-import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
 
 public class CategoriesFragment extends BottomSheetDialogFragment {
     private final ArrayList<HashMap<String, Object>> shimmerList = new ArrayList<>();

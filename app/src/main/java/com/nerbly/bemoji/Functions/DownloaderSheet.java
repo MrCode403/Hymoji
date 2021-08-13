@@ -1,5 +1,12 @@
 package com.nerbly.bemoji.Functions;
 
+import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
+import static com.nerbly.bemoji.Functions.SideFunctions.setBlurImageUrl;
+import static com.nerbly.bemoji.Functions.SideFunctions.setImageFromUrlForSheet;
+import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
+import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
+import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
+
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
@@ -27,12 +34,6 @@ import com.nerbly.bemoji.R;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.nerbly.bemoji.Functions.SideFunctions.setBlurImageUrl;
-import static com.nerbly.bemoji.Functions.SideFunctions.setImageFromUrlForSheet;
-import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
-import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
-import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
-
 public class DownloaderSheet extends AppCompatActivity {
     public static void showEmojiSheet(Context context, String url, String name, String publisher) {
         Activity activity = (Activity) context;
@@ -56,7 +57,12 @@ public class DownloaderSheet extends AppCompatActivity {
 
 
         emoji_publisher.setText(context.getString(R.string.submitted_by).concat(" " + publisher));
-        emoji_title.setText(name);
+
+        String emojiName = name.replaceAll("[_\\\\-]", " ");
+        emojiName = emojiName.replaceAll("[0-9]", "");
+        emojiName = emojiName.substring(0, emojiName.length() - 4);
+
+        emoji_title.setText(capitalizedFirstWord(emojiName).trim());
         setBlurImageUrl(emoji_background, 25, url);
         setImageFromUrlForSheet(emoji, url);
         advancedCorners(relativeView, "#ffffff", 38, 38, 0, 0);
@@ -101,7 +107,7 @@ public class DownloaderSheet extends AppCompatActivity {
                 request.setTitle("Bemoji_" + URLUtil.guessFileName(url, "", ""));
                 request.allowScanningByMediaScanner();
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "Bemojis/Bemoji_" + URLUtil.guessFileName(url, "", ""));
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "Bemojis/bemoji_" + URLUtil.guessFileName(url, "", ""));
                 downloadmanager.enqueue(request);
                 EmojisActivity.showInterstitialAd((Activity) context);
                 handler.post(() -> {

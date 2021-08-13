@@ -1,6 +1,17 @@
 package com.nerbly.bemoji.Activities;
 
 
+import static com.nerbly.bemoji.Adapters.MainEmojisAdapter.isEmojiSheetShown;
+import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
+import static com.nerbly.bemoji.Functions.SideFunctions.hideShowKeyboard;
+import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.RippleEffects;
+import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
+import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
+import static com.nerbly.bemoji.UI.MainUIMethods.setImageViewRipple;
+import static com.nerbly.bemoji.UI.MainUIMethods.statusBarColor;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -39,17 +50,6 @@ import com.nerbly.bemoji.R;
 
 import java.util.Objects;
 
-import static com.nerbly.bemoji.Adapters.MainEmojisAdapter.isEmojiSheetShown;
-import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
-import static com.nerbly.bemoji.Functions.SideFunctions.hideShowKeyboard;
-import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.RippleEffects;
-import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
-import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
-import static com.nerbly.bemoji.UI.MainUIMethods.setImageViewRipple;
-import static com.nerbly.bemoji.UI.MainUIMethods.statusBarColor;
-
 public class EmojisActivity extends AppCompatActivity {
     public static EditText searchBoxField;
     public static InterstitialAd mInterstitialAd;
@@ -65,6 +65,7 @@ public class EmojisActivity extends AppCompatActivity {
     private boolean isSearching = false;
     private MainEmojisFragment main_emojis_fragment;
     private PacksEmojisFragment packs_emojis_fragment;
+    private String lastSearchedEmoji = "";
 
     public static void showInterstitialAd(Activity context) {
         if (mInterstitialAd != null) {
@@ -132,6 +133,7 @@ public class EmojisActivity extends AppCompatActivity {
 
         sortByBtn.setOnClickListener(_view -> {
             if (searchBoxField.getText().toString().trim().length() > 0) {
+                lastSearchedEmoji = "";
                 searchBoxField.setText("");
             } else {
                 searchBoxField.setEnabled(false);
@@ -267,14 +269,18 @@ public class EmojisActivity extends AppCompatActivity {
     }
 
     private void searchTask() {
-        if (searchBoxField.getText().toString().trim().length() > 0) {
+        String searchValue = searchBoxField.getText().toString().trim();
+
+        if (!searchValue.isEmpty()) {
+            sortByBtn.setImageResource(R.drawable.round_clear_black_48dp);
+        } else {
+            sortByBtn.setImageResource(R.drawable.outline_filter_alt_black_48dp);
+        }
+
+        if (!searchValue.isEmpty() && !lastSearchedEmoji.equals(searchValue)) {
+            lastSearchedEmoji = searchValue;
             hideShowKeyboard(false, searchBoxField, this);
             isSearching = true;
-            if (searchBoxField.getText().toString().trim().length() > 0) {
-                sortByBtn.setImageResource(R.drawable.round_clear_black_48dp);
-            } else {
-                sortByBtn.setImageResource(R.drawable.outline_filter_alt_black_48dp);
-            }
             if (viewpager.getCurrentItem() == 0) {
                 MainEmojisFragment fragment = (MainEmojisFragment) Objects.requireNonNull(viewpager.getAdapter()).instantiateItem(viewpager, viewpager.getCurrentItem());
                 fragment.searchTask(searchBoxField.getText().toString().trim());

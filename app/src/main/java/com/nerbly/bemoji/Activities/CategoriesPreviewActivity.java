@@ -1,6 +1,21 @@
 package com.nerbly.bemoji.Activities;
 
 
+import static com.nerbly.bemoji.Adapters.MainEmojisAdapter.Gridview1Adapter;
+import static com.nerbly.bemoji.Adapters.MainEmojisAdapter.isEmojiSheetShown;
+import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
+import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
+import static com.nerbly.bemoji.Functions.SideFunctions.hideShowKeyboard;
+import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.RippleEffects;
+import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
+import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
+import static com.nerbly.bemoji.UI.MainUIMethods.setImageViewRipple;
+import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
+import static com.nerbly.bemoji.UI.MainUIMethods.statusBarColor;
+import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -21,6 +36,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -43,20 +59,6 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.nerbly.bemoji.Adapters.MainEmojisAdapter.Gridview1Adapter;
-import static com.nerbly.bemoji.Adapters.MainEmojisAdapter.isEmojiSheetShown;
-import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
-import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
-import static com.nerbly.bemoji.Functions.SideFunctions.hideShowKeyboard;
-import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.RippleEffects;
-import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
-import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
-import static com.nerbly.bemoji.UI.MainUIMethods.setImageViewRipple;
-import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
-import static com.nerbly.bemoji.UI.MainUIMethods.statusBarColor;
-
 public class CategoriesPreviewActivity extends AppCompatActivity {
     private static EditText searchBoxField;
     private final Timer timer = new Timer();
@@ -77,6 +79,7 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
     private SharedPreferences sharedPref;
     private boolean isSearching = false;
     private boolean isGettingDataFirstTime = true;
+    private String lastSearchedEmoji = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +130,9 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
 
         searchBoxField.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                if (searchBoxField.getText().toString().trim().length() > 0) {
+                String searchValue = searchBoxField.getText().toString().trim();
+                if (!searchValue.isEmpty() && !lastSearchedEmoji.equals(searchValue)) {
+                    lastSearchedEmoji = searchValue;
                     hideShowKeyboard(false, searchBoxField, CategoriesPreviewActivity.this);
                     isSearching = true;
                     searchTask();
@@ -140,6 +145,7 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
 
         sortByBtn.setOnClickListener(_view -> {
             if (searchBoxField.getText().toString().trim().length() > 0) {
+                lastSearchedEmoji = "";
                 searchBoxField.setText("");
             } else {
                 searchBoxField.setEnabled(false);
@@ -149,11 +155,14 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
         });
 
         searchBtn.setOnClickListener(_view -> {
-            if (searchBoxField.getText().toString().trim().length() > 0) {
+            String searchValue = searchBoxField.getText().toString().trim();
+            if (!searchValue.isEmpty() && !lastSearchedEmoji.equals(searchValue)) {
+                lastSearchedEmoji = searchBoxField.getText().toString().trim();
                 hideShowKeyboard(false, searchBoxField, CategoriesPreviewActivity.this);
                 isSearching = true;
                 searchTask();
             }
+
         });
 
     }
@@ -168,9 +177,9 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.fade_in, 0);
 
         initEmojisRecycler();
-
         getEmojis();
 
+        loadAds();
     }
 
     public void LOGIC_FRONTEND() {
@@ -191,8 +200,6 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
         int number = getScreenWidth(this);
         int columns = (int) ((float) number / scaleFactor);
         emojisRecycler.setNumColumns(columns);
-        emojisRecycler.setVerticalSpacing(0);
-        emojisRecycler.setHorizontalSpacing(0);
     }
 
     public void loadCategorizedEmojis() {
@@ -312,13 +319,17 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
 
     }
 
-    private void noEmojisFound() {
+    private void noEmojisFound(boolean isError) {
+        if (isError) {
+            emptyTitle.setText(getString(R.string.error_msg_2));
+        } else {
+            emptyTitle.setText(getString(R.string.emojis_not_found));
+        }
         shadAnim(emptyAnimation, "translationX", -200, 200);
         shadAnim(emptyAnimation, "alpha", 0, 200);
         loadView.setVisibility(View.VISIBLE);
         emptyAnimation.setAnimation("animations/not_found.json");
         emptyAnimation.playAnimation();
-        emptyTitle.setText(getString(R.string.emojis_not_found));
         TimerTask loadingTmr = new TimerTask() {
             @Override
             public void run() {
@@ -381,7 +392,7 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
 
             handler.post(() -> {
                 if (emojisList.size() == 0) {
-                    noEmojisFound();
+                    noEmojisFound(false);
                 } else {
                     emojisRecycler.setVisibility(View.VISIBLE);
                     loadView.setVisibility(View.GONE);
@@ -393,7 +404,6 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
     }
 
     private void getEmojisTask() {
-
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
 
@@ -408,12 +418,18 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
             }
 
             handler.post(() -> {
-                if (emojisList.size() == 0) {
-                    noEmojisFound();
+                if (emojisList.isEmpty()) {
+                    noEmojisFound(false);
                 } else {
                     emojisRecycler.setVisibility(View.VISIBLE);
-                    emojisRecycler.setAdapter(new Gridview1Adapter(emojisList));
-                    whenEmojisAreReady();
+                    try {
+                        emojisRecycler.setAdapter(new Gridview1Adapter(emojisList));
+                        whenEmojisAreReady();
+                    } catch (Exception e) {
+                        showCustomSnackBar(getString(R.string.error_msg_2), this);
+                        noEmojisFound(true);
+                    }
+
                 }
             });
         });
@@ -441,7 +457,7 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onAdFailedToLoad(LoadAdError adError) {
+            public void onAdFailedToLoad(@NonNull LoadAdError adError) {
             }
 
             @Override

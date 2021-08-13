@@ -478,6 +478,84 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp" />
 
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/premium_dock"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="10dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:theme="@style/Theme.MaterialComponents.Light"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="0dp"
+                        app:rippleColor="#4E6F8ADB"
+                        app:strokeColor="#E0E0E0"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp">
+
+                            <ImageView
+                                android:id="@+id/premium_img"
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                android:background="#FAFAFA"
+                                android:padding="20dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_premium" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_weight="1"
+                                android:gravity="bottom"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/premium_title"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/whitney"
+                                    android:paddingLeft="4dp"
+                                    android:paddingRight="4dp"
+                                    android:paddingBottom="4dp"
+                                    android:text="Bemoji premium"
+                                    android:textColor="#212121"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/premium_desc"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/whitney"
+                                    android:paddingLeft="4dp"
+                                    android:paddingRight="4dp"
+                                    android:text="Get tons of premium features just for you, and most improtantly, get rid of ads."
+                                    android:textColor="#757575"
+                                    android:textSize="12sp" />
+
+                            </LinearLayout>
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_chevron_right_grey" />
+                        </LinearLayout>
+
+
+                    </com.google.android.material.card.MaterialCardView>
+
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/discord_dock"
@@ -511,16 +589,6 @@
                                 android:padding="20dp"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/ic_discord" />
-
-                            <ImageView
-                                android:id="@+id/img_dock4_en"
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:background="#FAFAFA"
-                                android:padding="25dp"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/ic_discord"
-                                android:visibility="gone" />
 
                             <LinearLayout
                                 android:id="@+id/linear75"

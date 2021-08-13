@@ -1,5 +1,8 @@
 package com.nerbly.bemoji.Adapters;
 
+import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
+import static com.nerbly.bemoji.Functions.SideFunctions.setHighPriorityImageFromUrl;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -26,9 +29,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
-
-import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
-import static com.nerbly.bemoji.Functions.SideFunctions.setHighPriorityImageFromUrl;
 
 public class HomePacksAdapter {
 

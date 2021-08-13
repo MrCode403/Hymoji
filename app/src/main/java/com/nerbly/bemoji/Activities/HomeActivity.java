@@ -1,5 +1,18 @@
 package com.nerbly.bemoji.Activities;
 
+import static com.nerbly.bemoji.Configurations.CATEGORIES_API_LINK;
+import static com.nerbly.bemoji.Configurations.EMOJIS_API_LINK;
+import static com.nerbly.bemoji.Configurations.PACKS_API_LINK;
+import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
+import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.numbersAnimator;
+import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
+import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
+import static com.nerbly.bemoji.UI.MainUIMethods.statusBarColor;
+import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
+import static com.nerbly.bemoji.UI.UserInteractions.showMessageDialog;
+
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -68,19 +81,6 @@ import java.util.Random;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
-import static com.nerbly.bemoji.Configurations.CATEGORIES_API_LINK;
-import static com.nerbly.bemoji.Configurations.EMOJIS_API_LINK;
-import static com.nerbly.bemoji.Configurations.PACKS_API_LINK;
-import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
-import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.numbersAnimator;
-import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
-import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
-import static com.nerbly.bemoji.UI.MainUIMethods.statusBarColor;
-import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
-import static com.nerbly.bemoji.UI.UserInteractions.showMessageDialog;
-
 public class HomeActivity extends AppCompatActivity {
 
     private static final int FLEXIBLE_APP_UPDATE_REQ_CODE = 123;
@@ -113,6 +113,7 @@ public class HomeActivity extends AppCompatActivity {
     private LinearLayout shimmer10;
     private LinearLayout shimmer11;
     private ImageView discord_img;
+    private ImageView premium_img;
     private LinearLayout localEmojisView;
     private RecyclerView packs_recycler;
     private RecyclerView local_recycler;
@@ -163,7 +164,9 @@ public class HomeActivity extends AppCompatActivity {
         activityDescription = findViewById(R.id.activityDescription);
         loadingView = findViewById(R.id.loadingView);
         MaterialCardView discord_dock = findViewById(R.id.discord_dock);
+        MaterialCardView premium_dock = findViewById(R.id.premium_dock);
         mainView = findViewById(R.id.mainView);
+        premium_img = findViewById(R.id.premium_img);
         shimmer1 = findViewById(R.id.shimmer1);
         shimmer2 = findViewById(R.id.shimmer2);
         shimmer7 = findViewById(R.id.shimmer7);
@@ -229,6 +232,11 @@ public class HomeActivity extends AppCompatActivity {
                         },
                         (dialog, which) -> dialog.dismiss());
             }
+        });
+        premium_dock.setOnClickListener(view -> {
+            Intent intent1 = new Intent();
+            intent1.setClass(this, PaymentActivity.class);
+            startActivity(intent1);
         });
 
         packs_recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -494,6 +502,7 @@ public class HomeActivity extends AppCompatActivity {
         setClippedView(shimmer10, "#FFFFFF", 200, 0);
         setClippedView(shimmer11, "#FFFFFF", 200, 0);
         MainUIMethods.setViewRadius(discord_img, 30, "#FAFAFA");
+        MainUIMethods.setViewRadius(premium_img, 30, "#FAFAFA");
         generateActivityDescription();
     }
 
@@ -524,7 +533,6 @@ public class HomeActivity extends AppCompatActivity {
                 sharedPref.edit().putString("packsData", new Gson().toJson(packsList)).apply();
                 packs_recycler.setAdapter(new HomePacksAdapter.Packs_recyclerAdapter(packsList));
             } catch (Exception e) {
-                Utils.showToast(getApplicationContext(), (e.toString()));
             }
         }
     }

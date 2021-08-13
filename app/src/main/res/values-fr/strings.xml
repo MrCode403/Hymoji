@@ -17,7 +17,7 @@
     <string name="home_dock2_title">Catégories</string>
     <string name="home_dock2_subtitle">catégories</string>
     <string name="home_dock3_title">Paramètres</string>
-    <string name="home_dock3_subtitle">Gérer Bemoji</string>
+    <string name="home_dock3_subtitle">Gérer Nemoji</string>
     <string name="home_dock4_subtitle">Comment ajouter des emojis?</string>
     <string name="home_dock4_title">Centre d\'aide</string>
     <string name="home_packs_title">PACKS EMOJI</string>
@@ -39,7 +39,7 @@
     <string name="welcome_title_2">Une autre dimension des emojis</string>
     <string name="welcome_subtitle_2">Mèmes, animations, visages, expressions, n\'importe quel emoji. Nous les avons tous littéralement.</string>
     <string name="welcome_title_3">Commençons</string>
-    <string name="welcome_subtitle_3">Laissez-moi vous montrer de quoi Bemoji est capable</string>
+    <string name="welcome_subtitle_3">Laissez-moi vous montrer de quoi Nemoji est capable</string>
     <string name="sort_by_title">TRIER PAR</string>
     <string name="sort_by_newest">Le plus récent</string>
     <string name="sort_by_oldest">Le plus ancien</string>
@@ -49,7 +49,7 @@
     <string name="preview_pack_download_btn">Télécharger le pack complet</string>
     <string name="explore_packs_title">Explorer les packs</string>
     <string name="explore_packs_subtitle">Packs de différents emojis du même type</string>
-    <string name="settings_subtitle">Gérez et personnalisez Bemoji</string>
+    <string name="settings_subtitle">Gérez et personnalisez Nemoji</string>
     <string name="settings_title">Paramètres</string>
     <string name="settings_section_1_title">GÉNÉRAL</string>
     <string name="settings_option_1_title">Recharger les emojis</string>
@@ -62,7 +62,7 @@
     <string name="settings_option_4_subtitle">Avant d\'entreprendre toute action, veuillez d\'abord nous contacter pour tout régler. Merci.</string>
     <string name="settings_option_5_title">Vos réactions</string>
     <string name="settings_option_5_subtitle">Il manque quelque chose ou vous avez besoin d\'une fonctionnalité? Faites le nous savoir. N\'oubliez pas non plus de nous donner une belle note.</string>
-    <string name="settings_option_6_subtitle">Nous ne sommes en aucun cas affiliés à Discord, Slack ou Twitch. Bemoji n\'a pas été créé pour concurrencer aucun autre service.</string>
+    <string name="settings_option_6_subtitle">Nous ne sommes en aucun cas affiliés à Discord, Slack ou Twitch. Nemoji n\'a pas été créé pour concurrencer aucun autre service.</string>
     <string name="settings_section_3_title">DROITS D\'AUTEUR</string>
     <string name="settings_option_7_title">Droits d\'auteur sur le contenu</string>
     <string name="settings_option_7_subtitle">Les emojis sont soumis par les utilisateurs et sont la propriété de leurs propriétaires respectifs. Cliquez ici si vous avez des questions ou des préoccupations en matière de droits d\'auteur.</string>
@@ -71,8 +71,8 @@
     <string name="help_center_title">Centre d\'aide</string>
     <string name="help_center_subtitle">Instructions pas à pas pour ajouter des emojis à votre propre serveur Discord, Twitch ou Slack</string>
     <string name="welcome_start">Démarrer</string>
-    <string name="settings_option_10_title">Bemoji sur Github</string>
-    <string name="settings_option_10_subtitle">N\'hésitez pas à consulter le code source de Bemoji sur Github.</string>
+    <string name="settings_option_10_title">Nemoji sur Github</string>
+    <string name="settings_option_10_subtitle">N\'hésitez pas à consulter le code source de Nemoji sur Github.</string>
     <string name="submitted_by">Proposé par:</string>
     <string name="downloading">Téléchargement…</string>
     <string name="full_download_path">Enregistré dans:</string>
@@ -85,10 +85,10 @@
     <string name="packs_still_loading_msg">Veuillez patienter, nous obtenons des catégories…</string>
     <string name="emojis_still_loading_msg">Veuillez patienter, nous recevons des émojis…</string>
     <string name="settings_option_11_title">Langue</string>
-    <string name="settings_option_11_subtitle">Laissez Bemoji parler votre langue</string>
-    <string name="settings_option_12_subtitle">Notre mission est de rendre Bemoji accessible à tous les amateurs d\'emoji du monde entier. Aidez-nous dans cette mission.</string>
-    <string name="settings_option_12_title">Aide à traduire Bemoji</string>
-    <string name="bemoji_news_notifications_channel">Actualités de Bemoji</string>
+    <string name="settings_option_11_subtitle">Laissez Nemoji parler votre langue</string>
+    <string name="settings_option_12_subtitle">Notre mission est de rendre Nemoji accessible à tous les amateurs d\'emoji du monde entier. Aidez-nous dans cette mission.</string>
+    <string name="settings_option_12_title">Aide à traduire Nemoji</string>
+    <string name="news_notifications_channel">Actualités de Nemoji</string>
     <string name="request_server_data_error">Une erreur s\'est produite, nous redémarrerons l\'application pour réessayer.</string>
     <string name="error_msg">Un problème est survenu.</string>
     <string name="dialog_negative_text">Annuler</string>
@@ -102,7 +102,7 @@
     <string name="pro_tip_1">Vous pouvez obtenir de nouveaux emojis en faisant glisser cette page vers le bas, notre communauté télécharge de nouveaux emojis tous les jours.</string>
     <string name="settings_option_13_subtitle">Rejoignez notre serveur Discord et rencontrez de nouveaux amis incroyables. Ne soyez pas en retard, nous vous attendons.</string>
     <string name="pro_tip_2">Rejoignez notre serveur Discord et rencontrez de nouveaux amis incroyables. Le lien d\'invitation sur la page des paramètres, Ne soyez pas en retard, nous vous attendons.</string>
-    <string name="share_main_text">Hé, j\'ai eu cet emoji cool de l\'application Bemoji. Découvrez-le, vous l\'aimerez certainement.</string>
+    <string name="share_main_text">Hé, j\'ai eu cet emoji cool de l\'application Nemoji. Découvrez-le, vous l\'aimerez certainement.</string>
     <string name="downloading_sheet_msg">Emoji est en cours de téléchargement, consultez les notifications pour plus d\'informations.</string>
     <string name="share_btn_txt">Partager</string>
     <string name="share_title">Partager l\'emoji via</string>
@@ -116,7 +116,7 @@
     <string name="theme_light_title">Mode lumière</string>
     <string name="theme_auto_title">Suivre le thème du système</string>
     <string name="contribute_go">Contribuer maintenant</string>
-    <string name="contribute_desc">Un grand merci à tous ceux qui ont contribué à la traduction de Bemoji.</string>
+    <string name="contribute_desc">Un grand merci à tous ceux qui ont contribué à la traduction de Nemoji.</string>
     <string name="contribute_title">Contributeurs à la traduction</string>
     <string name="contrbute_contact_us">Vous serez redirigé vers votre application de messagerie pour nous contacter</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.nerbly.bemoji.Functions;
 
+import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
@@ -15,8 +17,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.nerbly.bemoji.R;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
-
-import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
 public class SideFunctions {
 

@@ -1,5 +1,9 @@
 package com.nerbly.bemoji.Activities;
 
+import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
+import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusNavBar;
+
 import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.app.WallpaperManager;
@@ -28,10 +32,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
-import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusNavBar;
 
 public class MainActivity extends AppCompatActivity {
     private final ArrayList<HashMap<String, Object>> viewPagerList = new ArrayList<>();
@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 sharedPref.edit().putBoolean("isFirstTime", false).apply();
                 intent.setClass(getApplicationContext(), HomeActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, 0);
             } else {
                 viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
             }
@@ -163,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
                         intent.setClass(getApplicationContext(), HomeActivity.class);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.fade_in, 0);
 
                     });
                 }

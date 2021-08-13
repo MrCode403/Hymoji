@@ -137,7 +137,7 @@
             android:background="#FFFFFF"
             android:orientation="vertical"
             app:adSize="BANNER"
-            app:adUnitId="@string/home_admob_banner_id" />
+            app:adUnitId="@string/categories_admob_banner_id" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

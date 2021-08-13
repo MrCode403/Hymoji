@@ -1,5 +1,8 @@
 package com.nerbly.bemoji.Fragments;
 
+import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
+import static com.nerbly.bemoji.UI.UserInteractions.showMessageDialog;
+
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,9 +36,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
-
-import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
-import static com.nerbly.bemoji.UI.UserInteractions.showMessageDialog;
 
 public class TranslationContributorsFragment extends BottomSheetDialogFragment {
 

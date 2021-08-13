@@ -1,5 +1,8 @@
 package com.nerbly.bemoji.Adapters;
 
+import static com.nerbly.bemoji.Functions.SideFunctions.setImageFromPath;
+import static com.nerbly.bemoji.UI.MainUIMethods.setClippedStrokeView;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +18,6 @@ import com.nerbly.bemoji.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
-
-import static com.nerbly.bemoji.Functions.SideFunctions.setImageFromPath;
-import static com.nerbly.bemoji.UI.MainUIMethods.setClippedStrokeView;
 
 public class LocalEmojisAdapter {
 

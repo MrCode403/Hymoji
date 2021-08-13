@@ -35,13 +35,23 @@
         </activity>
         <activity
             android:name=".Activities.HomeActivity"
-            android:configChanges="uiMode" />
+            android:configChanges="keyboardHidden|orientation|uiMode" />
         <activity
             android:name=".Activities.EmojisActivity"
+            android:configChanges="keyboardHidden|orientation|uiMode"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
-        <activity android:name=".Activities.PacksActivity" />
-        <activity android:name=".Activities.PackPreviewActivity" />
-        <activity android:name=".Activities.CategoriesPreviewActivity" />
+        <activity
+            android:name=".Activities.PacksActivity"
+            android:configChanges="keyboardHidden|orientation|uiMode" />
+        <activity
+            android:name=".Activities.PackPreviewActivity"
+            android:configChanges="keyboardHidden|orientation|uiMode" />
+        <activity
+            android:name=".Activities.CategoriesPreviewActivity"
+            android:configChanges="keyboardHidden|orientation|uiMode" />
+        <activity
+            android:name=".Activities.PaymentActivity"
+            android:configChanges="keyboardHidden|orientation|uiMode" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
@@ -53,7 +63,7 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/bemoji_news_notifications_channel" />
+            android:value="@string/news_notifications_channel" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

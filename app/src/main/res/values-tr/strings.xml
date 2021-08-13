@@ -14,14 +14,14 @@
     <string name="sort_by_newest">En yeni</string>
     <string name="sort_by_alphabetically">Alfabetik olarak</string>
     <string name="settings_title">Ayarlar</string>
-    <string name="settings_subtitle">Bemoji\'yi yönetin ve özelleştirin</string>
+    <string name="settings_subtitle">Nemoji\'yi yönetin ve özelleştirin</string>
     <string name="settings_section_3_title">TELİF HAKKI</string>
     <string name="settings_section_1_title">GENEL</string>
     <string name="settings_option_8_title">Içerik kaynağı</string>
     <string name="settings_option_8_subtitle">Tüm emojiler emoji.gg tarafından sağlanır.</string>
     <string name="settings_option_7_title">İçerik telif hakkı</string>
     <string name="settings_option_7_subtitle">Emojiler kullanıcı tarafından gönderilir ve ilgili sahiplerinin telif haklarıdır. Sorularınız veya telif hakkı endişeleriniz varsa burayı tıklayın.</string>
-    <string name="settings_option_6_subtitle">Discord, Slack veya Twitch ile hiçbir şekilde bağlantılı değiliz. Bemoji, başka herhangi bir hizmetle rekabet etmek için yaratılmadı.</string>
+    <string name="settings_option_6_subtitle">Discord, Slack veya Twitch ile hiçbir şekilde bağlantılı değiliz. Nemoji, başka herhangi bir hizmetle rekabet etmek için yaratılmadı.</string>
     <string name="settings_option_5_title">geri bildirim</string>
     <string name="settings_option_5_subtitle">Eksik bir şey mi var veya bir özelliğe mi ihtiyacınız var? bilmemize izin ver. Ayrıca, bize güzel bir puan vermeyi unutmayın.</string>
     <string name="settings_option_4_title">Destek</string>
@@ -30,12 +30,12 @@
     <string name="settings_option_3_subtitle">Önceden yüklenmiş tüm emojiler silinecektir. Daha az uygulama boyutu, daha fazla emoji yükleme süresi.</string>
     <string name="settings_option_2_title">Emoji yükle</string>
     <string name="settings_option_2_subtitle">Emojilerinizi oraya manuel olarak yüklemek için emoji.gg\'ye yönlendirileceksiniz. Onaylandıktan sonra yukarıdaki \"Emojileri yeniden yükle\" yi tıklayabilirsiniz.</string>
-    <string name="settings_option_12_title">Bemoji\'yi çevirmeye yardım edin</string>
-    <string name="settings_option_12_subtitle">Misyonumuz, Bemoji\'yi dünyadaki tüm emoji severler için erişilebilir kılmaktır. Bize bu görevde yardım et.</string>
+    <string name="settings_option_12_title">Nemoji\'yi çevirmeye yardım edin</string>
+    <string name="settings_option_12_subtitle">Misyonumuz, Nemoji\'yi dünyadaki tüm emoji severler için erişilebilir kılmaktır. Bize bu görevde yardım et.</string>
     <string name="settings_option_11_title">Dil</string>
-    <string name="settings_option_11_subtitle">Bırakın Bemoji dilinizi konuşsun</string>
-    <string name="settings_option_10_title">Github\'da Bemoji</string>
-    <string name="settings_option_10_subtitle">Bemoji\'nin Github\'daki kaynak kodunu kontrol etmekten çekinmeyin.</string>
+    <string name="settings_option_11_subtitle">Bırakın Nemoji dilinizi konuşsun</string>
+    <string name="settings_option_10_title">Github\'da Nemoji</string>
+    <string name="settings_option_10_subtitle">Nemoji\'nin Github\'daki kaynak kodunu kontrol etmekten çekinmeyin.</string>
     <string name="settings_option_1_title">Emojileri yeniden yükleyin</string>
     <string name="settings_option_1_subtitle">Ana ekranı aşağı kaydırarak en yeni emojileri alabilirsiniz.</string>
     <string name="preview_pack_title">paket içeriği</string>
@@ -61,7 +61,7 @@
     <string name="home_dock4_title">Yardım Merkezi</string>
     <string name="home_dock4_subtitle">Emoji nasıl eklenir?</string>
     <string name="home_dock3_title">Ayarlar</string>
-    <string name="home_dock3_subtitle">Bemoji\'yi yönet</string>
+    <string name="home_dock3_subtitle">Nemoji\'yi yönet</string>
     <string name="home_dock2_title">Kategoriler</string>
     <string name="home_dock2_subtitle">kategori</string>
     <string name="home_dock1_title">Tüm emojiler</string>
@@ -88,7 +88,7 @@
     <string name="cache_cleared_success">Önbellek başarıyla temizlendi.</string>
     <string name="emojis_reloaded_success">Bitti. Geri döndüğünüzde ana sayfa yeniden yüklenecek</string>
     <string name="emojis_still_loading_msg">Lütfen bekleyin, emoji alıyoruz…</string>
-    <string name="bemoji_news_notifications_channel">Bemoji\'den Haberler</string>
+    <string name="news_notifications_channel">Nemoji\'den Haberler</string>
     <string name="request_server_data_error">Bir şeyler ters gitti, tekrar denemek için uygulamayı yeniden başlatacağız.</string>
     <string name="error_msg">Bir şeyler yanlış gitti.</string>
     <string name="dialog_negative_text">İptal etmek</string>
@@ -102,7 +102,7 @@
     <string name="pro_tip_1">Bu sayfayı aşağı kaydırarak yeni emojiler alabilirsiniz, topluluğumuz her gün yeni emojiler yükler.</string>
     <string name="settings_option_13_subtitle">Discord sunucumuza katılın ve yeni harika arkadaşlarla tanışın. Geç kalmayın, sizi bekliyoruz.</string>
     <string name="pro_tip_2">Discord sunucumuza katılın ve yeni harika arkadaşlarla tanışın. Ayarlar sayfasındaki davet linki, Geç kalmayın, sizi bekliyoruz.</string>
-    <string name="share_main_text">Hey, bu harika emojiyi Bemoji uygulamasından aldım. Bir göz atın, kesinlikle beğeneceksiniz.</string>
+    <string name="share_main_text">Hey, bu harika emojiyi Nemoji uygulamasından aldım. Bir göz atın, kesinlikle beğeneceksiniz.</string>
     <string name="downloading_sheet_msg">Emoji indiriliyor, daha fazla bilgi için bildirimleri kontrol edin.</string>
     <string name="share_btn_txt">Paylaş</string>
     <string name="share_title">Emojiyi şununla paylaşın</string>
@@ -116,7 +116,7 @@
     <string name="theme_light_title">Işık modu</string>
     <string name="theme_auto_title">Sistem temasını takip et</string>
     <string name="contribute_go">Katkıda bulunmak</string>
-    <string name="contribute_desc">Bemoji\'nin çevirisine katkıda bulunan herkese çok teşekkürler.</string>
+    <string name="contribute_desc">Nemoji\'nin çevirisine katkıda bulunan herkese çok teşekkürler.</string>
     <string name="contribute_title">Çeviriye Katkıda Bulunanlar</string>
     <string name="contrbute_contact_us">Bizimle iletişime geçmek için posta uygulamanıza yönlendirileceksiniz</string>
 </resources>

@@ -1,5 +1,8 @@
 package com.nerbly.bemoji.Adapters;
 
+import static com.nerbly.bemoji.Functions.DownloaderSheet.showEmojiSheet;
+import static com.nerbly.bemoji.Functions.SideFunctions.setImgURL;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +20,6 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static com.nerbly.bemoji.Functions.DownloaderSheet.showEmojiSheet;
-import static com.nerbly.bemoji.Functions.SideFunctions.setImgURL;
 
 public class MainEmojisAdapter {
 

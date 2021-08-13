@@ -69,7 +69,7 @@ public class MainFunctions {
     }
 
     //naming
-    public static String capitalizedFirstWord(final String _data) {
+    public static String capitalizedFirstWord(String _data) {
         StringBuffer capBuffer = new StringBuffer();
         Matcher capMatcher = Pattern.compile("([a-z])([a-z]*)", Pattern.CASE_INSENSITIVE).matcher(_data);
         while (capMatcher.find()) {

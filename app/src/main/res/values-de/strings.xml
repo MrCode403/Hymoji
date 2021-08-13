@@ -17,7 +17,7 @@
     <string name="home_dock2_title">Kategorien</string>
     <string name="home_dock2_subtitle">kategorien</string>
     <string name="home_dock3_title">die Einstellungen</string>
-    <string name="home_dock3_subtitle">Bemoji verwalten</string>
+    <string name="home_dock3_subtitle">Nemoji verwalten</string>
     <string name="home_dock4_subtitle">Wie füge ich Emojis hinzu?</string>
     <string name="home_dock4_title">Hilfe</string>
     <string name="home_packs_seemore">ALLES SEHEN</string>
@@ -49,7 +49,7 @@
     <string name="preview_pack_download_btn">Pack herunterladen</string>
     <string name="explore_packs_title">Entdecken Sie Packs</string>
     <string name="explore_packs_subtitle">Packungen mit verschiedenen Emojis des gleichen Typs</string>
-    <string name="settings_subtitle">Verwalten und Anpassen der Bemoji-App</string>
+    <string name="settings_subtitle">Verwalten und Anpassen der Nemoji-App</string>
     <string name="settings_title">die Einstellungen</string>
     <string name="settings_section_1_title">ALLGEMEINES</string>
     <string name="settings_option_1_title">Emojis neu laden</string>
@@ -62,7 +62,7 @@
     <string name="settings_option_4_subtitle">Bevor Sie Maßnahmen ergreifen, kontaktieren Sie uns bitte zuerst, um alles zu regeln. Vielen Dank.</string>
     <string name="settings_option_5_title">Feedback</string>
     <string name="settings_option_5_subtitle">Fehlt etwas oder benötigen Sie eine Funktion? Lass uns wissen. Vergessen Sie auch nicht, uns eine schöne Bewertung zu geben.</string>
-    <string name="settings_option_6_subtitle">Wir sind in keiner Weise mit Discord oder Slack verbunden. Bemoji wurde nicht geschaffen, um mit anderen Diensten zu konkurrieren.</string>
+    <string name="settings_option_6_subtitle">Wir sind in keiner Weise mit Discord oder Slack verbunden. Nemoji wurde nicht geschaffen, um mit anderen Diensten zu konkurrieren.</string>
     <string name="settings_section_3_title">URHEBERRECHTE</string>
     <string name="settings_option_7_title">Urheberrecht für Inhalte</string>
     <string name="settings_option_7_subtitle">Emojis werden vom Benutzer eingereicht und unterliegen dem Urheberrecht ihrer jeweiligen Eigentümer. Klicken Sie hier, wenn Sie Fragen oder Bedenken hinsichtlich des Urheberrechts haben.</string>
@@ -71,8 +71,8 @@
     <string name="help_center_title">Hilfezentrum</string>
     <string name="help_center_subtitle">Schritt-für-Schritt-Anleitung zum Hinzufügen von Emojis zu Ihrem eigenen Zwietracht- oder Slack-Server</string>
     <string name="welcome_start">Start</string>
-    <string name="settings_option_10_title">Bemoji auf Github</string>
-    <string name="settings_option_10_subtitle">Schauen Sie sich Bemojis Quellcode auf Github an.</string>
+    <string name="settings_option_10_title">Nemoji auf Github</string>
+    <string name="settings_option_10_subtitle">Schauen Sie sich Nemojis Quellcode auf Github an.</string>
     <string name="submitted_by">Eingereicht von:</string>
     <string name="downloading">Wird heruntergeladen…</string>
     <string name="full_download_path">Vollständiger Download-Pfad:</string>
@@ -85,10 +85,10 @@
     <string name="emojis_still_loading_msg">Bitte warten Sie, wir bekommen Emojis …</string>
     <string name="packs_still_loading_msg">Bitte warten Sie, wir bekommen Kategorien …</string>
     <string name="settings_option_11_title">Sprache</string>
-    <string name="settings_option_11_subtitle">Lass Bemoji deine Sprache sprechen</string>
-    <string name="settings_option_12_subtitle">Unsere Mission ist es, Bemoji für alle Emoji-Liebhaber auf der ganzen Welt zugänglich zu machen. Helfen Sie uns bei dieser Mission.</string>
-    <string name="settings_option_12_title">Hilfe bei der Übersetzung von Bemoji</string>
-    <string name="bemoji_news_notifications_channel">Bemojis Nachrichten</string>
+    <string name="settings_option_11_subtitle">Lass Nemoji deine Sprache sprechen</string>
+    <string name="settings_option_12_subtitle">Unsere Mission ist es, Nemoji für alle Emoji-Liebhaber auf der ganzen Welt zugänglich zu machen. Helfen Sie uns bei dieser Mission.</string>
+    <string name="settings_option_12_title">Hilfe bei der Übersetzung von Nemoji</string>
+    <string name="news_notifications_channel">Nemojis Nachrichten</string>
     <string name="request_server_data_error">Es ist ein Fehler aufgetreten. Wir werden die App neu starten, um es erneut zu versuchen.</string>
     <string name="error_msg">Etwas ist schief gelaufen.</string>
     <string name="dialog_positive_text">Okay</string>
@@ -102,7 +102,7 @@
     <string name="pro_tip_1">Sie können neue Emojis erhalten, indem Sie diese Seite nach unten wischen. Unsere Community lädt jeden Tag neue Emojis hoch.</string>
     <string name="settings_option_13_subtitle">Treten Sie unserem Discord-Server bei und treffen Sie neue tolle Freunde. Kommen Sie nicht zu spät, wir warten auf Sie.</string>
     <string name="pro_tip_2">Treten Sie unserem Discord-Server bei und treffen Sie neue tolle Freunde. Der Einladungslink auf der Einstellungsseite, Komm nicht zu spät, wir warten auf dich.</string>
-    <string name="share_main_text">Hey, ich habe dieses coole Emoji von der Bemoji-App bekommen. Schaut es euch an, es wird euch bestimmt gefallen.</string>
+    <string name="share_main_text">Hey, ich habe dieses coole Emoji von der Nemoji-App bekommen. Schaut es euch an, es wird euch bestimmt gefallen.</string>
     <string name="downloading_sheet_msg">Emoji wird heruntergeladen. Weitere Informationen finden Sie in den Benachrichtigungen.</string>
     <string name="share_btn_txt">Teilen</string>
     <string name="share_title">Teile das Emoji über</string>
@@ -116,7 +116,7 @@
     <string name="theme_light_title">Lichtmodus</string>
     <string name="theme_auto_title">Systemthema folgen</string>
     <string name="contribute_go">Jetzt beitragen</string>
-    <string name="contribute_desc">Vielen Dank an alle, die zur Übersetzung von Bemoji beigetragen haben.</string>
+    <string name="contribute_desc">Vielen Dank an alle, die zur Übersetzung von Nemoji beigetragen haben.</string>
     <string name="contribute_title">Mitwirkende an Übersetzungen</string>
     <string name="contrbute_contact_us">Sie werden zu Ihrer Mail-App weitergeleitet, um uns zu kontaktieren</string>
 </resources>

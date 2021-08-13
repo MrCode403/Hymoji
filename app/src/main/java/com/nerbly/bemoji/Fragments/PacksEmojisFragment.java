@@ -1,5 +1,11 @@
 package com.nerbly.bemoji.Fragments;
 
+import static com.nerbly.bemoji.Activities.EmojisActivity.searchBoxField;
+import static com.nerbly.bemoji.Configurations.ASSETS_SOURCE_LINK;
+import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
+import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
+import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
+
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -35,18 +41,12 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.nerbly.bemoji.Activities.EmojisActivity.searchBoxField;
-import static com.nerbly.bemoji.Configurations.ASSETS_SOURCE_LINK;
-import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
-import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
-
 
 public class PacksEmojisFragment extends Fragment {
 
     private final Timer timer = new Timer();
     public boolean isSortingNew = true;
     public boolean isSortingOld = false;
-    public boolean isGettingDataFirstTime = true;
     public boolean isSortingAlphabet = false;
     private GridView emojisRecycler;
     private int searchPosition = 0;
@@ -62,13 +62,12 @@ public class PacksEmojisFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater _inflater, @Nullable ViewGroup _container, @Nullable Bundle _savedInstanceState) {
         View _view = _inflater.inflate(R.layout.packs_emojis_fragment, _container, false);
-        initialize(_savedInstanceState, _view);
-        com.google.firebase.FirebaseApp.initializeApp(getContext());
+        initialize(_view);
         initializeLogic();
         return _view;
     }
 
-    private void initialize(Bundle _savedInstanceState, View view) {
+    private void initialize(View view) {
         emptyTitle = view.findViewById(R.id.emptyTitle);
         emptyAnimation = view.findViewById(R.id.emptyAnimation);
         loadView = view.findViewById(R.id.emptyview);
@@ -134,8 +133,13 @@ public class PacksEmojisFragment extends Fragment {
                         JSONObject packsObject = backPacksArray.getJSONObject(backPacksArrayInt);
                         JSONArray frontPacksArray = packsObject.getJSONArray("emojis");
                         for (int frontPacksInt = 0; frontPacksInt < frontPacksArray.length(); frontPacksInt++) {
+                            String emojiName = frontPacksArray.getString(frontPacksInt).replaceAll("[_\\\\-]", " ");
+                            emojiName = emojiName.replaceAll("[0-9]", "");
+                            emojiName = emojiName.substring(0, emojiName.length() - 4);
+
                             emojisMap = new HashMap<>();
                             emojisMap.put("image", ASSETS_SOURCE_LINK + frontPacksArray.getString(frontPacksInt));
+                            emojisMap.put("name", capitalizedFirstWord(emojiName).trim());
                             emojisMap.put("title", frontPacksArray.getString(frontPacksInt));
                             emojisMap.put("submitted_by", "Emoji lovers");
                             emojisMap.put("id", scanPosition);
@@ -144,6 +148,7 @@ public class PacksEmojisFragment extends Fragment {
                         }
                     }
                 } catch (Exception e) {
+                    Log.e("error", e.toString());
                 }
             }
 
@@ -153,7 +158,7 @@ public class PacksEmojisFragment extends Fragment {
                 } else if (isSortingOld) {
                     Utils.sortListMap2(emojisList, "id", true, false);
                 } else if (isSortingAlphabet) {
-                    Utils.sortListMap(emojisList, "title", false, true);
+                    Utils.sortListMap(emojisList, "name", false, true);
                 }
                 emojisRecycler.setAdapter(new MainEmojisAdapter.Gridview1Adapter(emojisList));
                 sharedPref.edit().putString("packsOneByOne", new Gson().toJson(emojisList)).apply();
@@ -194,7 +199,7 @@ public class PacksEmojisFragment extends Fragment {
                 searchPosition = emojisCount - 1;
                 for (int i = 0; i < emojisCount; i++) {
 
-                    if (!Objects.requireNonNull(emojisList.get(searchPosition).get("title")).toString().toLowerCase().contains(query.trim().toLowerCase())) {
+                    if (!Objects.requireNonNull(emojisList.get(searchPosition).get("name")).toString().toLowerCase().contains(query.trim().toLowerCase())) {
                         emojisList.remove(searchPosition);
                     }
                     searchPosition--;
@@ -242,7 +247,7 @@ public class PacksEmojisFragment extends Fragment {
             isSortingAlphabet = true;
             isSortingNew = false;
             isSortingOld = false;
-            Utils.sortListMap(emojisList, "title", false, true);
+            Utils.sortListMap(emojisList, "name", false, true);
             emojisRecycler.setAdapter(new MainEmojisAdapter.Gridview1Adapter(emojisList));
         }
     }

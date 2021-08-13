@@ -1,5 +1,9 @@
 package com.nerbly.bemoji.Fragments;
 
+import static com.nerbly.bemoji.Activities.EmojisActivity.searchBoxField;
+import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
+import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
+
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -31,10 +35,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import static com.nerbly.bemoji.Activities.EmojisActivity.searchBoxField;
-import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
-import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
 
 
 public class MainEmojisFragment extends Fragment {

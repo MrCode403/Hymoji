@@ -1,5 +1,14 @@
 package com.nerbly.bemoji.Fragments;
 
+import static com.nerbly.bemoji.Activities.HomeActivity.userIsAskingForActivityToReload;
+import static com.nerbly.bemoji.Functions.MainFunctions.initializeCacheScan;
+import static com.nerbly.bemoji.Functions.MainFunctions.setFragmentLocale;
+import static com.nerbly.bemoji.Functions.MainFunctions.trimCache;
+import static com.nerbly.bemoji.Functions.getDarkModeState.setNightModeState;
+import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
+import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
+import static com.nerbly.bemoji.UI.UserInteractions.showMessageDialog;
+
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -31,15 +40,6 @@ import com.nerbly.bemoji.Activities.HomeActivity;
 import com.nerbly.bemoji.R;
 
 import java.util.Objects;
-
-import static com.nerbly.bemoji.Activities.HomeActivity.userIsAskingForActivityToReload;
-import static com.nerbly.bemoji.Functions.MainFunctions.initializeCacheScan;
-import static com.nerbly.bemoji.Functions.MainFunctions.setFragmentLocale;
-import static com.nerbly.bemoji.Functions.MainFunctions.trimCache;
-import static com.nerbly.bemoji.Functions.getDarkModeState.setNightModeState;
-import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
-import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
-import static com.nerbly.bemoji.UI.UserInteractions.showMessageDialog;
 
 public class SettingsFragment extends BottomSheetDialogFragment {
 

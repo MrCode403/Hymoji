@@ -149,7 +149,7 @@ public class RequestNetworkController {
                 @Override
                 public void onResponse(Call call, final Response response) throws IOException {
                     assert response.body() != null;
-                    final String responseBody = response.body().string().trim();
+                    final String responseBody = Objects.requireNonNull(response.body()).string().trim();
                     requestNetwork.getActivity().runOnUiThread(() -> {
                         Headers b = response.headers();
                         HashMap<String, Object> map = new HashMap<>();

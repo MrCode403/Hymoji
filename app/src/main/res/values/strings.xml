@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <string name="app_name" translatable="false">Bemoji</string>
+    <string name="app_name" translatable="false">Nemoji</string>
     <string name="home_admob_banner_id" translatable="false">ca-app-pub-7692699628033489/8854157312</string>
     <string name="mainemojis_admob_banner_id" translatable="false">ca-app-pub-7692699628033489/7701869504</string>
     <string name="packs_admob_banner_id" translatable="false">ca-app-pub-7692699628033489/7283707731</string>
@@ -25,7 +25,7 @@
     <string name="home_dock2_title">Categories</string>
     <string name="home_dock2_subtitle">categories</string>
     <string name="home_dock3_title">Settings</string>
-    <string name="home_dock3_subtitle">Manage Bemoji</string>
+    <string name="home_dock3_subtitle">Manage Nemoji</string>
     <string name="home_dock4_subtitle">How to add emojis?</string>
     <string name="home_dock4_title">Help</string>
     <string name="home_packs_title">EMOJI PACKS</string>
@@ -57,7 +57,7 @@
     <string name="preview_pack_download_btn">Download full pack</string>
     <string name="explore_packs_title">Explore packs</string>
     <string name="explore_packs_subtitle">Packs of different emojis of the same type</string>
-    <string name="settings_subtitle">Manage and customize Bemoji app</string>
+    <string name="settings_subtitle">Manage and customize Nemoji app</string>
     <string name="settings_title">Settings</string>
     <string name="settings_section_1_title">GENERAL</string>
     <string name="settings_option_1_title">Reload emojis</string>
@@ -70,7 +70,7 @@
     <string name="settings_option_4_subtitle">Before taking any action, please contact us first to settle everything down. Thanks.</string>
     <string name="settings_option_5_title">Feedback</string>
     <string name="settings_option_5_subtitle">Is something missing or you need a feature? let us know. Also, don\'t forget to give us a nice rating.</string>
-    <string name="settings_option_6_subtitle">We are in no way affiliated with Discord, Slack, or Twitch. Bemoji wasn\'t created to compete with any other service.</string>
+    <string name="settings_option_6_subtitle">We are in no way affiliated with Discord, Slack, or Twitch. Nemoji wasn\'t created to compete with any other service.</string>
     <string name="settings_section_3_title">COPYRIGHT</string>
     <string name="settings_option_7_title">Content copyright</string>
     <string name="settings_option_7_subtitle">Emojis are user-submitted and are copyright of their respective owners. Click here if you have questions or copyright concerns.</string>
@@ -79,8 +79,8 @@
     <string name="help_center_title">Help center</string>
     <string name="help_center_subtitle">Step-by-step instructions to add emojis to your own Discord, Twitch, or Slack server</string>
     <string name="welcome_start">Start</string>
-    <string name="settings_option_10_title">Bemoji on Github</string>
-    <string name="settings_option_10_subtitle">Feel free to check out Bemoji\'s source code on Github.</string>
+    <string name="settings_option_10_title">Nemoji on Github</string>
+    <string name="settings_option_10_subtitle">Feel free to check out Nemoji\'s source code on Github.</string>
     <string name="submitted_by">Submitted by: </string>
     <string name="downloading">Downloading…</string>
     <string name="full_download_path">"Download path: "</string>
@@ -94,10 +94,10 @@
     <string name="packs_still_loading_msg">Please wait, we\'re getting categories…</string>
     <string name="emojis_still_loading_msg">Please wait, we\'re getting emojis…</string>
     <string name="settings_option_11_title">Language</string>
-    <string name="settings_option_11_subtitle">Let Bemoji speak your language</string>
-    <string name="settings_option_12_title">Help to translate Bemoji</string>
-    <string name="settings_option_12_subtitle">Our mission is to make Bemoji accessible for all emoji lovers around the world. Help us in that mission.</string>
-    <string name="bemoji_news_notifications_channel">Bemoji\'s News</string>
+    <string name="settings_option_11_subtitle">Let Nemoji speak your language</string>
+    <string name="settings_option_12_title">Help to translate Nemoji</string>
+    <string name="settings_option_12_subtitle">Our mission is to make Nemoji accessible for all emoji lovers around the world. Help us in that mission.</string>
+    <string name="news_notifications_channel">Nemoji\'s News</string>
     <string name="request_server_data_error">Something went wrong, we will restart the app to try again.</string>
     <string name="dialog_negative_text">Cancel</string>
     <string name="dialog_positive_text">Okay</string>
@@ -113,7 +113,7 @@
     <string name="downloading_sheet_msg">Emoji is being downloaded, check notifications for more information.</string>
     <string name="pro_tip_2">Join our Discord server and meet new amazing friends. The invite link on the settings page, Don\'t be late, we\'re waiting for you.</string>
     <string name="share_btn_txt">Share</string>
-    <string name="share_main_text">Hey, I got this cool emoji from Bemoji app. Check it out, you\'ll definitely like it.</string>
+    <string name="share_main_text">Hey, I got this cool emoji from Nemoji app. Check it out, you\'ll definitely like it.</string>
     <string name="share_title">Share emoji via</string>
     <string name="emojis_tab1_title">Main emojis</string>
     <string name="emojis_tab2_title">Packs emojis</string>
@@ -125,7 +125,7 @@
     <string name="theme_light_title">Light mode</string>
     <string name="theme_auto_title">Follow system theme</string>
     <string name="contribute_go">Contribute now</string>
-    <string name="contribute_desc">Huge thanks to everyone who contributed to translating Bemoji.</string>
+    <string name="contribute_desc">Huge thanks to everyone who contributed to translating Nemoji.</string>
     <string name="contribute_title">Translation Contributors</string>
     <string name="contrbute_contact_us">You\'ll be redirected to your mail app to contact us</string>
 </resources>

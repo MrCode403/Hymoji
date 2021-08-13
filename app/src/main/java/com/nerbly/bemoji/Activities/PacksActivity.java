@@ -1,14 +1,23 @@
 package com.nerbly.bemoji.Activities;
 
+import static com.nerbly.bemoji.Configurations.PACKS_API_LINK;
+import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
+import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
+import static com.nerbly.bemoji.Functions.SideFunctions.setHighPriorityImageFromUrl;
+import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
+import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
+import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
+import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
+
 import android.animation.LayoutTransition;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +32,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -44,17 +52,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static com.nerbly.bemoji.Configurations.PACKS_API_LINK;
-import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
-import static com.nerbly.bemoji.Functions.SideFunctions.setHighPriorityImageFromUrl;
-import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
-import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
-import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
-import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class PacksActivity extends AppCompatActivity {
     private final ArrayList<String> packsArrayList = new ArrayList<>();
@@ -151,7 +150,9 @@ public class PacksActivity extends AppCompatActivity {
         }
         loadingRecycler.setAdapter(new LoadingPacksAdapter.LoadingRecyclerAdapter(shimmerList));
 
-        new getPacksTask().execute("");
+        getPacks();
+
+
     }
 
     public void LOGIC_FRONTEND() {
@@ -196,26 +197,6 @@ public class PacksActivity extends AppCompatActivity {
 
     }
 
-    public void setImageFromUrl(final ImageView image, final String url) {
-        Glide.with(this)
-
-                .load(url)
-                .centerCrop()
-                .into(image);
-
-    }
-
-    public String capitalizedFirstWord(final String _data) {
-        StringBuffer capBuffer = new StringBuffer();
-        Matcher capMatcher = Pattern.compile("([a-z])([a-z]*)", Pattern.CASE_INSENSITIVE).matcher(_data);
-        while (capMatcher.find()) {
-            capMatcher.appendReplacement(capBuffer, Objects.requireNonNull(capMatcher.group(1)).toUpperCase() + Objects.requireNonNull(capMatcher.group(2)).toLowerCase());
-        }
-
-        return capMatcher.appendTail(capBuffer).toString();
-
-    }
-
     private void loadAds() {
         MobileAds.initialize(this, initializationStatus -> {
         });
@@ -229,7 +210,7 @@ public class PacksActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onAdFailedToLoad(LoadAdError adError) {
+            public void onAdFailedToLoad(@NonNull LoadAdError adError) {
             }
 
             @Override
@@ -244,47 +225,6 @@ public class PacksActivity extends AppCompatActivity {
             public void onAdClosed() {
             }
         });
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private class getPacksTask extends AsyncTask<String, Integer, String> {
-        @Override
-        protected void onPreExecute() {
-
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            if (sharedPref.getString("packsData", "").isEmpty()) {
-                startGettingPacks.startRequestNetwork(RequestNetworkController.GET, PACKS_API_LINK, "", PacksRequestListener);
-            } else {
-                try {
-                    packsList = new Gson().fromJson(sharedPref.getString("packsData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                    }.getType());
-                    sharedPref.edit().putString("packsData", new Gson().toJson(packsList)).apply();
-                } catch (Exception e) {
-                    Utils.showToast(getApplicationContext(), (e.toString()));
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-
-        }
-
-        @Override
-        protected void onPostExecute(String _result) {
-            if (!sharedPref.getString("packsData", "").isEmpty()) {
-                packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
-                new Handler().postDelayed(() -> {
-                    packsRecycler.setVisibility(View.VISIBLE);
-                    loadingRecycler.setVisibility(View.GONE);
-                    sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                }, 1000);
-            }
-        }
     }
 
     public class PacksRecyclerAdapter extends RecyclerView.Adapter<PacksRecyclerAdapter.ViewHolder> {
@@ -360,5 +300,34 @@ public class PacksActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    private void getPacks() {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+            if (sharedPref.getString("packsData", "").isEmpty()) {
+                startGettingPacks.startRequestNetwork(RequestNetworkController.GET, PACKS_API_LINK, "", PacksRequestListener);
+            } else {
+                try {
+                    packsList = new Gson().fromJson(sharedPref.getString("packsData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
+                    }.getType());
+                    sharedPref.edit().putString("packsData", new Gson().toJson(packsList)).apply();
+                } catch (Exception e) {
+                    Utils.showToast(getApplicationContext(), (e.toString()));
+                }
+            }
+            handler.post(() -> {
+                if (!sharedPref.getString("packsData", "").isEmpty()) {
+                    packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
+                    new Handler().postDelayed(() -> {
+                        packsRecycler.setVisibility(View.VISIBLE);
+                        loadingRecycler.setVisibility(View.GONE);
+                        sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    }, 1000);
+                }
+            });
+        });
     }
 }

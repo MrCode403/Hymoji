@@ -1,5 +1,8 @@
 package com.nerbly.bemoji.Fragments;
 
+import static com.nerbly.bemoji.Configurations.TUTORIAL_SOURCE;
+import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
+
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,9 +36,6 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import static com.nerbly.bemoji.Configurations.TUTORIAL_SOURCE;
-import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
 
 public class TutorialFragment extends BottomSheetDialogFragment {
     private final ArrayList<HashMap<String, Object>> shimmerList = new ArrayList<>();

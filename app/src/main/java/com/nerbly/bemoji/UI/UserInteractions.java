@@ -1,5 +1,9 @@
 package com.nerbly.bemoji.UI;
 
+import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
+import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
+import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
+
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -13,10 +17,6 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.nerbly.bemoji.R;
-
-import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
-import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
-import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
 
 public class UserInteractions {
 
