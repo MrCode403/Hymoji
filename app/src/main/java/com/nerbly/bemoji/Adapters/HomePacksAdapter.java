@@ -83,7 +83,7 @@ public class HomePacksAdapter {
                     Log.e("Pack Array Crashed", e.toString());
                 }
                 Intent toPreview = new Intent();
-                toPreview.putExtra("title", "BemojiPack_" + (long) (Double.parseDouble(Objects.requireNonNull(_data.get(position).get("id")).toString())));
+                toPreview.putExtra("title", imageview1.getContext().getString(R.string.app_name) + "Pack_" + (long) (Double.parseDouble(Objects.requireNonNull(_data.get(position).get("id")).toString())));
                 toPreview.putExtra("subtitle", Objects.requireNonNull(_data.get(position).get("description")).toString());
                 toPreview.putExtra("imageUrl", Objects.requireNonNull(_data.get(position).get("image")).toString());
                 toPreview.putExtra("fileName", Objects.requireNonNull(_data.get(position).get("slug")).toString());

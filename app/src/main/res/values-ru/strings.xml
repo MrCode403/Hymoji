@@ -17,7 +17,7 @@
     <string name="home_dock2_title">Категории</string>
     <string name="home_dock2_subtitle">kатегории</string>
     <string name="home_dock3_title">Настройки</string>
-    <string name="home_dock3_subtitle">Управляйте Nemoji</string>
+    <string name="home_dock3_subtitle">Управляйте Hymoji</string>
     <string name="home_dock4_subtitle">Как добавить смайлики?</string>
     <string name="home_dock4_title">Помощь</string>
     <string name="home_packs_title">НАБОРЫ EMOJI</string>
@@ -49,7 +49,7 @@
     <string name="preview_pack_download_btn">Скачать полный пакет</string>
     <string name="explore_packs_title">Исследуйте пакеты</string>
     <string name="explore_packs_subtitle">Пакеты разных смайликов одного типа</string>
-    <string name="settings_subtitle">Управление и настройка приложения Nemoji</string>
+    <string name="settings_subtitle">Управление и настройка приложения Hymoji</string>
     <string name="settings_title">Настройки</string>
     <string name="settings_section_1_title">ГЕНЕРАЛЬНАЯ</string>
     <string name="settings_option_1_title">Перезагрузить смайлы</string>
@@ -62,7 +62,7 @@
     <string name="settings_option_4_subtitle">Прежде чем предпринимать какие-либо действия, пожалуйста, сначала свяжитесь с нами, чтобы все уладить. Спасибо.</string>
     <string name="settings_option_5_title">Обратная связь</string>
     <string name="settings_option_5_subtitle">Чего-то не хватает или вам нужна функция? дайте нам знать. Также не забудьте поставить нам хорошую оценку.</string>
-    <string name="settings_option_6_subtitle">Мы никоим образом не связаны с Discord, Slack или Twitch. Nemoji не создавался для конкуренции с другими сервисами.</string>
+    <string name="settings_option_6_subtitle">Мы никоим образом не связаны с Discord, Slack или Twitch. Hymoji не создавался для конкуренции с другими сервисами.</string>
     <string name="settings_section_3_title">АВТОРСКИЕ ПРАВА</string>
     <string name="settings_option_7_title">Авторские права на контент</string>
     <string name="settings_option_7_subtitle">Смайлы отправляются пользователями и являются собственностью их владельцев. Щелкните здесь, если у вас есть вопросы или опасения по поводу авторских прав.</string>
@@ -71,8 +71,8 @@
     <string name="help_center_title">Центр помощи</string>
     <string name="help_center_subtitle">Пошаговые инструкции по добавлению смайлов на собственный сервер Discord, Twitch или Slack</string>
     <string name="welcome_start">Начинать</string>
-    <string name="settings_option_10_title">Nemoji на Github</string>
-    <string name="settings_option_10_subtitle">Не стесняйтесь проверить исходный код Nemoji на Github.</string>
+    <string name="settings_option_10_title">Hymoji на Github</string>
+    <string name="settings_option_10_subtitle">Не стесняйтесь проверить исходный код Hymoji на Github.</string>
     <string name="submitted_by">Представленный:</string>
     <string name="downloading">Скачивание…</string>
     <string name="full_download_path">Путь загрузки:</string>
@@ -86,10 +86,10 @@
     <string name="packs_still_loading_msg">Подождите, мы получаем категории…</string>
     <string name="emojis_still_loading_msg">Подождите, мы получаем смайлики…</string>
     <string name="settings_option_11_title">Язык</string>
-    <string name="settings_option_11_subtitle">Позвольте Nemoji говорить на вашем языке</string>
-    <string name="settings_option_12_title">Помогите перевести Nemoji</string>
-    <string name="settings_option_12_subtitle">Наша миссия - сделать Nemoji доступным для всех любителей смайликов во всем мире. Помогите нам в этой миссии.</string>
-    <string name="news_notifications_channel">Новости Nemoji</string>
+    <string name="settings_option_11_subtitle">Позвольте Hymoji говорить на вашем языке</string>
+    <string name="settings_option_12_title">Помогите перевести Hymoji</string>
+    <string name="settings_option_12_subtitle">Наша миссия - сделать Hymoji доступным для всех любителей смайликов во всем мире. Помогите нам в этой миссии.</string>
+    <string name="news_notifications_channel">Новости Hymoji</string>
     <string name="request_server_data_error">Что-то пошло не так, мы перезапустим приложение, чтобы повторить попытку.</string>
     <string name="dialog_negative_text">Отмена</string>
     <string name="dialog_positive_text">Хорошо</string>
@@ -102,7 +102,7 @@
     <string name="pro_tip_1">Вы можете получить новые смайлики, проводя вниз по этой странице, наше сообщество загружает новые смайлики каждый день.</string>
     <string name="settings_option_13_subtitle">Присоединяйтесь к нашему серверу Discord и познакомьтесь с новыми замечательными друзьями. Не опаздывай, мы тебя ждем.</string>
     <string name="pro_tip_2">Присоединяйтесь к нашему серверу Discord и познакомьтесь с новыми замечательными друзьями. Ссылка для приглашения на странице настроек, не опаздывайте, мы вас ждем.</string>
-    <string name="share_main_text">Привет, у меня есть крутые смайлы из приложения Nemoji. Проверьте это, вам обязательно понравится.</string>
+    <string name="share_main_text">Привет, у меня есть крутые смайлы из приложения Hymoji. Проверьте это, вам обязательно понравится.</string>
     <string name="downloading_sheet_msg">Emoji загружается, проверьте уведомления для получения дополнительной информации.</string>
     <string name="share_btn_txt">доля</string>
     <string name="share_title">Поделитесь смайликом через</string>
@@ -116,7 +116,7 @@
     <string name="theme_light_title">Легкий режим</string>
     <string name="theme_auto_title">Следуйте системной теме</string>
     <string name="contribute_go">Cпособствовать</string>
-    <string name="contribute_desc">Огромное спасибо всем, кто внес свой вклад в перевод Nemoji.</string>
+    <string name="contribute_desc">Огромное спасибо всем, кто внес свой вклад в перевод Hymoji.</string>
     <string name="contribute_title">Авторы переводов</string>
     <string name="contrbute_contact_us">Вы будете перенаправлены в свое почтовое приложение, чтобы связаться с нами.</string>
 </resources>

@@ -1,6 +1,9 @@
 package com.nerbly.bemoji.Functions;
 
+import android.content.res.Resources;
 import android.os.Environment;
+
+import com.nerbly.bemoji.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +11,7 @@ import java.util.HashMap;
 public class FileManager {
 
 
-    final String path1 = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS + "/Bemojis");
+    final String path1 = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS + "/" + Resources.getSystem().getString(R.string.app_name));
     private final ArrayList<HashMap<String, Object>> filesList = new ArrayList<>();
 
     public ArrayList<HashMap<String, Object>> getList() {
@@ -56,7 +59,7 @@ public class FileManager {
     }
 
     private void addFileToList(java.io.File file) {
-        if (file.getName().startsWith("Bemoji") && (file.getName().endsWith(".jpg") || (file.getName().endsWith(".png") || file.getName().endsWith(".gif")))) {
+        if (file.getName().startsWith(Resources.getSystem().getString(R.string.app_name)) && (file.getName().endsWith(".jpg") || (file.getName().endsWith(".png") || file.getName().endsWith(".gif")))) {
             HashMap<String, Object> fileMap = new HashMap<>();
             fileMap.put("filePath", file.getPath());
             fileMap.put("lastModifiedTime", file.lastModified());

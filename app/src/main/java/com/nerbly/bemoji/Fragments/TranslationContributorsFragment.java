@@ -77,7 +77,7 @@ public class TranslationContributorsFragment extends BottomSheetDialogFragment {
             intent.setAction(Intent.ACTION_SENDTO);
             intent.setData(Uri.parse("mailto:"));
             intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"nerblyteam@gmail.com"});
-            intent.putExtra(Intent.EXTRA_SUBJECT, "Bemoji Translation Contribution");
+            intent.putExtra(Intent.EXTRA_SUBJECT, requireActivity().getString(R.string.app_name) + " Translation Contribution");
             if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
                 startActivity(intent);
             } else {

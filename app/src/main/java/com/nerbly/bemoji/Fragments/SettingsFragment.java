@@ -117,7 +117,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
                 showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
                         (dialog, which) -> {
                             ClipboardManager clipboard = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                            ClipData clip = ClipData.newPlainText("Bemoji", "https://emoji.gg/submit");
+                            ClipData clip = ClipData.newPlainText(requireActivity().getString(R.string.app_name), "https://emoji.gg/submit");
                             clipboard.setPrimaryClip(clip);
                         },
                         (dialog, which) -> dialog.dismiss());
@@ -133,7 +133,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
             intent.setAction(Intent.ACTION_SENDTO);
             intent.setData(Uri.parse("mailto:"));
             intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"nerblyteam@gmail.com"});
-            intent.putExtra(Intent.EXTRA_SUBJECT, "Bemoji App - Contact Us");
+            intent.putExtra(Intent.EXTRA_SUBJECT, requireActivity().getString(R.string.app_name) + " App - Contact Us");
             if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
                 startActivity(intent);
             } else {
@@ -156,7 +156,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
                 showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
                         (dialog, which) -> {
                             ClipboardManager clipboard = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                            ClipData clip = ClipData.newPlainText("Bemoji", "https://play.google.com/store/apps/details?id=com.nerbly.bemoji");
+                            ClipData clip = ClipData.newPlainText(requireActivity().getString(R.string.app_name), "https://play.google.com/store/apps/details?id=com.nerbly.bemoji");
                             clipboard.setPrimaryClip(clip);
                         },
                         (dialog, which) -> dialog.dismiss());
@@ -172,7 +172,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
                 showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
                         (dialog, which) -> {
                             ClipboardManager clipboard = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                            ClipData clip = ClipData.newPlainText("Bemoji", "https://emoji.gg/copyright");
+                            ClipData clip = ClipData.newPlainText(requireActivity().getString(R.string.app_name), "https://emoji.gg/copyright");
                             clipboard.setPrimaryClip(clip);
                         },
                         (dialog, which) -> dialog.dismiss());
@@ -188,7 +188,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
                 showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
                         (dialog, which) -> {
                             ClipboardManager clipboard = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                            ClipData clip = ClipData.newPlainText("Bemoji", "https://emoji.gg/");
+                            ClipData clip = ClipData.newPlainText(requireActivity().getString(R.string.app_name), "https://emoji.gg/");
                             clipboard.setPrimaryClip(clip);
                         },
                         (dialog, which) -> dialog.dismiss());
@@ -197,13 +197,13 @@ public class SettingsFragment extends BottomSheetDialogFragment {
         setting10.setOnClickListener(_view -> {
             try {
                 intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("https://github.com/ilyassesalama/bemoji"));
+                intent.setData(Uri.parse("https://github.com/ilyassesalama/hymoji"));
                 startActivity(intent);
             } catch (Exception e) {
                 showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
                         (dialog, which) -> {
                             ClipboardManager clipboard = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                            ClipData clip = ClipData.newPlainText("Bemoji", "https://github.com/ilyassesalama/bemoji");
+                            ClipData clip = ClipData.newPlainText("Hymoji", "https://github.com/ilyassesalama/hymoji");
                             clipboard.setPrimaryClip(clip);
                         },
                         (dialog, which) -> dialog.dismiss());
@@ -230,7 +230,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
                 showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
                         (dialog, which) -> {
                             ClipboardManager clipboard = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                            ClipData clip = ClipData.newPlainText("Bemoji", "https://discord.gg/nxy2Qq4YP4");
+                            ClipData clip = ClipData.newPlainText(requireActivity().getString(R.string.app_name), "https://discord.gg/nxy2Qq4YP4");
                             clipboard.setPrimaryClip(clip);
                         },
                         (dialog, which) -> dialog.dismiss());

@@ -445,34 +445,35 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
 
 
     private void loadAds() {
-        MobileAds.initialize(this, initializationStatus -> {
-        });
+        if (!sharedPref.getBoolean("isPremium", false)) {
+            MobileAds.initialize(this, initializationStatus -> {
+            });
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adview.loadAd(adRequest);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adview.loadAd(adRequest);
 
-        adview.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-            }
+            adview.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                }
 
-            @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError adError) {
-            }
+                @Override
+                public void onAdFailedToLoad(@NonNull LoadAdError adError) {
+                }
 
-            @Override
-            public void onAdOpened() {
-            }
+                @Override
+                public void onAdOpened() {
+                }
 
-            @Override
-            public void onAdClicked() {
-            }
+                @Override
+                public void onAdClicked() {
+                }
 
-            @Override
-            public void onAdClosed() {
-            }
-        });
+                @Override
+                public void onAdClosed() {
+                }
+            });
+        }
     }
-
 
 }

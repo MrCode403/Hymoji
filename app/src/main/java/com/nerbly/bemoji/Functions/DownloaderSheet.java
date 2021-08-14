@@ -70,7 +70,7 @@ public class DownloaderSheet extends AppCompatActivity {
 
         btn_download.setOnClickListener(_view -> {
             if (Build.VERSION.SDK_INT >= 29) {
-                downloadFile(context, url, name);
+                downloadFile(context, url);
                 showCustomSnackBar(context.getString(R.string.downloading_sheet_msg), (Activity) context);
                 bottomSheetDialog.dismiss();
             } else {
@@ -78,7 +78,7 @@ public class DownloaderSheet extends AppCompatActivity {
                     androidx.core.app.ActivityCompat.requestPermissions((Activity) context, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 999);
                     showCustomSnackBar(context.getString(R.string.ask_for_permission), (Activity) context);
                 } else {
-                    downloadFile(context, url, name);
+                    downloadFile(context, url);
                     showCustomSnackBar(context.getString(R.string.downloading_sheet_msg), (Activity) context);
                     bottomSheetDialog.dismiss();
                 }
@@ -94,7 +94,7 @@ public class DownloaderSheet extends AppCompatActivity {
         }
     }
 
-    private static void downloadFile(Context context, String url, String name) {
+    private static void downloadFile(Context context, String url) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
@@ -104,10 +104,10 @@ public class DownloaderSheet extends AppCompatActivity {
                 request.setMimeType(context.getContentResolver().getType(Uri.parse(url)));
                 request.addRequestHeader("cookie", CookieManager.getInstance().getCookie(url));
                 request.setDescription(context.getString(R.string.app_name));
-                request.setTitle("Bemoji_" + URLUtil.guessFileName(url, "", ""));
+                request.setTitle(context.getString(R.string.app_name) + "_" + URLUtil.guessFileName(url, "", ""));
                 request.allowScanningByMediaScanner();
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "Bemojis/bemoji_" + URLUtil.guessFileName(url, "", ""));
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, context.getString(R.string.app_name) + "/" + context.getString(R.string.app_name).toLowerCase() + "_" + URLUtil.guessFileName(url, "", ""));
                 downloadmanager.enqueue(request);
                 EmojisActivity.showInterstitialAd((Activity) context);
                 handler.post(() -> {

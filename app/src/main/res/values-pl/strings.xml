@@ -17,7 +17,7 @@
     <string name="home_dock2_title">Kategorie</string>
     <string name="home_dock2_subtitle">kategorie</string>
     <string name="home_dock3_title">Ustawienia</string>
-    <string name="home_dock3_subtitle">zarządzaj Nemoji</string>
+    <string name="home_dock3_subtitle">zarządzaj Hymoji</string>
     <string name="home_dock4_subtitle">Jak dodać emoji?</string>
     <string name="home_dock4_title">"Pomoc "</string>
     <string name="home_packs_title">zestawy emoji</string>
@@ -49,7 +49,7 @@
     <string name="preview_pack_download_btn">Pobierz cały zestaw</string>
     <string name="explore_packs_title">Odkrywaj zestawy</string>
     <string name="explore_packs_subtitle">Zestawy różnych emoji tego samego typu</string>
-    <string name="settings_subtitle">Zarządzaj i dostosuj aplikację Nemoji</string>
+    <string name="settings_subtitle">Zarządzaj i dostosuj aplikację Hymoji</string>
     <string name="settings_title">Ustawienia</string>
     <string name="settings_section_1_title">Generalne</string>
     <string name="settings_option_1_title">Załaduj emojis ponownie</string>
@@ -62,7 +62,7 @@
     <string name="settings_option_4_subtitle">Przed podjęciem jakichkolwiek działań prosimy o kontakt z nami w celu uregulowania wszystkiego. Dziękujemy.</string>
     <string name="settings_option_5_title">Skomentuj</string>
     <string name="settings_option_5_subtitle">Czegoś brakuje ,albo  potrzebujesz funkcji ? Powiedz nam. I nie zapomnij dać nam dobrej oceny.</string>
-    <string name="settings_option_6_subtitle">Nie współpracujemy z Discordem ,Slackiem albo Twitchem . Nemoji nie zostało stworzone ,by konkurować z żadną inną marką</string>
+    <string name="settings_option_6_subtitle">Nie współpracujemy z Discordem ,Slackiem albo Twitchem . Hymoji nie zostało stworzone ,by konkurować z żadną inną marką</string>
     <string name="settings_section_3_title">PRAWA AUTORSKIE</string>
     <string name="settings_option_7_title">Prawa autorskie do treści</string>
     <string name="settings_option_7_subtitle">Emoji są przesyłane przez użytkowników i są chronione prawami autorskimi ich prawowitych właścicieli. Kliknij tutaj, jeśli masz pytania lub wątpliwości dotyczące praw autorskich.</string>
@@ -71,8 +71,8 @@
     <string name="help_center_title">Centrum pomocy</string>
     <string name="help_center_subtitle">Instrukcja krok-po-kroku jak dodać emotki na Twój serwer Discord Twitch , albo Slack</string>
     <string name="welcome_start">Start</string>
-    <string name="settings_option_10_title">Github Nemoji</string>
-    <string name="settings_option_10_subtitle">Możesz sprawdzić kod źródłowy Nemoji na GitHubie</string>
+    <string name="settings_option_10_title">Github Hymoji</string>
+    <string name="settings_option_10_subtitle">Możesz sprawdzić kod źródłowy Hymoji na GitHubie</string>
     <string name="submitted_by">Przesłane przez:</string>
     <string name="downloading">Pobieranie…</string>
     <string name="full_download_path">Ścieżka pobierania:</string>
@@ -86,10 +86,10 @@
     <string name="packs_still_loading_msg">Proszę poczekaj ładujemy kategorie…</string>
     <string name="emojis_still_loading_msg">Proszę poczekaj ładujemy emojis…</string>
     <string name="settings_option_11_title">Język</string>
-    <string name="settings_option_11_subtitle">Pozwól Nemoji używac Twojego języka</string>
+    <string name="settings_option_11_subtitle">Pozwól Hymoji używac Twojego języka</string>
     <string name="settings_option_12_title">Pomóż przetłumaczyć emoji</string>
-    <string name="settings_option_12_subtitle">Naszą misją jest sprawić żeby Nemoji były dostępne dla wszystkich fanów emoji na całym świecie . Pomóż nam w tej misji</string>
-    <string name="news_notifications_channel">Nemoji wiadomości</string>
+    <string name="settings_option_12_subtitle">Naszą misją jest sprawić żeby Hymoji były dostępne dla wszystkich fanów emoji na całym świecie . Pomóż nam w tej misji</string>
+    <string name="news_notifications_channel">Hymoji wiadomości</string>
     <string name="request_server_data_error">Coś poszło nie tak, Zrestartujemy aplikację, aby spróbowac jeszcze raz</string>
     <string name="dialog_negative_text">Anuluj</string>
     <string name="dialog_positive_text">Okej</string>
@@ -104,7 +104,7 @@
     <string name="downloading_sheet_msg">Emoji są pobierane, sprawdź powiadomienia po więcej informacji</string>
     <string name="pro_tip_2">dołącz do Naszego serwera Discord i poznaj nowych ,niesamowitych przyjaciół .Zaproszenie jest w ustawieniach . Nie spóźnij się czekamy na Ciebię</string>
     <string name="share_btn_txt">Udostępnij</string>
-    <string name="share_main_text">Hej, mam ten fajny emoji z aplikacji Nemoji. Sprawdź, na pewno ci się spodoba.</string>
+    <string name="share_main_text">Hej, mam ten fajny emoji z aplikacji Hymoji. Sprawdź, na pewno ci się spodoba.</string>
     <string name="share_title">Udostępnij emoji przez</string>
     <string name="emojis_tab1_title">Główne emotikony</string>
     <string name="emojis_tab2_title">Zestawy emoji</string>
@@ -116,7 +116,7 @@
     <string name="theme_light_title">Jasny motyw</string>
     <string name="theme_auto_title">Używaj motywu systemowego</string>
     <string name="contribute_go">Weź udział teraz</string>
-    <string name="contribute_desc">Ogromne podziękowania dla wszystkich, którzy przyczynili się do tłumaczenia Nemoji.</string>
+    <string name="contribute_desc">Ogromne podziękowania dla wszystkich, którzy przyczynili się do tłumaczenia Hymoji.</string>
     <string name="contribute_title">Współtwórcy tłumaczeń</string>
     <string name="contrbute_contact_us">Zostaniesz przekierowany do Twojej aplikacji pocztowej, aby się z nami skontaktować</string>
 </resources>

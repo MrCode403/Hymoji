@@ -56,9 +56,8 @@ public class PaymentProcessorFragment extends Fragment {
     @SuppressLint("SetJavaScriptEnabled")
     private void initialize(View view) {
 
-        progress = view.findViewById(R.id.progress);
         webview = view.findViewById(R.id.webview);
-        swiperefreshlayout = view.findViewById(R.id.swiperefreshlayout);
+
         webview.getSettings().setJavaScriptEnabled(true);
         webview.getSettings().setSupportZoom(true);
 

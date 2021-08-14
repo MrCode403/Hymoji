@@ -17,7 +17,7 @@
     <string name="home_dock2_title">Categorias</string>
     <string name="home_dock2_subtitle">categorias</string>
     <string name="home_dock3_title">Definições</string>
-    <string name="home_dock3_subtitle">Gerenciar Nemoji</string>
+    <string name="home_dock3_subtitle">Gerenciar Hymoji</string>
     <string name="home_dock4_subtitle">Como adicionar emojis?</string>
     <string name="home_dock4_title">Ajuda</string>
     <string name="home_packs_title">EMOJI PACKS</string>
@@ -49,7 +49,7 @@
     <string name="preview_pack_download_btn">Baixe o pacote completo</string>
     <string name="explore_packs_title">Explorar pacotes</string>
     <string name="explore_packs_subtitle">Pacotes de diferentes emojis do mesmo tipo</string>
-    <string name="settings_subtitle">Gerenciar e personalizar Nemoji</string>
+    <string name="settings_subtitle">Gerenciar e personalizar Hymoji</string>
     <string name="settings_title">Definições</string>
     <string name="settings_section_1_title">EM GERAL</string>
     <string name="settings_option_1_title">Recarregar emojis</string>
@@ -62,7 +62,7 @@
     <string name="settings_option_4_subtitle">Antes de realizar qualquer ação, entre em contato conosco para esclarecer tudo. Obrigado.</string>
     <string name="settings_option_5_title">Comentários</string>
     <string name="settings_option_5_subtitle">Está faltando alguma coisa ou você precisa de um recurso? nos informe. Além disso, não se esqueça de nos dar uma boa classificação.</string>
-    <string name="settings_option_6_subtitle">Não somos de forma alguma afiliados ao Discord, Slack ou Twitch. Nemoji não foi criado para competir com qualquer outro serviço.</string>
+    <string name="settings_option_6_subtitle">Não somos de forma alguma afiliados ao Discord, Slack ou Twitch. Hymoji não foi criado para competir com qualquer outro serviço.</string>
     <string name="settings_section_3_title">DIREITO AUTORAL</string>
     <string name="settings_option_7_title">Direitos autorais do conteúdo</string>
     <string name="settings_option_7_subtitle">Os emojis são enviados pelo usuário e possuem direitos autorais de seus respectivos proprietários. Clique aqui se você tiver dúvidas ou preocupações com direitos autorais.</string>
@@ -71,8 +71,8 @@
     <string name="help_center_title">Centro de ajuda</string>
     <string name="help_center_subtitle">Instruções passo a passo para adicionar emojis ao seu próprio servidor Discord, Twitch ou Slack</string>
     <string name="welcome_start">Começar</string>
-    <string name="settings_option_10_title">Nemoji no Github</string>
-    <string name="settings_option_10_subtitle">Sinta-se à vontade para verificar o código-fonte do Nemoji no Github.</string>
+    <string name="settings_option_10_title">Hymoji no Github</string>
+    <string name="settings_option_10_subtitle">Sinta-se à vontade para verificar o código-fonte do Hymoji no Github.</string>
     <string name="submitted_by">Enviado por:</string>
     <string name="downloading">Baixando…</string>
     <string name="full_download_path">Salvo em:</string>
@@ -85,10 +85,10 @@
     <string name="packs_still_loading_msg">Aguarde, estamos recebendo categorias…</string>
     <string name="emojis_still_loading_msg">LínguaAguarde, estamos recebendo emojis…</string>
     <string name="settings_option_11_title">Língua</string>
-    <string name="settings_option_11_subtitle">Deixe Nemoji falar sua língua</string>
-    <string name="settings_option_12_title">Ajude a traduzir o Nemoji</string>
-    <string name="settings_option_12_subtitle">Nossa missão é tornar o Nemoji acessível para todos os amantes de emoji ao redor do mundo. Ajude-nos nessa missão.</string>
-    <string name="news_notifications_channel">Notícias de Nemoji</string>
+    <string name="settings_option_11_subtitle">Deixe Hymoji falar sua língua</string>
+    <string name="settings_option_12_title">Ajude a traduzir o Hymoji</string>
+    <string name="settings_option_12_subtitle">Nossa missão é tornar o Hymoji acessível para todos os amantes de emoji ao redor do mundo. Ajude-nos nessa missão.</string>
+    <string name="news_notifications_channel">Notícias de Hymoji</string>
     <string name="request_server_data_error">Algo deu errado. Reiniciaremos o aplicativo para tentar novamente.</string>
     <string name="error_msg">Algo deu errado.</string>
     <string name="dialog_positive_text">OK</string>
@@ -102,7 +102,7 @@
     <string name="pro_tip_1">Você pode obter novos emojis deslizando para baixo nesta página, nossa comunidade carrega novos emojis todos os dias.</string>
     <string name="settings_option_13_subtitle">Junte-se ao nosso servidor Discord e conheça novos amigos incríveis. Não se atrase, estamos esperando por você.</string>
     <string name="pro_tip_2">Junte-se ao nosso servidor Discord e conheça novos amigos incríveis. O link de convite na página de configurações, Não se atrase, estamos esperando por você.</string>
-    <string name="share_main_text">Ei, ganhei um emoji legal do app Nemoji. Dê uma olhada, você definitivamente vai gostar.</string>
+    <string name="share_main_text">Ei, ganhei um emoji legal do app Hymoji. Dê uma olhada, você definitivamente vai gostar.</string>
     <string name="downloading_sheet_msg">Emoji está sendo baixado, verifique as notificações para obter mais informações.</string>
     <string name="share_btn_txt">Compartilhar</string>
     <string name="share_title">Compartilhe o emoji via</string>
@@ -116,7 +116,7 @@
     <string name="theme_light_title">Modo claro</string>
     <string name="theme_auto_title">Seguir tema do sistema</string>
     <string name="contribute_go">Contribua agora</string>
-    <string name="contribute_desc">Muito obrigado a todos que contribuíram para traduzir Nemoji.</string>
+    <string name="contribute_desc">Muito obrigado a todos que contribuíram para traduzir Hymoji.</string>
     <string name="contribute_title">Colaboradores de tradução</string>
     <string name="contrbute_contact_us">Você será redirecionado para o seu aplicativo de e-mail para entrar em contato conosco</string>
 </resources>

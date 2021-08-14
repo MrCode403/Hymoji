@@ -89,6 +89,7 @@ public class HomeActivity extends AppCompatActivity {
     private final Intent toPacks = new Intent();
     private final LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
     public boolean isFragmentAttached = false;
+    private boolean isAdLoaded = false;
     public boolean isActivityAttached = false;
     double emojisCount = 0;
     double emojisScanPosition = 0;
@@ -131,6 +132,7 @@ public class HomeActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipe_to_refresh;
     private AppUpdateManager appUpdateManager;
     private InstallStateUpdatedListener installStateUpdatedListener;
+    private MaterialCardView premium_dock;
 
     public static String PacksArray() {
         return new Gson().toJson(packsList);
@@ -164,7 +166,7 @@ public class HomeActivity extends AppCompatActivity {
         activityDescription = findViewById(R.id.activityDescription);
         loadingView = findViewById(R.id.loadingView);
         MaterialCardView discord_dock = findViewById(R.id.discord_dock);
-        MaterialCardView premium_dock = findViewById(R.id.premium_dock);
+        premium_dock = findViewById(R.id.premium_dock);
         mainView = findViewById(R.id.mainView);
         premium_img = findViewById(R.id.premium_img);
         shimmer1 = findViewById(R.id.shimmer1);
@@ -227,7 +229,7 @@ public class HomeActivity extends AppCompatActivity {
                 showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), this,
                         (dialog, which) -> {
                             ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                            ClipData clip = ClipData.newPlainText("Bemoji", "https://discord.gg/nxy2Qq4YP4");
+                            ClipData clip = ClipData.newPlainText(getString(R.string.app_name), "https://discord.gg/nxy2Qq4YP4");
                             clipboard.setPrimaryClip(clip);
                         },
                         (dialog, which) -> dialog.dismiss());
@@ -423,6 +425,14 @@ public class HomeActivity extends AppCompatActivity {
         } else if (androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != android.content.pm.PackageManager.PERMISSION_DENIED) {
             getLocalEmojis(false);
         }
+
+        if (sharedPref.getBoolean("isPremium", false)) {
+            if (isAdLoaded) {
+                adview.destroy();
+                adview.setVisibility(View.GONE);
+                premium_dock.setVisibility(View.GONE);
+            }
+        }
     }
 
     public void LOGIC_BACKEND() {
@@ -486,6 +496,9 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             statusBarColor("#FFFFFF", this);
             DARK_ICONS(this);
+        }
+        if (sharedPref.getBoolean("isPremium", false)) {
+            premium_dock.setVisibility(View.GONE);
         }
         rippleRoundStroke(dock1, "#FEF3ED", "#FEE0D0", 25, 0, "#FFFFFF");
         rippleRoundStroke(dock2, "#FAECFD", "#F6D6FD", 25, 0, "#FFFFFF");
@@ -657,34 +670,38 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void loadAds() {
-        MobileAds.initialize(this, initializationStatus -> {
-        });
+        if (!sharedPref.getBoolean("isPremium", false)) {
+            MobileAds.initialize(this, initializationStatus -> {
+            });
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adview.loadAd(adRequest);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adview.loadAd(adRequest);
 
 
-        adview.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-            }
+            adview.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    isAdLoaded = true;
+                }
 
-            @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError adError) {
-            }
+                @Override
+                public void onAdFailedToLoad(@NonNull LoadAdError adError) {
+                    isAdLoaded = false;
+                }
 
-            @Override
-            public void onAdOpened() {
-            }
+                @Override
+                public void onAdOpened() {
+                }
 
-            @Override
-            public void onAdClicked() {
-            }
+                @Override
+                public void onAdClicked() {
+                }
 
-            @Override
-            public void onAdClosed() {
-            }
-        });
+                @Override
+                public void onAdClosed() {
+                }
+            });
+        }
     }
 
     public void startRefreshFromSettings() {

@@ -115,7 +115,7 @@ public class PackPreviewActivity extends AppCompatActivity {
         download.setOnClickListener(_view -> {
             if (!isDownloading && !isPackDownloaded) {
                 if (sharedPref.getString("downloadPath", "").isEmpty()) {
-                    downloadPath = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/Bemojis";
+                    downloadPath = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/" + getString(R.string.app_name);
                 } else {
                     downloadPath = sharedPref.getString("downloadPath", "");
                 }
@@ -343,11 +343,11 @@ public class PackPreviewActivity extends AppCompatActivity {
             }
         } else {
             String downloadPackUrl = ASSETS_SOURCE_LINK + downloadPackArrayList.get((int) (downloadPackPosition));
-            String downloadPackName = "Bemoji_" + downloadPackArrayList.get((int) downloadPackPosition);
+            String downloadPackName = getString(R.string.app_name) + "_" + downloadPackArrayList.get((int) downloadPackPosition);
             if (isGoingToZipPack) {
                 downloadPackPath = FileUtil.getPackageDataDir(getApplicationContext()) + "/Zipper/" + packName;
             } else {
-                downloadPackPath = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + ("/Bemojis/" + packName);
+                downloadPackPath = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/" + getString(R.string.app_name) + "/" + packName;
             }
             startPackDownload(downloadPackName, downloadPackPath, downloadPackUrl);
         }

@@ -1,6 +1,8 @@
 package com.nerbly.bemoji.Functions;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.widget.Toast;
 
 import java.io.BufferedInputStream;
@@ -133,5 +135,9 @@ public class Utils {
             }
         });
     }
-
+    public static boolean isConnected(Context _context) {
+        ConnectivityManager _connectivityManager = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo _activeNetworkInfo = _connectivityManager.getActiveNetworkInfo();
+        return _activeNetworkInfo != null && _activeNetworkInfo.isConnected();
+    }
 }

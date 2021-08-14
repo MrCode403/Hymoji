@@ -198,33 +198,35 @@ public class PacksActivity extends AppCompatActivity {
     }
 
     private void loadAds() {
-        MobileAds.initialize(this, initializationStatus -> {
-        });
+        if (!sharedPref.getBoolean("isPremium", false)) {
+            MobileAds.initialize(this, initializationStatus -> {
+            });
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adview.loadAd(adRequest);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adview.loadAd(adRequest);
 
-        adview.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-            }
+            adview.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                }
 
-            @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError adError) {
-            }
+                @Override
+                public void onAdFailedToLoad(@NonNull LoadAdError adError) {
+                }
 
-            @Override
-            public void onAdOpened() {
-            }
+                @Override
+                public void onAdOpened() {
+                }
 
-            @Override
-            public void onAdClicked() {
-            }
+                @Override
+                public void onAdClicked() {
+                }
 
-            @Override
-            public void onAdClosed() {
-            }
-        });
+                @Override
+                public void onAdClosed() {
+                }
+            });
+        }
     }
 
     public class PacksRecyclerAdapter extends RecyclerView.Adapter<PacksRecyclerAdapter.ViewHolder> {
@@ -276,7 +278,7 @@ public class PacksActivity extends AppCompatActivity {
                     Log.d("Recycler Error", e.toString());
                 }
                 toPreview.putExtra("switchType", "pack");
-                toPreview.putExtra("title", "BemojiPack_".concat(String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("id")).toString())))));
+                toPreview.putExtra("title", getString(R.string.app_name) + "Pack_".concat(String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("id")).toString())))));
                 toPreview.putExtra("subtitle", Objects.requireNonNull(data.get(position).get("description")).toString());
                 toPreview.putExtra("imageUrl", Objects.requireNonNull(data.get(position).get("image")).toString());
                 toPreview.putExtra("fileName", Objects.requireNonNull(data.get(position).get("slug")).toString());
