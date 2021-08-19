@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -164,6 +165,7 @@ public class PaymentActivity extends AppCompatActivity {
     public void LOGIC_FRONTEND() {
         LIGHT_ICONS(this);
         transparentStatusBar(this);
+        marqueeTextView(payment_holder_text);
     }
 
     @Override
@@ -233,5 +235,14 @@ public class PaymentActivity extends AppCompatActivity {
         });
         bottomSheetDialog.setCancelable(false);
         bottomSheetDialog.show();
+    }
+
+    public void marqueeTextView(final TextView view) {
+        view.setSingleLine(true);
+        view.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        view.setSelected(true);
+        view.setMarqueeRepeatLimit(-1);
+        view.setHorizontalFadingEdgeEnabled(true);
+        view.setFadingEdgeLength(20);
     }
 }

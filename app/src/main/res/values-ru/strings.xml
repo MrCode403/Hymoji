@@ -119,4 +119,21 @@
     <string name="contribute_desc">Огромное спасибо всем, кто внес свой вклад в перевод Hymoji.</string>
     <string name="contribute_title">Авторы переводов</string>
     <string name="contrbute_contact_us">Вы будете перенаправлены в свое почтовое приложение, чтобы связаться с нами.</string>
+    <string name="payment_failed">Платеж не прошел, попробуйте еще раз.</string>
+    <string name="payments_powered_by">Платежи обрабатываются PayPal</string>
+    <string name="no_internet_connection">Проверьте подключение к Интернету!</string>
+    <string name="payment_leaving">О нет, не уходи :(</string>
+    <string name="payment_success_title">Огромное Вам спасибо!</string>
+    <string name="payment_success_desc">Вы стали одним из самых крутых пользователей Hymoji, мы гордимся вами.</string>
+    <string name="payment_success_positive_btn">Потрясающий</string>
+    <string name="premium_description">Получите максимум от Hymoji и выведите свой опыт на совершенно новый уровень. Вот преимущества, которые предоставляются с премиум-версией Hymoji:</string>
+    <string name="premium_title_ad">Hymoji Premium</string>
+    <string name="premium_feature_1_title">Свободный от рекламы</string>
+    <string name="premium_feature_1_desc">Наслаждайтесь Hymoji без единой рекламы. Держите все в чистоте.</string>
+    <string name="premium_feature_2_desc">Получайте новые смайлы каждый день, даже раньше, чем другие.</string>
+    <string name="premium_feature_2_title">Ежедневно новые наборы и смайлики</string>
+    <string name="premium_feature_3_title">Доступный</string>
+    <string name="premium_feature_3_desc">Это стоит всего 1,99 $. Не так уж и дорого, правда?</string>
+    <string name="premium_go_btn">круто, хочу купить!</string>
+    <string name="premium_mini_desc">Получите массу премиальных функций только для вас и, самое главное, избавьтесь от рекламы.</string>
 </resources>

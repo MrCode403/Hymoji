@@ -24,6 +24,7 @@ import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
@@ -31,6 +32,7 @@ import com.google.android.material.textview.MaterialTextView;
 import com.nerbly.bemoji.Activities.EmojisActivity;
 import com.nerbly.bemoji.R;
 
+import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -60,7 +62,9 @@ public class DownloaderSheet extends AppCompatActivity {
 
         String emojiName = name.replaceAll("[_\\\\-]", " ");
         emojiName = emojiName.replaceAll("[0-9]", "");
-        emojiName = emojiName.substring(0, emojiName.length() - 4);
+        if (stringContainsItemFromList(emojiName, new String[]{".png", ".gif", ".jpg"})) {
+            emojiName = emojiName.substring(0, emojiName.length() - 4);
+        }
 
         emoji_title.setText(capitalizedFirstWord(emojiName).trim());
         setBlurImageUrl(emoji_background, 25, url);
@@ -125,5 +129,10 @@ public class DownloaderSheet extends AppCompatActivity {
         intent.putExtra("android.intent.extra.TEXT", emoji_link);
         context.startActivity(Intent.createChooser(intent, intent_text));
         showCustomSnackBar(context.getString(R.string.getting_ready_to_share), (Activity) context);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static boolean stringContainsItemFromList(String inputStr, String[] items) {
+        return Arrays.stream(items).anyMatch(inputStr::contains);
     }
 }

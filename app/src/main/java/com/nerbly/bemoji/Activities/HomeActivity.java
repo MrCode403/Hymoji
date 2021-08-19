@@ -1,8 +1,10 @@
 package com.nerbly.bemoji.Activities;
 
+import static com.nerbly.bemoji.Configurations.ASSETS_SOURCE_LINK;
 import static com.nerbly.bemoji.Configurations.CATEGORIES_API_LINK;
 import static com.nerbly.bemoji.Configurations.EMOJIS_API_LINK;
 import static com.nerbly.bemoji.Configurations.PACKS_API_LINK;
+import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
@@ -20,6 +22,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -58,6 +61,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nerbly.bemoji.Adapters.HomePacksAdapter;
 import com.nerbly.bemoji.Adapters.LocalEmojisAdapter;
+import com.nerbly.bemoji.Adapters.MainEmojisAdapter;
 import com.nerbly.bemoji.Fragments.CategoriesFragment;
 import com.nerbly.bemoji.Fragments.SettingsFragment;
 import com.nerbly.bemoji.Fragments.TutorialFragment;
@@ -69,6 +73,7 @@ import com.nerbly.bemoji.Functions.getDarkModeState;
 import com.nerbly.bemoji.R;
 import com.nerbly.bemoji.UI.MainUIMethods;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -78,6 +83,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
@@ -376,7 +383,6 @@ public class HomeActivity extends AppCompatActivity {
                                 sharedPref.edit().putString("packsDataOriginal", response).apply();
                                 sharedPref.edit().putString("packsData", new Gson().toJson(packsList)).apply();
                                 packs_recycler.setAdapter(new HomePacksAdapter.Packs_recyclerAdapter(packsList));
-
                             } catch (Exception e) {
                                 getOnlineEmojis();
                             }
@@ -422,7 +428,7 @@ public class HomeActivity extends AppCompatActivity {
         if (sharedPref.getBoolean("isAskingForReloadEmojis", false)) {
             sharedPref.edit().putBoolean("isAskingForReloadEmojis", false).apply();
             recreate();
-        } else if (androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != android.content.pm.PackageManager.PERMISSION_DENIED) {
+        } else {
             getLocalEmojis(false);
         }
 
@@ -486,6 +492,7 @@ public class HomeActivity extends AppCompatActivity {
 
         getOnlineEmojis();
         loadAds();
+        getLocalEmojis(true);
     }
 
 
@@ -551,50 +558,70 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void getLocalEmojis(boolean isGettingDataFirstTime) {
-        if (!isGettingDataFirstTime) {
-            try {
-                Objects.requireNonNull(local_recycler.getAdapter()).notifyDataSetChanged();
-            } catch (Exception ignored) {
+        if (androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            if (!isGettingDataFirstTime) {
+                try {
+                    Objects.requireNonNull(local_recycler.getAdapter()).notifyDataSetChanged();
+                } catch (Exception ignored) {
+                }
             }
-        }
-        try {
-            fileManager = new FileManager();
-            new Thread(() -> {
-
-                localEmojisList = fileManager.getList();
-                new Handler(Looper.getMainLooper()).post(() -> {
-
-                    try {
-                        for (int i = 0; i < (localEmojisList.size() - 1); i++) {
-                            localEmojisScanPath = Objects.requireNonNull(localEmojisList.get(i).get("filePath")).toString();
-                            File file1 = new File(localEmojisScanPath);
-                            try {
-                                long length = file1.length();
-                                length = length / 1024;
-                                if (length == 0) {
-                                    localEmojisList.remove(i);
-                                }
-                            } catch (Exception e) {
-                                localEmojisList.remove(i);
-                            }
-                        }
+            if (Build.VERSION.SDK_INT >= 29) {
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                Handler handler = new Handler(Looper.getMainLooper());
+                executor.execute(() -> {
+                    fileManager = new FileManager();
+                    localEmojisList = fileManager.getLocalEmojisFrom(this);
+                    handler.post(() -> {
                         if (localEmojisList.size() == 0) {
                             localEmojisView.setVisibility(View.GONE);
                         } else {
-                            Utils.sortListMap(localEmojisList, "lastModifiedTime", false, false);
                             local_recycler.setAdapter(new LocalEmojisAdapter.Local_recyclerAdapter(localEmojisList));
-
                             new Handler().postDelayed(() -> localEmojisView.setVisibility(View.VISIBLE), 1000);
-
                         }
-                    } catch (Exception e) {
-                        Log.d("recycler error", e.toString());
-                    }
-
+                    });
                 });
-            }).start();
-        } catch (Exception e) {
-            Log.e("local emojis error", e.toString());
+
+
+            } else {
+                try {
+                    fileManager = new FileManager();
+                    new Thread(() -> {
+
+                        localEmojisList = fileManager.getList();
+                        new Handler(Looper.getMainLooper()).post(() -> {
+
+                            try {
+                                for (int i = 0; i < (localEmojisList.size() - 1); i++) {
+                                    localEmojisScanPath = Objects.requireNonNull(localEmojisList.get(i).get("filePath")).toString();
+                                    File file1 = new File(localEmojisScanPath);
+                                    try {
+                                        long length = file1.length();
+                                        length = length / 1024;
+                                        if (length == 0) {
+                                            localEmojisList.remove(i);
+                                        }
+                                    } catch (Exception e) {
+                                        localEmojisList.remove(i);
+                                    }
+                                }
+                                if (localEmojisList.size() == 0) {
+                                    localEmojisView.setVisibility(View.GONE);
+                                } else {
+                                    Utils.sortListMap(localEmojisList, "lastModifiedTime", false, false);
+                                    local_recycler.setAdapter(new LocalEmojisAdapter.Local_recyclerAdapter(localEmojisList));
+                                    new Handler().postDelayed(() -> localEmojisView.setVisibility(View.VISIBLE), 1000);
+
+                                }
+                            } catch (Exception e) {
+                                Log.d("recycler error", e.toString());
+                            }
+
+                        });
+                    }).start();
+                } catch (Exception e) {
+                    Log.e("local emojis error", e.toString());
+                }
+            }
         }
     }
 

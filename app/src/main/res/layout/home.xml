@@ -528,7 +528,7 @@
                                     android:paddingLeft="4dp"
                                     android:paddingRight="4dp"
                                     android:paddingBottom="4dp"
-                                    android:text="Bemoji premium"
+                                    android:text="@string/premium_title_ad"
                                     android:textColor="#212121"
                                     android:textSize="16sp"
                                     android:textStyle="bold" />
@@ -540,7 +540,7 @@
                                     android:fontFamily="@font/whitney"
                                     android:paddingLeft="4dp"
                                     android:paddingRight="4dp"
-                                    android:text="Get tons of premium features just for you, and most improtantly, get rid of ads."
+                                    android:text="@string/premium_mini_desc"
                                     android:textColor="#757575"
                                     android:textSize="12sp" />
 

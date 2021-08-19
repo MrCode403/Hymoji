@@ -74,7 +74,20 @@
             app:tabRippleColor="@android:color/transparent"
             app:tabSelectedTextColor="@color/colorPrimary"
             app:tabTextColor="#616161"
-            app:tabUnboundedRipple="true" />
+            app:tabUnboundedRipple="true">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/emojis_tab1_title" />
+
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/emojis_tab2_title" />
+
+        </com.google.android.material.tabs.TabLayout>
 
         <LinearLayout
             android:id="@+id/line"

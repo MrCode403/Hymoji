@@ -11,7 +11,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 24
-        versionName "1.0.0"
+        versionName "0.2.6 - beta"
     }
     buildTypes {
         release {
@@ -49,7 +49,7 @@ dependencies {
     implementation 'com.google.android.play:core:1.10.0'
 
     //firebase
-    implementation platform('com.google.firebase:firebase-bom:28.0.0')
+    implementation platform('com.google.firebase:firebase-bom:28.1.0')
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-messaging'
     implementation 'com.google.firebase:firebase-analytics'

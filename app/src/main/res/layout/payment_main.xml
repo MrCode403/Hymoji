@@ -69,7 +69,7 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:paddingBottom="8dp"
-                android:text="@string/premium_subtitle"
+                android:text="@string/premium_description"
                 android:textColor="#616161"
                 android:textSize="14sp"
                 app:layout_constraintTop_toBottomOf="@+id/activityTitle" />

@@ -119,4 +119,21 @@
     <string name="contribute_desc">Hymoji\'nin çevirisine katkıda bulunan herkese çok teşekkürler.</string>
     <string name="contribute_title">Çeviriye Katkıda Bulunanlar</string>
     <string name="contrbute_contact_us">Bizimle iletişime geçmek için posta uygulamanıza yönlendirileceksiniz</string>
+    <string name="payment_failed">Ödeme başarısız oldu, lütfen tekrar deneyin.</string>
+    <string name="no_internet_connection">İnternet bağlantınızı kontrol edin!</string>
+    <string name="payments_powered_by">Ödemeler PayPal tarafından işlenir</string>
+    <string name="payment_leaving">Yok gitme :(</string>
+    <string name="payment_success_title">Size çok teşekkürler!</string>
+    <string name="payment_success_desc">Hymoji\'nin en havalı kullanıcılarından biri oldun, seninle gurur duyuyoruz.</string>
+    <string name="payment_success_positive_btn">Mükemmel</string>
+    <string name="premium_description">Hymoji\'den en iyi şekilde yararlanın ve deneyiminizi yepyeni bir düzeye taşıyın. Hymoji premium ile gelen avantajlar şunlardır:</string>
+    <string name="premium_title_ad">Hymoji Premium</string>
+    <string name="premium_feature_1_title">Reklamsız</string>
+    <string name="premium_feature_1_desc">Etrafta tek bir reklam olmadan Hymoji\'nin keyfini çıkarın. Hepsini temiz tut.</string>
+    <string name="premium_feature_2_desc">Her gün, diğerlerinden daha erken yeni emojiler edinin.</string>
+    <string name="premium_feature_2_title">Günlük yeni paketler ve emojiler</string>
+    <string name="premium_feature_3_title">Ekonomik</string>
+    <string name="premium_feature_3_desc">Sadece 1.99$\'a mal oluyor. O kadar pahalı değil, değil mi?</string>
+    <string name="premium_go_btn">harika, bir deneyeyim</string>
+    <string name="premium_mini_desc">Sadece size özel tonlarca premium özellik edinin ve en önemlisi reklamlardan kurtulun.</string>
 </resources>

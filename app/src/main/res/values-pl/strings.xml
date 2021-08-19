@@ -119,4 +119,21 @@
     <string name="contribute_desc">Ogromne podziękowania dla wszystkich, którzy przyczynili się do tłumaczenia Hymoji.</string>
     <string name="contribute_title">Współtwórcy tłumaczeń</string>
     <string name="contrbute_contact_us">Zostaniesz przekierowany do Twojej aplikacji pocztowej, aby się z nami skontaktować</string>
+    <string name="payment_failed">Płatność nie powiodła się, spróbuj ponownie.</string>
+    <string name="no_internet_connection">Sprawdź swoje połączenie z internetem!</string>
+    <string name="payments_powered_by">Płatności są przetwarzane przez PayPal</string>
+    <string name="payment_leaving">O nie, nie odchodź :(</string>
+    <string name="payment_success_title">Ogromne dzięki tobie!</string>
+    <string name="payment_success_desc">Stałeś się jednym z najfajniejszych użytkowników Hymoji, jesteśmy z Ciebie dumni.</string>
+    <string name="payment_success_positive_btn">Wspaniały</string>
+    <string name="premium_description">Wydobądź to, co najlepsze z Hymoji i przenieś swoje wrażenia na zupełnie nowy poziom. Oto korzyści związane z premią Hymoji:</string>
+    <string name="premium_title_ad">Hymoji Premium</string>
+    <string name="premium_feature_1_title">Bez reklam</string>
+    <string name="premium_feature_1_desc">Ciesz się Hymoji bez żadnej reklamy. Utrzymuj to wszystko w czystości.</string>
+    <string name="premium_feature_2_desc">Otrzymuj nowe emotikony każdego dnia, nawet wcześniej niż inne.</string>
+    <string name="premium_feature_2_title">Codzienne nowe pakiety i emotikony</string>
+    <string name="premium_feature_3_title">Przystępny</string>
+    <string name="premium_feature_3_desc">Kosztuje tylko 1,99 $. Nie tak drogo, prawda?</string>
+    <string name="premium_go_btn">fajnie, chcę to kupić!</string>
+    <string name="premium_mini_desc">Uzyskaj mnóstwo funkcji premium tylko dla siebie, a co najważniejsze, pozbądź się reklam.</string>
 </resources>

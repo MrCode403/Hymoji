@@ -5,6 +5,8 @@ import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,6 +17,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.nerbly.bemoji.R;
+
+import java.io.InputStream;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
@@ -42,6 +46,16 @@ public class SideFunctions {
         Glide.with(image.getContext())
                 .load(imageUri)
                 .into(image);
+    }
+
+    public static void loadImageFromUri(String uri, ImageView image, Context context) {
+        try {
+            InputStream is = context.getContentResolver().openInputStream((Uri.parse(uri)));
+            Bitmap bitmap = BitmapFactory.decodeStream(is);
+            image.setImageBitmap(bitmap);
+        } catch (Exception e) {
+
+        }
     }
 
     public static void setImgURL(final String url, final ImageView image) {
