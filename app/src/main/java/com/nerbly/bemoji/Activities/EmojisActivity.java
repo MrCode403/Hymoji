@@ -50,6 +50,8 @@ import com.nerbly.bemoji.R;
 
 import java.util.Objects;
 
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+
 public class EmojisActivity extends AppCompatActivity {
     public static EditText searchBoxField;
     public static InterstitialAd mInterstitialAd;
@@ -192,6 +194,7 @@ public class EmojisActivity extends AppCompatActivity {
         }
         RippleEffects("#E0E0E0", sortByBtn);
         RippleEffects("#E0E0E0", searchBtn);
+        OverScrollDecoratorHelper.setUpOverScroll(viewpager);
     }
 
     public void showFilterMenu(final View view) {

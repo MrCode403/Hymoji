@@ -1,5 +1,2 @@
--keepattributes *Annotation*
--keepattributes SourceFile,LineNumberTable
-# prevent Crashlytics obfuscation
--keep class com.google.firebase.crashlytics.** { *; }
--dontwarn com.google.firebase.crashlytics.**
+-keepattributes SourceFile,LineNumberTable        # Keep file names and line numbers.
+-keep public class * extends java.lang.Exception  # Optional: Keep custom exceptions.

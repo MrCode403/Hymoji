@@ -41,6 +41,8 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+
 
 public class PacksEmojisFragment extends Fragment {
 
@@ -86,6 +88,7 @@ public class PacksEmojisFragment extends Fragment {
         if (!sharedPref.getString("packsData", "").isEmpty()) {
             getEmojis();
         }
+        OverScrollDecoratorHelper.setUpOverScroll(emojisRecycler);
     }
 
     private void noEmojisFound() {
@@ -189,20 +192,23 @@ public class PacksEmojisFragment extends Fragment {
     public void searchTask(String query) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
-
         executor.execute(() -> {
 
             if (query.trim().length() > 0) {
                 emojisList = new Gson().fromJson(sharedPref.getString("packsOneByOne", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
                 }.getType());
-                emojisCount = emojisList.size();
-                searchPosition = emojisCount - 1;
-                for (int i = 0; i < emojisCount; i++) {
+                if (emojisList.size() != 0) {
+                    emojisCount = emojisList.size();
+                    searchPosition = emojisCount - 1;
+                    for (int i = 0; i < emojisCount; i++) {
 
-                    if (!Objects.requireNonNull(emojisList.get(searchPosition).get("name")).toString().toLowerCase().contains(query.trim().toLowerCase())) {
-                        emojisList.remove(searchPosition);
+                        if (!Objects.requireNonNull(emojisList.get(searchPosition).get("name")).toString().toLowerCase().contains(query.trim().toLowerCase())) {
+                            emojisList.remove(searchPosition);
+                        }
+                        searchPosition--;
                     }
-                    searchPosition--;
+                } else {
+                    noEmojisFound();
                 }
             } else {
                 emojisList = new Gson().fromJson(sharedPref.getString("packsOneByOne", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {

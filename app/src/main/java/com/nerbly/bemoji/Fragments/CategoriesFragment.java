@@ -4,6 +4,7 @@ import static com.nerbly.bemoji.Configurations.CATEGORIES_API_LINK;
 import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
+import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 
 import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
@@ -63,21 +64,26 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
     private SharedPreferences sharedPref;
     private BottomSheetDialog d;
 
-    @NonNull
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
-        Objects.requireNonNull(getDialog()).setOnShowListener(dialog -> {
-            d = (BottomSheetDialog) dialog;
-            View view = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-            assert view != null;
-            sheetBehavior = BottomSheetBehavior.from(view);
+        if (isAdded()) {
+            Objects.requireNonNull(getDialog()).setOnShowListener(dialog -> {
+                d = (BottomSheetDialog) dialog;
+                View view = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+                assert view != null;
+                sheetBehavior = BottomSheetBehavior.from(view);
 
-            initialize(view);
-            com.google.firebase.FirebaseApp.initializeApp(requireContext());
-            initializeLogic();
-        });
-        return inflater.inflate(R.layout.categories, container, false);
+                initialize(view);
+                com.google.firebase.FirebaseApp.initializeApp(requireContext());
+                initializeLogic();
+            });
+            return inflater.inflate(R.layout.categories, container, false);
+        } else {
+            showCustomSnackBar(getString(R.string.error_msg), getActivity());
+            dismiss();
+            return null;
+        }
 
     }
 

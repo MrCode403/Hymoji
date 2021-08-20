@@ -229,6 +229,35 @@ public class PacksActivity extends AppCompatActivity {
         }
     }
 
+    private void getPacks() {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+            if (sharedPref.getString("packsData", "").isEmpty()) {
+                startGettingPacks.startRequestNetwork(RequestNetworkController.GET, PACKS_API_LINK, "", PacksRequestListener);
+            } else {
+                try {
+                    packsList = new Gson().fromJson(sharedPref.getString("packsData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
+                    }.getType());
+                    sharedPref.edit().putString("packsData", new Gson().toJson(packsList)).apply();
+                } catch (Exception e) {
+                    Utils.showToast(getApplicationContext(), (e.toString()));
+                }
+            }
+            handler.post(() -> {
+                if (!sharedPref.getString("packsData", "").isEmpty()) {
+                    packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
+                    new Handler().postDelayed(() -> {
+                        packsRecycler.setVisibility(View.VISIBLE);
+                        loadingRecycler.setVisibility(View.GONE);
+                        sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    }, 1000);
+                }
+            });
+        });
+    }
+
     public class PacksRecyclerAdapter extends RecyclerView.Adapter<PacksRecyclerAdapter.ViewHolder> {
         ArrayList<HashMap<String, Object>> data;
 
@@ -302,34 +331,5 @@ public class PacksActivity extends AppCompatActivity {
             }
         }
 
-    }
-
-    private void getPacks() {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
-
-        executor.execute(() -> {
-            if (sharedPref.getString("packsData", "").isEmpty()) {
-                startGettingPacks.startRequestNetwork(RequestNetworkController.GET, PACKS_API_LINK, "", PacksRequestListener);
-            } else {
-                try {
-                    packsList = new Gson().fromJson(sharedPref.getString("packsData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                    }.getType());
-                    sharedPref.edit().putString("packsData", new Gson().toJson(packsList)).apply();
-                } catch (Exception e) {
-                    Utils.showToast(getApplicationContext(), (e.toString()));
-                }
-            }
-            handler.post(() -> {
-                if (!sharedPref.getString("packsData", "").isEmpty()) {
-                    packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
-                    new Handler().postDelayed(() -> {
-                        packsRecycler.setVisibility(View.VISIBLE);
-                        loadingRecycler.setVisibility(View.GONE);
-                        sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    }, 1000);
-                }
-            });
-        });
     }
 }

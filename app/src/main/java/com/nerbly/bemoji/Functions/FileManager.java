@@ -14,10 +14,9 @@ import java.util.HashMap;
 
 public class FileManager {
 
-    String pathToScan = Environment.DIRECTORY_DOWNLOADS + "/Hymoji/";
-
     private final ArrayList<HashMap<String, Object>> filesList = new ArrayList<>();
-
+    private final ArrayList<HashMap<String, Object>> localEmojisList = new ArrayList<>();
+    String pathToScan = Environment.DIRECTORY_DOWNLOADS + "/Hymoji/";
 
     public ArrayList<HashMap<String, Object>> getList() {
         java.io.File home = new java.io.File(pathToScan);
@@ -71,9 +70,6 @@ public class FileManager {
             filesList.add(fileMap);
         }
     }
-
-
-    private final ArrayList<HashMap<String, Object>> localEmojisList = new ArrayList<>();
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     public ArrayList<HashMap<String, Object>> getLocalEmojisFrom(Context context) {

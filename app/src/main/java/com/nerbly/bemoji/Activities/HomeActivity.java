@@ -1,10 +1,8 @@
 package com.nerbly.bemoji.Activities;
 
-import static com.nerbly.bemoji.Configurations.ASSETS_SOURCE_LINK;
 import static com.nerbly.bemoji.Configurations.CATEGORIES_API_LINK;
 import static com.nerbly.bemoji.Configurations.EMOJIS_API_LINK;
 import static com.nerbly.bemoji.Configurations.PACKS_API_LINK;
-import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
@@ -61,7 +59,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nerbly.bemoji.Adapters.HomePacksAdapter;
 import com.nerbly.bemoji.Adapters.LocalEmojisAdapter;
-import com.nerbly.bemoji.Adapters.MainEmojisAdapter;
 import com.nerbly.bemoji.Fragments.CategoriesFragment;
 import com.nerbly.bemoji.Fragments.SettingsFragment;
 import com.nerbly.bemoji.Fragments.TutorialFragment;
@@ -73,7 +70,6 @@ import com.nerbly.bemoji.Functions.getDarkModeState;
 import com.nerbly.bemoji.R;
 import com.nerbly.bemoji.UI.MainUIMethods;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -96,11 +92,11 @@ public class HomeActivity extends AppCompatActivity {
     private final Intent toPacks = new Intent();
     private final LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
     public boolean isFragmentAttached = false;
-    private boolean isAdLoaded = false;
     public boolean isActivityAttached = false;
     double emojisCount = 0;
     double emojisScanPosition = 0;
     getDarkModeState state;
+    private boolean isAdLoaded = false;
     private FileManager fileManager;
     private String localEmojisScanPath = "";
     private HashMap<String, Object> categoriesMap = new HashMap<>();
@@ -244,7 +240,7 @@ public class HomeActivity extends AppCompatActivity {
         });
         premium_dock.setOnClickListener(view -> {
             Intent intent1 = new Intent();
-            intent1.setClass(this, PaymentActivity.class);
+            intent1.setClass(this, PremiumActivity.class);
             startActivity(intent1);
         });
 

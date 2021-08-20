@@ -7,6 +7,7 @@ import static com.nerbly.bemoji.Functions.MainFunctions.trimCache;
 import static com.nerbly.bemoji.Functions.getDarkModeState.setNightModeState;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
+import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 import static com.nerbly.bemoji.UI.UserInteractions.showMessageDialog;
 
 import android.app.Activity;
@@ -68,21 +69,24 @@ public class SettingsFragment extends BottomSheetDialogFragment {
         return instance;
     }
 
-    @NonNull
     @Override
-
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup _container, @Nullable final Bundle _savedInstanceState) {
-        Objects.requireNonNull(getDialog()).setOnShowListener(dialog -> {
-            BottomSheetDialog d = (BottomSheetDialog) dialog;
-            View _view = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-            assert _view != null;
-            BottomSheetBehavior.from(_view);
-            initialize(_view);
-            com.google.firebase.FirebaseApp.initializeApp(requireContext());
-            initializeLogic();
-        });
-        return inflater.inflate(R.layout.settings, _container, false);
-
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
+        if (isAdded()) {
+            Objects.requireNonNull(getDialog()).setOnShowListener(dialog -> {
+                BottomSheetDialog d = (BottomSheetDialog) dialog;
+                View _view = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+                assert _view != null;
+                BottomSheetBehavior.from(_view);
+                initialize(_view);
+                com.google.firebase.FirebaseApp.initializeApp(requireContext());
+                initializeLogic();
+            });
+            return inflater.inflate(R.layout.settings, container, false);
+        } else {
+            showCustomSnackBar(getString(R.string.error_msg), getActivity());
+            dismiss();
+            return null;
+        }
     }
 
     private void initialize(View view) {

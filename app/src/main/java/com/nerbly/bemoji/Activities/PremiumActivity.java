@@ -14,6 +14,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -33,14 +34,14 @@ import com.google.android.material.button.MaterialButton;
 import com.nerbly.bemoji.Functions.Utils;
 import com.nerbly.bemoji.R;
 
-public class PaymentActivity extends AppCompatActivity {
+public class PremiumActivity extends AppCompatActivity {
+    private final boolean isTryingToPurchase = false;
     public BottomSheetBehavior sheetBehavior;
     private MaterialButton premium_go;
     private TextView payment_holder_text;
     private WebView webview;
     private boolean isPurchased = false;
     private boolean isFirstView = false;
-    private final boolean isTryingToPurchase = false;
     private SharedPreferences sharedPref;
 
 
@@ -86,14 +87,14 @@ public class PaymentActivity extends AppCompatActivity {
                     }
                 } else {
                     if (url.equals("https://nerbly.com/updatify/payment/payment_fail.json")) {
-                        showCustomSnackBar(getString(R.string.payment_failed), PaymentActivity.this);
+                        showCustomSnackBar(getString(R.string.payment_failed), PremiumActivity.this);
                     }
                 }
             }
 
             public void onPageFinished(WebView view, String url) {
 
-                if (Utils.isConnected(PaymentActivity.this)) {
+                if (Utils.isConnected(PremiumActivity.this)) {
                     sheetBehavior.setDraggable(true);
                 }
             }
@@ -101,7 +102,7 @@ public class PaymentActivity extends AppCompatActivity {
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 sheetBehavior.setDraggable(false);
-                showCustomSnackBar(getString(R.string.no_internet_connection), PaymentActivity.this);
+                showCustomSnackBar(getString(R.string.no_internet_connection), PremiumActivity.this);
             }
         });
 
@@ -120,6 +121,7 @@ public class PaymentActivity extends AppCompatActivity {
 
 
     public void LOGIC_BACKEND() {
+        overridePendingTransition(R.anim.fade_in, 0);
         bottomSheetBehaviorListener();
         isPurchased = false;
         isFirstView = false;
@@ -134,7 +136,7 @@ public class PaymentActivity extends AppCompatActivity {
                 switch (newState) {
                     case BottomSheetBehavior.STATE_COLLAPSED:
                         webview.loadUrl(PAYMENT_SOURCE);
-                        LIGHT_ICONS(PaymentActivity.this);
+                        LIGHT_ICONS(PremiumActivity.this);
                         premium_go.setVisibility(View.VISIBLE);
                         break;
                     case BottomSheetBehavior.STATE_DRAGGING:
@@ -143,7 +145,7 @@ public class PaymentActivity extends AppCompatActivity {
                     case BottomSheetBehavior.STATE_SETTLING:
                         break;
                     case BottomSheetBehavior.STATE_EXPANDED:
-                        DARK_ICONS(PaymentActivity.this);
+                        DARK_ICONS(PremiumActivity.this);
                         premium_go.setVisibility(View.INVISIBLE);
                         payment_holder_text.setText(R.string.payments_powered_by);
                         break;
@@ -166,6 +168,9 @@ public class PaymentActivity extends AppCompatActivity {
         LIGHT_ICONS(this);
         transparentStatusBar(this);
         marqueeTextView(payment_holder_text);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            sheetBehavior.setPeekHeight(360);
+        }
     }
 
     @Override

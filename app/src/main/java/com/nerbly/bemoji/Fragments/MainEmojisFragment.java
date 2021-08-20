@@ -36,6 +36,8 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+
 
 public class MainEmojisFragment extends Fragment {
 
@@ -82,6 +84,7 @@ public class MainEmojisFragment extends Fragment {
         } else {
             noEmojisFound();
         }
+        OverScrollDecoratorHelper.setUpOverScroll(emojisRecycler);
     }
 
     private void noEmojisFound() {
@@ -195,18 +198,21 @@ public class MainEmojisFragment extends Fragment {
         executor.execute(() -> {
 
             if (query.trim().length() > 0) {
-
                 emojisList = new Gson().fromJson(sharedPref.getString("emojisData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
                 }.getType());
-                emojisCount = emojisList.size();
-                searchPosition = emojisCount - 1;
-                for (int i = 0; i < (int) (emojisCount); i++) {
+                if (emojisList.size() != 0) {
+                    emojisCount = emojisList.size();
+                    searchPosition = emojisCount - 1;
+                    for (int i = 0; i < (int) (emojisCount); i++) {
 
-                    if (!Objects.requireNonNull(emojisList.get((int) searchPosition).get("submitted_by")).toString().toLowerCase().contains(query.trim().toLowerCase())
-                            && !Objects.requireNonNull(emojisList.get((int) searchPosition).get("title")).toString().toLowerCase().contains(query.trim().toLowerCase())) {
-                        emojisList.remove((int) (searchPosition));
+                        if (!Objects.requireNonNull(emojisList.get((int) searchPosition).get("submitted_by")).toString().toLowerCase().contains(query.trim().toLowerCase())
+                                && !Objects.requireNonNull(emojisList.get((int) searchPosition).get("title")).toString().toLowerCase().contains(query.trim().toLowerCase())) {
+                            emojisList.remove((int) (searchPosition));
+                        }
+                        searchPosition--;
                     }
-                    searchPosition--;
+                } else {
+                    noEmojisFound();
                 }
             } else {
 

@@ -23,20 +23,24 @@ public class Utils {
 
     public static void sortListMap(final ArrayList<HashMap<String, Object>> listMap, final String key, final boolean isNumber, final boolean ascending) {
         Collections.sort(listMap, (compareMap1, compareMap2) -> {
-            if (isNumber) {
-                int count1 = Integer.parseInt(Objects.requireNonNull(compareMap1.get(key)).toString());
-                int count2 = Integer.parseInt(Objects.requireNonNull(compareMap2.get(key)).toString());
-                if (ascending) {
-                    return count1 < count2 ? -1 : 0;
+            try {
+                if (isNumber) {
+                    int count1 = Integer.parseInt(Objects.requireNonNull(compareMap1.get(key)).toString());
+                    int count2 = Integer.parseInt(Objects.requireNonNull(compareMap2.get(key)).toString());
+                    if (ascending) {
+                        return count1 < count2 ? -1 : 0;
+                    } else {
+                        return count1 > count2 ? -1 : 0;
+                    }
                 } else {
-                    return count1 > count2 ? -1 : 0;
+                    if (ascending) {
+                        return (Objects.requireNonNull(compareMap1.get(key)).toString()).compareTo(Objects.requireNonNull(compareMap2.get(key)).toString());
+                    } else {
+                        return (Objects.requireNonNull(compareMap2.get(key)).toString()).compareTo(Objects.requireNonNull(compareMap1.get(key)).toString());
+                    }
                 }
-            } else {
-                if (ascending) {
-                    return (Objects.requireNonNull(compareMap1.get(key)).toString()).compareTo(Objects.requireNonNull(compareMap2.get(key)).toString());
-                } else {
-                    return (Objects.requireNonNull(compareMap2.get(key)).toString()).compareTo(Objects.requireNonNull(compareMap1.get(key)).toString());
-                }
+            } catch (Exception e) {
+                return 0;
             }
         });
     }
@@ -57,8 +61,7 @@ public class Utils {
         try {
             BufferedInputStream origin;
             FileOutputStream dest = new FileOutputStream(toLocation);
-            ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(
-                    dest));
+            ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
             if (sourceFile.isDirectory()) {
                 zipSubFolder(out, sourceFile, Objects.requireNonNull(sourceFile.getParent()).length());
             } else {
@@ -92,8 +95,7 @@ public class Utils {
             } else {
                 byte[] data = new byte[BUFFER];
                 String unmodifiedFilePath = file.getPath();
-                String relativePath = unmodifiedFilePath
-                        .substring(basePathLength);
+                String relativePath = unmodifiedFilePath.substring(basePathLength);
                 FileInputStream fi = new FileInputStream(unmodifiedFilePath);
                 origin = new BufferedInputStream(fi, BUFFER);
                 ZipEntry entry = new ZipEntry(relativePath);
@@ -135,6 +137,7 @@ public class Utils {
             }
         });
     }
+
     public static boolean isConnected(Context _context) {
         ConnectivityManager _connectivityManager = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo _activeNetworkInfo = _connectivityManager.getActiveNetworkInfo();
