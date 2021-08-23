@@ -59,7 +59,6 @@ public class PacksActivity extends AppCompatActivity {
     private final ArrayList<String> packsArrayList = new ArrayList<>();
     private final ArrayList<HashMap<String, Object>> shimmerList = new ArrayList<>();
     private final Intent toPreview = new Intent();
-    private BottomSheetBehavior<LinearLayout> sheetBehavior;
     private String packsTempArrayString = "";
     private String currentPositionPackArray = "";
     private ArrayList<HashMap<String, Object>> packsList = new ArrayList<>();
@@ -94,8 +93,6 @@ public class PacksActivity extends AppCompatActivity {
         startGettingPacks = new RequestNetwork(this);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
-        coordinator.setOnClickListener(view -> sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN));
-
         PacksRequestListener = new RequestNetwork.RequestListener() {
             @Override
             public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
@@ -123,17 +120,8 @@ public class PacksActivity extends AppCompatActivity {
         LOGIC_BACKEND();
     }
 
-    @Override
-    public void onBackPressed() {
-        sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-    }
 
     public void LOGIC_BACKEND() {
-        overridePendingTransition(R.anim.fade_in, 0);
-
-        sheetBehavior = BottomSheetBehavior.from(sheetBehaviorView);
-        bottomSheetBehaviorListener();
-
         loadingRecycler.setLayoutManager(new LinearLayoutManager(this));
         packsRecycler.setLayoutManager(new LinearLayoutManager(this));
         packsRecycler.setHasFixedSize(true);
@@ -160,41 +148,6 @@ public class PacksActivity extends AppCompatActivity {
         setViewRadius(slider, 90, "#E0E0E0");
         DARK_ICONS(this);
         transparentStatusBar(this);
-    }
-
-    public void bottomSheetBehaviorListener() {
-        sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                switch (newState) {
-                    case BottomSheetBehavior.STATE_COLLAPSED:
-                    case BottomSheetBehavior.STATE_DRAGGING:
-                        shadAnim(background, "elevation", 20, 200);
-                        shadAnim(slider, "translationY", 0, 200);
-                        shadAnim(slider, "alpha", 1, 200);
-                        slider.setVisibility(View.VISIBLE);
-                        break;
-                    case BottomSheetBehavior.STATE_EXPANDED:
-                        shadAnim(background, "elevation", 0, 200);
-                        shadAnim(slider, "translationY", -200, 200);
-                        shadAnim(slider, "alpha", 0, 200);
-                        slider.setVisibility(View.INVISIBLE);
-                        break;
-                    case BottomSheetBehavior.STATE_HIDDEN:
-                        finish();
-                        break;
-                    case BottomSheetBehavior.STATE_HALF_EXPANDED:
-                    case BottomSheetBehavior.STATE_SETTLING:
-                        break;
-
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-            }
-        });
-
     }
 
     private void loadAds() {
@@ -251,7 +204,6 @@ public class PacksActivity extends AppCompatActivity {
                     new Handler().postDelayed(() -> {
                         packsRecycler.setVisibility(View.VISIBLE);
                         loadingRecycler.setVisibility(View.GONE);
-                        sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                     }, 1000);
                 }
             });

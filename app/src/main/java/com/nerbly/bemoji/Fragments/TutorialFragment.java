@@ -2,6 +2,7 @@ package com.nerbly.bemoji.Fragments;
 
 import static com.nerbly.bemoji.Configurations.TUTORIAL_SOURCE;
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
+import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -78,15 +79,19 @@ public class TutorialFragment extends BottomSheetDialogFragment {
                     tutorialList = new Gson().fromJson(response, new TypeToken<ArrayList<HashMap<String, Object>>>() {
                     }.getType());
                     recyclerview1.setAdapter(new TutorialAdapter.Recyclerview1Adapter(tutorialList));
+
+                    new Handler().postDelayed(() -> sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED), 1000);
+
+                    new Handler().postDelayed(() -> {
+                        recyclerview1.setVisibility(View.VISIBLE);
+                        loadingRecycler.setVisibility(View.GONE);
+                    }, 2000);
                 } catch (Exception ignored) {
+                    if(isAdded()) {
+                        showCustomSnackBar(getString(R.string.error_msg_2), getActivity());
+                        dismiss();
+                    }
                 }
-
-                new Handler().postDelayed(() -> sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED), 1000);
-
-                new Handler().postDelayed(() -> {
-                    recyclerview1.setVisibility(View.VISIBLE);
-                    loadingRecycler.setVisibility(View.GONE);
-                }, 2000);
             }
 
             @Override

@@ -96,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
                 sharedPref.edit().putBoolean("isFirstTime", false).apply();
                 intent.setClass(getApplicationContext(), HomeActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.fade_in, 0);
             } else {
                 viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
             }
@@ -161,11 +160,8 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     runOnUiThread(() -> {
-
                         intent.setClass(getApplicationContext(), HomeActivity.class);
                         startActivity(intent);
-                        overridePendingTransition(R.anim.fade_in, 0);
-
                     });
                 }
             };

@@ -50,6 +50,9 @@ import com.google.gson.reflect.TypeToken;
 import com.nerbly.bemoji.Functions.Utils;
 import com.nerbly.bemoji.R;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -75,6 +78,7 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
     private ImageView searchBtn;
     private TextView emptyTitle;
     private GridView emojisRecycler;
+    private HashMap<String, Object> emojisMap = new HashMap<>();
     private LinearLayout loadView;
     private SharedPreferences sharedPref;
     private boolean isSearching = false;
@@ -174,8 +178,6 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
 
 
     public void LOGIC_BACKEND() {
-        overridePendingTransition(R.anim.fade_in, 0);
-
         initEmojisRecycler();
         getEmojis();
 
@@ -203,26 +205,41 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
     }
 
     public void loadCategorizedEmojis() {
+        if (!emojisList.isEmpty()) {
+            try {
+                emojisList.clear();
+            } catch (Exception e) {
+                Log.e("Emojis Response", "couldn't clear the list for new emojis");
+            }
+        }
         try {
-            emojisList = new Gson().fromJson(sharedPref.getString("emojisData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-            }.getType());
-            emojisCount = emojisList.size();
-            searchPosition = emojisCount - 1;
-            for (int i = 0; i < (int) (emojisCount); i++) {
-                if (!String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(emojisList.get((int) searchPosition).get("category")).toString()))).equals(getIntent().getStringExtra("category_id"))) {
-                    emojisList.remove((int) (searchPosition));
+            JSONArray emojisArray = new JSONArray(sharedPref.getString("emojisData", ""));
+            Log.d("Emojis Response", "found " + emojisArray.length() + " emojis");
+
+            for (int i = 0; i < emojisArray.length(); i++) {
+
+                JSONObject emojisObject = emojisArray.getJSONObject(i);
+                emojisMap = new HashMap<>();
+                emojisMap.put("image", emojisObject.getString("image"));
+                emojisMap.put("name", emojisObject.getString("name"));
+                emojisMap.put("title", emojisObject.getString("title"));
+                emojisMap.put("submitted_by", emojisObject.getString("submitted_by"));
+                emojisMap.put("id", emojisObject.getInt("id"));
+                if (emojisObject.getInt("category") == getIntent().getIntExtra("category_id", 0)) {
+                    emojisList.add(emojisMap);
                 }
-                searchPosition--;
             }
-            if (isSortingNew) {
-                Utils.sortListMap2(emojisList, "id", false, false);
-            } else if (isSortingOld) {
-                Collections.reverse(emojisList);
-            } else if (isSortingAlphabet) {
-                Utils.sortListMap(emojisList, "title", false, true);
-            }
+
         } catch (Exception e) {
-            Log.e("Emojis Error", e.toString());
+            Log.e("EmojisRequestListener", e.toString());
+        }
+
+        if (isSortingNew) {
+            Utils.sortListMap2(emojisList, "id", false, false);
+        } else if (isSortingOld) {
+            Collections.reverse(emojisList);
+        } else if (isSortingAlphabet) {
+            Utils.sortListMap(emojisList, "title", false, true);
         }
     }
 
@@ -360,7 +377,6 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
         executor.execute(() -> {
 
             if (searchBoxField.getText().toString().trim().length() > 0) {
-
                 emojisList = new Gson().fromJson(sharedPref.getString("emojisData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
                 }.getType());
                 emojisCount = emojisList.size();

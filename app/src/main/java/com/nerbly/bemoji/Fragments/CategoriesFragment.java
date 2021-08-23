@@ -217,36 +217,11 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
             textview1.setText(Objects.requireNonNull(data.get(position).get("category_name")).toString());
             textview1.setOnClickListener(_view -> {
                 if (Objects.requireNonNull(data.get(position).get("category_name")).toString().equals("Animated")) {
-                    com.google.android.material.bottomsheet.BottomSheetDialog bottomSheetDialog = new com.google.android.material.bottomsheet.BottomSheetDialog(requireContext(), R.style.materialsheet);
-
-                    View bottomSheetView;
-                    bottomSheetView = getLayoutInflater().inflate(R.layout.infosheet, null);
-                    bottomSheetDialog.setContentView(bottomSheetView);
-
-                    bottomSheetDialog.getWindow().findViewById(R.id.design_bottom_sheet).setBackgroundResource(android.R.color.transparent);
-
-                    MaterialButton infook = bottomSheetView.findViewById(R.id.infosheet_ok);
-                    MaterialButton infocancel = bottomSheetView.findViewById(R.id.infosheet_cancel);
-                    LinearLayout infoback = bottomSheetView.findViewById(R.id.infosheet_back);
-                    LinearLayout slider = bottomSheetView.findViewById(R.id.slider);
-
-                    advancedCorners(infoback, "#ffffff", 38, 38, 0, 0);
-
-                    setViewRadius(slider, 180, "#BDBDBD");
-                    infook.setOnClickListener(v -> {
-                        Intent toEmojis = new Intent();
-                        toEmojis.putExtra("category_id", Objects.requireNonNull(data.get(position).get("category_id")).toString());
-                        toEmojis.setClass(getContext(), CategoriesPreviewActivity.class);
-                        startActivity(toEmojis);
-                        bottomSheetDialog.dismiss();
-                    });
-                    infocancel.setOnClickListener(v -> bottomSheetDialog.dismiss());
-                    bottomSheetDialog.show();
-
-
+                    showWarningSheet(Objects.requireNonNull(data.get(position).get("category_id")).toString());
                 } else {
+                    int category_id = Integer.parseInt(Objects.requireNonNull(data.get(position).get("category_id")).toString());
                     Intent toEmojis = new Intent();
-                    toEmojis.putExtra("category_id", Objects.requireNonNull(data.get(position).get("category_id")).toString());
+                    toEmojis.putExtra("category_id", category_id);
                     toEmojis.setClass(getContext(), CategoriesPreviewActivity.class);
                     startActivity(toEmojis);
                 }
@@ -264,6 +239,36 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
                 super(v);
             }
         }
+
+    }
+
+    private void showWarningSheet(String category_id) {
+
+        com.google.android.material.bottomsheet.BottomSheetDialog bottomSheetDialog = new com.google.android.material.bottomsheet.BottomSheetDialog(requireContext(), R.style.materialsheet);
+
+        View bottomSheetView;
+        bottomSheetView = getLayoutInflater().inflate(R.layout.infosheet, null);
+        bottomSheetDialog.setContentView(bottomSheetView);
+
+        bottomSheetDialog.getWindow().findViewById(R.id.design_bottom_sheet).setBackgroundResource(android.R.color.transparent);
+
+        MaterialButton infook = bottomSheetView.findViewById(R.id.infosheet_ok);
+        MaterialButton infocancel = bottomSheetView.findViewById(R.id.infosheet_cancel);
+        LinearLayout infoback = bottomSheetView.findViewById(R.id.infosheet_back);
+        LinearLayout slider = bottomSheetView.findViewById(R.id.slider);
+
+        advancedCorners(infoback, "#ffffff", 38, 38, 0, 0);
+
+        setViewRadius(slider, 180, "#BDBDBD");
+        infook.setOnClickListener(v -> {
+            Intent toEmojis = new Intent();
+            toEmojis.putExtra("category_id", Integer.valueOf(category_id));
+            toEmojis.setClass(getContext(), CategoriesPreviewActivity.class);
+            startActivity(toEmojis);
+            bottomSheetDialog.dismiss();
+        });
+        infocancel.setOnClickListener(v -> bottomSheetDialog.dismiss());
+        bottomSheetDialog.show();
 
     }
 

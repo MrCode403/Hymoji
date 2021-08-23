@@ -81,7 +81,7 @@ public class TranslationContributorsFragment extends BottomSheetDialogFragment {
             if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
                 startActivity(intent);
             } else {
-                showMessageDialog(getString(R.string.error_msg), getString(R.string.mailto_device_not_supported), getString(R.string.dialog_positive_text), getString(R.string.dialog_negative_text), getActivity(),
+                showMessageDialog(true, getString(R.string.error_msg), getString(R.string.mailto_device_not_supported), getString(R.string.dialog_positive_text), getString(R.string.dialog_negative_text), getActivity(),
                         (dialog, which) -> {
                             intent.setAction(Intent.ACTION_VIEW);
                             intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.nerbly.bemoji"));

@@ -20,6 +20,8 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +43,8 @@ import com.nerbly.bemoji.Activities.HomeActivity;
 import com.nerbly.bemoji.R;
 
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SettingsFragment extends BottomSheetDialogFragment {
 
@@ -63,6 +67,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
     private RelativeLayout setting14;
     private TextView textview8;
     private SharedPreferences sharedPref;
+    private String cacheSize;
     private boolean isAskingForReload = false;
 
     public static SettingsFragment getInstance() {
@@ -109,7 +114,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
 
         setting1.setOnClickListener(_view -> {
             dismiss();
-            ((HomeActivity) requireActivity()).startRefreshFromSettings();
+            ((HomeActivity) requireActivity()).startManualRefresh();
         });
 
         setting3.setOnClickListener(_view -> {
@@ -118,7 +123,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
                 intent.setData(Uri.parse("https://emoji.gg/submit"));
                 startActivity(intent);
             } catch (Exception e) {
-                showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
+                showMessageDialog(true, getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
                         (dialog, which) -> {
                             ClipboardManager clipboard = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                             ClipData clip = ClipData.newPlainText(requireActivity().getString(R.string.app_name), "https://emoji.gg/submit");
@@ -141,7 +146,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
             if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
                 startActivity(intent);
             } else {
-                showMessageDialog(getString(R.string.error_msg), getString(R.string.mailto_device_not_supported), getString(R.string.dialog_positive_text), getString(R.string.dialog_negative_text), getActivity(),
+                showMessageDialog(true, getString(R.string.error_msg), getString(R.string.mailto_device_not_supported), getString(R.string.dialog_positive_text), getString(R.string.dialog_negative_text), getActivity(),
                         (dialog, which) -> {
                             intent.setAction(Intent.ACTION_VIEW);
                             intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.nerbly.bemoji"));
@@ -157,7 +162,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
                 intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.nerbly.bemoji"));
                 startActivity(intent);
             } catch (Exception e) {
-                showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
+                showMessageDialog(true, getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
                         (dialog, which) -> {
                             ClipboardManager clipboard = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                             ClipData clip = ClipData.newPlainText(requireActivity().getString(R.string.app_name), "https://play.google.com/store/apps/details?id=com.nerbly.bemoji");
@@ -173,7 +178,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
                 intent.setData(Uri.parse("https://emoji.gg/copyright"));
                 startActivity(intent);
             } catch (Exception e) {
-                showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
+                showMessageDialog(true, getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
                         (dialog, which) -> {
                             ClipboardManager clipboard = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                             ClipData clip = ClipData.newPlainText(requireActivity().getString(R.string.app_name), "https://emoji.gg/copyright");
@@ -189,7 +194,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
                 intent.setData(Uri.parse("https://emoji.gg/"));
                 startActivity(intent);
             } catch (Exception e) {
-                showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
+                showMessageDialog(true, getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
                         (dialog, which) -> {
                             ClipboardManager clipboard = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                             ClipData clip = ClipData.newPlainText(requireActivity().getString(R.string.app_name), "https://emoji.gg/");
@@ -204,7 +209,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
                 intent.setData(Uri.parse("https://github.com/ilyassesalama/hymoji"));
                 startActivity(intent);
             } catch (Exception e) {
-                showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
+                showMessageDialog(true, getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
                         (dialog, which) -> {
                             ClipboardManager clipboard = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                             ClipData clip = ClipData.newPlainText("Hymoji", "https://github.com/ilyassesalama/hymoji");
@@ -231,7 +236,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
                 intent.setData(Uri.parse("https://discord.gg/nxy2Qq4YP4"));
                 startActivity(intent);
             } catch (Exception e) {
-                showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
+                showMessageDialog(true, getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), getActivity(),
                         (dialog, which) -> {
                             ClipboardManager clipboard = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                             ClipData clip = ClipData.newPlainText(requireActivity().getString(R.string.app_name), "https://discord.gg/nxy2Qq4YP4");
@@ -257,7 +262,18 @@ public class SettingsFragment extends BottomSheetDialogFragment {
         windowParams.dimAmount = 0.3f;
         windowParams.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         window.setAttributes(windowParams);
-        textview8.setText(getString(R.string.settings_option_3_title).concat(" (" + initializeCacheScan(getActivity()) + ")"));
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+            cacheSize = initializeCacheScan(getActivity());
+            handler.post(() -> {
+                textview8.setText(getString(R.string.settings_option_3_title).concat(" (" + cacheSize + ")"));
+
+            });
+        });
+
 
         if (!(Build.VERSION.SDK_INT >= 29)) {
             setting14.setVisibility(View.GONE);

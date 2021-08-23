@@ -87,6 +87,8 @@ public class PacksEmojisFragment extends Fragment {
         initEmojisRecycler();
         if (!sharedPref.getString("packsData", "").isEmpty()) {
             getEmojis();
+        } else {
+            noEmojisFound();
         }
         OverScrollDecoratorHelper.setUpOverScroll(emojisRecycler);
     }
@@ -135,7 +137,9 @@ public class PacksEmojisFragment extends Fragment {
                     for (int backPacksArrayInt = 0; backPacksArrayInt < backPacksArray.length(); backPacksArrayInt++) {
                         JSONObject packsObject = backPacksArray.getJSONObject(backPacksArrayInt);
                         JSONArray frontPacksArray = packsObject.getJSONArray("emojis");
+
                         for (int frontPacksInt = 0; frontPacksInt < frontPacksArray.length(); frontPacksInt++) {
+
                             String emojiName = frontPacksArray.getString(frontPacksInt).replaceAll("[_\\\\-]", " ");
                             emojiName = emojiName.replaceAll("[0-9]", "");
                             emojiName = emojiName.substring(0, emojiName.length() - 4);

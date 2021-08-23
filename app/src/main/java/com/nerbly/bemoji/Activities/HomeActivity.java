@@ -28,6 +28,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -70,6 +72,7 @@ import com.nerbly.bemoji.Functions.getDarkModeState;
 import com.nerbly.bemoji.R;
 import com.nerbly.bemoji.UI.MainUIMethods;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -93,10 +96,9 @@ public class HomeActivity extends AppCompatActivity {
     private final LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
     public boolean isFragmentAttached = false;
     public boolean isActivityAttached = false;
-    double emojisCount = 0;
-    double emojisScanPosition = 0;
     getDarkModeState state;
     private boolean isAdLoaded = false;
+    private boolean noInternetConnectionDialogShown = false;
     private FileManager fileManager;
     private String localEmojisScanPath = "";
     private HashMap<String, Object> categoriesMap = new HashMap<>();
@@ -104,6 +106,7 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<HashMap<String, Object>> categoriesList = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> localEmojisList = new ArrayList<>();
     private AdView adview;
+    private HashMap<String, Object> emojisMap = new HashMap<>();
     private LinearLayout loadingView;
     private LinearLayout mainView;
     private LinearLayout shimmer1;
@@ -123,6 +126,7 @@ public class HomeActivity extends AppCompatActivity {
     private RecyclerView local_recycler;
     private LinearLayout dock1;
     private LinearLayout dock2;
+    private LinearLayout rootView;
     private TextView emojisCounter;
     private TextView categoriesCounter;
     private LinearLayout dock3;
@@ -170,6 +174,7 @@ public class HomeActivity extends AppCompatActivity {
         loadingView = findViewById(R.id.loadingView);
         MaterialCardView discord_dock = findViewById(R.id.discord_dock);
         premium_dock = findViewById(R.id.premium_dock);
+        rootView = findViewById(R.id.rootView);
         mainView = findViewById(R.id.mainView);
         premium_img = findViewById(R.id.premium_img);
         shimmer1 = findViewById(R.id.shimmer1);
@@ -229,7 +234,7 @@ public class HomeActivity extends AppCompatActivity {
                 intent.setData(Uri.parse("https://discord.gg/nxy2Qq4YP4"));
                 startActivity(intent);
             } catch (Exception e) {
-                showMessageDialog(getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), this,
+                showMessageDialog(true, getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), this,
                         (dialog, which) -> {
                             ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                             ClipData clip = ClipData.newPlainText(getString(R.string.app_name), "https://discord.gg/nxy2Qq4YP4");
@@ -321,29 +326,39 @@ public class HomeActivity extends AppCompatActivity {
                     swipe_to_refresh.setRefreshing(false);
                 }
                 if (tag.equals("EMOJIS")) {
+                    if (!emojisList.isEmpty()) {
+                        try {
+                            emojisList.clear();
+                        } catch (Exception e) {
+                            Log.e("Emojis Response", "couldn't clear the list for new emojis");
+                        }
+                    }
                     try {
-                        emojisList = new Gson().fromJson(response, new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                        }.getType());
+                        JSONArray emojisArray = new JSONArray(response);
+                        Log.d("Emojis Response", "found " + emojisArray.length() + " emojis");
 
-                        emojisCount = emojisList.size();
+                        for (int i = 0; i < emojisArray.length(); i++) {
 
-                        emojisScanPosition = emojisCount - 1;
-
-                        for (int i = 0; i < (int) (emojisCount); i++) {
-
-                            if (Objects.requireNonNull(emojisList.get((int) emojisScanPosition).get("category")).toString().equals("9.0")) {
-                                emojisList.remove((int) (emojisScanPosition));
+                            JSONObject emojisObject = emojisArray.getJSONObject(i);
+                            emojisMap = new HashMap<>();
+                            emojisMap.put("image", emojisObject.getString("image"));
+                            emojisMap.put("name", emojisObject.getString("slug"));
+                            emojisMap.put("title", emojisObject.getString("title"));
+                            emojisMap.put("submitted_by", emojisObject.getString("submitted_by"));
+                            emojisMap.put("id", emojisObject.getInt("id"));
+                            emojisMap.put("category", emojisObject.getInt("category"));
+                            if (emojisObject.getInt("category") != 9) {
+                                emojisList.add(emojisMap);
                             }
-
-                            emojisScanPosition--;
                         }
 
                         sharedPref.edit().putString("emojisData", new Gson().toJson(emojisList)).apply();
+                        Log.d("Emojis Response", "emojis saved to local database");
 
                         numbersAnimator(emojisCounter, 0, emojisList.size(), 1000);
 
                     } catch (Exception e) {
-                        Log.d("EmojisRequestListener", e.toString());
+                        Log.e("EmojisRequestListener", e.toString());
                     }
                 } else {
                     if (tag.equals("CATEGORIES")) {
@@ -390,13 +405,14 @@ public class HomeActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onErrorResponse(String atg, String message) {
-
+            public void onErrorResponse(String tag, String message) {
+                swipe_to_refresh.setRefreshing(false);
+                noInternetAccessAction();
             }
         };
 
         swipe_to_refresh.setOnRefreshListener(() -> {
-            generateActivityDescription();
+            generateActivityDescription(false);
             startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, CATEGORIES_API_LINK, "CATEGORIES", EmojisRequestListener);
             startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, EMOJIS_API_LINK, "EMOJIS", EmojisRequestListener);
             startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, PACKS_API_LINK, "PACKS", EmojisRequestListener);
@@ -404,8 +420,19 @@ public class HomeActivity extends AppCompatActivity {
             mainView.setVisibility(View.GONE);
             loadAds();
         });
+    }
 
-
+    private void noInternetAccessAction() {
+        if (!noInternetConnectionDialogShown) {
+            noInternetConnectionDialogShown = true;
+            showMessageDialog(false, getString(R.string.no_internet_connection_title), getString(R.string.no_internet_connection_desc), getString(R.string.settings_option_1_title), getString(R.string.exit_app), HomeActivity.this,
+                    (dialog, which) -> {
+                        startManualRefresh();
+                        loadAds();
+                        noInternetConnectionDialogShown = false;
+                    },
+                    (dialog, which) -> finishAffinity());
+        }
     }
 
     private void initializeLogic() {
@@ -423,7 +450,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onResume();
         if (sharedPref.getBoolean("isAskingForReloadEmojis", false)) {
             sharedPref.edit().putBoolean("isAskingForReloadEmojis", false).apply();
-            recreate();
+            startManualRefresh();
         } else {
             getLocalEmojis(false);
         }
@@ -519,7 +546,7 @@ public class HomeActivity extends AppCompatActivity {
         setClippedView(shimmer11, "#FFFFFF", 200, 0);
         MainUIMethods.setViewRadius(discord_img, 30, "#FAFAFA");
         MainUIMethods.setViewRadius(premium_img, 30, "#FAFAFA");
-        generateActivityDescription();
+        generateActivityDescription(true);
     }
 
     private void getOnlineEmojis() {
@@ -655,7 +682,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void popupSnackBarForCompleteUpdate() {
         try {
-            showMessageDialog(getString(R.string.update_now_dialog_title), getString(R.string.new_update_downloaded), getString(R.string.update_now_button), getString(R.string.dialog_negative_text), this,
+            showMessageDialog(true, getString(R.string.update_now_dialog_title), getString(R.string.new_update_downloaded), getString(R.string.update_now_button), getString(R.string.dialog_negative_text), this,
                     (dialog, which) -> {
                         if (appUpdateManager != null) {
                             appUpdateManager.completeUpdate();
@@ -680,54 +707,83 @@ public class HomeActivity extends AppCompatActivity {
         removeInstallStateUpdateListener();
     }
 
-    private void generateActivityDescription() {
+    private void generateActivityDescription(boolean isFirstTime) {
         try {
             String[] tips = new String[]{getString(R.string.home_subtitle), getString(R.string.pro_tip_1), getString(R.string.pro_tip_2), getString(R.string.welcome_subtitle_1)};
             int min = 0;
             int max = tips.length;
             Random random1 = new Random();
             int random = random1.nextInt(max - min) + min;
-            activityDescription.setText(tips[random]);
+
+            if (isFirstTime) {
+                activityDescription.setText(tips[random]);
+            } else {
+                AlphaAnimation fadeOut = new AlphaAnimation(1.0f, 0.0f);
+                activityDescription.startAnimation(fadeOut);
+                fadeOut.setDuration(350);
+                fadeOut.setFillAfter(true);
+
+                fadeOut.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        activityDescription.setText(tips[random]);
+                        AlphaAnimation fadeIn = new AlphaAnimation(0.0f, 1.0f);
+                        activityDescription.startAnimation(fadeIn);
+                        fadeIn.setDuration(350);
+                        fadeIn.setFillAfter(true);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                    }
+                });
+            }
+
         } catch (Exception ignored) {
         }
     }
 
     private void loadAds() {
         if (!sharedPref.getBoolean("isPremium", false)) {
-            MobileAds.initialize(this, initializationStatus -> {
-            });
+            if (!isAdLoaded) {
+                MobileAds.initialize(this, initializationStatus -> {
+                });
 
-            AdRequest adRequest = new AdRequest.Builder().build();
-            adview.loadAd(adRequest);
+                AdRequest adRequest = new AdRequest.Builder().build();
+                adview.loadAd(adRequest);
 
+                adview.setAdListener(new AdListener() {
+                    @Override
+                    public void onAdLoaded() {
+                        isAdLoaded = true;
+                    }
 
-            adview.setAdListener(new AdListener() {
-                @Override
-                public void onAdLoaded() {
-                    isAdLoaded = true;
-                }
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError adError) {
+                        isAdLoaded = false;
+                    }
 
-                @Override
-                public void onAdFailedToLoad(@NonNull LoadAdError adError) {
-                    isAdLoaded = false;
-                }
+                    @Override
+                    public void onAdOpened() {
+                    }
 
-                @Override
-                public void onAdOpened() {
-                }
+                    @Override
+                    public void onAdClicked() {
+                    }
 
-                @Override
-                public void onAdClicked() {
-                }
-
-                @Override
-                public void onAdClosed() {
-                }
-            });
+                    @Override
+                    public void onAdClosed() {
+                    }
+                });
+            }
         }
     }
 
-    public void startRefreshFromSettings() {
+    public void startManualRefresh() {
         startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, CATEGORIES_API_LINK, "CATEGORIES", EmojisRequestListener);
         startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, EMOJIS_API_LINK, "EMOJIS", EmojisRequestListener);
         startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, PACKS_API_LINK, "PACKS", EmojisRequestListener);

@@ -33,11 +33,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -72,7 +72,7 @@ public class PackPreviewActivity extends AppCompatActivity {
     private String packEmojisArrayString = "";
     private String downloadPath = "";
     private ArrayList<String> downloadPackArrayList = new ArrayList<>();
-    private CoordinatorLayout coordinator;
+    private RelativeLayout relativeView;
     private LinearLayout download;
     private LinearLayout bsheetbehavior;
     private LinearLayout background;
@@ -94,7 +94,7 @@ public class PackPreviewActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        coordinator = findViewById(R.id.coordinator);
+        relativeView = findViewById(R.id.relativeView);
         download = findViewById(R.id.download);
         bsheetbehavior = findViewById(R.id.sheetBehavior);
         background = findViewById(R.id.background);
@@ -105,7 +105,7 @@ public class PackPreviewActivity extends AppCompatActivity {
         download_tv = findViewById(R.id.download_tv);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
-        coordinator.setOnClickListener(_view -> {
+        relativeView.setOnClickListener(_view -> {
             shadAnim(download, "translationY", 200, 200);
             shadAnim(download, "alpha", 0, 200);
 
@@ -157,9 +157,7 @@ public class PackPreviewActivity extends AppCompatActivity {
             packsRecycler.setAdapter(new Recycler1Adapter(emojisListMap));
         } catch (Exception e) {
             UserInteractions.showCustomSnackBar(getString(R.string.failed_to_load_emojis), this);
-            new Handler().postDelayed(() -> {
-                sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            }, 3000);
+            new Handler().postDelayed(() -> sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN), 3000);
         }
     }
 
@@ -252,7 +250,7 @@ public class PackPreviewActivity extends AppCompatActivity {
                         if (isDownloading) {
                             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                         } else {
-                            shadAnim(coordinator, "alpha", 0, 200);
+                            shadAnim(relativeView, "alpha", 0, 200);
 
                             new Handler().postDelayed(() -> finish(), 150);
 

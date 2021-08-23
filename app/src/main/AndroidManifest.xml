@@ -46,6 +46,7 @@
             android:configChanges="keyboardHidden|orientation|uiMode" />
         <activity
             android:name=".Activities.PackPreviewActivity"
+            android:theme="@style/ActivityAsSheet"
             android:configChanges="keyboardHidden|orientation|uiMode" />
         <activity
             android:name=".Activities.CategoriesPreviewActivity"

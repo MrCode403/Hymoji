@@ -43,12 +43,13 @@ public class UserInteractions {
         }
     }
 
-    public static AlertDialog showMessageDialog(String title, String message, String positiveButtonText, String negativeButtonText, Activity context, DialogInterface.OnClickListener positiveAction, DialogInterface.OnClickListener negativeAction) {
+    public static AlertDialog showMessageDialog(boolean cancelable, String title, String message, String positiveButtonText, String negativeButtonText, Activity context, DialogInterface.OnClickListener positiveAction, DialogInterface.OnClickListener negativeAction) {
         return new MaterialAlertDialogBuilder(context, R.style.RoundShapeTheme)
                 .setTitle(title)
                 .setMessage(message)
                 .setNegativeButton(negativeButtonText, negativeAction)
                 .setPositiveButton(positiveButtonText, positiveAction)
+                .setCancelable(cancelable)
                 .show();
     }
 

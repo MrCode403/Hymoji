@@ -130,6 +130,8 @@
     <string name="contrbute_contact_us">You\'ll be redirected to your mail app to contact us</string>
     <string name="payment_failed">The payment failed, please try again.</string>
     <string name="no_internet_connection">Check your internet connection!</string>
+    <string name="no_internet_connection_title">No internet access</string>
+    <string name="no_internet_connection_desc">Please check your internet connection then click reload below.</string>
     <string name="payments_powered_by">Payments are processed by PayPal</string>
     <string name="payment_leaving">Oh no, don\'t go :(</string>
     <string name="payment_success_title">Huge thanks to you!</string>
@@ -145,4 +147,5 @@
     <string name="premium_feature_3_desc">It only costs 1.99$. Not that expensive, right?</string>
     <string name="premium_go_btn">awesome, I wanna buy it!</string>
     <string name="premium_mini_desc">Get tons of premium features just for you, and most importantly, get rid of ads.</string>
+    <string name="exit_app" translatable="true">Exit</string>
 </resources>

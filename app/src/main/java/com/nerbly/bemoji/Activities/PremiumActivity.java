@@ -121,7 +121,6 @@ public class PremiumActivity extends AppCompatActivity {
 
 
     public void LOGIC_BACKEND() {
-        overridePendingTransition(R.anim.fade_in, 0);
         bottomSheetBehaviorListener();
         isPurchased = false;
         isFirstView = false;
