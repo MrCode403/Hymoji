@@ -5,16 +5,15 @@ import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.Functions.SideFunctions.setHighPriorityImageFromUrl;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
-import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
-import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
-import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
+import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.statusBarColor;
 
 import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -28,7 +27,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,7 +35,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nerbly.bemoji.Adapters.LoadingPacksAdapter;
@@ -55,6 +52,8 @@ import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+
 public class PacksActivity extends AppCompatActivity {
     private final ArrayList<String> packsArrayList = new ArrayList<>();
     private final ArrayList<HashMap<String, Object>> shimmerList = new ArrayList<>();
@@ -62,10 +61,8 @@ public class PacksActivity extends AppCompatActivity {
     private String packsTempArrayString = "";
     private String currentPositionPackArray = "";
     private ArrayList<HashMap<String, Object>> packsList = new ArrayList<>();
-    private LinearLayout sheetBehaviorView;
     private LinearLayout background;
     private AdView adview;
-    private LinearLayout slider;
     private RecyclerView packsRecycler;
     private RecyclerView loadingRecycler;
     private RequestNetwork startGettingPacks;
@@ -83,11 +80,8 @@ public class PacksActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        CoordinatorLayout coordinator = findViewById(R.id.coordinator);
-        sheetBehaviorView = findViewById(R.id.sheetBehavior);
         background = findViewById(R.id.background);
         adview = findViewById(R.id.adview);
-        slider = findViewById(R.id.slider);
         packsRecycler = findViewById(R.id.packsRecycler);
         loadingRecycler = findViewById(R.id.loadingRecycler);
         startGettingPacks = new RequestNetwork(this);
@@ -126,6 +120,7 @@ public class PacksActivity extends AppCompatActivity {
         packsRecycler.setLayoutManager(new LinearLayoutManager(this));
         packsRecycler.setHasFixedSize(true);
         loadingRecycler.setHasFixedSize(true);
+        OverScrollDecoratorHelper.setUpOverScroll(packsRecycler, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
 
         background.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
 
@@ -137,17 +132,17 @@ public class PacksActivity extends AppCompatActivity {
             shimmerList.add(shimmerMap);
         }
         loadingRecycler.setAdapter(new LoadingPacksAdapter.LoadingRecyclerAdapter(shimmerList));
-
         getPacks();
-
-
     }
 
     public void LOGIC_FRONTEND() {
-        advancedCorners(background, "#FFFFFF", 40, 40, 0, 0);
-        setViewRadius(slider, 90, "#E0E0E0");
-        DARK_ICONS(this);
-        transparentStatusBar(this);
+        if (Build.VERSION.SDK_INT < 23) {
+            statusBarColor("#7289DA", this);
+            LIGHT_ICONS(this);
+        } else {
+            statusBarColor("#FFFFFF", this);
+            DARK_ICONS(this);
+        }
     }
 
     private void loadAds() {

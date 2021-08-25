@@ -105,9 +105,10 @@ public class EmojisActivity extends AppCompatActivity {
                     } else {
                         PacksEmojisFragment fragment = (PacksEmojisFragment) Objects.requireNonNull(viewpager.getAdapter()).instantiateItem(viewpager, viewpager.getCurrentItem());
                         fragment.getEmojis();
+                        fragment.setLoadingScreenData();
                     }
                 }
-                if (searchBoxField.getText().toString().trim().length() > 0) {
+                if (charSeq.toString().trim().length() > 0) {
                     sortByBtn.setImageResource(R.drawable.round_clear_black_48dp);
                 } else {
                     sortByBtn.setImageResource(R.drawable.outline_filter_alt_black_48dp);

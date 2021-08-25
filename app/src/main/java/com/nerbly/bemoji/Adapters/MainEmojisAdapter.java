@@ -12,7 +12,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.nerbly.bemoji.Functions.Utils;
 import com.nerbly.bemoji.R;
 
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ public class MainEmojisAdapter {
 
         @Override
         public int getCount() {
-            return data.size();
+            return data == null ? 0 : data.size();
         }
 
         @Override
@@ -58,12 +57,10 @@ public class MainEmojisAdapter {
             final LinearLayout emojiBackground = _view.findViewById(R.id.emojiBackground);
             final LinearLayout space = _view.findViewById(R.id.space);
             final ImageView emoji = _view.findViewById(R.id.emoji);
-
-            setImgURL(Objects.requireNonNull(data.get(position).get("image")).toString(), emoji);
-            emojiBackground.setOnLongClickListener(_view12 -> {
-                Utils.showToast(_view12.getContext(), Objects.requireNonNull(data.get(position).get("title")).toString());
-                return true;
-            });
+            try {
+                setImgURL(Objects.requireNonNull(data.get(position).get("image")).toString(), emoji);
+            } catch (Exception e) {
+            }
             View final_view = _view;
             emojiBackground.setOnClickListener(onClick -> {
                 try {

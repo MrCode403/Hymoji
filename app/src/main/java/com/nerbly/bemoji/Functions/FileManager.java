@@ -86,11 +86,11 @@ public class FileManager {
 
         String selection = MediaStore.Files.FileColumns.RELATIVE_PATH + " like ? ";
 
-
         String[] selections = new String[]{"%" + pathToScan + "%"};
 
-        Cursor cursor = context.getContentResolver().query(externalUri, projection, selection, selections, MediaStore.Images.Media.DATE_TAKEN);
+        String orderBy = android.provider.MediaStore.Video.Media.DATE_TAKEN;
 
+        Cursor cursor = context.getContentResolver().query(externalUri, projection, selection, selections, orderBy + " DESC");
 
         int idColumn = cursor.getColumnIndex(MediaStore.MediaColumns._ID);
 

@@ -62,8 +62,10 @@ public class DownloaderSheet extends AppCompatActivity {
 
         String emojiName = name.replaceAll("[_\\\\-]", " ");
         emojiName = emojiName.replaceAll("[0-9]", "");
-        if (stringContainsItemFromList(emojiName, new String[]{".png", ".gif", ".jpg"})) {
-            emojiName = emojiName.substring(0, emojiName.length() - 4);
+        if (Build.VERSION.SDK_INT >= 24) {
+            if (stringContainsItemFromList(emojiName, new String[]{".png", ".gif", ".jpg"})) {
+                emojiName = emojiName.substring(0, emojiName.length() - 4);
+            }
         }
 
         emoji_title.setText(capitalizedFirstWord(emojiName).trim());

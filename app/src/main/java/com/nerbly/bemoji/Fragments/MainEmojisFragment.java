@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -82,33 +84,57 @@ public class MainEmojisFragment extends Fragment {
         if (!sharedPref.getString("emojisData", "").isEmpty()) {
             getEmojis();
         } else {
-            noEmojisFound();
+            noEmojisFound(true);
         }
         OverScrollDecoratorHelper.setUpOverScroll(emojisRecycler);
     }
 
-    private void noEmojisFound() {
+    private void noEmojisFound(boolean isError) {
         loadView.setTranslationY(0);
         loadView.setAlpha(1);
-        shadAnim(emptyAnimation, "translationX", -200, 200);
-        shadAnim(emptyAnimation, "alpha", 0, 200);
         loadView.setVisibility(View.VISIBLE);
-        emptyAnimation.setAnimation("animations/not_found.json");
-        emptyAnimation.playAnimation();
-        emptyTitle.setText(getString(R.string.emojis_not_found));
-        TimerTask loadingTmr = new TimerTask() {
+        shadAnim(emptyAnimation, "alpha", 0, 200);
+
+        AlphaAnimation fadeOut = new AlphaAnimation(1.0f, 0.0f);
+        emptyTitle.startAnimation(fadeOut);
+        fadeOut.setDuration(350);
+        fadeOut.setFillAfter(true);
+
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void run() {
-                requireActivity().runOnUiThread(() -> {
-                    emptyAnimation.setAnimation("animations/not_found.json");
-                    emptyAnimation.playAnimation();
-                    emptyAnimation.setTranslationX(200);
-                    shadAnim(emptyAnimation, "translationX", 0, 200);
-                    shadAnim(emptyAnimation, "alpha", 1, 200);
-                });
+            public void onAnimationStart(Animation animation) {
             }
-        };
-        timer.schedule(loadingTmr, 500);
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (isError) {
+                    emptyTitle.setText(getString(R.string.error_msg_2));
+                } else {
+                    emptyTitle.setText(getString(R.string.emojis_not_found));
+                }
+                AlphaAnimation fadeIn = new AlphaAnimation(0.0f, 1.0f);
+                emptyTitle.startAnimation(fadeIn);
+                fadeIn.setDuration(350);
+                fadeIn.setFillAfter(true);
+                shadAnim(emptyAnimation, "alpha", 1, 200);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+        if (getActivity() != null) {
+            TimerTask loadingTmr = new TimerTask() {
+                @Override
+                public void run() {
+                    requireActivity().runOnUiThread(() -> {
+                        emptyAnimation.setAnimation("animations/not_found.json");
+                        emptyAnimation.playAnimation();
+                    });
+                }
+            };
+            timer.schedule(loadingTmr, 200);
+        }
     }
 
     public void getEmojis() {
@@ -144,7 +170,7 @@ public class MainEmojisFragment extends Fragment {
                 }
 
                 if (isSortingNew) {
-                    Utils.sortListMap2(emojisList, "id", false, false);
+                    Utils.sortListMap(emojisList, "id", false, false);
                 } else if (isSortingOld) {
                     Collections.reverse(emojisList);
                 } else if (isSortingAlphabet) {
@@ -182,7 +208,7 @@ public class MainEmojisFragment extends Fragment {
             isSortingNew = true;
             isSortingOld = false;
             isSortingAlphabet = false;
-            Utils.sortListMap2(emojisList, "id", false, false);
+            Utils.sortListMap(emojisList, "id", false, false);
             emojisRecycler.setAdapter(new MainEmojisAdapter.Gridview1Adapter(emojisList));
         }
     }
@@ -192,7 +218,7 @@ public class MainEmojisFragment extends Fragment {
             isSortingOld = true;
             isSortingNew = false;
             isSortingAlphabet = false;
-            Utils.sortListMap2(emojisList, "id", false, true);
+            Utils.sortListMap(emojisList, "id", false, true);
             emojisRecycler.setAdapter(new MainEmojisAdapter.Gridview1Adapter(emojisList));
         }
     }
@@ -248,16 +274,13 @@ public class MainEmojisFragment extends Fragment {
 
             handler.post(() -> {
                 if (emojisList.size() == 0) {
-                    noEmojisFound();
+                    noEmojisFound(false);
                 } else {
                     emojisRecycler.setVisibility(View.VISIBLE);
                     loadView.setVisibility(View.GONE);
                     emojisRecycler.setAdapter(new MainEmojisAdapter.Gridview1Adapter(emojisList));
-
                 }
-
             });
         });
     }
-
 }

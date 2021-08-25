@@ -48,21 +48,25 @@ public class TutorialFragment extends BottomSheetDialogFragment {
     private RequestNetwork requestTutorial;
     private RequestNetwork.RequestListener TutorialRequestListener;
 
-    @NonNull
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle _savedInstanceState) {
-        Objects.requireNonNull(getDialog()).setOnShowListener(dialog -> {
-            BottomSheetDialog d = (BottomSheetDialog) dialog;
-            View view = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-            assert view != null;
-            sheetBehavior = BottomSheetBehavior.from(view);
-            initialize(view);
-            com.google.firebase.FirebaseApp.initializeApp(requireContext());
-            initializeLogic();
-        });
-        return inflater.inflate(R.layout.tutorial, container, false);
-
+        if (isAdded() && getActivity() != null) {
+            Objects.requireNonNull(getDialog()).setOnShowListener(dialog -> {
+                BottomSheetDialog d = (BottomSheetDialog) dialog;
+                View view = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+                assert view != null;
+                sheetBehavior = BottomSheetBehavior.from(view);
+                initialize(view);
+                com.google.firebase.FirebaseApp.initializeApp(requireContext());
+                initializeLogic();
+            });
+            return inflater.inflate(R.layout.tutorial, container, false);
+        } else {
+            showCustomSnackBar(getString(R.string.error_msg), getActivity());
+            dismiss();
+            return null;
+        }
     }
 
     private void initialize(View view) {

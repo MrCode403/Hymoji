@@ -22,11 +22,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.media.MediaScannerConnection;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +57,8 @@ import com.nerbly.bemoji.UI.UserInteractions;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class PackPreviewActivity extends AppCompatActivity {
     private final ArrayList<HashMap<String, Object>> emojisListMap = new ArrayList<>();
@@ -330,7 +332,7 @@ public class PackPreviewActivity extends AppCompatActivity {
         }.getType());
         if (downloadPackPosition == downloadPackArrayList.size()) {
             if (isGoingToZipPack) {
-                new zippingTask().execute();
+                zippingTask();
             } else {
                 isDownloading = false;
                 isPackDownloaded = true;
@@ -393,7 +395,13 @@ public class PackPreviewActivity extends AppCompatActivity {
                 bottomSheetDialog.dismiss();
             });
             if (!isFinishing()) {
-                bottomSheetDialog.show();
+                try {
+                    bottomSheetDialog.show();
+                } catch (Exception e) {
+                    showCustomSnackBar(getString(R.string.error_msg), this);
+                }
+            } else {
+                showCustomSnackBar(getString(R.string.error_msg), this);
             }
         }
     }
@@ -414,34 +422,23 @@ public class PackPreviewActivity extends AppCompatActivity {
 
     }
 
-    private class zippingTask extends AsyncTask<String, Integer, String> {
-        @Override
-        protected void onPreExecute() {
+    private void zippingTask() {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            ZIP(downloadPackPath, FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/Bemojis/" + tempPackName + ".zip");
-            downloadPackPath = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/Bemojis/" + tempPackName + ".zip";
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-
-        }
-
-        @Override
-        protected void onPostExecute(String _result) {
-            isDownloading = false;
-            download_tv.setText(R.string.download_success);
-            download_ic.setImageResource(R.drawable.round_done_white_48dp);
-            download_ic.setRotation((float) (0));
-            showCustomSnackBar(R.string.full_download_path + downloadPackPath + ".zip", PackPreviewActivity.this);
-            downAnim.cancel();
-            FileUtil.deleteFile(downloadPackPath);
-        }
+        executor.execute(() -> {
+            ZIP(downloadPackPath, FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/" + getString(R.string.app_name) + "/" + tempPackName + ".zip");
+            downloadPackPath = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/" + getString(R.string.app_name) + "/" + tempPackName + ".zip";
+            handler.post(() -> {
+                isDownloading = false;
+                download_tv.setText(R.string.download_success);
+                download_ic.setImageResource(R.drawable.round_done_white_48dp);
+                download_ic.setRotation((float) (0));
+                showCustomSnackBar(R.string.full_download_path + downloadPackPath + ".zip", PackPreviewActivity.this);
+                downAnim.cancel();
+                FileUtil.deleteFile(downloadPackPath);
+            });
+        });
     }
 
     public class Recycler1Adapter extends RecyclerView.Adapter<Recycler1Adapter.ViewHolder> {

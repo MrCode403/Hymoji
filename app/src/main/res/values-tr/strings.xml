@@ -136,4 +136,7 @@
     <string name="premium_feature_3_desc">Sadece 1.99$\'a mal oluyor. O kadar pahalı değil, değil mi?</string>
     <string name="premium_go_btn">harika, bir deneyeyim</string>
     <string name="premium_mini_desc">Sadece size özel tonlarca premium özellik edinin ve en önemlisi reklamlardan kurtulun.</string>
+    <string name="no_internet_connection_desc">Görünüşe göre dünya ile bağlantımızı kaybettik, emojileri yeniden yükleyerek uzay gemimizi geri getirmemize yardımcı olun.</string>
+    <string name="no_internet_connection_title">Hymoji bağlantıyı kaybetti</string>
+    <string name="exit_app">çıkış</string>
 </resources>

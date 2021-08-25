@@ -34,12 +34,12 @@ public class HomePacksAdapter {
 
     public static class Packs_recyclerAdapter extends RecyclerView.Adapter<Packs_recyclerAdapter.ViewHolder> {
         private final ArrayList<String> packsArrayList = new ArrayList<>();
-        ArrayList<HashMap<String, Object>> _data;
+        ArrayList<HashMap<String, Object>> data;
         private String packsTempArrayString = "";
         private String currentPositionPackArray = "";
 
         public Packs_recyclerAdapter(ArrayList<HashMap<String, Object>> _arr) {
-            _data = _arr;
+            data = _arr;
         }
 
         @NonNull
@@ -64,9 +64,9 @@ public class HomePacksAdapter {
 
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             view.setLayoutParams(_lp);
-            pack_title.setText(capitalizedFirstWord(Objects.requireNonNull(_data.get(position).get("name")).toString().replace("_", " ")));
-            pack_desc.setText(Objects.requireNonNull(_data.get(position).get("description")).toString());
-            setHighPriorityImageFromUrl(imageview1, Objects.requireNonNull(_data.get(position).get("image")).toString());
+            pack_title.setText(capitalizedFirstWord(Objects.requireNonNull(data.get(position).get("name")).toString().replace("_", " ")));
+            pack_desc.setText(Objects.requireNonNull(data.get(position).get("description")).toString());
+            setHighPriorityImageFromUrl(imageview1, Objects.requireNonNull(data.get(position).get("image")).toString());
             cardview1.setOnClickListener(_view -> {
                 try {
                     packsTempArrayString = HomeActivity.PacksArray();
@@ -83,14 +83,14 @@ public class HomePacksAdapter {
                     Log.e("Pack Array Crashed", e.toString());
                 }
                 Intent toPreview = new Intent();
-                toPreview.putExtra("title", imageview1.getContext().getString(R.string.app_name) + "Pack_" + (long) (Double.parseDouble(Objects.requireNonNull(_data.get(position).get("id")).toString())));
-                toPreview.putExtra("subtitle", Objects.requireNonNull(_data.get(position).get("description")).toString());
-                toPreview.putExtra("imageUrl", Objects.requireNonNull(_data.get(position).get("image")).toString());
-                toPreview.putExtra("fileName", Objects.requireNonNull(_data.get(position).get("slug")).toString());
+                toPreview.putExtra("title", imageview1.getContext().getString(R.string.app_name) + "Pack_" + (long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("id")).toString())));
+                toPreview.putExtra("subtitle", Objects.requireNonNull(data.get(position).get("description")).toString());
+                toPreview.putExtra("imageUrl", Objects.requireNonNull(data.get(position).get("image")).toString());
+                toPreview.putExtra("fileName", Objects.requireNonNull(data.get(position).get("slug")).toString());
                 toPreview.putExtra("packEmojisArray", currentPositionPackArray);
-                toPreview.putExtra("packEmojisAmount", Objects.requireNonNull(_data.get(position).get("amount")).toString());
-                toPreview.putExtra("packName", capitalizedFirstWord(Objects.requireNonNull(_data.get(position).get("name")).toString().replace("_", " ")));
-                toPreview.putExtra("packId", Objects.requireNonNull(_data.get(position).get("id")).toString());
+                toPreview.putExtra("packEmojisAmount", Objects.requireNonNull(data.get(position).get("amount")).toString());
+                toPreview.putExtra("packName", capitalizedFirstWord(Objects.requireNonNull(data.get(position).get("name")).toString().replace("_", " ")));
+                toPreview.putExtra("packId", Objects.requireNonNull(data.get(position).get("id")).toString());
                 toPreview.setClass(imageview1.getContext(), PackPreviewActivity.class);
                 imageview1.getContext().startActivity(toPreview);
             });
@@ -108,7 +108,7 @@ public class HomePacksAdapter {
 
         @Override
         public int getItemCount() {
-            return _data.size();
+            return data == null ? 0 : data.size();
         }
 
         public static class ViewHolder extends RecyclerView.ViewHolder {

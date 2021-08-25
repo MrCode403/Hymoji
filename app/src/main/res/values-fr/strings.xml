@@ -136,4 +136,7 @@
     <string name="premium_feature_3_desc">Il ne coûte que 1,99$. Pas si cher, non ?</string>
     <string name="premium_go_btn">cool, je veux l\'acheter!</string>
     <string name="premium_mini_desc">Obtenez des tonnes de fonctionnalités premium rien que pour vous et, surtout, débarrassez-vous des publicités.</string>
+    <string name="no_internet_connection_title">Hymoji a perdu la connexion</string>
+    <string name="no_internet_connection_desc">Il semble que nous ayons perdu le lien avec la terre, aidez-nous à ramener notre vaisseau spatial en rechargeant des emojis.</string>
+    <string name="exit_app">Sortir</string>
 </resources>

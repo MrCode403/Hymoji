@@ -21,30 +21,6 @@ import java.util.zip.ZipOutputStream;
 public class Utils {
 
 
-    public static void sortListMap(final ArrayList<HashMap<String, Object>> listMap, final String key, final boolean isNumber, final boolean ascending) {
-        Collections.sort(listMap, (compareMap1, compareMap2) -> {
-            try {
-                if (isNumber) {
-                    int count1 = Integer.parseInt(Objects.requireNonNull(compareMap1.get(key)).toString());
-                    int count2 = Integer.parseInt(Objects.requireNonNull(compareMap2.get(key)).toString());
-                    if (ascending) {
-                        return count1 < count2 ? -1 : 0;
-                    } else {
-                        return count1 > count2 ? -1 : 0;
-                    }
-                } else {
-                    if (ascending) {
-                        return (Objects.requireNonNull(compareMap1.get(key)).toString()).compareTo(Objects.requireNonNull(compareMap2.get(key)).toString());
-                    } else {
-                        return (Objects.requireNonNull(compareMap2.get(key)).toString()).compareTo(Objects.requireNonNull(compareMap1.get(key)).toString());
-                    }
-                }
-            } catch (Exception e) {
-                return 0;
-            }
-        });
-    }
-
     public static void showToast(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
@@ -118,29 +94,33 @@ public class Utils {
 
     }
 
-    public static void sortListMap2(final ArrayList<HashMap<String, Object>> listMap, final String key, final boolean isNumber, final boolean ascending) {
-        Collections.sort(listMap, (_compareMap1, _compareMap2) -> {
-            if (isNumber) {
-                int count1 = Integer.parseInt(Objects.requireNonNull(_compareMap1.get(key)).toString());
-                int count2 = Integer.parseInt(Objects.requireNonNull(_compareMap2.get(key)).toString());
-                if (ascending) {
-                    return count1 < count2 ? -1 : 0;
+    public static void sortListMap(final ArrayList<HashMap<String, Object>> listMap, final String key, final boolean isNumber, final boolean ascending) {
+        Collections.sort(listMap, (compareMap1, compareMap2) -> {
+            try {
+                if (isNumber) {
+                    int count1 = Integer.parseInt(Objects.requireNonNull(compareMap1.get(key)).toString());
+                    int count2 = Integer.parseInt(Objects.requireNonNull(compareMap2.get(key)).toString());
+                    if (ascending) {
+                        return count1 < count2 ? -1 : 0;
+                    } else {
+                        return count1 > count2 ? -1 : 0;
+                    }
                 } else {
-                    return count1 > count2 ? -1 : 0;
+                    if (ascending) {
+                        return (Objects.requireNonNull(compareMap1.get(key)).toString()).compareTo(Objects.requireNonNull(compareMap2.get(key)).toString());
+                    } else {
+                        return (Objects.requireNonNull(compareMap2.get(key)).toString()).compareTo(Objects.requireNonNull(compareMap1.get(key)).toString());
+                    }
                 }
-            } else {
-                if (ascending) {
-                    return (Objects.requireNonNull(_compareMap1.get(key)).toString()).compareTo(Objects.requireNonNull(_compareMap2.get(key)).toString());
-                } else {
-                    return (Objects.requireNonNull(_compareMap2.get(key)).toString()).compareTo(Objects.requireNonNull(_compareMap1.get(key)).toString());
-                }
+            } catch (Exception e) {
+                return 0;
             }
         });
     }
 
-    public static boolean isConnected(Context _context) {
-        ConnectivityManager _connectivityManager = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo _activeNetworkInfo = _connectivityManager.getActiveNetworkInfo();
-        return _activeNetworkInfo != null && _activeNetworkInfo.isConnected();
+    public static boolean isConnected(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

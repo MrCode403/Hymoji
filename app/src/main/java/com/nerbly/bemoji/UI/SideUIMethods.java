@@ -1,8 +1,10 @@
 package com.nerbly.bemoji.UI;
 
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class SideUIMethods {
     public static void shadBackground(View view) {
@@ -23,5 +25,12 @@ public class SideUIMethods {
         }
     }
 
-
+    public static void marqueeTextView(final TextView view) {
+        view.setSingleLine(true);
+        view.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        view.setSelected(true);
+        view.setMarqueeRepeatLimit(-1);
+        view.setHorizontalFadingEdgeEnabled(true);
+        view.setFadingEdgeLength(20);
+    }
 }

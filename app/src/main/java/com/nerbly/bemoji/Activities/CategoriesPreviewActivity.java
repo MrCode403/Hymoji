@@ -28,6 +28,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -61,6 +63,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 public class CategoriesPreviewActivity extends AppCompatActivity {
     private static EditText searchBoxField;
@@ -180,7 +184,6 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
     public void LOGIC_BACKEND() {
         initEmojisRecycler();
         getEmojis();
-
         loadAds();
     }
 
@@ -202,6 +205,7 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
         int number = getScreenWidth(this);
         int columns = (int) ((float) number / scaleFactor);
         emojisRecycler.setNumColumns(columns);
+        OverScrollDecoratorHelper.setUpOverScroll(emojisRecycler);
     }
 
     public void loadCategorizedEmojis() {
@@ -235,7 +239,7 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
         }
 
         if (isSortingNew) {
-            Utils.sortListMap2(emojisList, "id", false, false);
+            Utils.sortListMap(emojisList, "id", false, false);
         } else if (isSortingOld) {
             Collections.reverse(emojisList);
         } else if (isSortingAlphabet) {
@@ -287,7 +291,7 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
                 isSortingNew = true;
                 isSortingOld = false;
                 isSortingAlphabet = false;
-                Utils.sortListMap2(emojisList, "id", false, false);
+                Utils.sortListMap(emojisList, "id", false, false);
                 emojisRecycler.setAdapter(new Gridview1Adapter(emojisList));
                 popup.dismiss();
             }
@@ -297,7 +301,7 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
                 isSortingOld = true;
                 isSortingNew = false;
                 isSortingAlphabet = false;
-                Utils.sortListMap2(emojisList, "id", false, true);
+                Utils.sortListMap(emojisList, "id", false, true);
                 emojisRecycler.setAdapter(new Gridview1Adapter(emojisList));
                 popup.dismiss();
             }
@@ -332,34 +336,52 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
         } else {
             getEmojisTask();
         }
-
-
     }
 
     private void noEmojisFound(boolean isError) {
-        if (isError) {
-            emptyTitle.setText(getString(R.string.error_msg_2));
-        } else {
-            emptyTitle.setText(getString(R.string.emojis_not_found));
-        }
-        shadAnim(emptyAnimation, "translationX", -200, 200);
+
         shadAnim(emptyAnimation, "alpha", 0, 200);
         loadView.setVisibility(View.VISIBLE);
-        emptyAnimation.setAnimation("animations/not_found.json");
-        emptyAnimation.playAnimation();
+
+        AlphaAnimation fadeOut = new AlphaAnimation(1.0f, 0.0f);
+        emptyTitle.startAnimation(fadeOut);
+        fadeOut.setDuration(350);
+        fadeOut.setFillAfter(true);
+
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (isError) {
+                    emptyTitle.setText(getString(R.string.error_msg_2));
+                } else {
+                    emptyTitle.setText(getString(R.string.emojis_not_found));
+                }
+                AlphaAnimation fadeIn = new AlphaAnimation(0.0f, 1.0f);
+                emptyTitle.startAnimation(fadeIn);
+                fadeIn.setDuration(350);
+                fadeIn.setFillAfter(true);
+                shadAnim(emptyAnimation, "alpha", 1, 200);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+
         TimerTask loadingTmr = new TimerTask() {
             @Override
             public void run() {
                 runOnUiThread(() -> {
                     emptyAnimation.setAnimation("animations/not_found.json");
                     emptyAnimation.playAnimation();
-                    emptyAnimation.setTranslationX(200);
-                    shadAnim(emptyAnimation, "translationX", 0, 200);
-                    shadAnim(emptyAnimation, "alpha", 1, 200);
                 });
             }
         };
-        timer.schedule(loadingTmr, 500);
+        timer.schedule(loadingTmr, 200);
     }
 
 
@@ -426,7 +448,7 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
         executor.execute(() -> {
             loadCategorizedEmojis();
             if (isSortingNew) {
-                Utils.sortListMap2(emojisList, "id", false, false);
+                Utils.sortListMap(emojisList, "id", false, false);
             } else if (isSortingOld) {
                 Collections.reverse(emojisList);
             } else if (isSortingAlphabet) {

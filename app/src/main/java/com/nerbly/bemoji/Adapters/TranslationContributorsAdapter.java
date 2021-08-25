@@ -51,10 +51,10 @@ public class TranslationContributorsAdapter extends RecyclerView.Adapter<Transla
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return data == null ? 0 : data.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public ViewHolder(View v) {
             super(v);
         }

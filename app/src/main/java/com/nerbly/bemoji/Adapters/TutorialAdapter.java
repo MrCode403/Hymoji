@@ -70,7 +70,7 @@ public class TutorialAdapter {
 
         @Override
         public int getItemCount() {
-            return data.size();
+            return data == null ? 0 : data.size();
         }
 
         public static class ViewHolder extends RecyclerView.ViewHolder {

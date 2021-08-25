@@ -44,13 +44,17 @@ public class UserInteractions {
     }
 
     public static AlertDialog showMessageDialog(boolean cancelable, String title, String message, String positiveButtonText, String negativeButtonText, Activity context, DialogInterface.OnClickListener positiveAction, DialogInterface.OnClickListener negativeAction) {
-        return new MaterialAlertDialogBuilder(context, R.style.RoundShapeTheme)
-                .setTitle(title)
-                .setMessage(message)
-                .setNegativeButton(negativeButtonText, negativeAction)
-                .setPositiveButton(positiveButtonText, positiveAction)
-                .setCancelable(cancelable)
-                .show();
+        if (!(context).isFinishing()) {
+            return new MaterialAlertDialogBuilder(context, R.style.RoundShapeTheme)
+                    .setTitle(title)
+                    .setMessage(message)
+                    .setNegativeButton(negativeButtonText, negativeAction)
+                    .setPositiveButton(positiveButtonText, positiveAction)
+                    .setCancelable(cancelable)
+                    .show();
+        } else {
+            return null;
+        }
     }
 
     public static void showMessageSheet(String title, int drawable, String positiveButtonText, String negativeButtonText, String message, Activity context, View.OnClickListener positiveAction, View.OnClickListener negativeAction) {
@@ -59,7 +63,6 @@ public class UserInteractions {
         View bottomSheetView;
         bottomSheetView = context.getLayoutInflater().inflate(R.layout.infosheet, null);
         bottomSheetDialog.setContentView(bottomSheetView);
-
         bottomSheetDialog.getWindow().findViewById(R.id.design_bottom_sheet).setBackgroundResource(android.R.color.transparent);
 
         ImageView image = bottomSheetView.findViewById(R.id.image);

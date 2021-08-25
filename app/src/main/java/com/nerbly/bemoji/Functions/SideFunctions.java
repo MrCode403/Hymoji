@@ -5,20 +5,18 @@ import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.nerbly.bemoji.R;
 
-import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
@@ -49,33 +47,20 @@ public class SideFunctions {
     }
 
     public static void loadImageFromUri(String uri, ImageView image, Context context) {
-        try {
-            InputStream is = context.getContentResolver().openInputStream((Uri.parse(uri)));
-            Bitmap bitmap = BitmapFactory.decodeStream(is);
-            image.setImageBitmap(bitmap);
-        } catch (Exception e) {
-
-        }
+        Glide.with(context)
+                .load(uri)
+                .into(image);
     }
 
     public static void setImgURL(final String url, final ImageView image) {
         RequestOptions options = new RequestOptions()
                 .placeholder(R.drawable.loading)
                 .fitCenter()
-                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .priority(Priority.IMMEDIATE);
 
         Glide.with(image.getContext())
                 .load(url)
                 .apply(options)
-                .into(image);
-
-    }
-
-    public static void setImageFromUrl(final ImageView image, final String url) {
-        Glide.with(image.getContext())
-                .load(url)
-                .centerCrop()
                 .into(image);
 
     }
@@ -94,7 +79,6 @@ public class SideFunctions {
                     .into(image);
         } catch (Exception e) {
         }
-
     }
 
 
@@ -104,6 +88,7 @@ public class SideFunctions {
                 .centerCrop()
                 .dontAnimate()
                 .priority(Priority.IMMEDIATE)
+                .transition(DrawableTransitionOptions.withCrossFade())
                 .into(image);
 
     }
@@ -134,5 +119,9 @@ public class SideFunctions {
             return resources.getDimensionPixelSize(resourceId);
         }
         return 0;
+    }
+
+    public static int getListItemsCount(ArrayList<HashMap<String, Object>> data) {
+        return data == null ? 0 : data.size();
     }
 }

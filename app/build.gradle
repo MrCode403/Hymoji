@@ -10,8 +10,8 @@ android {
         applicationId "com.nerbly.bemoji"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 26
-        versionName "0.2.8 - beta"
+        versionCode 27
+        versionName "0.2.9 - beta"
     }
     buildTypes {
         release {

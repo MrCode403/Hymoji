@@ -67,7 +67,7 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
-        if (isAdded()) {
+        if (isAdded() && getActivity() != null) {
             Objects.requireNonNull(getDialog()).setOnShowListener(dialog -> {
                 d = (BottomSheetDialog) dialog;
                 View view = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
