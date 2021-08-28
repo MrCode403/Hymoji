@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -156,17 +158,15 @@ public class MainActivity extends AppCompatActivity {
             dataView.setVisibility(View.GONE);
             MainUIMethods.shadAnim(welcomeImage, "scaleY", 1.1, 4000);
             MainUIMethods.shadAnim(welcomeImage, "scaleX", 1.1, 4000);
-            TimerTask splashTmr = new TimerTask() {
-                @Override
-                public void run() {
-                    runOnUiThread(() -> {
-                        intent.setClass(getApplicationContext(), HomeActivity.class);
-                        startActivity(intent);
-                    });
-                }
-            };
-            timer.schedule(splashTmr, 2000);
 
+            new Handler().postDelayed(() -> {
+                intent.setClass(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
+            }, 2000);
+
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                //Do something here
+            }, 5000);
 
         }
     }

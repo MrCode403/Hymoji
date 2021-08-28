@@ -29,6 +29,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class HomePacksAdapter {
 
@@ -37,6 +39,7 @@ public class HomePacksAdapter {
         ArrayList<HashMap<String, Object>> data;
         private String packsTempArrayString = "";
         private String currentPositionPackArray = "";
+        public static boolean isEmojiSheetShown = false;
 
         public Packs_recyclerAdapter(ArrayList<HashMap<String, Object>> _arr) {
             data = _arr;
@@ -82,17 +85,26 @@ public class HomePacksAdapter {
                 } catch (Exception e) {
                     Log.e("Pack Array Crashed", e.toString());
                 }
-                Intent toPreview = new Intent();
-                toPreview.putExtra("title", imageview1.getContext().getString(R.string.app_name) + "Pack_" + (long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("id")).toString())));
-                toPreview.putExtra("subtitle", Objects.requireNonNull(data.get(position).get("description")).toString());
-                toPreview.putExtra("imageUrl", Objects.requireNonNull(data.get(position).get("image")).toString());
-                toPreview.putExtra("fileName", Objects.requireNonNull(data.get(position).get("slug")).toString());
-                toPreview.putExtra("packEmojisArray", currentPositionPackArray);
-                toPreview.putExtra("packEmojisAmount", Objects.requireNonNull(data.get(position).get("amount")).toString());
-                toPreview.putExtra("packName", capitalizedFirstWord(Objects.requireNonNull(data.get(position).get("name")).toString().replace("_", " ")));
-                toPreview.putExtra("packId", Objects.requireNonNull(data.get(position).get("id")).toString());
-                toPreview.setClass(imageview1.getContext(), PackPreviewActivity.class);
-                imageview1.getContext().startActivity(toPreview);
+                if (!isEmojiSheetShown) {
+                    isEmojiSheetShown = true;
+                    Intent toPreview = new Intent();
+                    toPreview.putExtra("title", imageview1.getContext().getString(R.string.app_name) + "Pack_" + (long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("id")).toString())));
+                    toPreview.putExtra("subtitle", Objects.requireNonNull(data.get(position).get("description")).toString());
+                    toPreview.putExtra("imageUrl", Objects.requireNonNull(data.get(position).get("image")).toString());
+                    toPreview.putExtra("fileName", Objects.requireNonNull(data.get(position).get("slug")).toString());
+                    toPreview.putExtra("packEmojisArray", currentPositionPackArray);
+                    toPreview.putExtra("packEmojisAmount", Objects.requireNonNull(data.get(position).get("amount")).toString());
+                    toPreview.putExtra("packName", capitalizedFirstWord(Objects.requireNonNull(data.get(position).get("name")).toString().replace("_", " ")));
+                    toPreview.putExtra("packId", Objects.requireNonNull(data.get(position).get("id")).toString());
+                    toPreview.setClass(imageview1.getContext(), PackPreviewActivity.class);
+                    imageview1.getContext().startActivity(toPreview);
+                    new Timer().schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            isEmojiSheetShown = false;
+                        }
+                    }, 1000);
+                }
             });
             if (position == 0) {
                 cardview2.setVisibility(View.VISIBLE);
@@ -100,9 +112,21 @@ public class HomePacksAdapter {
                 cardview2.setVisibility(View.GONE);
             }
             cardview2.setOnClickListener(_view -> {
-                Intent toPacks = new Intent();
-                toPacks.setClass(imageview1.getContext(), PacksActivity.class);
-                imageview1.getContext().startActivity(toPacks);
+                try {
+                    if (!isEmojiSheetShown) {
+                        isEmojiSheetShown = true;
+                        Intent toPacks = new Intent();
+                        toPacks.setClass(imageview1.getContext(), PacksActivity.class);
+                        imageview1.getContext().startActivity(toPacks);
+                        new Timer().schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                isEmojiSheetShown = false;
+                            }
+                        }, 1000);
+                    }
+                } catch (Exception ignored) {
+                }
             });
         }
 

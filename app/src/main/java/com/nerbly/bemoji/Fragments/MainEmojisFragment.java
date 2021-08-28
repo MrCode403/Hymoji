@@ -78,7 +78,6 @@ public class MainEmojisFragment extends Fragment {
         LOGIC_BACKEND();
     }
 
-
     public void LOGIC_BACKEND() {
         initEmojisRecycler();
         if (!sharedPref.getString("emojisData", "").isEmpty()) {
@@ -192,6 +191,9 @@ public class MainEmojisFragment extends Fragment {
             shadAnim(loadView, "alpha", 0, 300);
             searchBoxField.setEnabled(true);
         }, 1000);
+        new Handler().postDelayed(() -> {
+            emptyAnimation.cancelAnimation();
+        }, 2000);
     }
 
     public void initEmojisRecycler() {

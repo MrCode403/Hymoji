@@ -310,7 +310,6 @@ public class PackPreviewActivity extends AppCompatActivity {
                         MediaScannerConnection.scanFile(PackPreviewActivity.this,
                                 new String[]{path}, null,
                                 (path1, uri) -> {
-
                                 });
                     }
 
@@ -328,30 +327,32 @@ public class PackPreviewActivity extends AppCompatActivity {
     }
 
     public void downloadPack(String array, String packName) {
-        downloadPackArrayList = new Gson().fromJson(array, new TypeToken<ArrayList<String>>() {
-        }.getType());
-        if (downloadPackPosition == downloadPackArrayList.size()) {
-            if (isGoingToZipPack) {
-                zippingTask();
+        try {
+            downloadPackArrayList = new Gson().fromJson(array, new TypeToken<ArrayList<String>>() {
+            }.getType());
+            if (downloadPackPosition == downloadPackArrayList.size()) {
+                if (isGoingToZipPack) {
+                    zippingTask();
+                } else {
+                    isDownloading = false;
+                    isPackDownloaded = true;
+                    download_tv.setText(R.string.download_success);
+                    download_ic.setImageResource(R.drawable.round_done_white_48dp);
+                    download_ic.setRotation(0);
+                    showCustomSnackBar(getString(R.string.full_download_path) + " " + downloadPackPath, this);
+                    downAnim.cancel();
+                }
             } else {
-                isDownloading = false;
-                isPackDownloaded = true;
-                download_tv.setText(R.string.download_success);
-                download_ic.setImageResource(R.drawable.round_done_white_48dp);
-                download_ic.setRotation(0);
-                showCustomSnackBar(getString(R.string.full_download_path) + " " + downloadPackPath, this);
-                downAnim.cancel();
+                String downloadPackUrl = ASSETS_SOURCE_LINK + downloadPackArrayList.get((int) (downloadPackPosition));
+                String downloadPackName = getString(R.string.app_name) + "_" + downloadPackArrayList.get((int) downloadPackPosition);
+                if (isGoingToZipPack) {
+                    downloadPackPath = FileUtil.getPackageDataDir(getApplicationContext()) + "/Zipper/" + packName;
+                } else {
+                    downloadPackPath = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/" + getString(R.string.app_name) + "/" + packName;
+                }
+                startPackDownload(downloadPackName, downloadPackPath, downloadPackUrl);
             }
-        } else {
-            String downloadPackUrl = ASSETS_SOURCE_LINK + downloadPackArrayList.get((int) (downloadPackPosition));
-            String downloadPackName = getString(R.string.app_name) + "_" + downloadPackArrayList.get((int) downloadPackPosition);
-            if (isGoingToZipPack) {
-                downloadPackPath = FileUtil.getPackageDataDir(getApplicationContext()) + "/Zipper/" + packName;
-            } else {
-                downloadPackPath = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/" + getString(R.string.app_name) + "/" + packName;
-            }
-            startPackDownload(downloadPackName, downloadPackPath, downloadPackUrl);
-        }
+        } catch (Exception e) {}
     }
 
     public void askForZippingSheet() {
@@ -427,14 +428,15 @@ public class PackPreviewActivity extends AppCompatActivity {
         Handler handler = new Handler(Looper.getMainLooper());
 
         executor.execute(() -> {
-            ZIP(downloadPackPath, FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/" + getString(R.string.app_name) + "/" + tempPackName + ".zip");
-            downloadPackPath = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/" + getString(R.string.app_name) + "/" + tempPackName + ".zip";
+            ZIP(downloadPackPath, Environment.DIRECTORY_DOWNLOADS + "/" + getString(R.string.app_name) + "/" + tempPackName + ".zip");
+            downloadPackPath = Environment.DIRECTORY_DOWNLOADS + "/" + getString(R.string.app_name) + "/" + tempPackName + ".zip";
+
             handler.post(() -> {
                 isDownloading = false;
                 download_tv.setText(R.string.download_success);
                 download_ic.setImageResource(R.drawable.round_done_white_48dp);
                 download_ic.setRotation((float) (0));
-                showCustomSnackBar(R.string.full_download_path + downloadPackPath + ".zip", PackPreviewActivity.this);
+                showCustomSnackBar(R.string.full_download_path + downloadPackPath, PackPreviewActivity.this);
                 downAnim.cancel();
                 FileUtil.deleteFile(downloadPackPath);
             });

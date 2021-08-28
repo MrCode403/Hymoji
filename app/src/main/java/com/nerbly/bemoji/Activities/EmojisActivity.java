@@ -104,8 +104,8 @@ public class EmojisActivity extends AppCompatActivity {
                         fragment.getEmojis();
                     } else {
                         PacksEmojisFragment fragment = (PacksEmojisFragment) Objects.requireNonNull(viewpager.getAdapter()).instantiateItem(viewpager, viewpager.getCurrentItem());
-                        fragment.getEmojis();
                         fragment.setLoadingScreenData();
+                        fragment.getEmojis();
                     }
                 }
                 if (charSeq.toString().trim().length() > 0) {
