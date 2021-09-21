@@ -36,7 +36,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                android:enabled="false"
                 android:fontFamily="@font/whitney"
                 android:hint="@string/emojis_search_box_txt"
                 android:imeOptions="actionSearch"
@@ -118,8 +117,8 @@
             android:background="#E0E0E0"
             android:orientation="horizontal" />
 
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/adview"
+        <LinearLayout
+            android:id="@+id/adContainerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"

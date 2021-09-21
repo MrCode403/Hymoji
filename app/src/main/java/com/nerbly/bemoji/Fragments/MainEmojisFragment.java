@@ -1,6 +1,5 @@
 package com.nerbly.bemoji.Fragments;
 
-import static com.nerbly.bemoji.Activities.EmojisActivity.searchBoxField;
 import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
 import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
 
@@ -49,6 +48,7 @@ public class MainEmojisFragment extends Fragment {
     public boolean isSortingNew = true;
     public boolean isSortingOld = false;
     public boolean isSortingAlphabet = false;
+    public static boolean isMainEmojisLoaded = false;
     private TextView emptyTitle;
     private LinearLayout loadView;
     private GridView emojisRecycler;
@@ -189,7 +189,7 @@ public class MainEmojisFragment extends Fragment {
         new Handler().postDelayed(() -> {
             shadAnim(loadView, "translationY", -1000, 300);
             shadAnim(loadView, "alpha", 0, 300);
-            searchBoxField.setEnabled(true);
+            isMainEmojisLoaded = true;
         }, 1000);
         new Handler().postDelayed(() -> {
             emptyAnimation.cancelAnimation();

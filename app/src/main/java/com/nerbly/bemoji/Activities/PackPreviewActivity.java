@@ -7,6 +7,7 @@ import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.Functions.Utils.ZIP;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
+import static com.nerbly.bemoji.UI.MainUIMethods.marqueeTextView;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
 import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
@@ -165,6 +166,7 @@ public class PackPreviewActivity extends AppCompatActivity {
 
     public void LOGIC_FRONTEND() {
         advancedCorners(background, "#FFFFFF", 40, 40, 0, 0);
+        marqueeTextView(activityTitle);
         setViewRadius(slider, 90, "#E0E0E0");
         DARK_ICONS(this);
         transparentStatusBar(this);
@@ -352,7 +354,7 @@ public class PackPreviewActivity extends AppCompatActivity {
                 }
                 startPackDownload(downloadPackName, downloadPackPath, downloadPackUrl);
             }
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
     }
 
     public void askForZippingSheet() {
@@ -484,6 +486,8 @@ public class PackPreviewActivity extends AppCompatActivity {
                 space.setVisibility(View.GONE);
             }
         }
+
+
 
         @Override
         public int getItemCount() {

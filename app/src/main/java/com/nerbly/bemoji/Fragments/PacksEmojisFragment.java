@@ -1,6 +1,5 @@
 package com.nerbly.bemoji.Fragments;
 
-import static com.nerbly.bemoji.Activities.EmojisActivity.searchBoxField;
 import static com.nerbly.bemoji.Configurations.ASSETS_SOURCE_LINK;
 import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
 import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
@@ -54,6 +53,7 @@ public class PacksEmojisFragment extends Fragment {
     public boolean isSortingNew = true;
     public boolean isSortingOld = false;
     public boolean isSortingAlphabet = false;
+    public static boolean isPacksEmojisLoaded = false;
     private GridView emojisRecycler;
     private int searchPosition = 0;
     private TextView emptyTitle;
@@ -262,26 +262,30 @@ public class PacksEmojisFragment extends Fragment {
         new Handler().postDelayed(() -> {
             shadAnim(loadView, "translationY", -1000, 300);
             shadAnim(loadView, "alpha", 0, 300);
-            searchBoxField.setEnabled(true);
         }, 1000);
-        new Handler().postDelayed(() -> {
-            emptyAnimation.cancelAnimation();
-        }, 2000);
+        isPacksEmojisLoaded = true;
+        new Handler().postDelayed(() -> emptyAnimation.cancelAnimation(), 2000);
     }
 
     public void searchTask(String query) {
+        String final_query = query.trim().toLowerCase();
+
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
-            if (query.trim().length() > 0) {
+
+            if (final_query.length() > 0) {
                 emojisList = new Gson().fromJson(sharedPref.getString("packsOneByOne", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
                 }.getType());
                 if (getListItemsCount(emojisList) != 0) {
                     emojisCount = getListItemsCount(emojisList);
                     searchPosition = emojisCount - 1;
                     for (int i = 0; i < emojisCount; i++) {
-                        if (!Objects.requireNonNull(emojisList.get(searchPosition).get("name")).toString().toLowerCase().contains(query.trim().toLowerCase())) {
-                            emojisList.remove(searchPosition);
+                        try {
+                            if (!Objects.requireNonNull(emojisList.get(searchPosition).get("name")).toString().toLowerCase().contains(final_query)) {
+                                emojisList.remove(searchPosition);
+                            }
+                        } catch (Exception ignored) {
                         }
                         searchPosition--;
                     }
@@ -303,6 +307,7 @@ public class PacksEmojisFragment extends Fragment {
             });
         });
     }
+
 
     public void sort_by_newest() {
         if (!isSortingNew) {

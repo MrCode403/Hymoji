@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowInsetsController;
@@ -95,14 +96,14 @@ public class MainUIMethods {
             context.getWindow().setDecorFitsSystemWindows(false);
             WindowInsetsController controller = context.getWindow().getInsetsController();
             if (controller != null) {
-                controller.setSystemBarsAppearance(WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS, WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS);
+                controller.setSystemBarsAppearance(WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS, WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS);
             }
         } else {
             context.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
     }
 
-    public static void NavStatusBarColor(String color1, String color2, Activity activity) {
+    public static void navStatusBarColor(final String color1, final String color2, Activity activity) {
         Window w = activity.getWindow();
         w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -147,6 +148,16 @@ public class MainUIMethods {
         animator.start();
     }
 
+
+    public static void marqueeTextView(final TextView view) {
+        view.setSingleLine(true);
+        view.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        view.setSelected(true);
+        view.setMarqueeRepeatLimit(-1);
+        view.setHorizontalFadingEdgeEnabled(true);
+        view.setFadingEdgeLength(20);
+    }
+
     //mics
 
     public static void circularImage(ImageView image, String url, Context context) {
@@ -157,5 +168,6 @@ public class MainUIMethods {
                 .into(image);
 
     }
+
 }
 

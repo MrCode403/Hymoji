@@ -4,11 +4,15 @@ import static com.nerbly.bemoji.Configurations.CATEGORIES_API_LINK;
 import static com.nerbly.bemoji.Configurations.EMOJIS_API_LINK;
 import static com.nerbly.bemoji.Configurations.PACKS_API_LINK;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
+import static com.nerbly.bemoji.Functions.Utils.getAdSize;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.navStatusBarColor;
 import static com.nerbly.bemoji.UI.MainUIMethods.numbersAnimator;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
+import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
+import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
 import static com.nerbly.bemoji.UI.MainUIMethods.statusBarColor;
 import static com.nerbly.bemoji.UI.SideUIMethods.marqueeTextView;
 import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
@@ -45,8 +49,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
@@ -72,7 +78,6 @@ import com.nerbly.bemoji.Functions.RequestNetworkController;
 import com.nerbly.bemoji.Functions.Utils;
 import com.nerbly.bemoji.Functions.getDarkModeState;
 import com.nerbly.bemoji.R;
-import com.nerbly.bemoji.UI.MainUIMethods;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -111,9 +116,10 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<HashMap<String, Object>> emojisList = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> categoriesList = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> localEmojisList = new ArrayList<>();
-    private AdView adview;
     private HashMap<String, Object> emojisMap = new HashMap<>();
     private LinearLayout loadingView;
+    private LottieAnimationView animated_logo;
+    private LinearLayout splashView;
     private LinearLayout mainView;
     private LinearLayout shimmer1;
     private LinearLayout shimmer2;
@@ -142,6 +148,7 @@ public class HomeActivity extends AppCompatActivity {
     private TextView dock_txt_2;
     private TextView dock_txt_3;
     private TextView dock_txt_4;
+    private TextView app_title;
     private RequestNetwork startGettingEmojis;
     private RequestNetwork.RequestListener EmojisRequestListener;
     private SharedPreferences sharedPref;
@@ -149,6 +156,8 @@ public class HomeActivity extends AppCompatActivity {
     private AppUpdateManager appUpdateManager;
     private InstallStateUpdatedListener installStateUpdatedListener;
     private MaterialCardView premium_dock;
+    private LinearLayout adContainerView;
+    private AdView adView;
 
     public static String PacksArray() {
         return new Gson().toJson(packsList);
@@ -178,11 +187,14 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        adview = findViewById(R.id.adview);
+        adContainerView = findViewById(R.id.adContainerView);
+        animated_logo = findViewById(R.id.animated_logo);
         activityDescription = findViewById(R.id.activityDescription);
         loadingView = findViewById(R.id.loadingView);
+        app_title = findViewById(R.id.app_title);
         MaterialCardView discord_dock = findViewById(R.id.discord_dock);
         premium_dock = findViewById(R.id.premium_dock);
+        splashView = findViewById(R.id.splashView);
         dock_txt_1 = findViewById(R.id.dock_txt_1);
         dock_txt_2 = findViewById(R.id.dock_txt_2);
         dock_txt_3 = findViewById(R.id.dock_txt_3);
@@ -271,10 +283,10 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int offsetX, int offsetY) {
                 super.onScrolled(recyclerView, offsetX, offsetY);
-                if (layoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
-                    seeMorePacks.setVisibility(View.INVISIBLE);
-                } else {
+                if (layoutManager.findFirstVisibleItemPosition() >= 1) {
                     seeMorePacks.setVisibility(View.VISIBLE);
+                } else {
+                    seeMorePacks.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -500,17 +512,12 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if (sharedPref.getBoolean("isAskingForReloadEmojis", false)) {
-            sharedPref.edit().putBoolean("isAskingForReloadEmojis", false).apply();
-            startManualRefresh();
-        } else {
-            getLocalEmojis(false);
-        }
+        getLocalEmojis(false);
 
         if (sharedPref.getBoolean("isPremium", false)) {
             if (isAdLoaded) {
-                adview.destroy();
-                adview.setVisibility(View.GONE);
+                adView.destroy();
+                adView.setVisibility(View.GONE);
                 premium_dock.setVisibility(View.GONE);
             }
         }
@@ -526,7 +533,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         };
 
-
         checkUpdate();
 
         local_recycler.setItemAnimator(null);
@@ -540,21 +546,16 @@ public class HomeActivity extends AppCompatActivity {
         local_recycler.setLayoutManager(layoutManager2);
 
         if (sharedPref.getInt("opened_so_far", 0) >= 2) {
-            sharedPref.edit().putBoolean("isAskingForReloadEmojis", true).apply();
             sharedPref.edit().putInt("opened_so_far", 0).apply();
+            sharedPref.edit().putString("emojisData", "").apply();
+            sharedPref.edit().putString("categoriesData", "").apply();
+            sharedPref.edit().putString("packsData", "").apply();
         } else {
             int opened_so_far = sharedPref.getInt("opened_so_far", 0) + 1;
             sharedPref.edit().putInt("opened_so_far", opened_so_far).apply();
         }
 
-        if (sharedPref.getBoolean("isAskingForReloadEmojis", true)) {
-            sharedPref.edit().putBoolean("isAskingForReloadEmojis", false).apply();
-            sharedPref.edit().putString("emojisData", "").apply();
-            sharedPref.edit().putString("categoriesData", "").apply();
-            sharedPref.edit().putString("packsData", "").apply();
-        }
-
-        if (sharedPref.getBoolean("isAskingForReloadEmojis", false) || (sharedPref.getString("categoriesData", "").isEmpty() || (sharedPref.getString("packsData", "").isEmpty() || sharedPref.getString("emojisData", "").isEmpty()))) {
+        if ((sharedPref.getString("categoriesData", "").isEmpty() || (sharedPref.getString("packsData", "").isEmpty() || sharedPref.getString("emojisData", "").isEmpty()))) {
             loadingView.setVisibility(View.VISIBLE);
             mainView.setVisibility(View.GONE);
         } else {
@@ -566,17 +567,36 @@ public class HomeActivity extends AppCompatActivity {
         OverScrollDecoratorHelper.setUpOverScroll(local_recycler, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL);
 
         getOnlineEmojis();
-        loadAds();
+
         getLocalEmojis(true);
+
+        adContainerView.post(this::loadAds);
+
     }
 
 
     public void LOGIC_FRONTEND() {
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            animated_logo.playAnimation();
+        }, 1000);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            app_title.setVisibility(View.GONE);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                shadAnim(animated_logo, "scaleX", 0, 200);
+                shadAnim(animated_logo, "scaleY", 0, 200);
+                shadAnim(animated_logo, "alpha", 0, 200);
+
+                shadAnim(splashView, "scaleX", 4, 400);
+                shadAnim(splashView, "scaleY", 4, 400);
+                shadAnim(splashView, "alpha", 0, 400);
+            }, 2000);
+        }, 3500);
+
         if (Build.VERSION.SDK_INT < 23) {
             statusBarColor("#7289DA", this);
             LIGHT_ICONS(this);
         } else {
-            statusBarColor("#FFFFFF", this);
+            navStatusBarColor("#FFFFFF", "FFFFFF", this);
             DARK_ICONS(this);
         }
         if (sharedPref.getBoolean("isPremium", false)) {
@@ -596,8 +616,8 @@ public class HomeActivity extends AppCompatActivity {
         setClippedView(shimmer9, "#FFFFFF", 30, 0);
         setClippedView(shimmer10, "#FFFFFF", 200, 0);
         setClippedView(shimmer11, "#FFFFFF", 200, 0);
-        MainUIMethods.setViewRadius(discord_img, 30, "#FAFAFA");
-        MainUIMethods.setViewRadius(premium_img, 30, "#FAFAFA");
+        setViewRadius(discord_img, 30, "#FAFAFA");
+        setViewRadius(premium_img, 30, "#FAFAFA");
         generateActivityDescription(true);
 
         marqueeTextView(dock_txt_1);
@@ -754,12 +774,22 @@ public class HomeActivity extends AppCompatActivity {
         if (!sharedPref.getBoolean("isPremium", false)) {
             if (!isAdLoaded) {
                 MobileAds.initialize(this, initializationStatus -> {
+
                 });
+                // Create an ad request.
+                adView = new AdView(this);
+                adView.setAdUnitId(getString(R.string.home_admob_banner_id));
+                adContainerView.removeAllViews();
+                adContainerView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                adContainerView.addView(adView);
+
+                AdSize adSize = getAdSize(adContainerView, this);
+                adView.setAdSize(adSize);
 
                 AdRequest adRequest = new AdRequest.Builder().build();
-                adview.loadAd(adRequest);
+                adView.loadAd(adRequest);
 
-                adview.setAdListener(new AdListener() {
+                adView.setAdListener(new AdListener() {
                     @Override
                     public void onAdLoaded() {
                         isAdLoaded = true;
@@ -853,4 +883,11 @@ public class HomeActivity extends AppCompatActivity {
         removeInstallStateUpdateListener();
     }
 
+    @Override
+    protected void onDestroy() {
+        if (adView != null) {
+            adView.destroy();
+        }
+        super.onDestroy();
+    }
 }

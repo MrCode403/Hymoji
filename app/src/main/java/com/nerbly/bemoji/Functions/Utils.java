@@ -1,9 +1,15 @@
 package com.nerbly.bemoji.Functions;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.DisplayMetrics;
+import android.view.Display;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.google.android.gms.ads.AdSize;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -123,4 +129,24 @@ public class Utils {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
+    public static AdSize getAdSize(LinearLayout view, Activity context) {
+        // Determine the screen width (less decorations) to use for the ad width.
+        Display display = context.getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+
+        float density = outMetrics.density;
+
+        float adWidthPixels = view.getWidth();
+
+        // If the ad hasn't been laid out, default to the full screen width.
+        if (adWidthPixels == 0) {
+            adWidthPixels = outMetrics.widthPixels;
+        }
+
+        int adWidth = (int) (adWidthPixels / density);
+        return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, adWidth);
+    }
+
 }

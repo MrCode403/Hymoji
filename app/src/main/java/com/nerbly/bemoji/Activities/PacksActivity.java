@@ -68,6 +68,7 @@ public class PacksActivity extends AppCompatActivity {
     private RequestNetwork startGettingPacks;
     private RequestNetwork.RequestListener PacksRequestListener;
     private SharedPreferences sharedPref;
+    private boolean isPacksOpened = false;
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
@@ -237,33 +238,36 @@ public class PacksActivity extends AppCompatActivity {
             setHighPriorityImageFromUrl(emoji, Objects.requireNonNull(data.get(position).get("image")).toString());
 
             cardView.setOnClickListener(_view -> {
-                try {
-                    packsTempArrayString = new Gson().toJson(packsList);
-                    JSONArray backPacksArray = new JSONArray(packsTempArrayString);
-                    JSONObject packsObject = backPacksArray.getJSONObject(position);
-                    JSONArray frontPacksArray = packsObject.getJSONArray("emojis");
+                if (!isPacksOpened) {
+                    try {
+                        packsTempArrayString = new Gson().toJson(packsList);
+                        JSONArray backPacksArray = new JSONArray(packsTempArrayString);
+                        JSONObject packsObject = backPacksArray.getJSONObject(position);
+                        JSONArray frontPacksArray = packsObject.getJSONArray("emojis");
 
-                    for (int frontPacksInt = 0; frontPacksInt < frontPacksArray.length(); frontPacksInt++) {
-                        packsArrayList.add(frontPacksArray.getString(frontPacksInt));
+                        for (int frontPacksInt = 0; frontPacksInt < frontPacksArray.length(); frontPacksInt++) {
+                            packsArrayList.add(frontPacksArray.getString(frontPacksInt));
+                        }
+
+                        currentPositionPackArray = new Gson().toJson(packsArrayList);
+                        packsArrayList.clear();
+
+                    } catch (Exception e) {
+                        Log.d("Recycler Error", e.toString());
                     }
-
-                    currentPositionPackArray = new Gson().toJson(packsArrayList);
-                    packsArrayList.clear();
-
-                } catch (Exception e) {
-                    Log.d("Recycler Error", e.toString());
+                    toPreview.putExtra("switchType", "pack");
+                    toPreview.putExtra("title", getString(R.string.app_name) + "Pack_".concat(String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("id")).toString())))));
+                    toPreview.putExtra("subtitle", Objects.requireNonNull(data.get(position).get("description")).toString());
+                    toPreview.putExtra("imageUrl", Objects.requireNonNull(data.get(position).get("image")).toString());
+                    toPreview.putExtra("fileName", Objects.requireNonNull(data.get(position).get("slug")).toString());
+                    toPreview.putExtra("packEmojisArray", currentPositionPackArray);
+                    toPreview.putExtra("packEmojisAmount", Objects.requireNonNull(data.get(position).get("amount")).toString());
+                    toPreview.putExtra("packName", capitalizedFirstWord(Objects.requireNonNull(data.get(position).get("name")).toString().replace("_", " ")));
+                    toPreview.putExtra("packId", Objects.requireNonNull(data.get(position).get("id")).toString());
+                    toPreview.setClass(getApplicationContext(), PackPreviewActivity.class);
+                    startActivity(toPreview);
+                    isPacksOpened = true;
                 }
-                toPreview.putExtra("switchType", "pack");
-                toPreview.putExtra("title", getString(R.string.app_name) + "Pack_".concat(String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("id")).toString())))));
-                toPreview.putExtra("subtitle", Objects.requireNonNull(data.get(position).get("description")).toString());
-                toPreview.putExtra("imageUrl", Objects.requireNonNull(data.get(position).get("image")).toString());
-                toPreview.putExtra("fileName", Objects.requireNonNull(data.get(position).get("slug")).toString());
-                toPreview.putExtra("packEmojisArray", currentPositionPackArray);
-                toPreview.putExtra("packEmojisAmount", Objects.requireNonNull(data.get(position).get("amount")).toString());
-                toPreview.putExtra("packName", capitalizedFirstWord(Objects.requireNonNull(data.get(position).get("name")).toString().replace("_", " ")));
-                toPreview.putExtra("packId", Objects.requireNonNull(data.get(position).get("id")).toString());
-                toPreview.setClass(getApplicationContext(), PackPreviewActivity.class);
-                startActivity(toPreview);
             });
         }
 
@@ -277,6 +281,19 @@ public class PacksActivity extends AppCompatActivity {
                 super(v);
             }
         }
+    }
 
+    @Override
+    protected void onResume() {
+        isPacksOpened = false;
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (adview != null) {
+            adview.destroy();
+        }
+        super.onDestroy();
     }
 }

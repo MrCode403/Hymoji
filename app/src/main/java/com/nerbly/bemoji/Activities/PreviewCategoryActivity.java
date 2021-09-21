@@ -66,7 +66,7 @@ import java.util.concurrent.Executors;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
-public class CategoriesPreviewActivity extends AppCompatActivity {
+public class PreviewCategoryActivity extends AppCompatActivity {
     private static EditText searchBoxField;
     private final Timer timer = new Timer();
     private double searchPosition = 0;
@@ -141,7 +141,7 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
                 String searchValue = searchBoxField.getText().toString().trim();
                 if (!searchValue.isEmpty() && !lastSearchedEmoji.equals(searchValue)) {
                     lastSearchedEmoji = searchValue;
-                    hideShowKeyboard(false, searchBoxField, CategoriesPreviewActivity.this);
+                    hideShowKeyboard(false, searchBoxField, PreviewCategoryActivity.this);
                     isSearching = true;
                     searchTask();
                     return true;
@@ -166,7 +166,7 @@ public class CategoriesPreviewActivity extends AppCompatActivity {
             String searchValue = searchBoxField.getText().toString().trim();
             if (!searchValue.isEmpty() && !lastSearchedEmoji.equals(searchValue)) {
                 lastSearchedEmoji = searchBoxField.getText().toString().trim();
-                hideShowKeyboard(false, searchBoxField, CategoriesPreviewActivity.this);
+                hideShowKeyboard(false, searchBoxField, PreviewCategoryActivity.this);
                 isSearching = true;
                 searchTask();
             }

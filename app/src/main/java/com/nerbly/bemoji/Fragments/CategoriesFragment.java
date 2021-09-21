@@ -34,7 +34,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.nerbly.bemoji.Activities.CategoriesPreviewActivity;
+import com.nerbly.bemoji.Activities.PreviewCategoryActivity;
 import com.nerbly.bemoji.Activities.HomeActivity;
 import com.nerbly.bemoji.Adapters.LoadingPacksAdapter;
 import com.nerbly.bemoji.Functions.RequestNetwork;
@@ -65,7 +65,6 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
     private BottomSheetDialog d;
 
     @Override
-
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
         if (isAdded() && getActivity() != null) {
             Objects.requireNonNull(getDialog()).setOnShowListener(dialog -> {
@@ -73,9 +72,7 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
                 View view = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
                 assert view != null;
                 sheetBehavior = BottomSheetBehavior.from(view);
-
                 initialize(view);
-                com.google.firebase.FirebaseApp.initializeApp(requireContext());
                 initializeLogic();
             });
             return inflater.inflate(R.layout.categories, container, false);
@@ -84,7 +81,6 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
             dismiss();
             return null;
         }
-
     }
 
     private void initialize(View view) {
@@ -99,32 +95,34 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
         CategoriesRequestListener = new RequestNetwork.RequestListener() {
             @Override
             public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
-                try {
-                    JSONObject obj = new JSONObject(response);
-                    Iterator<String> keys = obj.keys();
+                if (isAdded() && getActivity() != null) {
+                    try {
+                        JSONObject obj = new JSONObject(response);
+                        Iterator<String> keys = obj.keys();
 
-                    while (keys.hasNext()) {
-                        String key = keys.next();
-                        String value = String.valueOf(obj.get(key));
-                        if (!value.equals("NSFW")) {
-                            categoriesMap = new HashMap<>();
-                            categoriesMap.put("category_id", key);
-                            categoriesMap.put("category_name", value);
-                            categoriesList.add(categoriesMap);
+                        while (keys.hasNext()) {
+                            String key = keys.next();
+                            String value = String.valueOf(obj.get(key));
+                            if (!value.equals("NSFW")) {
+                                categoriesMap = new HashMap<>();
+                                categoriesMap.put("category_id", key);
+                                categoriesMap.put("category_name", value);
+                                categoriesList.add(categoriesMap);
+                            }
                         }
+
+                    } catch (JSONException e) {
+                        System.err.println(e.toString());
                     }
 
-                } catch (JSONException e) {
-                    System.err.println(e.toString());
+                    sharedPref.edit().putString("categoriesData", new Gson().toJson(categoriesList)).apply();
+                    Utils.sortListMap(categoriesList, "category_name", false, true);
+                    categoriesRecycler.setAdapter(new CategoriesRecyclerAdapter(categoriesList));
+
+                    new Handler().postDelayed(() -> sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED), 1000);
+
+                    new Handler().postDelayed(() -> loadingRecycler.setVisibility(View.GONE), 2000);
                 }
-
-                sharedPref.edit().putString("categoriesData", new Gson().toJson(categoriesList)).apply();
-                Utils.sortListMap(categoriesList, "category_name", false, true);
-                categoriesRecycler.setAdapter(new CategoriesRecyclerAdapter(categoriesList));
-
-                new Handler().postDelayed(() -> sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED), 1000);
-
-                new Handler().postDelayed(() -> loadingRecycler.setVisibility(View.GONE), 2000);
             }
 
             @Override
@@ -222,7 +220,7 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
                     int category_id = Integer.parseInt(Objects.requireNonNull(data.get(position).get("category_id")).toString());
                     Intent toEmojis = new Intent();
                     toEmojis.putExtra("category_id", category_id);
-                    toEmojis.setClass(getContext(), CategoriesPreviewActivity.class);
+                    toEmojis.setClass(getContext(), PreviewCategoryActivity.class);
                     startActivity(toEmojis);
                 }
             });
@@ -263,7 +261,7 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
         infook.setOnClickListener(v -> {
             Intent toEmojis = new Intent();
             toEmojis.putExtra("category_id", Integer.valueOf(category_id));
-            toEmojis.setClass(getContext(), CategoriesPreviewActivity.class);
+            toEmojis.setClass(getContext(), PreviewCategoryActivity.class);
             startActivity(toEmojis);
             bottomSheetDialog.dismiss();
         });

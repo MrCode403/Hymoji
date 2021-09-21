@@ -58,7 +58,6 @@ public class TutorialFragment extends BottomSheetDialogFragment {
                 assert view != null;
                 sheetBehavior = BottomSheetBehavior.from(view);
                 initialize(view);
-                com.google.firebase.FirebaseApp.initializeApp(requireContext());
                 initializeLogic();
             });
             return inflater.inflate(R.layout.tutorial, container, false);
@@ -79,19 +78,19 @@ public class TutorialFragment extends BottomSheetDialogFragment {
         TutorialRequestListener = new RequestNetwork.RequestListener() {
             @Override
             public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
-                try {
-                    tutorialList = new Gson().fromJson(response, new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                    }.getType());
-                    recyclerview1.setAdapter(new TutorialAdapter.Recyclerview1Adapter(tutorialList));
+                if (isAdded() && getActivity() != null) {
+                    try {
+                        tutorialList = new Gson().fromJson(response, new TypeToken<ArrayList<HashMap<String, Object>>>() {
+                        }.getType());
+                        recyclerview1.setAdapter(new TutorialAdapter.Recyclerview1Adapter(tutorialList));
 
-                    new Handler().postDelayed(() -> sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED), 1000);
+                        new Handler().postDelayed(() -> sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED), 1000);
 
-                    new Handler().postDelayed(() -> {
-                        recyclerview1.setVisibility(View.VISIBLE);
-                        loadingRecycler.setVisibility(View.GONE);
-                    }, 2000);
-                } catch (Exception ignored) {
-                    if(isAdded()) {
+                        new Handler().postDelayed(() -> {
+                            recyclerview1.setVisibility(View.VISIBLE);
+                            loadingRecycler.setVisibility(View.GONE);
+                        }, 2000);
+                    } catch (Exception ignored) {
                         showCustomSnackBar(getString(R.string.error_msg_2), getActivity());
                         dismiss();
                     }

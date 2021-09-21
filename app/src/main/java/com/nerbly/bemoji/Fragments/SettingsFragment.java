@@ -48,9 +48,8 @@ import java.util.concurrent.Executors;
 
 public class SettingsFragment extends BottomSheetDialogFragment {
 
-    private static SettingsFragment instance;
     private final Intent intent = new Intent();
-    public boolean isFragmentAttached = false;
+    public static boolean isFragmentAttached = false;
     private LinearLayout slider;
     private RelativeLayout setting1;
     private RelativeLayout setting3;
@@ -69,10 +68,6 @@ public class SettingsFragment extends BottomSheetDialogFragment {
     private SharedPreferences sharedPref;
     private String cacheSize;
     private boolean isAskingForReload = false;
-
-    public static SettingsFragment getInstance() {
-        return instance;
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
@@ -361,9 +356,4 @@ public class SettingsFragment extends BottomSheetDialogFragment {
         }
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        instance = this;
-    }
 }

@@ -1,5 +1,6 @@
 package com.nerbly.bemoji.Functions;
 
+import static com.nerbly.bemoji.Activities.EmojisActivity.showInterstitialAd;
 import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
 import static com.nerbly.bemoji.Functions.SideFunctions.setBlurImageUrl;
 import static com.nerbly.bemoji.Functions.SideFunctions.setImageFromUrlForSheet;
@@ -29,7 +30,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
-import com.nerbly.bemoji.Activities.EmojisActivity;
 import com.nerbly.bemoji.R;
 
 import java.util.Arrays;
@@ -113,13 +113,14 @@ public class DownloaderSheet extends AppCompatActivity {
                 request.setTitle(context.getString(R.string.app_name) + "_" + URLUtil.guessFileName(url, "", ""));
                 request.allowScanningByMediaScanner();
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, context.getString(R.string.app_name) + "/" + context.getString(R.string.app_name).toLowerCase() + "_" + URLUtil.guessFileName(url, "", ""));
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, context.getString(R.string.app_name) + "/" + context.getString(R.string.app_name) + "_" + URLUtil.guessFileName(url, "", ""));
                 downloadmanager.enqueue(request);
-                EmojisActivity.showInterstitialAd((Activity) context);
+                showInterstitialAd((Activity) context);
                 handler.post(() -> {
                 });
             } catch (Exception e) {
                 Log.e("download error", e.toString());
+                e.printStackTrace();
             }
         });
     }

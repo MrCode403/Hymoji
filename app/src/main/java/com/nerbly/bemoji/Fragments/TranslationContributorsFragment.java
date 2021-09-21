@@ -6,7 +6,6 @@ import static com.nerbly.bemoji.UI.UserInteractions.showMessageDialog;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -42,8 +41,6 @@ public class TranslationContributorsFragment extends BottomSheetDialogFragment {
     private LinearLayout slider;
     private LinearLayout view_leftline;
     private RecyclerView recyclerview;
-    private BottomSheetBehavior sheetBehavior;
-    private SharedPreferences sharedPref;
     private BottomSheetDialog d;
 
     @NonNull
@@ -54,7 +51,7 @@ public class TranslationContributorsFragment extends BottomSheetDialogFragment {
             d = (BottomSheetDialog) dialog;
             View view = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
             assert view != null;
-            sheetBehavior = BottomSheetBehavior.from(view);
+            BottomSheetBehavior.from(view);
 
             initialize(view);
             com.google.firebase.FirebaseApp.initializeApp(requireContext());
@@ -69,7 +66,7 @@ public class TranslationContributorsFragment extends BottomSheetDialogFragment {
         slider = view.findViewById(R.id.slider);
         view_leftline = view.findViewById(R.id.view_leftline);
         recyclerview = view.findViewById(R.id.recyclerview);
-        sharedPref = requireActivity().getSharedPreferences("AppData", Activity.MODE_PRIVATE);
+        requireActivity().getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
 
         contribute_go.setOnClickListener(_view -> {
@@ -81,7 +78,7 @@ public class TranslationContributorsFragment extends BottomSheetDialogFragment {
             if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
                 startActivity(intent);
             } else {
-                showMessageDialog(true, getString(R.string.error_msg), getString(R.string.mailto_device_not_supported), getString(R.string.dialog_positive_text), getString(R.string.dialog_negative_text), getActivity(),
+                showMessageDialog(true, getString(R.string.error_msg), getString(R.string.mailto_device_not_supported), getString(R.string.dialog_positive_text), getString(R.string.dialog_negative_text), requireActivity(),
                         (dialog, which) -> {
                             intent.setAction(Intent.ACTION_VIEW);
                             intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.nerbly.bemoji"));
@@ -95,13 +92,13 @@ public class TranslationContributorsFragment extends BottomSheetDialogFragment {
 
     @Override
     public void onCancel(@NonNull DialogInterface dialog) {
-        SettingsFragment.getInstance().isFragmentAttached = false;
+        SettingsFragment.isFragmentAttached = false;
         super.onCancel(dialog);
     }
 
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
-        SettingsFragment.getInstance().isFragmentAttached = false;
+        SettingsFragment.isFragmentAttached = false;
         super.onDismiss(dialog);
     }
 

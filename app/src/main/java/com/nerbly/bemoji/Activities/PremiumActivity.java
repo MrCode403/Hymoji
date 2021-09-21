@@ -3,7 +3,6 @@ package com.nerbly.bemoji.Activities;
 
 import static com.nerbly.bemoji.Configurations.PAYMENT_SOURCE;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
-import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
@@ -14,7 +13,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -26,21 +24,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.nerbly.bemoji.Functions.Utils;
 import com.nerbly.bemoji.R;
 
 public class PremiumActivity extends AppCompatActivity {
     private final boolean isTryingToPurchase = false;
-    public BottomSheetBehavior sheetBehavior;
     private MaterialButton premium_go;
     private TextView payment_holder_text;
     private WebView webview;
     private boolean isPurchased = false;
+    private boolean isUserAbleToBuy = false;
     private boolean isFirstView = false;
     private SharedPreferences sharedPref;
 
@@ -59,18 +55,11 @@ public class PremiumActivity extends AppCompatActivity {
         premium_go = findViewById(R.id.premium_go);
         payment_holder_text = findViewById(R.id.payment_holder_text);
         webview = findViewById(R.id.webview);
-        LinearLayout bottomsheet = findViewById(R.id.bottom_sheet);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
-        sheetBehavior = BottomSheetBehavior.from(bottomsheet);
 
 
         premium_go.setOnClickListener(v -> {
-            if (sheetBehavior.isDraggable()) {
-                sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            } else {
-                webview.loadUrl(PAYMENT_SOURCE);
-
-            }
+            webview.setVisibility(View.VISIBLE);
         });
 
         webview.setWebViewClient(new WebViewClient() {
@@ -80,7 +69,6 @@ public class PremiumActivity extends AppCompatActivity {
                         isPurchased = true;
                         isFirstView = false;
                         sharedPref.edit().putBoolean("isPremium", true).apply();
-                        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                         showThanksBottomSheet();
                     } else {
                         isPurchased = true;
@@ -95,13 +83,12 @@ public class PremiumActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
 
                 if (Utils.isConnected(PremiumActivity.this)) {
-                    sheetBehavior.setDraggable(true);
+                    isUserAbleToBuy = true;
                 }
             }
 
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                sheetBehavior.setDraggable(false);
+                isUserAbleToBuy = false;
                 showCustomSnackBar(getString(R.string.no_internet_connection), PremiumActivity.this);
             }
         });
@@ -119,70 +106,30 @@ public class PremiumActivity extends AppCompatActivity {
         LOGIC_BACKEND();
     }
 
-
     public void LOGIC_BACKEND() {
-        bottomSheetBehaviorListener();
         isPurchased = false;
         isFirstView = false;
         webViewSettings(webview);
         webview.loadUrl(PAYMENT_SOURCE);
     }
 
-    private void bottomSheetBehaviorListener() {
-        sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                switch (newState) {
-                    case BottomSheetBehavior.STATE_COLLAPSED:
-                        webview.loadUrl(PAYMENT_SOURCE);
-                        LIGHT_ICONS(PremiumActivity.this);
-                        premium_go.setVisibility(View.VISIBLE);
-                        break;
-                    case BottomSheetBehavior.STATE_DRAGGING:
-                    case BottomSheetBehavior.STATE_HIDDEN:
-                    case BottomSheetBehavior.STATE_HALF_EXPANDED:
-                    case BottomSheetBehavior.STATE_SETTLING:
-                        break;
-                    case BottomSheetBehavior.STATE_EXPANDED:
-                        DARK_ICONS(PremiumActivity.this);
-                        premium_go.setVisibility(View.INVISIBLE);
-                        payment_holder_text.setText(R.string.payments_powered_by);
-                        break;
-
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                if (slideOffset < 0.4) {
-                    payment_holder_text.setText(R.string.payment_leaving);
-                } else if (slideOffset > 0.4) {
-                    payment_holder_text.setText(R.string.payments_powered_by);
-                }
-            }
-        });
-    }
-
     public void LOGIC_FRONTEND() {
         LIGHT_ICONS(this);
         transparentStatusBar(this);
-        marqueeTextView(payment_holder_text);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            sheetBehavior.setPeekHeight(360);
-        }
     }
 
     @Override
     public void onBackPressed() {
-        if (sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+        if (webview.getVisibility() == View.VISIBLE) {
             if (webview.canGoBack()) {
                 webview.goBack();
             } else {
-                sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                webview.setVisibility(View.GONE);
             }
-        } else if (sheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+        } else {
             finish();
         }
+
     }
 
 

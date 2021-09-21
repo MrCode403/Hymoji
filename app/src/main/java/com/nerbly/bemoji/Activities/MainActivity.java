@@ -33,7 +33,6 @@ import com.nerbly.bemoji.UI.MainUIMethods;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     private final ArrayList<HashMap<String, Object>> viewPagerList = new ArrayList<>();

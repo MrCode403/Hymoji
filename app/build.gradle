@@ -4,20 +4,22 @@ apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     useLibrary 'org.apache.http.legacy'
-    compileSdkVersion 31
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.nerbly.bemoji"
         minSdkVersion 21
-        targetSdkVersion 31
-        versionCode 28
-        versionName "1.0.0"
+        //noinspection OldTargetApi
+        targetSdkVersion 30
+        versionCode 30
+        versionName "1.0.2"
     }
     buildTypes {
         release {
             debuggable false
             shrinkResources true
             minifyEnabled true
+            manifestPlaceholders = [crashlyticsCollectionEnabled: "true"]
             firebaseCrashlytics {
                 mappingFileUploadEnabled true
             }
@@ -27,9 +29,7 @@ android {
             debuggable true
             shrinkResources false
             minifyEnabled false
-            firebaseCrashlytics {
-                mappingFileUploadEnabled false
-            }
+            manifestPlaceholders = [crashlyticsCollectionEnabled: "false"]
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -46,7 +46,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    implementation 'com.google.android.play:core:1.10.0'
+    implementation 'com.google.android.play:core:1.10.1'
 
     //firebase
     implementation platform('com.google.firebase:firebase-bom:28.1.0')
@@ -67,9 +67,12 @@ dependencies {
     implementation 'io.github.everythingme:overscroll-decor-android:1.1.1'
 
     //ads
-    implementation 'com.google.android.gms:play-services-ads:20.2.0'
-    implementation 'com.google.ads.mediation:facebook:6.5.1.0'
+    implementation 'com.google.android.gms:play-services-ads:20.3.0'
+    implementation 'com.google.ads.mediation:facebook:6.6.0.0'
 
     //other libs
     implementation 'com.mindorks.android:prdownloader:0.6.0'
+
+    //debug
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 }

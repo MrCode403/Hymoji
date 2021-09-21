@@ -1,5 +1,6 @@
 package com.nerbly.bemoji.Adapters;
 
+import static com.nerbly.bemoji.Activities.HomeActivity.PacksArray;
 import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
 import static com.nerbly.bemoji.Functions.SideFunctions.setHighPriorityImageFromUrl;
 
@@ -40,6 +41,7 @@ public class HomePacksAdapter {
         private String packsTempArrayString = "";
         private String currentPositionPackArray = "";
         public static boolean isEmojiSheetShown = false;
+        private HomeActivity home;
 
         public Packs_recyclerAdapter(ArrayList<HashMap<String, Object>> _arr) {
             data = _arr;
@@ -72,7 +74,7 @@ public class HomePacksAdapter {
             setHighPriorityImageFromUrl(imageview1, Objects.requireNonNull(data.get(position).get("image")).toString());
             cardview1.setOnClickListener(_view -> {
                 try {
-                    packsTempArrayString = HomeActivity.PacksArray();
+                    packsTempArrayString = PacksArray();
                     JSONArray backPacksArray = new JSONArray(packsTempArrayString);
                     JSONObject packsObject = backPacksArray.getJSONObject(position);
 

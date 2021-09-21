@@ -2,11 +2,15 @@ package com.nerbly.bemoji.Activities;
 
 
 import static com.nerbly.bemoji.Adapters.MainEmojisAdapter.isEmojiSheetShown;
+import static com.nerbly.bemoji.Fragments.MainEmojisFragment.isMainEmojisLoaded;
+import static com.nerbly.bemoji.Fragments.PacksEmojisFragment.isPacksEmojisLoaded;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.Functions.SideFunctions.hideShowKeyboard;
+import static com.nerbly.bemoji.Functions.Utils.getAdSize;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.RippleEffects;
+import static com.nerbly.bemoji.UI.MainUIMethods.navStatusBarColor;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
 import static com.nerbly.bemoji.UI.MainUIMethods.setImageViewRipple;
@@ -15,6 +19,7 @@ import static com.nerbly.bemoji.UI.MainUIMethods.statusBarColor;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,8 +41,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
@@ -53,9 +58,10 @@ import java.util.Objects;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 public class EmojisActivity extends AppCompatActivity {
-    public static EditText searchBoxField;
+    public EditText searchBoxField;
     public static InterstitialAd mInterstitialAd;
     public LinearLayout searchBox;
+    public LinearLayout adContainerView;
     public boolean isSortingNew = true;
     public boolean isSortingOld = false;
     public boolean isSortingAlphabet = false;
@@ -64,6 +70,7 @@ public class EmojisActivity extends AppCompatActivity {
     private ImageView searchBtn;
     private ViewPager viewpager;
     private TabLayout tablayout;
+    private SharedPreferences sharedPref;
     private boolean isSearching = false;
     private MainEmojisFragment main_emojis_fragment;
     private PacksEmojisFragment packs_emojis_fragment;
@@ -86,13 +93,14 @@ public class EmojisActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        adview = findViewById(R.id.adview);
+        adContainerView = findViewById(R.id.adContainerView);
         viewpager = findViewById(R.id.viewpager);
         searchBox = findViewById(R.id.searchbox);
         tablayout = findViewById(R.id.tablayout);
         searchBoxField = findViewById(R.id.searchField);
         sortByBtn = findViewById(R.id.ic_filter_clear);
         searchBtn = findViewById(R.id.searchBtn);
+        sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
         searchBoxField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -190,7 +198,7 @@ public class EmojisActivity extends AppCompatActivity {
             statusBarColor("#7289DA", this);
             LIGHT_ICONS(this);
         } else {
-            statusBarColor("#FFFFFF", this);
+            navStatusBarColor("#FFFFFF", "FFFFFF", this);
             DARK_ICONS(this);
         }
         RippleEffects("#E0E0E0", sortByBtn);
@@ -286,11 +294,15 @@ public class EmojisActivity extends AppCompatActivity {
             hideShowKeyboard(false, searchBoxField, this);
             isSearching = true;
             if (viewpager.getCurrentItem() == 0) {
-                MainEmojisFragment fragment = (MainEmojisFragment) Objects.requireNonNull(viewpager.getAdapter()).instantiateItem(viewpager, viewpager.getCurrentItem());
-                fragment.searchTask(searchBoxField.getText().toString().trim());
+                if (isMainEmojisLoaded) {
+                    MainEmojisFragment fragment = (MainEmojisFragment) Objects.requireNonNull(viewpager.getAdapter()).instantiateItem(viewpager, viewpager.getCurrentItem());
+                    fragment.searchTask(searchBoxField.getText().toString().trim());
+                }
             } else {
-                PacksEmojisFragment fragment = (PacksEmojisFragment) Objects.requireNonNull(viewpager.getAdapter()).instantiateItem(viewpager, viewpager.getCurrentItem());
-                fragment.searchTask(searchBoxField.getText().toString().trim());
+                if (isPacksEmojisLoaded) {
+                    PacksEmojisFragment fragment = (PacksEmojisFragment) Objects.requireNonNull(viewpager.getAdapter()).instantiateItem(viewpager, viewpager.getCurrentItem());
+                    fragment.searchTask(searchBoxField.getText().toString().trim());
+                }
             }
         }
     }
@@ -306,41 +318,32 @@ public class EmojisActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        if (adview != null) {
+            adview.destroy();
+        }
+        mInterstitialAd = null;
+        super.onDestroy();
+    }
+
     private void loadAds() {
-        MobileAds.initialize(this, initializationStatus -> {
-        });
+        if (!sharedPref.getBoolean("isPremium", false)) {
+            MobileAds.initialize(this, initializationStatus -> {
+            });
+            loadInterstitialAd();
+            adview = new AdView(this);
+            adview.setAdUnitId(getString(R.string.mainemojis_admob_banner_id));
+            adContainerView.removeAllViews();
+            adContainerView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
+            adContainerView.addView(adview);
 
-        loadInterstitialAd();
+            AdSize adSize = getAdSize(adContainerView, this);
+            adview.setAdSize(adSize);
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adview.loadAd(adRequest);
-
-
-        adview.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-
-            }
-
-            @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError adError) {
-
-            }
-
-            @Override
-            public void onAdOpened() {
-
-            }
-
-            @Override
-            public void onAdClicked() {
-
-            }
-
-            @Override
-            public void onAdClosed() {
-            }
-        });
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adview.loadAd(adRequest);
+        }
     }
 
     public void loadInterstitialAd() {
@@ -351,7 +354,6 @@ public class EmojisActivity extends AppCompatActivity {
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                         mInterstitialAd = interstitialAd;
-
                     }
 
                     @Override
