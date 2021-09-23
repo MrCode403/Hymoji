@@ -135,7 +135,7 @@
     <string name="payments_powered_by">Payments are processed by PayPal</string>
     <string name="payment_leaving">Oh no, don\'t go :(</string>
     <string name="payment_success_title">Huge thanks to you!</string>
-    <string name="payment_success_desc">You\'ve become one of the coolest users of Hymoji, we\'re proud of you.</string>
+    <string name="payment_success_desc">You\'ve become one of the coolest users of Hymoji, we\'re so happy that you liked our app and supporting it.</string>
     <string name="payment_success_positive_btn">Awesome</string>
     <string name="premium_description">Get the best out of Hymoji and take your experience to a whole new level. Here are the perks are that come with Hymoji premium:</string>
     <string name="premium_title_ad">Hymoji Premium</string>
@@ -148,4 +148,5 @@
     <string name="premium_go_btn">awesome, I wanna buy it!</string>
     <string name="premium_mini_desc">Get tons of premium features just for you, and most importantly, get rid of ads.</string>
     <string name="exit_app" translatable="true">Exit</string>
+    <string name="primium_price">O N L Y   1 . 9 9 $</string>
 </resources>

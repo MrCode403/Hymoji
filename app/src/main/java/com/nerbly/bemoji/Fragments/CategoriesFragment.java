@@ -34,8 +34,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.nerbly.bemoji.Activities.PreviewCategoryActivity;
 import com.nerbly.bemoji.Activities.HomeActivity;
+import com.nerbly.bemoji.Activities.PreviewCategoryActivity;
+import com.nerbly.bemoji.Adapters.LoadingCategoriesAdapter;
 import com.nerbly.bemoji.Adapters.LoadingPacksAdapter;
 import com.nerbly.bemoji.Functions.RequestNetwork;
 import com.nerbly.bemoji.Functions.RequestNetworkController;
@@ -58,11 +59,12 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
     private LinearLayout slider;
     private RecyclerView categoriesRecycler;
     private RecyclerView loadingRecycler;
-    private BottomSheetBehavior sheetBehavior;
+    private BottomSheetBehavior<View> sheetBehavior;
     private RequestNetwork RequestCategories;
     private RequestNetwork.RequestListener CategoriesRequestListener;
     private SharedPreferences sharedPref;
     private BottomSheetDialog d;
+    private boolean wasSheetTouched = false;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
@@ -92,6 +94,18 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
         sharedPref = requireActivity().getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
 
+        sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                wasSheetTouched = true;
+            }
+        });
+
+
         CategoriesRequestListener = new RequestNetwork.RequestListener() {
             @Override
             public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
@@ -119,7 +133,11 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
                     Utils.sortListMap(categoriesList, "category_name", false, true);
                     categoriesRecycler.setAdapter(new CategoriesRecyclerAdapter(categoriesList));
 
-                    new Handler().postDelayed(() -> sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED), 1000);
+                    new Handler().postDelayed(() -> {
+                        if (!wasSheetTouched) {
+                            sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                        }
+                    }, 1000);
 
                     new Handler().postDelayed(() -> loadingRecycler.setVisibility(View.GONE), 2000);
                 }
@@ -155,12 +173,12 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
         categoriesRecycler.setHasFixedSize(true);
         loadingRecycler.setHasFixedSize(true);
 
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 15; i++) {
             HashMap<String, Object> shimmerMap = new HashMap<>();
             shimmerMap.put("key", "value");
             shimmerList.add(shimmerMap);
         }
-        loadingRecycler.setAdapter(new LoadingPacksAdapter.LoadingRecyclerAdapter(shimmerList));
+        loadingRecycler.setAdapter(new LoadingCategoriesAdapter.LoadingRecyclerAdapter(shimmerList));
 
         if (sharedPref.getString("categoriesData", "").isEmpty()) {
             RequestCategories.startRequestNetwork(RequestNetworkController.GET, CATEGORIES_API_LINK, "", CategoriesRequestListener);
@@ -170,7 +188,11 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
             Utils.sortListMap(categoriesList, "category_name", false, true);
             categoriesRecycler.setAdapter(new CategoriesRecyclerAdapter(categoriesList));
 
-            new Handler().postDelayed(() -> sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED), 1000);
+            new Handler().postDelayed(() -> {
+                if (!wasSheetTouched) {
+                    sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+            }, 1000);
 
             new Handler().postDelayed(() -> loadingRecycler.setVisibility(View.GONE), 2000);
         }

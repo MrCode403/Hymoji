@@ -124,7 +124,7 @@
     <string name="payments_powered_by">Les paiements sont traités par PayPal</string>
     <string name="payment_leaving">Oh non, n\'y va pas :(</string>
     <string name="payment_success_title">Un grand merci à vous !</string>
-    <string name="payment_success_desc">Vous êtes devenu l\'un des utilisateurs les plus cool d\'Hymoji, nous sommes fiers de vous.</string>
+    <string name="payment_success_desc">Vous êtes devenu l\'un des utilisateurs les plus cool d\'Hymoji, nous sommes ravis que vous ayez aimé notre application et que vous la souteniez.</string>
     <string name="payment_success_positive_btn">Génial</string>
     <string name="premium_description">Tirez le meilleur parti d\'Hymoji et portez votre expérience à un tout autre niveau. Voici les avantages offerts par Hymoji premium:</string>
     <string name="premium_title_ad">Hymoji Premium</string>
@@ -139,4 +139,5 @@
     <string name="no_internet_connection_title">Hymoji a perdu la connexion</string>
     <string name="no_internet_connection_desc">Il semble que nous ayons perdu le lien avec la terre, aidez-nous à ramener notre vaisseau spatial en rechargeant des emojis.</string>
     <string name="exit_app">Sortir</string>
+    <string name="primium_price">SEULEMENT 1 . 9 9 $</string>
 </resources>

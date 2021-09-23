@@ -3,9 +3,12 @@ package com.nerbly.bemoji.Activities;
 
 import static com.nerbly.bemoji.Configurations.PAYMENT_SOURCE;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
-import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
+import static com.nerbly.bemoji.Functions.SideFunctions.getNavigationBarHeight;
+import static com.nerbly.bemoji.Functions.SideFunctions.getStatusBarHeight;
+import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
+import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
 import static com.nerbly.bemoji.UI.MainUIMethods.transparentStatusBar;
 import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 
@@ -14,31 +17,40 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.nerbly.bemoji.Functions.Utils;
 import com.nerbly.bemoji.R;
 
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+
 public class PremiumActivity extends AppCompatActivity {
-    private final boolean isTryingToPurchase = false;
+    private boolean isTryingToPurchase = false;
     private MaterialButton premium_go;
-    private TextView payment_holder_text;
     private WebView webview;
     private boolean isPurchased = false;
     private boolean isUserAbleToBuy = false;
-    private boolean isFirstView = false;
+    private boolean isFirstView = true;
     private SharedPreferences sharedPref;
+    private ScrollView payment_features_scrollview;
+    private RelativeLayout webview_holder;
+    private MaterialCardView loading_progress;
 
 
     @Override
@@ -53,31 +65,41 @@ public class PremiumActivity extends AppCompatActivity {
 
     private void initialize() {
         premium_go = findViewById(R.id.premium_go);
-        payment_holder_text = findViewById(R.id.payment_holder_text);
+        loading_progress = findViewById(R.id.loading_progress);
         webview = findViewById(R.id.webview);
+        payment_features_scrollview = findViewById(R.id.payment_features_scrollview);
+        webview_holder = findViewById(R.id.webview_holder);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
 
         premium_go.setOnClickListener(v -> {
-            webview.setVisibility(View.VISIBLE);
+            isTryingToPurchase = true;
+            shadAnim(webview_holder, "translationY", 0, 300);
+            shadAnim(webview_holder, "alpha", 1, 300);
+            webview_holder.setVisibility(View.VISIBLE);
+            if (!isUserAbleToBuy) {
+                webview.loadUrl(PAYMENT_SOURCE);
+            }
         });
 
         webview.setWebViewClient(new WebViewClient() {
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                if (url.equals("https://nerbly.com/bemoji/payment/payment_success.json")) {
+                if (url.equals("https://nerbly.com/hymoji/payment/payment_success.json")) {
                     if (isFirstView) {
                         isPurchased = true;
                         isFirstView = false;
                         sharedPref.edit().putBoolean("isPremium", true).apply();
                         showThanksBottomSheet();
-                    } else {
-                        isPurchased = true;
                     }
                 } else {
-                    if (url.equals("https://nerbly.com/updatify/payment/payment_fail.json")) {
+                    if (url.equals("https://nerbly.com/hymoji/payment/payment_fail.json")) {
                         showCustomSnackBar(getString(R.string.payment_failed), PremiumActivity.this);
+                        dismissWebView();
                     }
                 }
+                shadAnim(loading_progress, "scaleX", 1, 400);
+                shadAnim(loading_progress, "scaleY", 1, 400);
+                shadAnim(loading_progress, "alpha", 1, 400);
             }
 
             public void onPageFinished(WebView view, String url) {
@@ -85,11 +107,16 @@ public class PremiumActivity extends AppCompatActivity {
                 if (Utils.isConnected(PremiumActivity.this)) {
                     isUserAbleToBuy = true;
                 }
+
+                shadAnim(loading_progress, "scaleX", 0, 400);
+                shadAnim(loading_progress, "scaleY", 0, 400);
+                shadAnim(loading_progress, "alpha", 0, 400);
             }
 
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 isUserAbleToBuy = false;
                 showCustomSnackBar(getString(R.string.no_internet_connection), PremiumActivity.this);
+                dismissWebView();
             }
         });
 
@@ -107,24 +134,34 @@ public class PremiumActivity extends AppCompatActivity {
     }
 
     public void LOGIC_BACKEND() {
-        isPurchased = false;
-        isFirstView = false;
         webViewSettings(webview);
         webview.loadUrl(PAYMENT_SOURCE);
     }
 
     public void LOGIC_FRONTEND() {
-        LIGHT_ICONS(this);
+        DARK_ICONS(this);
         transparentStatusBar(this);
+
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) premium_go.getLayoutParams();
+        params.bottomMargin = getNavigationBarHeight(this) + 10;
+
+        ViewGroup.MarginLayoutParams params1 = (ViewGroup.MarginLayoutParams) webview.getLayoutParams();
+        params1.topMargin = getStatusBarHeight(this) + 10;
+
+        ViewGroup.MarginLayoutParams params2 = (ViewGroup.MarginLayoutParams) webview.getLayoutParams();
+        params2.bottomMargin = getNavigationBarHeight(this);
+
+        OverScrollDecoratorHelper.setUpOverScroll(payment_features_scrollview);
+
     }
 
     @Override
     public void onBackPressed() {
-        if (webview.getVisibility() == View.VISIBLE) {
+        if (webview_holder.getVisibility() == View.VISIBLE) {
             if (webview.canGoBack()) {
                 webview.goBack();
             } else {
-                webview.setVisibility(View.GONE);
+                dismissWebView();
             }
         } else {
             finish();
@@ -154,7 +191,18 @@ public class PremiumActivity extends AppCompatActivity {
         }
     }
 
+    private void dismissWebView() {
+        isTryingToPurchase = false;
+        shadAnim(webview_holder, "translationY", 500, 300);
+        shadAnim(webview_holder, "alpha", 0, 300);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            webview_holder.setVisibility(View.GONE);
+        }, 400);
+    }
+
     private void showThanksBottomSheet() {
+        dismissWebView();
+
         com.google.android.material.bottomsheet.BottomSheetDialog bottomSheetDialog = new com.google.android.material.bottomsheet.BottomSheetDialog(this, R.style.materialsheet);
 
         View bottomSheetView;
@@ -186,14 +234,5 @@ public class PremiumActivity extends AppCompatActivity {
         });
         bottomSheetDialog.setCancelable(false);
         bottomSheetDialog.show();
-    }
-
-    public void marqueeTextView(final TextView view) {
-        view.setSingleLine(true);
-        view.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-        view.setSelected(true);
-        view.setMarqueeRepeatLimit(-1);
-        view.setHorizontalFadingEdgeEnabled(true);
-        view.setFadingEdgeLength(20);
     }
 }

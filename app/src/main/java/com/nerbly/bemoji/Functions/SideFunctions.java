@@ -121,6 +121,14 @@ public class SideFunctions {
         return 0;
     }
 
+    public static int  getStatusBarHeight(Activity context) {
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            return context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return 0;
+    }
+
     public static int getListItemsCount(ArrayList<HashMap<String, Object>> data) {
         return data == null ? 0 : data.size();
     }

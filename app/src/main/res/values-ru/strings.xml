@@ -124,7 +124,7 @@
     <string name="no_internet_connection">Проверьте подключение к Интернету!</string>
     <string name="payment_leaving">О нет, не уходи :(</string>
     <string name="payment_success_title">Огромное Вам спасибо!</string>
-    <string name="payment_success_desc">Вы стали одним из самых крутых пользователей Hymoji, мы гордимся вами.</string>
+    <string name="payment_success_desc">Вы стали одним из самых крутых пользователей Hymoji, мы так рады, что вам понравилось наше приложение и вы его поддерживали.</string>
     <string name="payment_success_positive_btn">Потрясающий</string>
     <string name="premium_description">Получите максимум от Hymoji и выведите свой опыт на совершенно новый уровень. Вот преимущества, которые предоставляются с премиум-версией Hymoji:</string>
     <string name="premium_title_ad">Hymoji Premium</string>

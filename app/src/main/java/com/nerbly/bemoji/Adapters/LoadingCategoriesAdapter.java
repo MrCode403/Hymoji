@@ -16,7 +16,7 @@ import com.nerbly.bemoji.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class LoadingPacksAdapter {
+public class LoadingCategoriesAdapter {
 
     public static class LoadingRecyclerAdapter extends RecyclerView.Adapter<LoadingRecyclerAdapter.ViewHolder> {
         ArrayList<HashMap<String, Object>> data;
@@ -40,16 +40,12 @@ public class LoadingPacksAdapter {
         public void onBindViewHolder(ViewHolder holder, int position) {
             View view = holder.itemView;
 
+            LinearLayout packsloading = view.findViewById(R.id.packsloading);
             LinearLayout categoriesShimmer = view.findViewById(R.id.categoriesShimmer);
-            LinearLayout shimmer2 = view.findViewById(R.id.shimmer2);
-            LinearLayout shimmer3 = view.findViewById(R.id.shimmer3);
-            LinearLayout shimmer4 = view.findViewById(R.id.shimmer4);
 
-            categoriesShimmer.setVisibility(View.GONE);
+            packsloading.setVisibility(View.GONE);
 
-            setClippedView(shimmer2, "#FFFFFF", 30, 0);
-            setClippedView(shimmer3, "#FFFFFF", 200, 0);
-            setClippedView(shimmer4, "#FFFFFF", 200, 0);
+            setClippedView(categoriesShimmer, "#FFFFFF", 30, 0);
         }
 
         @Override

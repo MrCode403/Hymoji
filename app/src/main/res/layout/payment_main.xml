@@ -16,7 +16,6 @@
             android:scaleType="centerCrop"
             android:src="@drawable/img_hymoji_premium" />
 
-
         <TextView
             android:id="@+id/activityDescription"
             android:layout_width="match_parent"
@@ -27,7 +26,7 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:paddingBottom="8dp"
-            android:text="O N L Y    1 . 9 9 $"
+            android:text="@string/primium_price"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -35,10 +34,11 @@
 
 
         <ScrollView
-            android:id="@+id/payment_info_view"
+            android:id="@+id/payment_features_scrollview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:background="#FFF"
             android:fadingEdge="vertical"
             android:fadingEdgeLength="20dp"
             android:requiresFadingEdge="vertical"
@@ -208,16 +208,45 @@
             android:text="@string/premium_go_btn"
             app:cornerRadius="150dp"
             app:icon="@drawable/ic_outline_shopping_cart_24" />
-
-
     </LinearLayout>
 
-
-    <WebView
-        android:id="@+id/webview"
+    <RelativeLayout
+        android:id="@+id/webview_holder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:autofillHints="creditCardNumber"
-        android:importantForAutofill="auto"
-        android:visibility="gone" />
+        android:alpha="0"
+        android:background="#FFF"
+        android:translationY="500dp"
+        android:visibility="gone">
+
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:autofillHints="creditCardNumber"
+            android:importantForAutofill="auto" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/loading_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardElevation="3dp"
+            android:layout_centerInParent="true"
+            app:cardCornerRadius="20dp">
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="10dp"
+                android:indeterminate="true"
+                app:indicatorColor="@color/colorAccent"
+                app:trackCornerRadius="10dp"
+                app:trackThickness="6dp" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </RelativeLayout>
+
+
 </RelativeLayout>
