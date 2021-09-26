@@ -5,6 +5,7 @@ import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
 import static com.nerbly.bemoji.Functions.SideFunctions.setBlurImageUrl;
 import static com.nerbly.bemoji.Functions.SideFunctions.setImageFromUrlForSheet;
 import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
+import static com.nerbly.bemoji.UI.MainUIMethods.marqueeTextView;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 
@@ -57,6 +58,7 @@ public class DownloaderSheet extends AppCompatActivity {
         MaterialTextView emoji_publisher = bottomSheetView.findViewById(R.id.emoji_publisher);
         LinearLayout relativeView = bottomSheetView.findViewById(R.id.relativeView);
 
+        marqueeTextView(emoji_title);
 
         emoji_publisher.setText(context.getString(R.string.submitted_by).concat(" " + publisher));
 

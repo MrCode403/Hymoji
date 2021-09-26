@@ -2,7 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="ContentDescription">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,7 +34,9 @@
             <EditText
                 android:id="@+id/searchField"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/whitney"
@@ -41,8 +44,7 @@
                 android:imeOptions="actionSearch"
                 android:importantForAutofill="no"
                 android:inputType="textNoSuggestions"
-                android:padding="8dp"
-                android:singleLine="true"
+                android:lines="1"
                 android:textColor="#000000"
                 android:textColorHint="#757575"
                 android:textSize="14sp"

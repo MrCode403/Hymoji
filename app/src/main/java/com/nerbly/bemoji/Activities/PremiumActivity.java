@@ -94,28 +94,24 @@ public class PremiumActivity extends AppCompatActivity {
                 } else {
                     if (url.equals("https://nerbly.com/hymoji/payment/payment_fail.json")) {
                         showCustomSnackBar(getString(R.string.payment_failed), PremiumActivity.this);
+                        webview.loadUrl(PAYMENT_SOURCE);
                         dismissWebView();
                     }
                 }
-                shadAnim(loading_progress, "scaleX", 1, 400);
-                shadAnim(loading_progress, "scaleY", 1, 400);
-                shadAnim(loading_progress, "alpha", 1, 400);
+                shouldShowProgressBar(true);
             }
 
             public void onPageFinished(WebView view, String url) {
-
                 if (Utils.isConnected(PremiumActivity.this)) {
                     isUserAbleToBuy = true;
                 }
-
-                shadAnim(loading_progress, "scaleX", 0, 400);
-                shadAnim(loading_progress, "scaleY", 0, 400);
-                shadAnim(loading_progress, "alpha", 0, 400);
+                shouldShowProgressBar(false);
             }
 
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 isUserAbleToBuy = false;
                 showCustomSnackBar(getString(R.string.no_internet_connection), PremiumActivity.this);
+                webview.loadUrl(PAYMENT_SOURCE);
                 dismissWebView();
             }
         });
@@ -135,6 +131,7 @@ public class PremiumActivity extends AppCompatActivity {
 
     public void LOGIC_BACKEND() {
         webViewSettings(webview);
+        shouldShowProgressBar(true);
         webview.loadUrl(PAYMENT_SOURCE);
     }
 
@@ -159,6 +156,7 @@ public class PremiumActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (webview_holder.getVisibility() == View.VISIBLE) {
             if (webview.canGoBack()) {
+                shouldShowProgressBar(true);
                 webview.goBack();
             } else {
                 dismissWebView();
@@ -166,7 +164,6 @@ public class PremiumActivity extends AppCompatActivity {
         } else {
             finish();
         }
-
     }
 
 
@@ -198,6 +195,18 @@ public class PremiumActivity extends AppCompatActivity {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             webview_holder.setVisibility(View.GONE);
         }, 400);
+    }
+
+    private void shouldShowProgressBar(boolean bool) {
+        if (bool) {
+            shadAnim(loading_progress, "scaleX", 1, 400);
+            shadAnim(loading_progress, "scaleY", 1, 400);
+            shadAnim(loading_progress, "alpha", 1, 400);
+        } else {
+            shadAnim(loading_progress, "scaleX", 0, 400);
+            shadAnim(loading_progress, "scaleY", 0, 400);
+            shadAnim(loading_progress, "alpha", 0, 400);
+        }
     }
 
     private void showThanksBottomSheet() {

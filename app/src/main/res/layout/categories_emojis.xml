@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF"
+    tools:ignore="ContentDescription">
 
 
     <LinearLayout
@@ -43,7 +44,7 @@
             android:importantForAutofill="no"
             android:inputType="textNoSuggestions"
             android:padding="8dp"
-            android:singleLine="true"
+            android:lines="1"
             android:textColor="#000000"
             android:textColorHint="#757575"
             android:textSize="14sp"

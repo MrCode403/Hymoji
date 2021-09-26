@@ -268,13 +268,10 @@ public class PacksEmojisFragment extends Fragment {
     }
 
     public void searchTask(String query) {
-        String final_query = query.trim().toLowerCase();
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
-
-            if (final_query.length() > 0) {
                 emojisList = new Gson().fromJson(sharedPref.getString("packsOneByOne", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
                 }.getType());
                 if (getListItemsCount(emojisList) != 0) {
@@ -282,7 +279,7 @@ public class PacksEmojisFragment extends Fragment {
                     searchPosition = emojisCount - 1;
                     for (int i = 0; i < emojisCount; i++) {
                         try {
-                            if (!Objects.requireNonNull(emojisList.get(searchPosition).get("name")).toString().toLowerCase().contains(final_query)) {
+                            if (!Objects.requireNonNull(emojisList.get(searchPosition).get("name")).toString().toLowerCase().contains(query)) {
                                 emojisList.remove(searchPosition);
                             }
                         } catch (Exception ignored) {
@@ -290,10 +287,6 @@ public class PacksEmojisFragment extends Fragment {
                         searchPosition--;
                     }
                 }
-            } else {
-                emojisList = new Gson().fromJson(sharedPref.getString("packsOneByOne", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                }.getType());
-            }
 
             handler.post(() -> {
                 if (getListItemsCount(emojisList) == 0) {
@@ -301,9 +294,8 @@ public class PacksEmojisFragment extends Fragment {
                 } else {
                     loadView.setVisibility(View.GONE);
                     emojisRecycler.setAdapter(new MainEmojisAdapter.Gridview1Adapter(emojisList));
-
                 }
-
+                isPacksEmojisLoaded = true;
             });
         });
     }

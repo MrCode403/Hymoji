@@ -240,9 +240,6 @@ public class MainEmojisFragment extends Fragment {
         Handler handler = new Handler(Looper.getMainLooper());
 
         executor.execute(() -> {
-            String search_query = query.trim().toLowerCase();
-
-            if (search_query.length() > 0) {
                 if (!emojisList.isEmpty()) {
                     try {
                         emojisList.clear();
@@ -262,18 +259,13 @@ public class MainEmojisFragment extends Fragment {
                         emojisMap.put("title", emojisObject.getString("title"));
                         emojisMap.put("submitted_by", emojisObject.getString("submitted_by"));
                         emojisMap.put("id", emojisObject.getInt("id"));
-                        if (emojisObject.getString("submitted_by").toLowerCase().contains(search_query) || emojisObject.getString("title").toLowerCase().contains(search_query)) {
+                        if (emojisObject.getString("submitted_by").toLowerCase().contains(query) || emojisObject.getString("title").toLowerCase().contains(query)) {
                             emojisList.add(emojisMap);
                         }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-            } else {
-                getEmojis();
-            }
-
             handler.post(() -> {
                 if (emojisList.size() == 0) {
                     noEmojisFound(false);
@@ -282,6 +274,7 @@ public class MainEmojisFragment extends Fragment {
                     loadView.setVisibility(View.GONE);
                     emojisRecycler.setAdapter(new MainEmojisAdapter.Gridview1Adapter(emojisList));
                 }
+                isMainEmojisLoaded = true;
             });
         });
     }

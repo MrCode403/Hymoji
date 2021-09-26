@@ -78,7 +78,6 @@ public class SettingsFragment extends BottomSheetDialogFragment {
                 assert _view != null;
                 BottomSheetBehavior.from(_view);
                 initialize(_view);
-                com.google.firebase.FirebaseApp.initializeApp(requireContext());
                 initializeLogic();
             });
             return inflater.inflate(R.layout.settings, container, false);
@@ -299,24 +298,28 @@ public class SettingsFragment extends BottomSheetDialogFragment {
         languagePosition = sharedPref.getInt("lang_pos", -1);
         languagesDialog.setTitle("Choose your language")
                 .setSingleChoiceItems(languages, languagePosition, (dialog, i) -> {
-                    isAskingForReload = true;
-                    if (i == 0) {
-                        setFragmentLocale("en", i, requireView());
-                    } else if (i == 1) {
-                        setFragmentLocale("pt", i, requireView());
-                    } else if (i == 2) {
-                        setFragmentLocale("fr", i, requireView());
-                    } else if (i == 3) {
-                        setFragmentLocale("de", i, requireView());
-                    } else if (i == 4) {
-                        setFragmentLocale("tr", i, requireView());
-                    } else if (i == 5) {
-                        setFragmentLocale("ru", i, requireView());
-                    } else if (i == 6) {
-                        setFragmentLocale("pl", i, requireView());
+                    if(languagePosition != i) {
+                        isAskingForReload = true;
+                        if (i == 0) {
+                            setFragmentLocale("en", i, requireView());
+                        } else if (i == 1) {
+                            setFragmentLocale("pt", i, requireView());
+                        } else if (i == 2) {
+                            setFragmentLocale("fr", i, requireView());
+                        } else if (i == 3) {
+                            setFragmentLocale("de", i, requireView());
+                        } else if (i == 4) {
+                            setFragmentLocale("tr", i, requireView());
+                        } else if (i == 5) {
+                            setFragmentLocale("ru", i, requireView());
+                        } else if (i == 6) {
+                            setFragmentLocale("pl", i, requireView());
+                        }
+                        dialog.dismiss();
+                        dismiss();
+                    } else {
+                        dialog.dismiss();
                     }
-                    dialog.dismiss();
-                    dismiss();
                 })
                 .show();
     }

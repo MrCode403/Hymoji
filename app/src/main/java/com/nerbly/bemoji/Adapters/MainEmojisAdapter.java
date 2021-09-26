@@ -2,7 +2,9 @@ package com.nerbly.bemoji.Adapters;
 
 import static com.nerbly.bemoji.Functions.DownloaderSheet.showEmojiSheet;
 import static com.nerbly.bemoji.Functions.SideFunctions.setImgURL;
+import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +59,7 @@ public class MainEmojisAdapter {
             final LinearLayout emojiBackground = _view.findViewById(R.id.emojiBackground);
             final LinearLayout space = _view.findViewById(R.id.space);
             final ImageView emoji = _view.findViewById(R.id.emoji);
+            Activity context = (Activity) emoji.getContext();
             try {
                 setImgURL(Objects.requireNonNull(data.get(position).get("image")).toString(), emoji);
             } catch (Exception e) {
@@ -76,7 +79,8 @@ public class MainEmojisAdapter {
 
                     }
                 } catch (Exception e) {
-
+                    showCustomSnackBar(context.getString(R.string.preview_emoji_error), context);
+                    isEmojiSheetShown = false;
                 }
             });
 

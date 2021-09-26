@@ -57,11 +57,10 @@ public class MainFunctions {
     }
 
     public static void loadLocale(Activity context) {
-
         SharedPreferences shared = context.getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
         if (shared.getString("language", "") != null) {
-            if (!shared.getString("language", "").equals("")) {
+            if (!shared.getString("language", "").isEmpty()) {
                 setLocale(shared.getString("language", ""), shared.getInt("lang_pos", -1), context);
             }
         }

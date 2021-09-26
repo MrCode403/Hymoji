@@ -206,7 +206,7 @@
             android:elevation="7dp"
             android:padding="16dp"
             android:text="@string/premium_go_btn"
-            app:cornerRadius="150dp"
+            app:cornerRadius="@dimen/buttons_corners_radius"
             app:icon="@drawable/ic_outline_shopping_cart_24" />
     </LinearLayout>
 

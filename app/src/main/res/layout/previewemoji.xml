@@ -39,10 +39,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="15dp"
-        android:paddingTop="4dp"
-        android:paddingBottom="8dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/app_name"
         android:textColor="#000000"
         android:textSize="22sp"
@@ -55,6 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
+        android:maxLines="1"
         android:text="@string/app_name"
         android:textColor="#757575"
         android:textSize="16sp"
@@ -62,54 +62,60 @@
         app:fontFamily="@font/whitney" />
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="17dp"
-        android:layout_marginBottom="10dp"
-        android:gravity="center_horizontal">
+        android:layout_marginTop="17dp">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_share"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginStart="15dp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/view"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="12dp"
             android:layout_marginEnd="7dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal|center_vertical"
+            android:layout_marginBottom="10dp"
             android:insetTop="0dp"
             android:insetBottom="0dp"
             android:text="@string/share_btn_txt"
             android:textColor="#FFFFFF"
             android:textSize="14sp"
             app:backgroundTint="#424242"
-            app:cornerRadius="6dp"
+            app:cornerRadius="@dimen/buttons_corners_radius"
             app:elevation="5dp"
             app:fontFamily="@font/whitney"
             app:icon="@drawable/round_share_white_48dp"
             app:iconGravity="textStart"
             app:rippleColor="#2D2D2D" />
 
+        <View
+            android:id="@+id/view"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_centerHorizontal="true" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_download"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/view"
+            android:layout_centerHorizontal="true"
             android:layout_marginStart="7dp"
-            android:layout_marginEnd="15dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal|center_vertical"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="10dp"
             android:insetTop="0dp"
             android:insetBottom="0dp"
             android:text="@string/download_btn_txt"
             android:textColor="#FFFFFF"
             android:textSize="14sp"
             app:backgroundTint="@color/colorPrimary"
-            app:cornerRadius="6dp"
+            app:cornerRadius="@dimen/buttons_corners_radius"
             app:elevation="5dp"
             app:fontFamily="@font/whitney"
             app:icon="@drawable/round_get_app_white_48dp"
             app:iconGravity="textStart"
             app:rippleColor="@color/colorPrimaryDark" />
 
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

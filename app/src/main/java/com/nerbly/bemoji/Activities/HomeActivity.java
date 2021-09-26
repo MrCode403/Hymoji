@@ -34,8 +34,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -741,29 +739,13 @@ public class HomeActivity extends AppCompatActivity {
             if (isFirstTime) {
                 activityDescription.setText(tips[random]);
             } else {
-                AlphaAnimation fadeOut = new AlphaAnimation(1.0f, 0.0f);
-                activityDescription.startAnimation(fadeOut);
-                fadeOut.setDuration(350);
-                fadeOut.setFillAfter(true);
-
-                fadeOut.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        activityDescription.setText(tips[random]);
-                        AlphaAnimation fadeIn = new AlphaAnimation(0.0f, 1.0f);
-                        activityDescription.startAnimation(fadeIn);
-                        fadeIn.setDuration(350);
-                        fadeIn.setFillAfter(true);
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-                    }
-                });
+                activityDescription.setVisibility(View.GONE);
+                new Handler().postDelayed(() -> {
+                    activityDescription.setText(tips[random]);
+                }, 400);
+                new Handler().postDelayed(() -> {
+                    activityDescription.setVisibility(View.VISIBLE);
+                }, 500);
             }
 
         } catch (Exception ignored) {

@@ -170,7 +170,7 @@ public class PackPreviewActivity extends AppCompatActivity {
         setViewRadius(slider, 90, "#E0E0E0");
         DARK_ICONS(this);
         transparentStatusBar(this);
-        rippleRoundStroke(download, "#7289DA", "#687DC8", 25, 0, "#7289DA");
+        rippleRoundStroke(download, "#7289DA", "#687DC8", getResources().getDimension(R.dimen.buttons_corners_radius), 0, "#7289DA");
 
         if (Build.VERSION.SDK_INT >= 30) {
             download.setVisibility(View.GONE);
