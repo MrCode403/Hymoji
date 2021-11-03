@@ -44,15 +44,15 @@ import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 public class MainEmojisFragment extends Fragment {
 
+    public static boolean isMainEmojisLoaded = false;
     private final Timer timer = new Timer();
+    private final ArrayList<HashMap<String, Object>> emojisList = new ArrayList<>();
     public boolean isSortingNew = true;
     public boolean isSortingOld = false;
     public boolean isSortingAlphabet = false;
-    public static boolean isMainEmojisLoaded = false;
     private TextView emptyTitle;
     private LinearLayout loadView;
     private GridView emojisRecycler;
-    private final ArrayList<HashMap<String, Object>> emojisList = new ArrayList<>();
     private LottieAnimationView emptyAnimation;
     private SharedPreferences sharedPref;
 
@@ -86,6 +86,7 @@ public class MainEmojisFragment extends Fragment {
             noEmojisFound(true);
         }
         OverScrollDecoratorHelper.setUpOverScroll(emojisRecycler);
+        emojisRecycler.setNestedScrollingEnabled(true);
     }
 
     private void noEmojisFound(boolean isError) {
@@ -191,9 +192,7 @@ public class MainEmojisFragment extends Fragment {
             shadAnim(loadView, "alpha", 0, 300);
             isMainEmojisLoaded = true;
         }, 1000);
-        new Handler().postDelayed(() -> {
-            emptyAnimation.cancelAnimation();
-        }, 2000);
+        new Handler().postDelayed(() -> emptyAnimation.cancelAnimation(), 2000);
     }
 
     public void initEmojisRecycler() {
@@ -240,32 +239,32 @@ public class MainEmojisFragment extends Fragment {
         Handler handler = new Handler(Looper.getMainLooper());
 
         executor.execute(() -> {
-                if (!emojisList.isEmpty()) {
-                    try {
-                        emojisList.clear();
-                    } catch (Exception e) {
-                        Log.e("Emojis Response", "couldn't clear the list for new emojis");
-                    }
-                }
+            if (!emojisList.isEmpty()) {
                 try {
-                    JSONArray emojisArray = new JSONArray(sharedPref.getString("emojisData", ""));
-                    Log.d("Emojis Response", "found " + emojisArray.length() + " emojis");
-
-                    for (int i = 0; i < emojisArray.length(); i++) {
-                        JSONObject emojisObject = emojisArray.getJSONObject(i);
-                        HashMap<String, Object> emojisMap = new HashMap<>();
-                        emojisMap.put("image", emojisObject.getString("image"));
-                        emojisMap.put("name", emojisObject.getString("name"));
-                        emojisMap.put("title", emojisObject.getString("title"));
-                        emojisMap.put("submitted_by", emojisObject.getString("submitted_by"));
-                        emojisMap.put("id", emojisObject.getInt("id"));
-                        if (emojisObject.getString("submitted_by").toLowerCase().contains(query) || emojisObject.getString("title").toLowerCase().contains(query)) {
-                            emojisList.add(emojisMap);
-                        }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    emojisList.clear();
+                } catch (Exception e) {
+                    Log.e("Emojis Response", "couldn't clear the list for new emojis");
                 }
+            }
+            try {
+                JSONArray emojisArray = new JSONArray(sharedPref.getString("emojisData", ""));
+                Log.d("Emojis Response", "found " + emojisArray.length() + " emojis");
+
+                for (int i = 0; i < emojisArray.length(); i++) {
+                    JSONObject emojisObject = emojisArray.getJSONObject(i);
+                    HashMap<String, Object> emojisMap = new HashMap<>();
+                    emojisMap.put("image", emojisObject.getString("image"));
+                    emojisMap.put("name", emojisObject.getString("name"));
+                    emojisMap.put("title", emojisObject.getString("title"));
+                    emojisMap.put("submitted_by", emojisObject.getString("submitted_by"));
+                    emojisMap.put("id", emojisObject.getInt("id"));
+                    if (emojisObject.getString("submitted_by").toLowerCase().contains(query) || emojisObject.getString("title").toLowerCase().contains(query)) {
+                        emojisList.add(emojisMap);
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             handler.post(() -> {
                 if (emojisList.size() == 0) {
                     noEmojisFound(false);

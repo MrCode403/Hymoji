@@ -37,7 +37,6 @@ import com.google.gson.reflect.TypeToken;
 import com.nerbly.bemoji.Activities.HomeActivity;
 import com.nerbly.bemoji.Activities.PreviewCategoryActivity;
 import com.nerbly.bemoji.Adapters.LoadingCategoriesAdapter;
-import com.nerbly.bemoji.Adapters.LoadingPacksAdapter;
 import com.nerbly.bemoji.Functions.RequestNetwork;
 import com.nerbly.bemoji.Functions.RequestNetworkController;
 import com.nerbly.bemoji.Functions.Utils;
@@ -210,6 +209,36 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
         window.setAttributes(windowParams);
     }
 
+    private void showWarningSheet(String category_id) {
+
+        com.google.android.material.bottomsheet.BottomSheetDialog bottomSheetDialog = new com.google.android.material.bottomsheet.BottomSheetDialog(requireContext(), R.style.materialsheet);
+
+        View bottomSheetView;
+        bottomSheetView = getLayoutInflater().inflate(R.layout.infosheet, null);
+        bottomSheetDialog.setContentView(bottomSheetView);
+
+        bottomSheetDialog.getWindow().findViewById(R.id.design_bottom_sheet).setBackgroundResource(android.R.color.transparent);
+
+        MaterialButton infook = bottomSheetView.findViewById(R.id.infosheet_ok);
+        MaterialButton infocancel = bottomSheetView.findViewById(R.id.infosheet_cancel);
+        LinearLayout infoback = bottomSheetView.findViewById(R.id.infosheet_back);
+        LinearLayout slider = bottomSheetView.findViewById(R.id.slider);
+
+        advancedCorners(infoback, "#ffffff", 38, 38, 0, 0);
+
+        setViewRadius(slider, 180, "#BDBDBD");
+        infook.setOnClickListener(v -> {
+            Intent toEmojis = new Intent();
+            toEmojis.putExtra("category_id", Integer.valueOf(category_id));
+            toEmojis.setClass(getContext(), PreviewCategoryActivity.class);
+            startActivity(toEmojis);
+            bottomSheetDialog.dismiss();
+        });
+        infocancel.setOnClickListener(v -> bottomSheetDialog.dismiss());
+        bottomSheetDialog.show();
+
+    }
+
     public class CategoriesRecyclerAdapter extends RecyclerView.Adapter<CategoriesRecyclerAdapter.ViewHolder> {
         ArrayList<HashMap<String, Object>> data;
 
@@ -259,36 +288,6 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
                 super(v);
             }
         }
-
-    }
-
-    private void showWarningSheet(String category_id) {
-
-        com.google.android.material.bottomsheet.BottomSheetDialog bottomSheetDialog = new com.google.android.material.bottomsheet.BottomSheetDialog(requireContext(), R.style.materialsheet);
-
-        View bottomSheetView;
-        bottomSheetView = getLayoutInflater().inflate(R.layout.infosheet, null);
-        bottomSheetDialog.setContentView(bottomSheetView);
-
-        bottomSheetDialog.getWindow().findViewById(R.id.design_bottom_sheet).setBackgroundResource(android.R.color.transparent);
-
-        MaterialButton infook = bottomSheetView.findViewById(R.id.infosheet_ok);
-        MaterialButton infocancel = bottomSheetView.findViewById(R.id.infosheet_cancel);
-        LinearLayout infoback = bottomSheetView.findViewById(R.id.infosheet_back);
-        LinearLayout slider = bottomSheetView.findViewById(R.id.slider);
-
-        advancedCorners(infoback, "#ffffff", 38, 38, 0, 0);
-
-        setViewRadius(slider, 180, "#BDBDBD");
-        infook.setOnClickListener(v -> {
-            Intent toEmojis = new Intent();
-            toEmojis.putExtra("category_id", Integer.valueOf(category_id));
-            toEmojis.setClass(getContext(), PreviewCategoryActivity.class);
-            startActivity(toEmojis);
-            bottomSheetDialog.dismiss();
-        });
-        infocancel.setOnClickListener(v -> bottomSheetDialog.dismiss());
-        bottomSheetDialog.show();
 
     }
 

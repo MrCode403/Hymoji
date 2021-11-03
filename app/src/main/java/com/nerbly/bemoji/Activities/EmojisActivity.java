@@ -49,6 +49,7 @@ import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.nerbly.bemoji.Fragments.MainEmojisFragment;
 import com.nerbly.bemoji.Fragments.PacksEmojisFragment;
@@ -59,8 +60,8 @@ import java.util.Objects;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 public class EmojisActivity extends AppCompatActivity {
-    public EditText searchBoxField;
     public static InterstitialAd mInterstitialAd;
+    public EditText searchBoxField;
     public LinearLayout searchBox;
     public LinearLayout adContainerView;
     public boolean isSortingNew = true;
@@ -78,6 +79,7 @@ public class EmojisActivity extends AppCompatActivity {
     private String lastSearchedEmoji = "";
     private String lastMainEmojisQuery = "";
     private String lastPacksEmojisQuery = "";
+    private AppBarLayout appbar;
 
     public static void showInterstitialAd(Activity context) {
         if (mInterstitialAd != null) {
@@ -91,13 +93,13 @@ public class EmojisActivity extends AppCompatActivity {
         loadLocale(this);
         setContentView(R.layout.emojis);
         initialize();
-        com.google.firebase.FirebaseApp.initializeApp(this);
         initializeLogic();
     }
 
     private void initialize() {
         adContainerView = findViewById(R.id.adContainerView);
         viewpager = findViewById(R.id.viewpager);
+        appbar = findViewById(R.id.appbar);
         searchBox = findViewById(R.id.searchbox);
         tablayout = findViewById(R.id.tablayout);
         searchBoxField = findViewById(R.id.searchField);
@@ -188,6 +190,7 @@ public class EmojisActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
+                appbar.setExpanded(true, true);
                 if (position == 0) {
                     lastSearchedEmoji = lastMainEmojisQuery;
                 } else {
@@ -200,6 +203,8 @@ public class EmojisActivity extends AppCompatActivity {
 
             }
         });
+
+
     }
 
     private void initializeLogic() {

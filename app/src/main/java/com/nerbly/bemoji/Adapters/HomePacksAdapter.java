@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
-import com.nerbly.bemoji.Activities.HomeActivity;
 import com.nerbly.bemoji.Activities.PackPreviewActivity;
 import com.nerbly.bemoji.Activities.PacksActivity;
 import com.nerbly.bemoji.R;
@@ -36,12 +35,11 @@ import java.util.TimerTask;
 public class HomePacksAdapter {
 
     public static class Packs_recyclerAdapter extends RecyclerView.Adapter<Packs_recyclerAdapter.ViewHolder> {
+        public static boolean isEmojiSheetShown = false;
         private final ArrayList<String> packsArrayList = new ArrayList<>();
         ArrayList<HashMap<String, Object>> data;
         private String packsTempArrayString = "";
         private String currentPositionPackArray = "";
-        public static boolean isEmojiSheetShown = false;
-        private HomeActivity home;
 
         public Packs_recyclerAdapter(ArrayList<HashMap<String, Object>> _arr) {
             data = _arr;
@@ -142,7 +140,5 @@ public class HomePacksAdapter {
                 super(v);
             }
         }
-
     }
-
 }

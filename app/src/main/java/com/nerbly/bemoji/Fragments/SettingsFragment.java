@@ -1,6 +1,5 @@
 package com.nerbly.bemoji.Fragments;
 
-import static com.nerbly.bemoji.Activities.HomeActivity.userIsAskingForActivityToReload;
 import static com.nerbly.bemoji.Functions.MainFunctions.initializeCacheScan;
 import static com.nerbly.bemoji.Functions.MainFunctions.setFragmentLocale;
 import static com.nerbly.bemoji.Functions.MainFunctions.trimCache;
@@ -48,8 +47,8 @@ import java.util.concurrent.Executors;
 
 public class SettingsFragment extends BottomSheetDialogFragment {
 
-    private final Intent intent = new Intent();
     public static boolean isFragmentAttached = false;
+    private final Intent intent = new Intent();
     private LinearLayout slider;
     private RelativeLayout setting1;
     private RelativeLayout setting3;
@@ -298,7 +297,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
         languagePosition = sharedPref.getInt("lang_pos", -1);
         languagesDialog.setTitle("Choose your language")
                 .setSingleChoiceItems(languages, languagePosition, (dialog, i) -> {
-                    if(languagePosition != i) {
+                    if (languagePosition != i) {
                         isAskingForReload = true;
                         if (i == 0) {
                             setFragmentLocale("en", i, requireView());
@@ -355,7 +354,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
         super.onDismiss(dialog);
         ((HomeActivity) requireActivity()).isFragmentAttached = false;
         if (isAskingForReload) {
-            userIsAskingForActivityToReload(requireActivity());
+            ((HomeActivity) requireActivity()).userIsAskingForActivityToReload(requireActivity());
         }
     }
 

@@ -49,11 +49,11 @@ import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 public class PacksEmojisFragment extends Fragment {
 
+    public static boolean isPacksEmojisLoaded = false;
     private final Timer timer = new Timer();
     public boolean isSortingNew = true;
     public boolean isSortingOld = false;
     public boolean isSortingAlphabet = false;
-    public static boolean isPacksEmojisLoaded = false;
     private GridView emojisRecycler;
     private int searchPosition = 0;
     private TextView emptyTitle;
@@ -91,6 +91,7 @@ public class PacksEmojisFragment extends Fragment {
         initEmojisRecycler();
         getEmojis();
         OverScrollDecoratorHelper.setUpOverScroll(emojisRecycler);
+        emojisRecycler.setNestedScrollingEnabled(true);
     }
 
     private void noEmojisFound(boolean isError) {
@@ -272,21 +273,21 @@ public class PacksEmojisFragment extends Fragment {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
-                emojisList = new Gson().fromJson(sharedPref.getString("packsOneByOne", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                }.getType());
-                if (getListItemsCount(emojisList) != 0) {
-                    emojisCount = getListItemsCount(emojisList);
-                    searchPosition = emojisCount - 1;
-                    for (int i = 0; i < emojisCount; i++) {
-                        try {
-                            if (!Objects.requireNonNull(emojisList.get(searchPosition).get("name")).toString().toLowerCase().contains(query)) {
-                                emojisList.remove(searchPosition);
-                            }
-                        } catch (Exception ignored) {
+            emojisList = new Gson().fromJson(sharedPref.getString("packsOneByOne", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
+            }.getType());
+            if (getListItemsCount(emojisList) != 0) {
+                emojisCount = getListItemsCount(emojisList);
+                searchPosition = emojisCount - 1;
+                for (int i = 0; i < emojisCount; i++) {
+                    try {
+                        if (!Objects.requireNonNull(emojisList.get(searchPosition).get("name")).toString().toLowerCase().contains(query)) {
+                            emojisList.remove(searchPosition);
                         }
-                        searchPosition--;
+                    } catch (Exception ignored) {
                     }
+                    searchPosition--;
                 }
+            }
 
             handler.post(() -> {
                 if (getListItemsCount(emojisList) == 0) {

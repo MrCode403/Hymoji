@@ -43,7 +43,7 @@
             android:gravity="center_horizontal|center_vertical"
             android:text="@string/animated_emojis_warning_title"
             android:textColor="#7289DA"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             tools:ignore="TextContrastCheck" />
 
@@ -80,6 +80,8 @@
                 android:lines="1"
                 android:text="@string/animated_emojis_warning_btncancel"
                 android:textColor="#FFFFFF"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:backgroundTint="#424242"
@@ -99,6 +101,8 @@
                 android:lines="1"
                 android:text="@string/animated_emojis_warning_btnok"
                 android:textColor="#FFFFFF"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:backgroundTint="@color/colorPrimary"

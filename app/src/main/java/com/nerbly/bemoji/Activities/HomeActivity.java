@@ -102,10 +102,10 @@ public class HomeActivity extends AppCompatActivity {
     private final Intent toPacks = new Intent();
     private final Timer timer = new Timer();
     private final LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-    private int emojisCount = 0;
     public boolean isFragmentAttached = false;
     public boolean isActivityAttached = false;
     getDarkModeState state;
+    private int emojisCount = 0;
     private boolean isAdLoaded = false;
     private boolean noInternetConnectionDialogShown = false;
     private FileManager fileManager;
@@ -161,7 +161,7 @@ public class HomeActivity extends AppCompatActivity {
         return new Gson().toJson(packsList);
     }
 
-    public static void userIsAskingForActivityToReload(Activity context) {
+    public void userIsAskingForActivityToReload(Activity context) {
         context.recreate();
     }
 

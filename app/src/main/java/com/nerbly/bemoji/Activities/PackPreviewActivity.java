@@ -354,7 +354,8 @@ public class PackPreviewActivity extends AppCompatActivity {
                 }
                 startPackDownload(downloadPackName, downloadPackPath, downloadPackUrl);
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     public void askForZippingSheet() {
@@ -486,7 +487,6 @@ public class PackPreviewActivity extends AppCompatActivity {
                 space.setVisibility(View.GONE);
             }
         }
-
 
 
         @Override

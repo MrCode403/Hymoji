@@ -215,9 +215,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0"
-        android:background="#FFF"
-        android:translationY="500dp"
-        android:visibility="gone">
+        android:translationY="1000dp"
+        android:background="#FFF">
 
         <WebView
             android:id="@+id/webview"

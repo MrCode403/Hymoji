@@ -206,6 +206,20 @@ public class PacksActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        isPacksOpened = false;
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (adview != null) {
+            adview.destroy();
+        }
+        super.onDestroy();
+    }
+
     public class PacksRecyclerAdapter extends RecyclerView.Adapter<PacksRecyclerAdapter.ViewHolder> {
         ArrayList<HashMap<String, Object>> data;
 
@@ -281,19 +295,5 @@ public class PacksActivity extends AppCompatActivity {
                 super(v);
             }
         }
-    }
-
-    @Override
-    protected void onResume() {
-        isPacksOpened = false;
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (adview != null) {
-            adview.destroy();
-        }
-        super.onDestroy();
     }
 }

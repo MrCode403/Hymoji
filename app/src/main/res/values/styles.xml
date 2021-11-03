@@ -99,8 +99,6 @@
     </style>
 
 
-
-
     <style name="BuyNowButton" parent="@style/Widget.MaterialComponents.CardView">
         <item name="shapeAppearanceOverlay">@style/BuyNowButton_Corners</item>
     </style>

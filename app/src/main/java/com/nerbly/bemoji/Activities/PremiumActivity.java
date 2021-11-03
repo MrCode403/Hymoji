@@ -59,7 +59,6 @@ public class PremiumActivity extends AppCompatActivity {
         loadLocale(this);
         setContentView(R.layout.payment_main);
         initialize();
-        com.google.firebase.FirebaseApp.initializeApp(this);
         initializeLogic();
     }
 
@@ -78,6 +77,7 @@ public class PremiumActivity extends AppCompatActivity {
             shadAnim(webview_holder, "alpha", 1, 300);
             webview_holder.setVisibility(View.VISIBLE);
             if (!isUserAbleToBuy) {
+                shouldShowProgressBar(true);
                 webview.loadUrl(PAYMENT_SOURCE);
             }
         });
@@ -110,9 +110,10 @@ public class PremiumActivity extends AppCompatActivity {
 
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 isUserAbleToBuy = false;
-                showCustomSnackBar(getString(R.string.no_internet_connection), PremiumActivity.this);
+                showCustomSnackBar(getString(R.string.no_internet_connection) + " " + description, PremiumActivity.this);
                 webview.loadUrl(PAYMENT_SOURCE);
                 dismissWebView();
+                shouldShowProgressBar(false);
             }
         });
 
@@ -131,8 +132,12 @@ public class PremiumActivity extends AppCompatActivity {
 
     public void LOGIC_BACKEND() {
         webViewSettings(webview);
-        shouldShowProgressBar(true);
-        webview.loadUrl(PAYMENT_SOURCE);
+
+        new Handler().postDelayed(() -> {
+            webview.loadUrl(PAYMENT_SOURCE);
+            shouldShowProgressBar(true);
+        } ,1000);
+
     }
 
     public void LOGIC_FRONTEND() {
@@ -190,7 +195,7 @@ public class PremiumActivity extends AppCompatActivity {
 
     private void dismissWebView() {
         isTryingToPurchase = false;
-        shadAnim(webview_holder, "translationY", 500, 300);
+        shadAnim(webview_holder, "translationY", 1000, 300);
         shadAnim(webview_holder, "alpha", 0, 300);
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             webview_holder.setVisibility(View.GONE);

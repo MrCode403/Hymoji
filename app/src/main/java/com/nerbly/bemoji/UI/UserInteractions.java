@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.nerbly.bemoji.R;
 
 public class UserInteractions {
@@ -38,6 +39,7 @@ public class UserInteractions {
             setViewRadius(back, 20, "#202125");
             snackbar_tv.setText(message);
             sblayout.addView(inflate, 0);
+            snackBarView.setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE);
             snackBarView.show();
         } catch (Exception e) {
         }

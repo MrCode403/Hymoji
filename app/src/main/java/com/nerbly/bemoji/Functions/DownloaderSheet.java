@@ -6,7 +6,6 @@ import static com.nerbly.bemoji.Functions.SideFunctions.setBlurImageUrl;
 import static com.nerbly.bemoji.Functions.SideFunctions.setImageFromUrlForSheet;
 import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
 import static com.nerbly.bemoji.UI.MainUIMethods.marqueeTextView;
-import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 
 import android.app.Activity;
@@ -74,7 +73,6 @@ public class DownloaderSheet extends AppCompatActivity {
         setBlurImageUrl(emoji_background, 25, url);
         setImageFromUrlForSheet(emoji, url);
         advancedCorners(relativeView, "#ffffff", 38, 38, 0, 0);
-        rippleRoundStroke(btn_download, "#7289DA", "#6275BB", 20, 0, "#007EEF");
 
         btn_download.setOnClickListener(_view -> {
             if (Build.VERSION.SDK_INT >= 29) {
