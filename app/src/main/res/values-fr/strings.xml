@@ -8,8 +8,7 @@
     <string name="download_btn_txt">Télécharger</string>
     <string name="pack_confirmation_sheet_title">Attendez une seconde, il y a plus!</string>
     <string name="pack_confirmation_sheet_subtitle">Voulez-vous que je télécharge ce pack sous forme de fichier ZIP (adapté au bureau ou au partage) ou que je le télécharge simplement sous forme de dossier?</string>
-    <string name="pack_confirmation_sheet_btn1">Comme ZIP</string>
-    <string name="pack_confirmation_sheet_btn2">Comme dossier</string>
+    <string name="pack_confirmation_sheet_btn2">Dossier</string>
     <string name="home_searchbox">Rechercher…</string>
     <string name="home_sections_title">SECTIONS</string>
     <string name="home_dock1_title">Tous les emojis</string>
@@ -81,7 +80,6 @@
     <string name="ask_for_permission">Veuillez nous autoriser à accéder à votre stockage pour continuer.</string>
     <string name="error_msg_2">Un problème est survenu. Merci d\'essayer plus tard.</string>
     <string name="cache_cleared_success">Le cache a été effacé avec succès.</string>
-    <string name="emojis_reloaded_success">Fait. La page d\'accueil sera rechargée à votre retour</string>
     <string name="packs_still_loading_msg">Veuillez patienter, nous obtenons des catégories…</string>
     <string name="emojis_still_loading_msg">Veuillez patienter, nous recevons des émojis…</string>
     <string name="settings_option_11_title">Langue</string>
@@ -89,7 +87,6 @@
     <string name="settings_option_12_subtitle">Notre mission est de rendre Hymoji accessible à tous les amateurs d\'emoji du monde entier. Aidez-nous dans cette mission.</string>
     <string name="settings_option_12_title">Aide à traduire Hymoji</string>
     <string name="news_notifications_channel">Actualités de Hymoji</string>
-    <string name="request_server_data_error">Une erreur s\'est produite, nous redémarrerons l\'application pour réessayer.</string>
     <string name="error_msg">Un problème est survenu.</string>
     <string name="dialog_negative_text">Annuler</string>
     <string name="dialog_positive_text">D\'accord</string>
@@ -121,8 +118,6 @@
     <string name="contrbute_contact_us">Vous serez redirigé vers votre application de messagerie pour nous contacter</string>
     <string name="payment_failed">Le paiement a échoué, veuillez réessayer.</string>
     <string name="no_internet_connection">Vérifiez votre connection internet!</string>
-    <string name="payments_powered_by">Les paiements sont traités par PayPal</string>
-    <string name="payment_leaving">Oh non, n\'y va pas :(</string>
     <string name="payment_success_title">Un grand merci à vous !</string>
     <string name="payment_success_desc">Vous êtes devenu l\'un des utilisateurs les plus cool d\'Hymoji, nous sommes ravis que vous ayez aimé notre application et que vous la souteniez.</string>
     <string name="payment_success_positive_btn">Génial</string>
@@ -140,4 +135,5 @@
     <string name="no_internet_connection_desc">Il semble que nous ayons perdu le lien avec la terre, aidez-nous à ramener notre vaisseau spatial en rechargeant des emojis.</string>
     <string name="exit_app">Sortir</string>
     <string name="primium_price">SEULEMENT 1 . 9 9 $</string>
+    <string name="preview_emoji_error">Il semble que l\'aperçu d\'emoji ait une erreur, veuillez revenir à l\'écran d\'accueil et réessayer.</string>
 </resources>

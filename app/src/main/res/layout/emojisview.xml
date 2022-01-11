@@ -16,10 +16,12 @@
             android:id="@+id/emoji"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:forceDarkAllowed="false"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:paddingBottom="24dp"
-            android:src="@drawable/default_image" />
+            android:src="@drawable/logo"
+            tools:targetApi="q" />
     </LinearLayout>
 
     <LinearLayout

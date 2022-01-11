@@ -9,6 +9,7 @@ import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -66,11 +67,11 @@ public class PacksEmojisFragment extends Fragment {
 
     @NonNull
     @Override
-    public View onCreateView(@NonNull LayoutInflater _inflater, @Nullable ViewGroup _container, @Nullable Bundle _savedInstanceState) {
-        View _view = _inflater.inflate(R.layout.packs_emojis_fragment, _container, false);
-        initialize(_view);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.packs_emojis_fragment, container, false);
+        initialize(view);
         initializeLogic();
-        return _view;
+        return view;
     }
 
     private void initialize(View view) {
@@ -90,7 +91,9 @@ public class PacksEmojisFragment extends Fragment {
     public void LOGIC_BACKEND() {
         initEmojisRecycler();
         getEmojis();
-        OverScrollDecoratorHelper.setUpOverScroll(emojisRecycler);
+        if (Build.VERSION.SDK_INT <= 30) {
+            OverScrollDecoratorHelper.setUpOverScroll(emojisRecycler);
+        }
         emojisRecycler.setNestedScrollingEnabled(true);
     }
 
@@ -240,8 +243,9 @@ public class PacksEmojisFragment extends Fragment {
                         emojisRecycler.setAdapter(new MainEmojisAdapter.Gridview1Adapter(emojisList));
                         sharedPref.edit().putString("packsOneByOne", new Gson().toJson(emojisList)).apply();
                         whenEmojisAreReady();
+                        emojisMap.clear();
                     } catch (Exception e) {
-                        showCustomSnackBar(getString(R.string.error_msg_2), getActivity());
+                        showCustomSnackBar(getString(R.string.error_msg_2), requireActivity());
                     }
                 });
             });
@@ -331,5 +335,4 @@ public class PacksEmojisFragment extends Fragment {
             getEmojis();
         }
     }
-
 }

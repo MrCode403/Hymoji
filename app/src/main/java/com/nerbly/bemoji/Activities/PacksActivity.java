@@ -121,7 +121,9 @@ public class PacksActivity extends AppCompatActivity {
         packsRecycler.setLayoutManager(new LinearLayoutManager(this));
         packsRecycler.setHasFixedSize(true);
         loadingRecycler.setHasFixedSize(true);
-        OverScrollDecoratorHelper.setUpOverScroll(packsRecycler, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
+        if (Build.VERSION.SDK_INT <= 30) {
+            OverScrollDecoratorHelper.setUpOverScroll(packsRecycler, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
+        }
 
         background.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
 
@@ -270,7 +272,7 @@ public class PacksActivity extends AppCompatActivity {
                         Log.d("Recycler Error", e.toString());
                     }
                     toPreview.putExtra("switchType", "pack");
-                    toPreview.putExtra("title", getString(R.string.app_name) + "Pack_".concat(String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("id")).toString())))));
+                    toPreview.putExtra("title", getString(R.string.app_name) + "Pack_" + ((long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("id")).toString()))));
                     toPreview.putExtra("subtitle", Objects.requireNonNull(data.get(position).get("description")).toString());
                     toPreview.putExtra("imageUrl", Objects.requireNonNull(data.get(position).get("image")).toString());
                     toPreview.putExtra("fileName", Objects.requireNonNull(data.get(position).get("slug")).toString());

@@ -4,7 +4,10 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
@@ -22,20 +25,20 @@ public class MainUIMethods {
     //views shape and shadows
 
     public static void RippleEffects(String color, View view) {
-        android.content.res.ColorStateList clr = new android.content.res.ColorStateList(new int[][]{new int[]{}}, new int[]{Color.parseColor(color)});
-        android.graphics.drawable.RippleDrawable ripdr = new android.graphics.drawable.RippleDrawable(clr, null, null);
+        ColorStateList clr = new ColorStateList(new int[][]{new int[]{}}, new int[]{Color.parseColor(color)});
+        RippleDrawable ripdr = new RippleDrawable(clr, null, null);
         view.setBackground(ripdr);
     }
 
     public static void setViewRadius(View view, double radius, String color) {
-        android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
+        GradientDrawable gd = new GradientDrawable();
         gd.setColor(Color.parseColor("#" + color.replace("#", "")));
         gd.setCornerRadius((int) radius);
         view.setBackground(gd);
     }
 
     public static void setClippedView(View view, String color, double radius, double elevation) {
-        android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
+        GradientDrawable gd = new GradientDrawable();
         gd.setColor(Color.parseColor(color));
         gd.setCornerRadius((int) radius);
         view.setBackground(gd);
@@ -44,7 +47,7 @@ public class MainUIMethods {
     }
 
     public static void setClippedStrokeView(final View view, final String color1, final double radius, final String color2, final double stroke) {
-        android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
+        GradientDrawable gd = new GradientDrawable();
         gd.setColor(Color.parseColor(color1));
         gd.setCornerRadius((int) radius);
         gd.setStroke((int) stroke, Color.parseColor("#" + color2.replace("#", "")));
@@ -53,20 +56,20 @@ public class MainUIMethods {
     }
 
     public static void rippleRoundStroke(View view, String focus, String pressed, double round, double stroke, String strokeclr) {
-        android.graphics.drawable.GradientDrawable GG = new android.graphics.drawable.GradientDrawable();
+        GradientDrawable GG = new GradientDrawable();
         GG.setColor(Color.parseColor(focus));
         GG.setCornerRadius((float) round);
         GG.setStroke((int) stroke, Color.parseColor("#" + strokeclr.replace("#", "")));
-        android.graphics.drawable.RippleDrawable RE = new android.graphics.drawable.RippleDrawable(new android.content.res.ColorStateList(new int[][]{new int[]{}}, new int[]{Color.parseColor(pressed)}), GG, null);
+        RippleDrawable RE = new RippleDrawable(new ColorStateList(new int[][]{new int[]{}}, new int[]{Color.parseColor(pressed)}), GG, null);
         view.setBackground(RE);
     }
 
     public static void setImageViewRipple(ImageView imageview, String color1, String color2) {
-        imageview.setImageTintList(new android.content.res.ColorStateList(new int[][]{{-android.R.attr.state_pressed}, {android.R.attr.state_pressed}}, new int[]{Color.parseColor(color1), Color.parseColor(color2)}));
+        imageview.setImageTintList(new ColorStateList(new int[][]{{-android.R.attr.state_pressed}, {android.R.attr.state_pressed}}, new int[]{Color.parseColor(color1), Color.parseColor(color2)}));
     }
 
     public static void advancedCorners(View view, String color, double n1, double n2, double n3, double n4) {
-        android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
+        GradientDrawable gd = new GradientDrawable();
         gd.setColor(Color.parseColor(color));
         gd.setCornerRadii(new float[]{(int) n1, (int) n1, (int) n2, (int) n2, (int) n4, (int) n4, (int) n3, (int) n3});
         view.setBackground(gd);
@@ -75,7 +78,7 @@ public class MainUIMethods {
     //status bar customizations
 
     public static void transparentStatusNavBar(Activity context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        if (Build.VERSION.SDK_INT >= 30) {
             context.getWindow().setDecorFitsSystemWindows(false);
             WindowInsetsController controller = context.getWindow().getInsetsController();
             if (controller != null) {
@@ -92,7 +95,7 @@ public class MainUIMethods {
     }
 
     public static void transparentStatusBar(Activity context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        if (Build.VERSION.SDK_INT >= 30) {
             context.getWindow().setDecorFitsSystemWindows(false);
             WindowInsetsController controller = context.getWindow().getInsetsController();
             if (controller != null) {
@@ -123,7 +126,7 @@ public class MainUIMethods {
     }
 
     public static void DARK_ICONS(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        if (Build.VERSION.SDK_INT >= 30) {
             activity.getWindow().getDecorView().getWindowInsetsController().setSystemBarsAppearance(WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS, WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS);
         } else {
             activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);

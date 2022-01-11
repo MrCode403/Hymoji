@@ -5,6 +5,7 @@ import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -55,15 +56,15 @@ public class MainEmojisFragment extends Fragment {
     private GridView emojisRecycler;
     private LottieAnimationView emptyAnimation;
     private SharedPreferences sharedPref;
+    private HashMap<String, Object> emojisMap;
 
     @NonNull
     @Override
-    public View onCreateView(@NonNull LayoutInflater _inflater, @Nullable ViewGroup _container, @Nullable Bundle _savedInstanceState) {
-        View _view = _inflater.inflate(R.layout.main_emojis_fragment, _container, false);
-        initialize(_view);
-        com.google.firebase.FirebaseApp.initializeApp(requireContext());
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.main_emojis_fragment, container, false);
+        initialize(view);
         initializeLogic();
-        return _view;
+        return view;
     }
 
     private void initialize(View view) {
@@ -85,7 +86,9 @@ public class MainEmojisFragment extends Fragment {
         } else {
             noEmojisFound(true);
         }
-        OverScrollDecoratorHelper.setUpOverScroll(emojisRecycler);
+        if (Build.VERSION.SDK_INT <= 30) {
+            OverScrollDecoratorHelper.setUpOverScroll(emojisRecycler);
+        }
         emojisRecycler.setNestedScrollingEnabled(true);
     }
 
@@ -157,7 +160,7 @@ public class MainEmojisFragment extends Fragment {
 
                     for (int i = 0; i < emojisArray.length(); i++) {
                         JSONObject emojisObject = emojisArray.getJSONObject(i);
-                        HashMap<String, Object> emojisMap = new HashMap<>();
+                        emojisMap = new HashMap<>();
                         emojisMap.put("image", emojisObject.getString("image"));
                         emojisMap.put("name", emojisObject.getString("name"));
                         emojisMap.put("title", emojisObject.getString("title"));
@@ -180,7 +183,7 @@ public class MainEmojisFragment extends Fragment {
                 handler.post(() -> {
                     emojisRecycler.setAdapter(new MainEmojisAdapter.Gridview1Adapter(emojisList));
                     whenEmojisAreReady();
-
+                    emojisMap.clear();
                 });
             });
         }

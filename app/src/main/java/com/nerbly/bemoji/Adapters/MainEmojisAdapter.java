@@ -1,6 +1,5 @@
 package com.nerbly.bemoji.Adapters;
 
-import static com.nerbly.bemoji.Functions.DownloaderSheet.showEmojiSheet;
 import static com.nerbly.bemoji.Functions.SideFunctions.setImgURL;
 import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 
@@ -15,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.nerbly.bemoji.R;
+import com.nerbly.bemoji.UI.DownloaderSheet;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,18 +66,19 @@ public class MainEmojisAdapter {
             }
             View final_view = _view;
             emojiBackground.setOnClickListener(onClick -> {
-                try {
-                    if (!isEmojiSheetShown) {
-                        isEmojiSheetShown = true;
-                        showEmojiSheet(final_view.getContext(), Objects.requireNonNull(data.get(position).get("image")).toString(), Objects.requireNonNull(data.get(position).get("title")).toString(), Objects.requireNonNull(data.get(position).get("submitted_by")).toString());
-                        new Timer().schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                isEmojiSheetShown = false;
-                            }
-                        }, 1000);
+                if (!isEmojiSheetShown) {
+                    isEmojiSheetShown = true;
+                    DownloaderSheet downloaderSheet = new DownloaderSheet();
+                    downloaderSheet.showEmojiSheet(final_view.getContext(), Objects.requireNonNull(data.get(position).get("image")).toString(), Objects.requireNonNull(data.get(position).get("title")).toString(), Objects.requireNonNull(data.get(position).get("submitted_by")).toString());
+                    new Timer().schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            isEmojiSheetShown = false;
+                        }
+                    }, 1000);
 
-                    }
+                }
+                try {
                 } catch (Exception e) {
                     showCustomSnackBar(context.getString(R.string.preview_emoji_error), context);
                     isEmojiSheetShown = false;

@@ -27,7 +27,7 @@
             android:paddingRight="8dp"
             android:paddingBottom="8dp"
             android:text="@string/primium_price"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorPrimary"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@+id/activityTitle" />
@@ -204,8 +204,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:elevation="7dp"
+            android:fontFamily="@font/whitney"
             android:padding="16dp"
             android:text="@string/premium_go_btn"
+            android:textAllCaps="true"
             app:cornerRadius="@dimen/buttons_corners_radius"
             app:icon="@drawable/ic_outline_shopping_cart_24" />
     </LinearLayout>
@@ -215,8 +217,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0"
-        android:translationY="1000dp"
-        android:background="#FFF">
+        android:background="#FFF"
+        android:translationY="1000dp">
 
         <WebView
             android:id="@+id/webview"
@@ -229,9 +231,9 @@
             android:id="@+id/loading_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardElevation="3dp"
             android:layout_centerInParent="true"
-            app:cardCornerRadius="20dp">
+            app:cardCornerRadius="20dp"
+            app:cardElevation="3dp">
 
             <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:layout_width="40dp"
@@ -243,9 +245,5 @@
                 app:trackThickness="6dp" />
 
         </com.google.android.material.card.MaterialCardView>
-
-
     </RelativeLayout>
-
-
 </RelativeLayout>

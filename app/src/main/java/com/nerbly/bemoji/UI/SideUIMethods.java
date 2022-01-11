@@ -1,6 +1,7 @@
 package com.nerbly.bemoji.UI;
 
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,10 +9,10 @@ import android.widget.TextView;
 
 public class SideUIMethods {
     public static void shadBackground(View view) {
-        android.graphics.drawable.GradientDrawable JJACCAI = new android.graphics.drawable.GradientDrawable();
+        GradientDrawable JJACCAI = new GradientDrawable();
         int[] JJACCAIADD = new int[]{Color.parseColor("#00000000"), Color.parseColor("#80000000")};
         JJACCAI.setColors(JJACCAIADD);
-        JJACCAI.setOrientation(android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM);
+        JJACCAI.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
         JJACCAI.setCornerRadius(0);
         view.setBackground(JJACCAI);
     }

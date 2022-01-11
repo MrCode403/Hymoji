@@ -1,13 +1,24 @@
 package com.nerbly.bemoji.Functions;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
+import android.provider.MediaStore;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.ads.AdSize;
 
@@ -26,11 +37,9 @@ import java.util.zip.ZipOutputStream;
 
 public class Utils {
 
-
     public static void showToast(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
-
 
     public static void ZIP(String source, String destination) {
         zipFileAtPath(source, destination);
@@ -124,23 +133,65 @@ public class Utils {
         });
     }
 
+    public static ArrayList<HashMap<String, Object>> getLocalEmojisMediaStore(@NonNull Context context) {
+        ArrayList<HashMap<String, Object>> imagesList = new ArrayList<>();
+        String[] projection = {
+                MediaStore.MediaColumns.DATA,
+                MediaStore.Files.FileColumns.DISPLAY_NAME
+        };
+        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, null);
+
+        while (cursor.moveToNext()) {
+            @SuppressLint("Range") String absolutePathOfImage = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA));
+            String fileName = cursor.getString(1).toLowerCase();
+
+            if (fileName.startsWith("hymoji") && (fileName.endsWith(".jpg") || (fileName.endsWith(".png") || fileName.endsWith(".gif")))) {
+                HashMap<String, Object> imagesMap = new HashMap<>();
+                imagesMap.put("filePath", absolutePathOfImage);
+                imagesList.add(imagesMap);
+            }
+        }
+        cursor.close();
+        Collections.reverse(imagesList);
+        return imagesList;
+    }
+
     public static boolean isConnected(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    public static boolean isStoragePermissionGranted(Context context) {
+        boolean read_storage = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        boolean write_storage = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+
+        Log.d("PERMISSIONS", "Read storage granted: " + read_storage);
+        Log.d("PERMISSIONS", "Write storage granted: " + write_storage);
+
+        if (Build.VERSION.SDK_INT >= 30) {
+            return read_storage;
+        } else {
+            return read_storage && write_storage;
+        }
+    }
+
+    public static void requestStoragePermission(int requestCode, Activity context) {
+        if (Build.VERSION.SDK_INT >= 30) {
+            ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, requestCode);
+        } else {
+            ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestCode);
+        }
+    }
+
     public static AdSize getAdSize(LinearLayout view, Activity context) {
-        // Determine the screen width (less decorations) to use for the ad width.
         Display display = context.getWindowManager().getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics();
         display.getMetrics(outMetrics);
 
         float density = outMetrics.density;
-
         float adWidthPixels = view.getWidth();
 
-        // If the ad hasn't been laid out, default to the full screen width.
         if (adWidthPixels == 0) {
             adWidthPixels = outMetrics.widthPixels;
         }
@@ -148,5 +199,4 @@ public class Utils {
         int adWidth = (int) (adWidthPixels / density);
         return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, adWidth);
     }
-
 }

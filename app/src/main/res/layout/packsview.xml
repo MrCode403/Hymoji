@@ -88,8 +88,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:focusable="false"
+                    android:forceDarkAllowed="false"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/default_image" />
+                    android:src="@drawable/logo"
+                    tools:targetApi="q" />
             </LinearLayout>
 
             <TextView

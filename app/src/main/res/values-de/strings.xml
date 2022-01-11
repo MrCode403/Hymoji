@@ -8,8 +8,7 @@
     <string name="download_btn_txt">Herunterladen</string>
     <string name="pack_confirmation_sheet_title">Moment mal, da ist noch mehr!</string>
     <string name="pack_confirmation_sheet_subtitle">Möchten Sie, dass ich dieses Paket als ZIP-Datei (geeignet für Desktop oder Freigabe) herunterlade oder es einfach als Ordner herunterlade?</string>
-    <string name="pack_confirmation_sheet_btn1">Als ZIP herunterladen</string>
-    <string name="pack_confirmation_sheet_btn2">Als Ordner herunterladen</string>
+    <string name="pack_confirmation_sheet_btn2">Ordner</string>
     <string name="home_searchbox">Suche…</string>
     <string name="home_sections_title">ABSCHNITTE</string>
     <string name="home_dock1_title">Alle Emojis</string>
@@ -81,7 +80,6 @@
     <string name="ask_for_permission">Bitte geben Sie uns die Erlaubnis, auf Ihren Speicher zuzugreifen, um fortzufahren.</string>
     <string name="error_msg_2">Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.</string>
     <string name="cache_cleared_success">Der Cache wurde erfolgreich geleert.</string>
-    <string name="emojis_reloaded_success">Getan. Die Homepage wird neu geladen, wenn Sie zurückkommen</string>
     <string name="emojis_still_loading_msg">Bitte warten Sie, wir bekommen Emojis …</string>
     <string name="packs_still_loading_msg">Bitte warten Sie, wir bekommen Kategorien …</string>
     <string name="settings_option_11_title">Sprache</string>
@@ -89,7 +87,6 @@
     <string name="settings_option_12_subtitle">Unsere Mission ist es, Hymoji für alle Emoji-Liebhaber auf der ganzen Welt zugänglich zu machen. Helfen Sie uns bei dieser Mission.</string>
     <string name="settings_option_12_title">Hilfe bei der Übersetzung von Hymoji</string>
     <string name="news_notifications_channel">Hymojis Nachrichten</string>
-    <string name="request_server_data_error">Es ist ein Fehler aufgetreten. Wir werden die App neu starten, um es erneut zu versuchen.</string>
     <string name="error_msg">Etwas ist schief gelaufen.</string>
     <string name="dialog_positive_text">Okay</string>
     <string name="dialog_negative_text">Stornieren</string>
@@ -121,8 +118,6 @@
     <string name="contrbute_contact_us">Sie werden zu Ihrer Mail-App weitergeleitet, um uns zu kontaktieren</string>
     <string name="payment_failed">Die Zahlung ist fehlgeschlagen, bitte versuchen Sie es erneut.</string>
     <string name="no_internet_connection">Prüfe deine Internetverbindung!</string>
-    <string name="payments_powered_by">Zahlungen werden über PayPal abgewickelt</string>
-    <string name="payment_leaving">Oh nein, geh nicht :(</string>
     <string name="payment_success_title">Riesigen Dank an Sie!</string>
     <string name="payment_success_desc">Du bist einer der coolsten Nutzer von Hymoji geworden, wir freuen uns sehr, dass dir unsere App gefällt und du sie unterstützt.</string>
     <string name="payment_success_positive_btn">Großartig</string>
@@ -140,4 +135,5 @@
     <string name="no_internet_connection_title">Hymoji hat die Verbindung verloren</string>
     <string name="exit_app">Ausgang</string>
     <string name="primium_price">N U R  1 . 9 9 $</string>
+    <string name="preview_emoji_error">Es scheint, als hätte die Emoji-Vorschau einen Fehler, gehen Sie bitte zurück zum Startbildschirm und versuchen Sie es erneut.</string>
 </resources>

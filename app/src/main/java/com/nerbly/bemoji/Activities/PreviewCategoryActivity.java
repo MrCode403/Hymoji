@@ -205,7 +205,10 @@ public class PreviewCategoryActivity extends AppCompatActivity {
         int number = getScreenWidth(this);
         int columns = (int) ((float) number / scaleFactor);
         emojisRecycler.setNumColumns(columns);
-        OverScrollDecoratorHelper.setUpOverScroll(emojisRecycler);
+        if (Build.VERSION.SDK_INT <= 30) {
+            OverScrollDecoratorHelper.setUpOverScroll(emojisRecycler);
+        }
+
     }
 
     public void loadCategorizedEmojis() {

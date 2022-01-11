@@ -4,7 +4,6 @@ import static com.nerbly.bemoji.Configurations.CATEGORIES_API_LINK;
 import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
-import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 
 import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
@@ -78,7 +77,6 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
             });
             return inflater.inflate(R.layout.categories, container, false);
         } else {
-            showCustomSnackBar(getString(R.string.error_msg), getActivity());
             dismiss();
             return null;
         }
@@ -211,7 +209,7 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
 
     private void showWarningSheet(String category_id) {
 
-        com.google.android.material.bottomsheet.BottomSheetDialog bottomSheetDialog = new com.google.android.material.bottomsheet.BottomSheetDialog(requireContext(), R.style.materialsheet);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext(), R.style.materialsheet);
 
         View bottomSheetView;
         bottomSheetView = getLayoutInflater().inflate(R.layout.infosheet, null);

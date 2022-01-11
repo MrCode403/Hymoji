@@ -8,8 +8,7 @@
     <string name="download_btn_txt">Pobierz emoji</string>
     <string name="pack_confirmation_sheet_title">Czekaj, jest więcej!</string>
     <string name="pack_confirmation_sheet_subtitle">Do you want to download it as a ZIP file or just download it as a folder?</string>
-    <string name="pack_confirmation_sheet_btn1">Pobierz jako ZIP</string>
-    <string name="pack_confirmation_sheet_btn2">Pobierz jako folder</string>
+    <string name="pack_confirmation_sheet_btn2">Teczka</string>
     <string name="home_searchbox">Szukaj…</string>
     <string name="home_sections_title">sekcje</string>
     <string name="home_dock1_title">Wszystkie emojis</string>
@@ -82,7 +81,6 @@
     <string name="error_msg">Coś poszło nie tak.</string>
     <string name="error_msg_2">Coś poszło nie tak ,proszę spróbuj jeszcze raz później</string>
     <string name="cache_cleared_success">Pliki Cache zostały wyczyszczone pomyślnie.</string>
-    <string name="emojis_reloaded_success">Zrobione. Strona główna zostanie załadowana ,gdy wrócisz</string>
     <string name="packs_still_loading_msg">Proszę poczekaj ładujemy kategorie…</string>
     <string name="emojis_still_loading_msg">Proszę poczekaj ładujemy emojis…</string>
     <string name="settings_option_11_title">Język</string>
@@ -90,7 +88,6 @@
     <string name="settings_option_12_title">Pomóż przetłumaczyć emoji</string>
     <string name="settings_option_12_subtitle">Naszą misją jest sprawić żeby Hymoji były dostępne dla wszystkich fanów emoji na całym świecie . Pomóż nam w tej misji</string>
     <string name="news_notifications_channel">Hymoji wiadomości</string>
-    <string name="request_server_data_error">Coś poszło nie tak, Zrestartujemy aplikację, aby spróbowac jeszcze raz</string>
     <string name="dialog_negative_text">Anuluj</string>
     <string name="dialog_positive_text">Okej</string>
     <string name="mailto_device_not_supported">Wygląda na to, że na Twoim urządzeniu nie ma zainstalowanej aplikacji pocztowej. Czy chcesz zostać przekierowany do Sklepu Play, aby przesłać nam opinię lub skontaktować się z nami?</string>
@@ -121,8 +118,6 @@
     <string name="contrbute_contact_us">Zostaniesz przekierowany do Twojej aplikacji pocztowej, aby się z nami skontaktować</string>
     <string name="payment_failed">Płatność nie powiodła się, spróbuj ponownie.</string>
     <string name="no_internet_connection">Sprawdź swoje połączenie z internetem!</string>
-    <string name="payments_powered_by">Płatności są przetwarzane przez PayPal</string>
-    <string name="payment_leaving">O nie, nie odchodź :(</string>
     <string name="payment_success_title">Ogromne dzięki tobie!</string>
     <string name="payment_success_desc">Stałeś się jednym z najfajniejszych użytkowników Hymoji. Cieszymy się, że spodobała Ci się nasza aplikacja i wspierasz ją.</string>
     <string name="payment_success_positive_btn">Wspaniały</string>
@@ -140,4 +135,5 @@
     <string name="no_internet_connection_title">Hymoji stracił połączenie</string>
     <string name="exit_app">Wyjście</string>
     <string name="primium_price">T Y L K O   1 . 9 9 $</string>
+    <string name="preview_emoji_error">Wygląda na to, że w podglądzie emoji wystąpił błąd. Wróć do ekranu głównego i spróbuj ponownie.</string>
 </resources>

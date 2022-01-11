@@ -16,8 +16,6 @@ import java.io.File;
 import java.text.DecimalFormat;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class MainFunctions {
 
@@ -68,13 +66,18 @@ public class MainFunctions {
     }
 
     //naming
-    public static String capitalizedFirstWord(String _data) {
-        StringBuffer capBuffer = new StringBuffer();
-        Matcher capMatcher = Pattern.compile("([a-z])([a-z]*)", Pattern.CASE_INSENSITIVE).matcher(_data);
-        while (capMatcher.find()) {
-            capMatcher.appendReplacement(capBuffer, Objects.requireNonNull(capMatcher.group(1)).toUpperCase() + Objects.requireNonNull(capMatcher.group(2)).toLowerCase());
+    public static String capitalizedFirstWord(String data) {
+        StringBuilder out = new StringBuilder();
+        String[] arr = data.trim().split(" ");
+        for (String s : arr) {
+            if (s.isEmpty()) continue;
+            out.append(String.valueOf(s.charAt(0)).toUpperCase());
+            if (s.length() > 1) {
+                out.append(s.substring(1));
+            }
+            out.append(" ");
         }
-        return capMatcher.appendTail(capBuffer).toString();
+        return out.toString().trim();
     }
 
 

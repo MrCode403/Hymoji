@@ -1,16 +1,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/loadingView"
     android:layout_width="match_parent"
-    android:background="#FFF"
     android:layout_height="match_parent"
+    android:background="#FFF"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/shimmer1"
         android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:layout_margin="16dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="16dp"
         android:orientation="vertical">
 
         <com.facebook.shimmer.ShimmerFrameLayout
@@ -18,9 +22,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#EEEEEE"
+            android:forceDarkAllowed="false"
             android:orientation="vertical"
             android:padding="8dp"
-            app:shimmer_auto_start="true" />
+            app:shimmer_auto_start="true"
+            tools:targetApi="q" />
     </LinearLayout>
 
     <LinearLayout
@@ -38,17 +44,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#EEEEEE"
+            android:forceDarkAllowed="false"
             android:orientation="vertical"
             android:padding="8dp"
-            app:shimmer_auto_start="true" />
+            app:shimmer_auto_start="true"
+            tools:targetApi="q" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linear43"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="14dp"
-        android:layout_marginRight="14dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
         android:baselineAligned="false"
         android:orientation="horizontal">
 
@@ -68,9 +76,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#EEEEEE"
+                android:forceDarkAllowed="false"
                 android:orientation="vertical"
                 android:padding="8dp"
-                app:shimmer_auto_start="true" />
+                app:shimmer_auto_start="true"
+                tools:targetApi="q" />
         </LinearLayout>
 
         <LinearLayout
@@ -89,9 +99,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#EEEEEE"
+                android:forceDarkAllowed="false"
                 android:orientation="vertical"
                 android:padding="8dp"
-                app:shimmer_auto_start="true" />
+                app:shimmer_auto_start="true"
+                tools:targetApi="q" />
         </LinearLayout>
     </LinearLayout>
 
@@ -99,9 +111,9 @@
         android:id="@+id/linear46"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="14dp"
+        android:layout_marginLeft="12dp"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="14dp"
+        android:layout_marginRight="12dp"
         android:baselineAligned="false"
         android:orientation="horizontal">
 
@@ -121,9 +133,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#EEEEEE"
+                android:forceDarkAllowed="false"
                 android:orientation="vertical"
                 android:padding="8dp"
-                app:shimmer_auto_start="true" />
+                app:shimmer_auto_start="true"
+                tools:targetApi="q" />
         </LinearLayout>
 
         <LinearLayout
@@ -142,9 +156,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#EEEEEE"
+                android:forceDarkAllowed="false"
                 android:orientation="vertical"
                 android:padding="8dp"
-                app:shimmer_auto_start="true" />
+                app:shimmer_auto_start="true"
+                tools:targetApi="q" />
         </LinearLayout>
     </LinearLayout>
 
@@ -155,7 +171,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="20dp"
         android:orientation="vertical">
 
         <com.facebook.shimmer.ShimmerFrameLayout
@@ -163,9 +179,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#EEEEEE"
+            android:forceDarkAllowed="false"
             android:orientation="vertical"
             android:padding="8dp"
-            app:shimmer_auto_start="true" />
+            app:shimmer_auto_start="true"
+            tools:targetApi="q" />
     </LinearLayout>
 
     <LinearLayout
@@ -187,16 +205,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#EEEEEE"
+                android:forceDarkAllowed="false"
                 android:orientation="vertical"
                 android:padding="8dp"
-                app:shimmer_auto_start="true" />
+                app:shimmer_auto_start="true"
+                tools:targetApi="q" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/shimmer10"
             android:layout_width="200dp"
             android:layout_height="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="10dp"
             android:orientation="vertical">
 
@@ -205,9 +225,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#EEEEEE"
+                android:forceDarkAllowed="false"
                 android:orientation="vertical"
                 android:padding="8dp"
-                app:shimmer_auto_start="true" />
+                app:shimmer_auto_start="true"
+                tools:targetApi="q" />
         </LinearLayout>
 
         <LinearLayout
@@ -222,9 +244,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#EEEEEE"
+                android:forceDarkAllowed="false"
                 android:orientation="vertical"
                 android:padding="8dp"
-                app:shimmer_auto_start="true" />
+                app:shimmer_auto_start="true"
+                tools:targetApi="q" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

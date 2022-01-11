@@ -37,7 +37,6 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class TranslationContributorsFragment extends BottomSheetDialogFragment {
-
     private LinearLayout slider;
     private LinearLayout view_leftline;
     private RecyclerView recyclerview;
@@ -52,9 +51,7 @@ public class TranslationContributorsFragment extends BottomSheetDialogFragment {
             View view = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
             assert view != null;
             BottomSheetBehavior.from(view);
-
             initialize(view);
-            com.google.firebase.FirebaseApp.initializeApp(requireContext());
             initializeLogic();
         });
         return inflater.inflate(R.layout.translation_contributors_fragment, container, false);

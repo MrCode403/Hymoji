@@ -1,835 +1,820 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:ignore="ContentDescription">
+    android:gravity="center_horizontal|center_vertical">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <LinearLayout
+        android:id="@+id/sheetBehavior"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal|center_vertical">
+        android:orientation="vertical">
+
 
         <LinearLayout
-            android:id="@+id/sheetBehavior"
+            android:id="@+id/slider"
+            android:layout_width="40dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:background="#E0E0E0"
+            android:orientation="horizontal" />
+
+        <TextView
+            android:id="@+id/activityTitle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:fontFamily="@font/whitney"
+            android:padding="8dp"
+            android:text="@string/settings_title"
+            android:textColor="#000000"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/activityDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:fontFamily="@font/whitney"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/settings_subtitle"
+            android:textColor="#616161"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:background="#E0E0E0"
+            android:orientation="horizontal" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/vscroll1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/background"
+                android:id="@+id/linear3"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:animateLayoutChanges="true"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                tools:ignore="UselessParent">
-
-                <LinearLayout
-                    android:id="@+id/slider"
-                    android:layout_width="40dp"
-                    android:layout_height="5dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:background="#E0E0E0"
-                    android:orientation="horizontal" />
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp">
 
                 <TextView
-                    android:id="@+id/activityTitle"
-                    android:layout_width="match_parent"
+                    android:id="@+id/textview7"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="15dp"
                     android:fontFamily="@font/whitney"
-                    android:padding="8dp"
-                    android:text="@string/settings_title"
-                    android:textColor="#000000"
-                    android:textSize="30sp"
+                    android:paddingStart="3dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="3dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/settings_section_1_title"
+                    android:textAllCaps="true"
+                    android:textColor="#616161"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/activityDescription"
+                <RelativeLayout
+                    android:id="@+id/setting1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:fontFamily="@font/whitney"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:paddingBottom="8dp"
-                    android:text="@string/settings_subtitle"
-                    android:textColor="#616161"
-                    android:textSize="14sp" />
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="7dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="7dp">
+
+                    <ImageView
+                        android:id="@+id/emoji"
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/twotone_cloud_download_black_48dp"
+                        app:tint="#4CAF50" />
+
+                    <TextView
+                        android:id="@+id/textview5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/emoji"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="2dp"
+                        android:text="@string/settings_option_1_title"
+                        android:textColor="#212121"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textview6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textview5"
+                        android:layout_toEndOf="@+id/emoji"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/settings_option_1_subtitle"
+                        android:textColor="#616161"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/setting3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="7dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="7dp">
+
+                    <ImageView
+                        android:id="@+id/imageview3"
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/twotone_backup_black_48dp"
+                        app:tint="#DE21F3" />
+
+                    <TextView
+                        android:id="@+id/textview10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/imageview3"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="2dp"
+                        android:text="@string/settings_option_2_title"
+                        android:textColor="#212121"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textview11"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textview10"
+                        android:layout_toEndOf="@+id/imageview3"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/settings_option_2_subtitle"
+                        android:textColor="#616161"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/setting11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="7dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="7dp">
+
+                    <ImageView
+                        android:id="@+id/setting11_ic"
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/outline_language_black_48dp"
+                        app:tint="#2196F3" />
+
+                    <TextView
+                        android:id="@+id/setting11_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/setting11_ic"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="2dp"
+                        android:text="@string/settings_option_11_title"
+                        android:textColor="#212121"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/setting11_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/setting11_title"
+                        android:layout_toEndOf="@+id/setting11_ic"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/settings_option_11_subtitle"
+                        android:textColor="#616161"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/setting2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="7dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="7dp">
+
+                    <ImageView
+                        android:id="@+id/imageview2"
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/twotone_delete_black_48dp"
+                        app:tint="#3E2723" />
+
+                    <TextView
+                        android:id="@+id/textview8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/imageview2"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="2dp"
+                        android:text="@string/settings_option_3_title"
+                        android:textColor="#212121"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textview9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textview8"
+                        android:layout_toEndOf="@+id/imageview2"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/settings_option_3_subtitle"
+                        android:textColor="#616161"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/setting14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="7dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="7dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/setting14_ic"
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/twotone_dark_mode_black_48dp"
+                        app:tint="#00A0B4" />
+
+                    <TextView
+                        android:id="@+id/setting14_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/setting14_ic"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="2dp"
+                        android:text="@string/settings_option_14_title"
+                        android:textColor="#212121"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/setting14_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/setting14_ic"
+                        android:layout_toEndOf="@+id/setting14_ic"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/settings_option_14_subtitle"
+                        android:textColor="#616161"
+                        android:textSize="12sp" />
+                </RelativeLayout>
 
                 <LinearLayout
-                    android:id="@+id/line"
+                    android:id="@+id/line1"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="20dp"
                     android:background="#E0E0E0"
                     android:orientation="horizontal" />
 
-                <androidx.core.widget.NestedScrollView
-                    android:id="@+id/vscroll1"
+                <TextView
+                    android:id="@+id/textview12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/whitney"
+                    android:paddingStart="3dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="3dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/app_name"
+                    android:textAllCaps="true"
+                    android:textColor="#616161"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:id="@+id/setting13"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="7dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="7dp">
 
-                    <LinearLayout
-                        android:id="@+id/linear3"
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:id="@+id/setting13_ic"
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_discord"
+                        app:tint="#5865F2" />
+
+                    <TextView
+                        android:id="@+id/setting13_title"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingStart="15dp"
-                        android:paddingEnd="15dp">
+                        android:layout_toEndOf="@+id/setting13_ic"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="2dp"
+                        android:text="@string/discord_title"
+                        android:textColor="#212121"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/textview7"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
-                            android:fontFamily="@font/whitney"
-                            android:paddingStart="3dp"
-                            android:paddingTop="8dp"
-                            android:paddingEnd="3dp"
-                            android:paddingBottom="8dp"
-                            android:text="@string/settings_section_1_title"
-                            android:textAllCaps="true"
-                            android:textColor="#616161"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/setting13_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/setting13_title"
+                        android:layout_toEndOf="@+id/setting13_ic"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/settings_option_13_subtitle"
+                        android:textColor="#616161"
+                        android:textSize="12sp" />
+                </RelativeLayout>
 
-                        <RelativeLayout
-                            android:id="@+id/setting1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingLeft="5dp"
-                            android:paddingTop="7dp"
-                            android:paddingRight="5dp"
-                            android:paddingBottom="7dp">
+                <RelativeLayout
+                    android:id="@+id/setting4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="7dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="7dp">
 
-                            <ImageView
-                                android:id="@+id/emoji"
-                                android:layout_width="30dp"
-                                android:layout_height="25dp"
-                                android:layout_centerVertical="true"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/twotone_cloud_download_black_48dp"
-                                app:tint="#4CAF50" />
+                    <ImageView
+                        android:id="@+id/imageview4"
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/twotone_support_black_48dp"
+                        app:tint="#FF7B00" />
 
-                            <TextView
-                                android:id="@+id/textview5"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_toEndOf="@+id/emoji"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="8dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="2dp"
-                                android:text="@string/settings_option_1_title"
-                                android:textColor="#212121"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/textview13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/imageview4"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="2dp"
+                        android:text="@string/settings_option_4_title"
+                        android:textColor="#212121"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
-                            <TextView
-                                android:id="@+id/textview6"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/emoji"
-                                android:layout_toEndOf="@+id/emoji"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="2dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="8dp"
-                                android:text="@string/settings_option_1_subtitle"
-                                android:textColor="#616161"
-                                android:textSize="12sp" />
-                        </RelativeLayout>
+                    <TextView
+                        android:id="@+id/textview14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textview13"
+                        android:layout_toEndOf="@+id/imageview4"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/settings_option_4_subtitle"
+                        android:textColor="#616161"
+                        android:textSize="12sp" />
+                </RelativeLayout>
 
-                        <RelativeLayout
-                            android:id="@+id/setting3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingLeft="5dp"
-                            android:paddingTop="7dp"
-                            android:paddingRight="5dp"
-                            android:paddingBottom="7dp">
+                <RelativeLayout
+                    android:id="@+id/setting5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@android:color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="7dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="7dp">
 
-                            <ImageView
-                                android:id="@+id/imageview3"
-                                android:layout_width="30dp"
-                                android:layout_height="25dp"
-                                android:layout_centerVertical="true"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/twotone_backup_black_48dp"
-                                app:tint="#DE21F3" />
+                    <ImageView
+                        android:id="@+id/imageview5"
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/twotone_feedback_black_48dp"
+                        app:tint="#009688" />
 
-                            <TextView
-                                android:id="@+id/textview10"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_toEndOf="@+id/imageview3"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="8dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="2dp"
-                                android:text="@string/settings_option_2_title"
-                                android:textColor="#212121"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/textview15"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/imageview5"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="2dp"
+                        android:text="@string/settings_option_5_title"
+                        android:textColor="#212121"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
-                            <TextView
-                                android:id="@+id/textview11"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/imageview3"
-                                android:layout_toEndOf="@+id/imageview3"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="2dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="8dp"
-                                android:text="@string/settings_option_2_subtitle"
-                                android:textColor="#616161"
-                                android:textSize="12sp" />
-                        </RelativeLayout>
+                    <TextView
+                        android:id="@+id/textview16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textview15"
+                        android:layout_toEndOf="@+id/imageview5"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/settings_option_5_subtitle"
+                        android:textColor="#616161"
+                        android:textSize="12sp" />
+                </RelativeLayout>
 
-                        <RelativeLayout
-                            android:id="@+id/setting11"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingLeft="5dp"
-                            android:paddingTop="7dp"
-                            android:paddingRight="5dp"
-                            android:paddingBottom="7dp">
+                <RelativeLayout
+                    android:id="@+id/setting12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@android:color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="7dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="7dp">
 
-                            <ImageView
-                                android:id="@+id/setting11_ic"
-                                android:layout_width="30dp"
-                                android:layout_height="25dp"
-                                android:layout_centerVertical="true"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/outline_language_black_48dp"
-                                app:tint="#2196F3" />
+                    <ImageView
+                        android:id="@+id/setting12_ic"
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/outline_translate_black_48dp"
+                        app:tint="#F44336" />
 
-                            <TextView
-                                android:id="@+id/setting11_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_toEndOf="@+id/setting11_ic"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="8dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="2dp"
-                                android:text="@string/settings_option_11_title"
-                                android:textColor="#212121"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/setting12_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/setting12_ic"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="2dp"
+                        android:text="@string/settings_option_12_title"
+                        android:textColor="#212121"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
-                            <TextView
-                                android:id="@+id/setting11_desc"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/setting11_ic"
-                                android:layout_toEndOf="@+id/setting11_ic"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="2dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="8dp"
-                                android:text="@string/settings_option_11_subtitle"
-                                android:textColor="#616161"
-                                android:textSize="12sp" />
-                        </RelativeLayout>
+                    <TextView
+                        android:id="@+id/setting12_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/setting12_title"
+                        android:layout_toEndOf="@+id/setting12_ic"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/settings_option_12_subtitle"
+                        android:textColor="#616161"
+                        android:textSize="12sp" />
+                </RelativeLayout>
 
-                        <RelativeLayout
-                            android:id="@+id/setting2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingLeft="5dp"
-                            android:paddingTop="7dp"
-                            android:paddingRight="5dp"
-                            android:paddingBottom="7dp">
+                <RelativeLayout
+                    android:id="@+id/setting8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="7dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="7dp">
 
-                            <ImageView
-                                android:id="@+id/imageview2"
-                                android:layout_width="30dp"
-                                android:layout_height="25dp"
-                                android:layout_centerVertical="true"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/twotone_delete_black_48dp"
-                                app:tint="#3E2723" />
+                    <ImageView
+                        android:id="@+id/download_ic"
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/logo_min"
+                        app:tint="#7289DA" />
 
-                            <TextView
-                                android:id="@+id/textview8"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_toEndOf="@+id/imageview2"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="8dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="2dp"
-                                android:text="@string/settings_option_3_title"
-                                android:textColor="#212121"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/textview18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/download_ic"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="2dp"
+                        android:text="@string/app_name"
+                        android:textColor="#212121"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
-                            <TextView
-                                android:id="@+id/textview9"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/imageview2"
-                                android:layout_toEndOf="@+id/imageview2"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="2dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="8dp"
-                                android:text="@string/settings_option_3_subtitle"
-                                android:textColor="#616161"
-                                android:textSize="12sp" />
-                        </RelativeLayout>
+                    <TextView
+                        android:id="@+id/textview19"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textview18"
+                        android:layout_toEndOf="@+id/download_ic"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/settings_option_6_subtitle"
+                        android:textColor="#616161"
+                        android:textSize="12sp" />
+                </RelativeLayout>
 
-                        <RelativeLayout
-                            android:id="@+id/setting14"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingLeft="5dp"
-                            android:paddingTop="7dp"
-                            android:paddingRight="5dp"
-                            android:paddingBottom="7dp">
+                <RelativeLayout
+                    android:id="@+id/setting10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="7dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="7dp"
+                    android:visibility="gone">
 
-                            <ImageView
-                                android:id="@+id/setting14_ic"
-                                android:layout_width="30dp"
-                                android:layout_height="25dp"
-                                android:layout_centerVertical="true"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/twotone_dark_mode_black_48dp"
-                                app:tint="#00A0B4" />
+                    <ImageView
+                        android:id="@+id/setting10_ico"
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/github_logo"
+                        app:tint="#333333" />
 
-                            <TextView
-                                android:id="@+id/setting14_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_toEndOf="@+id/setting14_ic"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="8dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="2dp"
-                                android:text="@string/settings_option_14_title"
-                                android:textColor="#212121"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/setting10_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/setting10_ico"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="2dp"
+                        android:text="@string/settings_option_10_title"
+                        android:textColor="#212121"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
-                            <TextView
-                                android:id="@+id/setting14_desc"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/setting14_ic"
-                                android:layout_toEndOf="@+id/setting14_ic"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="2dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="8dp"
-                                android:text="@string/settings_option_14_subtitle"
-                                android:textColor="#616161"
-                                android:textSize="12sp" />
-                        </RelativeLayout>
+                    <TextView
+                        android:id="@+id/setting10_subtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/setting10_ico"
+                        android:layout_toEndOf="@+id/setting10_ico"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/settings_option_10_subtitle"
+                        android:textColor="#616161"
+                        android:textSize="12sp" />
+                </RelativeLayout>
 
-                        <LinearLayout
-                            android:id="@+id/line1"
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="20dp"
-                            android:background="#E0E0E0"
-                            android:orientation="horizontal" />
+                <LinearLayout
+                    android:id="@+id/line2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="20dp"
+                    android:background="#E0E0E0"
+                    android:orientation="horizontal" />
 
-                        <TextView
-                            android:id="@+id/textview12"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
-                            android:fontFamily="@font/whitney"
-                            android:paddingStart="3dp"
-                            android:paddingTop="8dp"
-                            android:paddingEnd="3dp"
-                            android:paddingBottom="8dp"
-                            android:text="@string/app_name"
-                            android:textAllCaps="true"
-                            android:textColor="#616161"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/textview17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/whitney"
+                    android:paddingStart="3dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="3dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/settings_section_3_title"
+                    android:textAllCaps="true"
+                    android:textColor="#616161"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
-                        <RelativeLayout
-                            android:id="@+id/setting13"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingLeft="5dp"
-                            android:paddingTop="7dp"
-                            android:paddingRight="5dp"
-                            android:paddingBottom="7dp">
+                <RelativeLayout
+                    android:id="@+id/setting6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="7dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="7dp">
 
-                            <ImageView
-                                android:id="@+id/setting13_ic"
-                                android:layout_width="30dp"
-                                android:layout_height="25dp"
-                                android:layout_centerVertical="true"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/ic_discord"
-                                app:tint="#5865F2" />
+                    <ImageView
+                        android:id="@+id/imageview7"
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/twotone_copyright_black_48dp"
+                        app:tint="#795548" />
 
-                            <TextView
-                                android:id="@+id/setting13_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_toEndOf="@+id/setting13_ic"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="8dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="2dp"
-                                android:text="@string/discord_title"
-                                android:textColor="#212121"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/textview20"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/imageview7"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="2dp"
+                        android:text="@string/settings_option_7_title"
+                        android:textColor="#212121"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
-                            <TextView
-                                android:id="@+id/setting13_desc"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/setting13_ic"
-                                android:layout_toEndOf="@+id/setting13_ic"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="2dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="8dp"
-                                android:text="@string/settings_option_13_subtitle"
-                                android:textColor="#616161"
-                                android:textSize="12sp" />
-                        </RelativeLayout>
+                    <TextView
+                        android:id="@+id/textview21"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textview20"
+                        android:layout_toEndOf="@+id/imageview7"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/settings_option_7_subtitle"
+                        android:textColor="#616161"
+                        android:textSize="12sp" />
+                </RelativeLayout>
 
-                        <RelativeLayout
-                            android:id="@+id/setting4"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingLeft="5dp"
-                            android:paddingTop="7dp"
-                            android:paddingRight="5dp"
-                            android:paddingBottom="7dp">
+                <RelativeLayout
+                    android:id="@+id/setting7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="60dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="7dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="7dp">
 
-                            <ImageView
-                                android:id="@+id/imageview4"
-                                android:layout_width="30dp"
-                                android:layout_height="25dp"
-                                android:layout_centerVertical="true"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/twotone_support_black_48dp"
-                                app:tint="#FF7B00" />
+                    <ImageView
+                        android:id="@+id/imageview8"
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/twotone_sentiment_satisfied_alt_black_48dp"
+                        app:tint="#5A5A5A" />
 
-                            <TextView
-                                android:id="@+id/textview13"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_toEndOf="@+id/imageview4"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="8dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="2dp"
-                                android:text="@string/settings_option_4_title"
-                                android:textColor="#212121"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/textview22"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/imageview8"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="2dp"
+                        android:text="@string/settings_option_8_title"
+                        android:textColor="#212121"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
-                            <TextView
-                                android:id="@+id/textview14"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/imageview4"
-                                android:layout_toEndOf="@+id/imageview4"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="2dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="8dp"
-                                android:text="@string/settings_option_4_subtitle"
-                                android:textColor="#616161"
-                                android:textSize="12sp" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:id="@+id/setting5"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:background="@android:color/white"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingLeft="5dp"
-                            android:paddingTop="7dp"
-                            android:paddingRight="5dp"
-                            android:paddingBottom="7dp">
-
-                            <ImageView
-                                android:id="@+id/imageview5"
-                                android:layout_width="30dp"
-                                android:layout_height="25dp"
-                                android:layout_centerVertical="true"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/twotone_feedback_black_48dp"
-                                app:tint="#009688" />
-
-                            <TextView
-                                android:id="@+id/textview15"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_toEndOf="@+id/imageview5"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="8dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="2dp"
-                                android:text="@string/settings_option_5_title"
-                                android:textColor="#212121"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/textview16"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/textview15"
-                                android:layout_toEndOf="@+id/imageview5"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="2dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="8dp"
-                                android:text="@string/settings_option_5_subtitle"
-                                android:textColor="#616161"
-                                android:textSize="12sp" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:id="@+id/setting12"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:background="@android:color/white"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingLeft="5dp"
-                            android:paddingTop="7dp"
-                            android:paddingRight="5dp"
-                            android:paddingBottom="7dp">
-
-                            <ImageView
-                                android:id="@+id/setting12_ic"
-                                android:layout_width="30dp"
-                                android:layout_height="25dp"
-                                android:layout_centerVertical="true"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/outline_translate_black_48dp"
-                                app:tint="#F44336" />
-
-                            <TextView
-                                android:id="@+id/setting12_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_toEndOf="@+id/setting12_ic"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="8dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="2dp"
-                                android:text="@string/settings_option_12_title"
-                                android:textColor="#212121"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/setting12_desc"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/setting12_ic"
-                                android:layout_toEndOf="@+id/setting12_ic"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="2dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="8dp"
-                                android:text="@string/settings_option_12_subtitle"
-                                android:textColor="#616161"
-                                android:textSize="12sp" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:id="@+id/setting8"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingLeft="5dp"
-                            android:paddingTop="7dp"
-                            android:paddingRight="5dp"
-                            android:paddingBottom="7dp">
-
-                            <ImageView
-                                android:id="@+id/download_ic"
-                                android:layout_width="30dp"
-                                android:layout_height="25dp"
-                                android:layout_centerVertical="true"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/logo_min"
-                                app:tint="#7289DA" />
-
-                            <TextView
-                                android:id="@+id/textview18"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_toEndOf="@+id/download_ic"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="8dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="2dp"
-                                android:text="@string/app_name"
-                                android:textColor="#212121"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/textview19"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/download_ic"
-                                android:layout_toEndOf="@+id/download_ic"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="2dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="8dp"
-                                android:text="@string/settings_option_6_subtitle"
-                                android:textColor="#616161"
-                                android:textSize="12sp" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:id="@+id/setting10"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingLeft="5dp"
-                            android:paddingTop="7dp"
-                            android:paddingRight="5dp"
-                            android:paddingBottom="7dp"
-                            android:visibility="gone">
-
-                            <ImageView
-                                android:id="@+id/setting10_ico"
-                                android:layout_width="30dp"
-                                android:layout_height="25dp"
-                                android:layout_centerVertical="true"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/github_logo"
-                                app:tint="#333333" />
-
-                            <TextView
-                                android:id="@+id/setting10_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_toEndOf="@+id/setting10_ico"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="8dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="2dp"
-                                android:text="@string/settings_option_10_title"
-                                android:textColor="#212121"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/setting10_subtitle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/setting10_ico"
-                                android:layout_toEndOf="@+id/setting10_ico"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="2dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="8dp"
-                                android:text="@string/settings_option_10_subtitle"
-                                android:textColor="#616161"
-                                android:textSize="12sp" />
-                        </RelativeLayout>
-
-                        <LinearLayout
-                            android:id="@+id/line2"
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="20dp"
-                            android:background="#E0E0E0"
-                            android:orientation="horizontal" />
-
-                        <TextView
-                            android:id="@+id/textview17"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
-                            android:fontFamily="@font/whitney"
-                            android:paddingStart="3dp"
-                            android:paddingTop="8dp"
-                            android:paddingEnd="3dp"
-                            android:paddingBottom="8dp"
-                            android:text="@string/settings_section_3_title"
-                            android:textAllCaps="true"
-                            android:textColor="#616161"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                        <RelativeLayout
-                            android:id="@+id/setting6"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingLeft="5dp"
-                            android:paddingTop="7dp"
-                            android:paddingRight="5dp"
-                            android:paddingBottom="7dp">
-
-                            <ImageView
-                                android:id="@+id/imageview7"
-                                android:layout_width="30dp"
-                                android:layout_height="25dp"
-                                android:layout_centerVertical="true"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/twotone_copyright_black_48dp"
-                                app:tint="#795548" />
-
-                            <TextView
-                                android:id="@+id/textview20"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_toEndOf="@+id/imageview7"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="8dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="2dp"
-                                android:text="@string/settings_option_7_title"
-                                android:textColor="#212121"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/textview21"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/imageview7"
-                                android:layout_toEndOf="@+id/imageview7"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="2dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="8dp"
-                                android:text="@string/settings_option_7_subtitle"
-                                android:textColor="#616161"
-                                android:textSize="12sp" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:id="@+id/setting7"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="60dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingLeft="5dp"
-                            android:paddingTop="7dp"
-                            android:paddingRight="5dp"
-                            android:paddingBottom="7dp">
-
-                            <ImageView
-                                android:id="@+id/imageview8"
-                                android:layout_width="30dp"
-                                android:layout_height="25dp"
-                                android:layout_centerVertical="true"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/twotone_sentiment_satisfied_alt_black_48dp"
-                                app:tint="#5A5A5A" />
-
-                            <TextView
-                                android:id="@+id/textview22"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_toEndOf="@+id/imageview8"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="8dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="2dp"
-                                android:text="@string/settings_option_8_title"
-                                android:textColor="#212121"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/textview23"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/imageview8"
-                                android:layout_toEndOf="@+id/imageview8"
-                                android:fontFamily="@font/whitney"
-                                android:paddingLeft="8dp"
-                                android:paddingTop="2dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="8dp"
-                                android:text="@string/settings_option_8_subtitle"
-                                android:textColor="#616161"
-                                android:textSize="12sp" />
-                        </RelativeLayout>
-                    </LinearLayout>
-                </androidx.core.widget.NestedScrollView>
+                    <TextView
+                        android:id="@+id/textview23"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textview22"
+                        android:layout_toEndOf="@+id/imageview8"
+                        android:fontFamily="@font/whitney"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/settings_option_8_subtitle"
+                        android:textColor="#616161"
+                        android:textSize="12sp" />
+                </RelativeLayout>
             </LinearLayout>
-        </LinearLayout>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

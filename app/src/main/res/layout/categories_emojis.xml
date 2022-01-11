@@ -43,8 +43,8 @@
             android:imeOptions="actionSearch"
             android:importantForAutofill="no"
             android:inputType="textNoSuggestions"
-            android:padding="8dp"
             android:lines="1"
+            android:padding="8dp"
             android:textColor="#000000"
             android:textColorHint="#757575"
             android:textSize="14sp"
@@ -92,13 +92,15 @@
             android:id="@+id/emptyAnimation"
             android:layout_width="wrap_content"
             android:layout_height="150dp"
+            android:forceDarkAllowed="false"
             android:scaleType="fitCenter"
             app:lottie_autoPlay="true"
             app:lottie_fileName="animations/loading.json"
             app:lottie_loop="true"
             app:lottie_progress="0"
             app:lottie_renderMode="automatic"
-            app:lottie_repeatMode="reverse" />
+            app:lottie_repeatMode="reverse"
+            tools:targetApi="q" />
 
         <TextView
             android:id="@+id/emptyTitle"

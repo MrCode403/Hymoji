@@ -16,6 +16,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -33,6 +34,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.nerbly.bemoji.Functions.Utils;
@@ -57,7 +59,7 @@ public class PremiumActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadLocale(this);
-        setContentView(R.layout.payment_main);
+        setContentView(R.layout.premium_activity);
         initialize();
         initializeLogic();
     }
@@ -77,32 +79,20 @@ public class PremiumActivity extends AppCompatActivity {
             shadAnim(webview_holder, "alpha", 1, 300);
             webview_holder.setVisibility(View.VISIBLE);
             if (!isUserAbleToBuy) {
-                shouldShowProgressBar(true);
                 webview.loadUrl(PAYMENT_SOURCE);
+                shouldShowProgressBar(true);
             }
         });
 
         webview.setWebViewClient(new WebViewClient() {
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                if (url.equals("https://nerbly.com/hymoji/payment/payment_success.json")) {
-                    if (isFirstView) {
-                        isPurchased = true;
-                        isFirstView = false;
-                        sharedPref.edit().putBoolean("isPremium", true).apply();
-                        showThanksBottomSheet();
-                    }
-                } else {
-                    if (url.equals("https://nerbly.com/hymoji/payment/payment_fail.json")) {
-                        showCustomSnackBar(getString(R.string.payment_failed), PremiumActivity.this);
-                        webview.loadUrl(PAYMENT_SOURCE);
-                        dismissWebView();
-                    }
-                }
+                checkPaymentValidity(url);
                 shouldShowProgressBar(true);
             }
 
             public void onPageFinished(WebView view, String url) {
                 if (Utils.isConnected(PremiumActivity.this)) {
+                    checkPaymentValidity(url);
                     isUserAbleToBuy = true;
                 }
                 shouldShowProgressBar(false);
@@ -118,11 +108,29 @@ public class PremiumActivity extends AppCompatActivity {
         });
 
         webview.setWebChromeClient(new WebChromeClient() {
-
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
             }
         });
+    }
+
+    private void checkPaymentValidity(String url) {
+        switch (url) {
+            case "https://nerbly.com/hymoji/payment/payment_success.json":
+                if (isFirstView) {
+                    isPurchased = true;
+                    isFirstView = false;
+                    sharedPref.edit().putBoolean("isPremium", true).apply();
+                    showThanksBottomSheet();
+                }
+                break;
+            case "https://nerbly.com/hymoji/payment/payment_fail.json":
+                showCustomSnackBar(getString(R.string.payment_failed), PremiumActivity.this);
+                webview.loadUrl(PAYMENT_SOURCE);
+                sharedPref.edit().putBoolean("isPremium", false).apply();
+                dismissWebView();
+                break;
+        }
     }
 
     private void initializeLogic() {
@@ -136,7 +144,7 @@ public class PremiumActivity extends AppCompatActivity {
         new Handler().postDelayed(() -> {
             webview.loadUrl(PAYMENT_SOURCE);
             shouldShowProgressBar(true);
-        } ,1000);
+        }, 1000);
 
     }
 
@@ -153,7 +161,9 @@ public class PremiumActivity extends AppCompatActivity {
         ViewGroup.MarginLayoutParams params2 = (ViewGroup.MarginLayoutParams) webview.getLayoutParams();
         params2.bottomMargin = getNavigationBarHeight(this);
 
-        OverScrollDecoratorHelper.setUpOverScroll(payment_features_scrollview);
+        if (Build.VERSION.SDK_INT <= 30) {
+            OverScrollDecoratorHelper.setUpOverScroll(payment_features_scrollview);
+        }
 
     }
 
@@ -189,7 +199,7 @@ public class PremiumActivity extends AppCompatActivity {
             webview.getSettings().setAllowFileAccess(true);
             webview.getSettings().setAllowFileAccessFromFileURLs(true);
             webview.getSettings().setAllowUniversalAccessFromFileURLs(true);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 
@@ -197,9 +207,7 @@ public class PremiumActivity extends AppCompatActivity {
         isTryingToPurchase = false;
         shadAnim(webview_holder, "translationY", 1000, 300);
         shadAnim(webview_holder, "alpha", 0, 300);
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            webview_holder.setVisibility(View.GONE);
-        }, 400);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> webview_holder.setVisibility(View.GONE), 400);
     }
 
     private void shouldShowProgressBar(boolean bool) {
@@ -214,10 +222,11 @@ public class PremiumActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("InflateParams")
     private void showThanksBottomSheet() {
         dismissWebView();
 
-        com.google.android.material.bottomsheet.BottomSheetDialog bottomSheetDialog = new com.google.android.material.bottomsheet.BottomSheetDialog(this, R.style.materialsheet);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.materialsheet);
 
         View bottomSheetView;
         bottomSheetView = getLayoutInflater().inflate(R.layout.infosheet, null);
@@ -237,7 +246,7 @@ public class PremiumActivity extends AppCompatActivity {
         infosub.setText(R.string.payment_success_desc);
         infook.setText(R.string.payment_success_positive_btn);
         infocancel.setVisibility(View.GONE);
-        image.setImageResource(R.drawable.thanks_premium);
+        image.setImageResource(R.drawable.ic_thanks_premium);
 
         advancedCorners(infoback, "#ffffff", 38, 38, 0, 0);
 

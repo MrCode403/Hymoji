@@ -60,7 +60,6 @@ import java.util.Objects;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 public class EmojisActivity extends AppCompatActivity {
-    public static InterstitialAd mInterstitialAd;
     public EditText searchBoxField;
     public LinearLayout searchBox;
     public LinearLayout adContainerView;
@@ -80,12 +79,8 @@ public class EmojisActivity extends AppCompatActivity {
     private String lastMainEmojisQuery = "";
     private String lastPacksEmojisQuery = "";
     private AppBarLayout appbar;
-
-    public static void showInterstitialAd(Activity context) {
-        if (mInterstitialAd != null) {
-            mInterstitialAd.show(context);
-        }
-    }
+    private InterstitialAd mInterstitialAd;
+    private int emojisDownloadedSoFar = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,7 +156,6 @@ public class EmojisActivity extends AppCompatActivity {
 
         searchBtn.setOnClickListener(_view -> searchTask());
 
-
         tablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -228,12 +222,14 @@ public class EmojisActivity extends AppCompatActivity {
             statusBarColor("#7289DA", this);
             LIGHT_ICONS(this);
         } else {
-            navStatusBarColor("#FFFFFF", "FFFFFF", this);
+            navStatusBarColor("#FFFFFF", "#FFFFFF", this);
             DARK_ICONS(this);
         }
         RippleEffects("#E0E0E0", sortByBtn);
         RippleEffects("#E0E0E0", searchBtn);
-        OverScrollDecoratorHelper.setUpOverScroll(viewpager);
+        if (Build.VERSION.SDK_INT >= 31) {
+            OverScrollDecoratorHelper.setUpOverScroll(viewpager);
+        }
     }
 
     public void showFilterMenu(final View view) {
@@ -311,7 +307,6 @@ public class EmojisActivity extends AppCompatActivity {
     }
 
     private void searchTask() {
-
         boolean shouldAllowSearch = false;
         if (viewpager.getCurrentItem() == 0) {
             if (isMainEmojisLoaded) {
@@ -332,7 +327,7 @@ public class EmojisActivity extends AppCompatActivity {
         }
 
         if (searchQuery.length() > 0 && !lastSearchedEmoji.equals(searchQuery) && shouldAllowSearch) {
-            Log.d("search", "allowed to search from step 2");
+            Log.d("HYMOJI_SEARCH", "allowed to search from step 2");
             lastSearchedEmoji = searchQuery;
             hideShowKeyboard(false, searchBoxField, this);
             isSearching = true;
@@ -348,8 +343,8 @@ public class EmojisActivity extends AppCompatActivity {
                 fragment.searchTask(searchQuery);
             }
         } else {
-            Log.d("search", "denied to search from step 1.\nknown reasons:\nmain emojis status: " + isMainEmojisLoaded + "\npacks emojis status: " + isPacksEmojisLoaded);
-            Log.d("search", "denied to search from step 2 \nknown reasons:\nlast searched emoji: " + lastSearchedEmoji + "\nquery: " + searchQuery);
+            Log.d("HYMOJI_SEARCH", "denied to search from step 1.\nknown reasons:\nmain emojis status: " + isMainEmojisLoaded + "\npacks emojis status: " + isPacksEmojisLoaded);
+            Log.d("HYMOJI_SEARCH", "denied to search from step 2 \nknown reasons:\nlast searched emoji: " + lastSearchedEmoji + "\nquery: " + searchQuery);
         }
     }
 
@@ -366,18 +361,53 @@ public class EmojisActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        mInterstitialAd = null;
         if (adview != null) {
             adview.destroy();
         }
-        mInterstitialAd = null;
         super.onDestroy();
+    }
+
+    public void loadInterstitialAd(Context context) {
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        InterstitialAd.load(context, context.getString(R.string.admob_interstitial_id), adRequest, new InterstitialAdLoadCallback() {
+            @Override
+            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                mInterstitialAd = interstitialAd;
+                Log.d("HYMOJI_ADS", "Interstitial AD is loaded and ready");
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                Log.d("HYMOJI_ADS", "Interstitial AD failed to load, reason: " + loadAdError.getMessage());
+                mInterstitialAd = null;
+            }
+        });
+    }
+
+    public void showInterstitialAd() {
+        if (emojisDownloadedSoFar == 5) {
+            emojisDownloadedSoFar = 0;
+            loadAds();
+        } else if (emojisDownloadedSoFar == 0) {
+            if (mInterstitialAd != null) {
+                mInterstitialAd.show(this);
+                Log.d("HYMOJI_ADS", "Interstitial AD showed up successfully");
+            } else {
+                Log.d("HYMOJI_ADS", "Interstitial AD is null and can't show");
+            }
+            emojisDownloadedSoFar++;
+        } else {
+            emojisDownloadedSoFar++;
+        }
+
+        Log.d("HYMOJI_ADS", "Downloaded emojis " + emojisDownloadedSoFar + " times after check");
+
     }
 
     private void loadAds() {
         if (!sharedPref.getBoolean("isPremium", false)) {
-            MobileAds.initialize(this, initializationStatus -> {
-            });
-            loadInterstitialAd();
             adview = new AdView(this);
             adview.setAdUnitId(getString(R.string.mainemojis_admob_banner_id));
             adContainerView.removeAllViews();
@@ -389,26 +419,11 @@ public class EmojisActivity extends AppCompatActivity {
 
             AdRequest adRequest = new AdRequest.Builder().build();
             adview.loadAd(adRequest);
+
+            MobileAds.initialize(this, initializationStatus -> {
+            });
+            loadInterstitialAd(this);
         }
-    }
-
-    public void loadInterstitialAd() {
-
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        InterstitialAd.load(this, getString(R.string.admob_interstitial_id), adRequest,
-                new InterstitialAdLoadCallback() {
-                    @Override
-                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                        mInterstitialAd = interstitialAd;
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        mInterstitialAd = null;
-                    }
-                });
-
     }
 
     public class MyFragmentAdapter extends FragmentStatePagerAdapter {

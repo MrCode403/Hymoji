@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF">
@@ -26,19 +27,19 @@
             android:id="@+id/emptyAnimation"
             android:layout_width="wrap_content"
             android:layout_height="150dp"
+            android:forceDarkAllowed="false"
             android:scaleType="fitCenter"
             app:lottie_autoPlay="true"
+            app:lottie_cacheComposition="true"
             app:lottie_fileName="animations/loading.json"
             app:lottie_loop="true"
-            app:lottie_progress="0"
-            app:lottie_renderMode="automatic"
-            app:lottie_repeatMode="reverse" />
+            tools:targetApi="q" />
 
         <TextView
             android:id="@+id/emptyTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/whitney"
             android:gravity="center_horizontal|center_vertical"
             android:paddingLeft="8dp"

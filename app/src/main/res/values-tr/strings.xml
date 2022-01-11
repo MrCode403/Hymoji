@@ -48,8 +48,7 @@
     <string name="pack_downloading_progress">Paket emojilerini indirme:</string>
     <string name="pack_confirmation_sheet_title">Bekle bir saniye, dahası var!</string>
     <string name="pack_confirmation_sheet_subtitle">Bu paketi bir ZIP dosyası (Masaüstü veya paylaşım için uygun) olarak mı yoksa bir klasör olarak indirmemi mi istiyorsunuz?</string>
-    <string name="pack_confirmation_sheet_btn2">Klasör olarak indir</string>
-    <string name="pack_confirmation_sheet_btn1">Zip olarak indir</string>
+    <string name="pack_confirmation_sheet_btn2">Klasör</string>
     <string name="local_emojis_title">İNDİRİLEN EMOJİS</string>
     <string name="home_title">Emojileri keşfedin</string>
     <string name="home_subtitle">Burada sınırsız bir emoji koleksiyonuna erişmek için kategorilerimizi keşfedebilirsiniz.</string>
@@ -86,10 +85,8 @@
     <string name="ask_for_permission">Lütfen devam etmek için bize depolama alanınıza erişme izni verin.</string>
     <string name="error_msg_2">Bir şeyler yanlış oldu. Lütfen sonra tekrar deneyiniz.</string>
     <string name="cache_cleared_success">Önbellek başarıyla temizlendi.</string>
-    <string name="emojis_reloaded_success">Bitti. Geri döndüğünüzde ana sayfa yeniden yüklenecek</string>
     <string name="emojis_still_loading_msg">Lütfen bekleyin, emoji alıyoruz…</string>
     <string name="news_notifications_channel">Hymoji\'den Haberler</string>
-    <string name="request_server_data_error">Bir şeyler ters gitti, tekrar denemek için uygulamayı yeniden başlatacağız.</string>
     <string name="error_msg">Bir şeyler yanlış gitti.</string>
     <string name="dialog_negative_text">İptal etmek</string>
     <string name="dialog_positive_text">Tamam</string>
@@ -121,8 +118,6 @@
     <string name="contrbute_contact_us">Bizimle iletişime geçmek için posta uygulamanıza yönlendirileceksiniz</string>
     <string name="payment_failed">Ödeme başarısız oldu, lütfen tekrar deneyin.</string>
     <string name="no_internet_connection">İnternet bağlantınızı kontrol edin!</string>
-    <string name="payments_powered_by">Ödemeler PayPal tarafından işlenir</string>
-    <string name="payment_leaving">Yok gitme :(</string>
     <string name="payment_success_title">Size çok teşekkürler!</string>
     <string name="payment_success_desc">Hymoji\'nin en havalı kullanıcılarından biri oldunuz, uygulamamızı beğendiğiniz ve desteklediğiniz için çok mutluyuz.</string>
     <string name="payment_success_positive_btn">Mükemmel</string>
@@ -140,4 +135,5 @@
     <string name="no_internet_connection_title">Hymoji bağlantıyı kaybetti</string>
     <string name="exit_app">çıkış</string>
     <string name="primium_price">YALNIZCA 1 . 9 9 $</string>
+    <string name="preview_emoji_error">Emoji önizleyicide bir hata var gibi görünüyor, lütfen ana ekrana dönün ve tekrar deneyin.</string>
 </resources>

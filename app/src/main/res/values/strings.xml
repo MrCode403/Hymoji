@@ -16,8 +16,8 @@
     <string name="download_btn_txt">Download</string>
     <string name="pack_confirmation_sheet_title">Wait a second, there\'s more!</string>
     <string name="pack_confirmation_sheet_subtitle">Do you want me to download this pack as a ZIP file (suitable for Desktop or sharing) or simply download it as a folder?</string>
-    <string name="pack_confirmation_sheet_btn1">Download as ZIP</string>
-    <string name="pack_confirmation_sheet_btn2">Download as a folder</string>
+    <string name="pack_confirmation_sheet_btn1" translatable="false">ZIP</string>
+    <string name="pack_confirmation_sheet_btn2">Folder</string>
     <string name="home_searchbox">Search…</string>
     <string name="home_sections_title">SECTIONS</string>
     <string name="home_dock1_title">All emojis</string>
@@ -90,7 +90,6 @@
     <string name="error_msg">Something went wrong.</string>
     <string name="error_msg_2">Something went wrong, please try again later.</string>
     <string name="cache_cleared_success">Cache has been cleared successfully.</string>
-    <string name="emojis_reloaded_success">Done. Home page will be reloaded when you get back</string>
     <string name="packs_still_loading_msg">Please wait, we\'re getting categories…</string>
     <string name="emojis_still_loading_msg">Please wait, we\'re getting emojis…</string>
     <string name="settings_option_11_title">Language</string>
@@ -98,11 +97,10 @@
     <string name="settings_option_12_title">Help to translate Hymoji</string>
     <string name="settings_option_12_subtitle">Our mission is to make Hymoji accessible for all emoji lovers around the world. Help us in that mission.</string>
     <string name="news_notifications_channel">Hymoji\'s News</string>
-    <string name="request_server_data_error">Something went wrong, we will restart the app to try again.</string>
     <string name="dialog_negative_text">Cancel</string>
     <string name="dialog_positive_text">Okay</string>
     <string name="mailto_device_not_supported">It seems like your device doesn\'t have a mail app installed, would you like to be redirected to Play Store to send us feedback or to contact us?</string>
-    <string name="webview_device_not_supported">It seems like your device doesn\'t have a browser app installed, sorry we can\'t open the link. \n Would you like to copy the link to your clipboard?</string>
+    <string name="webview_device_not_supported">It seems like your device doesn\'t have a browser app installed, sorry we can\'t open the link. \nWould you like to copy the link to your clipboard?</string>
     <string name="copy_text">Copy</string>
     <string name="update_now_dialog_title">Update is ready</string>
     <string name="update_now_button">Install</string>
@@ -132,8 +130,6 @@
     <string name="no_internet_connection">Check your internet connection!</string>
     <string name="no_internet_connection_title">Hymoji lost connection</string>
     <string name="no_internet_connection_desc">It seems like we lost connection with the earth, help us bring our spaceship back by reloading emojis.</string>
-    <string name="payments_powered_by">Payments are processed by PayPal</string>
-    <string name="payment_leaving">Oh no, don\'t go :(</string>
     <string name="payment_success_title">Huge thanks to you!</string>
     <string name="payment_success_desc">You\'ve become one of the coolest users of Hymoji, we\'re so happy that you liked our app and supporting it.</string>
     <string name="payment_success_positive_btn">Awesome</string>
@@ -150,4 +146,6 @@
     <string name="exit_app">Exit</string>
     <string name="primium_price">O N L Y   1 . 9 9 $</string>
     <string name="preview_emoji_error">It seems like emoji previewer has an error, please go back to home screen and try again.</string>
+    <string name="pro_tip_1_desc">Downloaded emojis will show up here by giving Hymoji storage permission.</string>
+    <string name="pro_tip_title">Pro tip</string>
 </resources>

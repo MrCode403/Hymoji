@@ -1,14 +1,14 @@
 package com.nerbly.bemoji.Fragments;
 
+import static com.nerbly.bemoji.Configurations.DISCORD_INVITE_LINK;
 import static com.nerbly.bemoji.Functions.MainFunctions.initializeCacheScan;
 import static com.nerbly.bemoji.Functions.MainFunctions.setFragmentLocale;
 import static com.nerbly.bemoji.Functions.MainFunctions.trimCache;
-import static com.nerbly.bemoji.Functions.getDarkModeState.setNightModeState;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
-import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 import static com.nerbly.bemoji.UI.UserInteractions.showMessageDialog;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -73,20 +73,20 @@ public class SettingsFragment extends BottomSheetDialogFragment {
         if (isAdded() && getActivity() != null) {
             Objects.requireNonNull(getDialog()).setOnShowListener(dialog -> {
                 BottomSheetDialog d = (BottomSheetDialog) dialog;
-                View _view = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-                assert _view != null;
-                BottomSheetBehavior.from(_view);
-                initialize(_view);
+                View view = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+                assert view != null;
+                BottomSheetBehavior.from(view);
+                initialize(view);
                 initializeLogic();
             });
             return inflater.inflate(R.layout.settings, container, false);
         } else {
-            showCustomSnackBar(getString(R.string.error_msg), getActivity());
             dismiss();
             return null;
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void initialize(View view) {
         slider = view.findViewById(R.id.slider);
         setting1 = view.findViewById(R.id.setting1);
@@ -128,7 +128,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
 
         setting2.setOnClickListener(_view -> {
             trimCache(getActivity());
-            textview8.setText(getString(R.string.settings_option_3_title).concat(" (" + initializeCacheScan(getActivity()) + ")"));
+            textview8.setText(getString(R.string.settings_option_3_title) + " (" + initializeCacheScan(getActivity()) + ")");
         });
 
         setting4.setOnClickListener(_view -> {
@@ -226,13 +226,13 @@ public class SettingsFragment extends BottomSheetDialogFragment {
         setting13.setOnClickListener(_view -> {
             try {
                 intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("https://discord.gg/nxy2Qq4YP4"));
+                intent.setData(Uri.parse(DISCORD_INVITE_LINK));
                 startActivity(intent);
             } catch (Exception e) {
                 showMessageDialog(true, getString(R.string.error_msg), getString(R.string.webview_device_not_supported), getString(R.string.copy_text), getString(R.string.dialog_negative_text), requireActivity(),
                         (dialog, which) -> {
                             ClipboardManager clipboard = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                            ClipData clip = ClipData.newPlainText(requireActivity().getString(R.string.app_name), "https://discord.gg/nxy2Qq4YP4");
+                            ClipData clip = ClipData.newPlainText(requireActivity().getString(R.string.app_name), DISCORD_INVITE_LINK);
                             clipboard.setPrimaryClip(clip);
                         },
                         (dialog, which) -> dialog.dismiss());
@@ -247,6 +247,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
         LOGIC_BACKEND();
     }
 
+    @SuppressLint("SetTextI18n")
     public void LOGIC_BACKEND() {
         Window window = Objects.requireNonNull(getDialog()).getWindow();
         WindowManager.LayoutParams windowParams = window.getAttributes();
@@ -259,17 +260,16 @@ public class SettingsFragment extends BottomSheetDialogFragment {
 
         executor.execute(() -> {
             cacheSize = initializeCacheScan(getActivity());
-
             handler.post(() -> {
                 if (isAdded()) {
-                    textview8.setText(getString(R.string.settings_option_3_title).concat(" (" + cacheSize + ")"));
+                    textview8.setText(getString(R.string.settings_option_3_title) + " (" + cacheSize + ")");
                 }
             });
         });
 
 
-        if (!(Build.VERSION.SDK_INT >= 29)) {
-            setting14.setVisibility(View.GONE);
+        if (Build.VERSION.SDK_INT >= 29) {
+            //setting14.setVisibility(View.VISIBLE);
         }
     }
 
@@ -298,45 +298,74 @@ public class SettingsFragment extends BottomSheetDialogFragment {
         languagesDialog.setTitle("Choose your language")
                 .setSingleChoiceItems(languages, languagePosition, (dialog, i) -> {
                     if (languagePosition != i) {
-                        isAskingForReload = true;
-                        if (i == 0) {
-                            setFragmentLocale("en", i, requireView());
-                        } else if (i == 1) {
-                            setFragmentLocale("pt", i, requireView());
-                        } else if (i == 2) {
-                            setFragmentLocale("fr", i, requireView());
-                        } else if (i == 3) {
-                            setFragmentLocale("de", i, requireView());
-                        } else if (i == 4) {
-                            setFragmentLocale("tr", i, requireView());
-                        } else if (i == 5) {
-                            setFragmentLocale("ru", i, requireView());
-                        } else if (i == 6) {
-                            setFragmentLocale("pl", i, requireView());
+                        if (getView() != null) {
+                            isAskingForReload = true;
+                            switch (i) {
+                                case 0:
+                                    setFragmentLocale("en", i, requireView());
+                                    break;
+                                case 1:
+                                    setFragmentLocale("pt", i, requireView());
+                                    break;
+                                case 2:
+                                    setFragmentLocale("fr", i, requireView());
+                                    break;
+                                case 3:
+                                    setFragmentLocale("de", i, requireView());
+                                    break;
+                                case 4:
+                                    setFragmentLocale("tr", i, requireView());
+                                    break;
+                                case 5:
+                                    setFragmentLocale("ru", i, requireView());
+                                    break;
+                                case 6:
+                                    setFragmentLocale("pl", i, requireView());
+                                    break;
+                            }
+                            dismiss();
                         }
-                        dialog.dismiss();
-                        dismiss();
-                    } else {
-                        dialog.dismiss();
                     }
+
+                    dialog.dismiss();
                 })
                 .show();
     }
 
+    @SuppressLint("SwitchIntDef")
     private void showThemeDialog() {
-        final String[] themes = {getString(R.string.theme_light_title), getString(R.string.theme_dark_title), getString(R.string.theme_auto_title)};
+        final String[] themes = {getString(R.string.theme_auto_title), getString(R.string.theme_light_title), getString(R.string.theme_dark_title)};
+        int currentTheme = -1;
+
+        switch (AppCompatDelegate.getDefaultNightMode()) {
+            case AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM:
+                currentTheme = 0;
+                break;
+            case AppCompatDelegate.MODE_NIGHT_YES:
+                currentTheme = 1;
+                break;
+            case AppCompatDelegate.MODE_NIGHT_NO:
+                currentTheme = 2;
+                break;
+        }
+
         MaterialAlertDialogBuilder themeDialog = new MaterialAlertDialogBuilder(requireActivity(), R.style.RoundShapeTheme);
         themeDialog.setTitle(getString(R.string.settings_option_14_title))
-                .setSingleChoiceItems(themes, sharedPref.getInt("currentTheme", 0), (dialog, i) -> {
+                .setSingleChoiceItems(themes, sharedPref.getInt("currentTheme", currentTheme), (dialog, i) -> {
                     isAskingForReload = true;
-                    if (i == 0) {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    } else if (i == 1) {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    } else if (i == 2) {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                    switch (i) {
+                        case 0:
+                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                            break;
+                        case 1:
+                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                            break;
+                        case 2:
+                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                            break;
+                        default:
                     }
-                    setNightModeState(i);
+                    sharedPref.edit().putInt("currentTheme", i).apply();
                     dialog.dismiss();
                     dismiss();
                 })

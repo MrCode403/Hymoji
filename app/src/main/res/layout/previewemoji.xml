@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -21,16 +22,20 @@
                 android:id="@+id/emoji_background"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
+                android:forceDarkAllowed="false"
                 android:scaleType="centerCrop"
-                android:src="@drawable/app_icon" />
+                android:src="@drawable/app_icon"
+                tools:targetApi="q" />
 
             <ImageView
                 android:id="@+id/emoji"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_centerInParent="true"
+                android:forceDarkAllowed="false"
                 android:scaleType="fitCenter"
-                android:src="@drawable/logo" />
+                android:src="@drawable/logo"
+                tools:targetApi="q" />
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
 

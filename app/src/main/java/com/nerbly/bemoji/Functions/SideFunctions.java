@@ -71,13 +71,12 @@ public class SideFunctions {
                     .priority(Priority.HIGH);
 
             Glide.with(image.getContext())
-
                     .load(url)
                     .apply(options1)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .apply(bitmapTransform(new BlurTransformation((int) blur, 4)))
                     .into(image);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 

@@ -44,7 +44,7 @@ public class TutorialFragment extends BottomSheetDialogFragment {
     private LinearLayout slider;
     private RecyclerView recyclerview1;
     private RecyclerView loadingRecycler;
-    private BottomSheetBehavior sheetBehavior;
+    private BottomSheetBehavior<View> sheetBehavior;
     private RequestNetwork requestTutorial;
     private RequestNetwork.RequestListener TutorialRequestListener;
 
@@ -62,7 +62,6 @@ public class TutorialFragment extends BottomSheetDialogFragment {
             });
             return inflater.inflate(R.layout.tutorial, container, false);
         } else {
-            showCustomSnackBar(getString(R.string.error_msg), getActivity());
             dismiss();
             return null;
         }
@@ -110,7 +109,6 @@ public class TutorialFragment extends BottomSheetDialogFragment {
     }
 
     public void LOGIC_BACKEND() {
-
         recyclerview1.setLayoutManager(new LinearLayoutManager(getContext()));
         loadingRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerview1.setHasFixedSize(true);

@@ -8,8 +8,7 @@
     <string name="download_btn_txt">Скачать</string>
     <string name="pack_confirmation_sheet_title">Подождите, это еще не все!</string>
     <string name="pack_confirmation_sheet_subtitle">Вы хотите, чтобы я загрузил этот пакет в виде ZIP-файла (подходит для рабочего стола или совместного использования) или просто загрузил его в виде папки?</string>
-    <string name="pack_confirmation_sheet_btn1">Скачать как ZIP</string>
-    <string name="pack_confirmation_sheet_btn2">Скачать как папку</string>
+    <string name="pack_confirmation_sheet_btn2">Папка</string>
     <string name="home_searchbox">Поиск…</string>
     <string name="home_sections_title">РАЗДЕЛЫ</string>
     <string name="home_dock1_title">Все смайлы</string>
@@ -82,7 +81,6 @@
     <string name="error_msg">Что-то пошло не так.</string>
     <string name="error_msg_2">Что-то пошло не так. Пожалуйста, повторите попытку позже.</string>
     <string name="cache_cleared_success">Кеш успешно очищен.</string>
-    <string name="emojis_reloaded_success">Сделанный. Когда вы вернетесь, главная страница будет перезагружена</string>
     <string name="packs_still_loading_msg">Подождите, мы получаем категории…</string>
     <string name="emojis_still_loading_msg">Подождите, мы получаем смайлики…</string>
     <string name="settings_option_11_title">Язык</string>
@@ -90,7 +88,6 @@
     <string name="settings_option_12_title">Помогите перевести Hymoji</string>
     <string name="settings_option_12_subtitle">Наша миссия - сделать Hymoji доступным для всех любителей смайликов во всем мире. Помогите нам в этой миссии.</string>
     <string name="news_notifications_channel">Новости Hymoji</string>
-    <string name="request_server_data_error">Что-то пошло не так, мы перезапустим приложение, чтобы повторить попытку.</string>
     <string name="dialog_negative_text">Отмена</string>
     <string name="dialog_positive_text">Хорошо</string>
     <string name="mailto_device_not_supported">Похоже, на вашем устройстве не установлено почтовое приложение. Хотите, чтобы вас перенаправили в Play Store, чтобы отправить нам отзыв или связаться с нами?</string>
@@ -120,9 +117,7 @@
     <string name="contribute_title">Авторы переводов</string>
     <string name="contrbute_contact_us">Вы будете перенаправлены в свое почтовое приложение, чтобы связаться с нами.</string>
     <string name="payment_failed">Платеж не прошел, попробуйте еще раз.</string>
-    <string name="payments_powered_by">Платежи обрабатываются PayPal</string>
     <string name="no_internet_connection">Проверьте подключение к Интернету!</string>
-    <string name="payment_leaving">О нет, не уходи :(</string>
     <string name="payment_success_title">Огромное Вам спасибо!</string>
     <string name="payment_success_desc">Вы стали одним из самых крутых пользователей Hymoji, мы так рады, что вам понравилось наше приложение и вы его поддерживали.</string>
     <string name="payment_success_positive_btn">Потрясающий</string>
@@ -140,4 +135,5 @@
     <string name="no_internet_connection_title">Hymoji потерял связь</string>
     <string name="exit_app">Выход</string>
     <string name="primium_price">ТОЛЬКО 1 . 9 9 $</string>
+    <string name="preview_emoji_error">Похоже, в программе предварительного просмотра эмодзи возникла ошибка. Вернитесь на главный экран и повторите попытку.</string>
 </resources>
