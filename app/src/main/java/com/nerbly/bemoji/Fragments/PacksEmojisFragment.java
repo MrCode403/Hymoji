@@ -240,7 +240,7 @@ public class PacksEmojisFragment extends Fragment {
                         } else if (isSortingAlphabet) {
                             Utils.sortListMap(emojisList, "name", false, true);
                         }
-                        emojisRecycler.setAdapter(new MainEmojisAdapter.Gridview1Adapter(emojisList));
+                        emojisRecycler.setAdapter(new MainEmojisAdapter(emojisList, requireContext()));
                         sharedPref.edit().putString("packsOneByOne", new Gson().toJson(emojisList)).apply();
                         whenEmojisAreReady();
                         emojisMap.clear();
@@ -298,7 +298,7 @@ public class PacksEmojisFragment extends Fragment {
                     noEmojisFound(false);
                 } else {
                     loadView.setVisibility(View.GONE);
-                    emojisRecycler.setAdapter(new MainEmojisAdapter.Gridview1Adapter(emojisList));
+                    emojisRecycler.setAdapter(new MainEmojisAdapter(emojisList, requireContext()));
                 }
                 isPacksEmojisLoaded = true;
             });

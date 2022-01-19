@@ -136,4 +136,7 @@
     <string name="exit_app">Ausgang</string>
     <string name="primium_price">N U R  1 . 9 9 $</string>
     <string name="preview_emoji_error">Es scheint, als hätte die Emoji-Vorschau einen Fehler, gehen Sie bitte zurück zum Startbildschirm und versuchen Sie es erneut.</string>
+    <string name="nsfw_warning">Dieses Paket enthält NSFW-Emojis. Klicken Sie hier, um den Inhalt anzuzeigen.</string>
+    <string name="pro_tip_title">Profi-Tipp</string>
+    <string name="pro_tip_1_desc">Heruntergeladene Emojis werden hier angezeigt, wenn Sie Hymoji die Speicherberechtigung erteilen.</string>
 </resources>

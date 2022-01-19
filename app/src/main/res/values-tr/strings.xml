@@ -136,4 +136,7 @@
     <string name="exit_app">çıkış</string>
     <string name="primium_price">YALNIZCA 1 . 9 9 $</string>
     <string name="preview_emoji_error">Emoji önizleyicide bir hata var gibi görünüyor, lütfen ana ekrana dönün ve tekrar deneyin.</string>
+    <string name="nsfw_warning">Bu paket NSFW emojilerini içerir. İçeriğini ortaya çıkarmak için buraya tıklayın.</string>
+    <string name="pro_tip_title">Uç</string>
+    <string name="pro_tip_1_desc">İndirilen emojiler, Hymoji depolama izni vererek burada görünecektir.</string>
 </resources>

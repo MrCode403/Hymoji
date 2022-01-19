@@ -54,6 +54,7 @@
             android:id="@+id/ic_filter_clear"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:enabled="false"
             android:padding="8dp"
             android:scaleType="fitCenter"
             android:src="@drawable/outline_filter_alt_black_48dp"
@@ -77,16 +78,16 @@
     <LinearLayout
         android:id="@+id/emptyview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:background="@android:color/white"
         android:gravity="center_horizontal|center_vertical"
         android:orientation="vertical"
         android:padding="8dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="parent"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/searchbox">
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/emptyAnimation"
@@ -99,7 +100,7 @@
             app:lottie_loop="true"
             app:lottie_progress="0"
             app:lottie_renderMode="automatic"
-            app:lottie_repeatMode="reverse"
+            app:lottie_repeatMode="restart"
             tools:targetApi="q" />
 
         <TextView

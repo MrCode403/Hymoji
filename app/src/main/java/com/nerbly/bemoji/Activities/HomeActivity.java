@@ -156,10 +156,6 @@ public class HomeActivity extends AppCompatActivity {
     private LinearLayout adBackView;
     private AdView adView;
 
-    public static String PacksArray() {
-        return new Gson().toJson(packsList);
-    }
-
     public void userIsAskingForActivityToReload(Activity context) {
         context.recreate();
     }
@@ -167,7 +163,6 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
-
         loadLocale(this);
         setContentView(R.layout.home);
         initialize();
@@ -411,7 +406,7 @@ public class HomeActivity extends AppCompatActivity {
                                     Log.d("Packs Response", emojisCount + " packs emojis saved to local database");
                                     sharedPref.edit().putString("packsDataOriginal", response).apply();
                                     sharedPref.edit().putString("packsData", new Gson().toJson(packsList)).apply();
-                                    packs_recycler.setAdapter(new HomePacksAdapter.Packs_recyclerAdapter(packsList));
+                                    packs_recycler.setAdapter(new HomePacksAdapter(packsList));
                                     loadingView.setVisibility(View.GONE);
                                     mainView.setVisibility(View.VISIBLE);
                                     adBackView.setVisibility(View.VISIBLE);
@@ -660,7 +655,7 @@ public class HomeActivity extends AppCompatActivity {
                 packsList = new Gson().fromJson(sharedPref.getString("packsData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
                 }.getType());
                 sharedPref.edit().putString("packsData", new Gson().toJson(packsList)).apply();
-                packs_recycler.setAdapter(new HomePacksAdapter.Packs_recyclerAdapter(packsList));
+                packs_recycler.setAdapter(new HomePacksAdapter(packsList));
             } catch (Exception ignored) {
             }
         }
@@ -679,7 +674,7 @@ public class HomeActivity extends AppCompatActivity {
                     if (localEmojisList.size() == 0) {
                         localEmojisView.setVisibility(View.GONE);
                     } else {
-                        local_recycler.setAdapter(new LocalEmojisAdapter.Local_recyclerAdapter(localEmojisList));
+                        local_recycler.setAdapter(new LocalEmojisAdapter(localEmojisList));
                         new Handler().postDelayed(() -> localEmojisView.setVisibility(View.VISIBLE), 1000);
                     }
                 });
@@ -837,5 +832,9 @@ public class HomeActivity extends AppCompatActivity {
             }
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+    }
+
+    public String PacksArray() {
+        return new Gson().toJson(packsList);
     }
 }

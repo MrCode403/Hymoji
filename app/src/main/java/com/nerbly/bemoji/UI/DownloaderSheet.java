@@ -17,9 +17,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.URLUtil;
 import android.widget.ImageView;
@@ -34,6 +37,8 @@ import com.nerbly.bemoji.Activities.EmojisActivity;
 import com.nerbly.bemoji.R;
 
 import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class DownloaderSheet extends AppCompatActivity {
 
@@ -45,8 +50,7 @@ public class DownloaderSheet extends AppCompatActivity {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context, R.style.materialsheet);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View bottomSheetView = inflater.inflate(R.layout.previewemoji, null);
-
+        View bottomSheetView = inflater.inflate(R.layout.previewemoji, (ViewGroup) null);
 
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.getWindow().findViewById(R.id.design_bottom_sheet).setBackgroundResource(android.R.color.transparent);
@@ -93,7 +97,7 @@ public class DownloaderSheet extends AppCompatActivity {
 
         });
         btn_share.setOnClickListener(_view -> {
-            shareEmojiLink(context, url, context.getString(R.string.share_title));
+            shareEmojiLink(context, url);
             bottomSheetDialog.dismiss();
         });
         if (!activity.isFinishing()) {
@@ -102,39 +106,43 @@ public class DownloaderSheet extends AppCompatActivity {
     }
 
     private void downloadFile(Context context, String url) {
-        try {
-            DownloadManager downloadmanager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-            request.setMimeType(context.getContentResolver().getType(Uri.parse(url)));
-            request.addRequestHeader("cookie", CookieManager.getInstance().getCookie(url));
-            request.setDescription(context.getString(R.string.app_name));
-            request.setTitle(context.getString(R.string.app_name) + "_" + URLUtil.guessFileName(url, "", ""));
-            request.allowScanningByMediaScanner();
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, context.getString(R.string.app_name) + "/" + context.getString(R.string.app_name) + "_" + URLUtil.guessFileName(url, "", ""));
-            downloadmanager.enqueue(request);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+        executor.execute(() -> {
+            try {
+                DownloadManager downloadmanager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+                request.setMimeType(context.getContentResolver().getType(Uri.parse(url)));
+                request.addRequestHeader("cookie", CookieManager.getInstance().getCookie(url));
+                request.setDescription(context.getString(R.string.app_name));
+                request.setTitle(context.getString(R.string.app_name) + "_" + URLUtil.guessFileName(url, "", ""));
+                request.allowScanningByMediaScanner();
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, context.getString(R.string.app_name) + "/" + context.getString(R.string.app_name) + "_" + URLUtil.guessFileName(url, "", ""));
+                downloadmanager.enqueue(request);
 
-
-            if (context instanceof EmojisActivity) {
-                ((EmojisActivity) context).showInterstitialAd();
-                Log.d("CONTEXT", "We're in emojis activity");
-            } else {
-                Log.d("CONTEXT", "We're not in emojis activity");
+            } catch (Exception e) {
+                Log.e("DOWNLOAD", e.toString());
+                e.printStackTrace();
             }
 
-        } catch (Exception e) {
-            Log.e("DOWNLOAD", e.toString());
-            e.printStackTrace();
-        }
-
+            handler.post(() -> {
+                if (context instanceof EmojisActivity) {
+                    ((EmojisActivity) context).showInterstitialAd();
+                    Log.d("CONTEXT", "We're in emojis activity");
+                } else {
+                    Log.d("CONTEXT", "We're not in emojis activity");
+                }
+            });
+        });
     }
 
-    public void shareEmojiLink(Context context, String emoji_link, String intent_text) {
+    public void shareEmojiLink(Context context, String emoji_link) {
         Intent intent = new Intent("android.intent.action.SEND");
         intent.setType("text/plain");
         intent.putExtra("android.intent.extra.SUBJECT", context.getString(R.string.share_main_text));
         intent.putExtra("android.intent.extra.TEXT", emoji_link);
-        context.startActivity(Intent.createChooser(intent, intent_text));
+        context.startActivity(Intent.createChooser(intent, context.getString(R.string.share_title)));
         showCustomSnackBar(context.getString(R.string.getting_ready_to_share), (Activity) context);
     }
 

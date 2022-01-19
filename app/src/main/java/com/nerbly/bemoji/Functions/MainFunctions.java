@@ -1,12 +1,12 @@
 package com.nerbly.bemoji.Functions;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Insets;
 import android.os.Build;
 import android.util.DisplayMetrics;
-import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowMetrics;
 
@@ -23,33 +23,35 @@ public class MainFunctions {
     public static void setLocale(String lang, int position, Activity context) {
         Locale locale = new Locale(lang);
         Locale.setDefault(locale);
-        Configuration config = new Configuration();
+        Configuration config = context.getBaseContext().getResources().getConfiguration();
         config.locale = locale;
         context.getBaseContext().getResources().updateConfiguration(config, context.getBaseContext().getResources().getDisplayMetrics());
+
         SharedPreferences.Editor shared1 = context.getSharedPreferences("AppData", Activity.MODE_PRIVATE).edit();
         shared1.putString("language", lang);
         shared1.putInt("lang_pos", position);
         shared1.apply();
     }
 
-    public static void setFragmentLocale(String lang, int position, View view) {
+    public static void setFragmentLocale(String lang, int position, Context context) {
         Locale locale = new Locale(lang);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
         config.locale = locale;
-        view.getContext().getResources().updateConfiguration(config, view.getContext().getResources().getDisplayMetrics());
-        SharedPreferences.Editor shared1 = view.getContext().getSharedPreferences("AppData", Activity.MODE_PRIVATE).edit();
+        context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+
+        SharedPreferences.Editor shared1 = context.getSharedPreferences("AppData", Activity.MODE_PRIVATE).edit();
         shared1.putString("language", lang);
         shared1.putInt("lang_pos", position);
         shared1.apply();
     }
 
-    public static void loadFragmentLocale(View view) {
-        SharedPreferences shared = view.getContext().getSharedPreferences("AppData", Activity.MODE_PRIVATE);
+    public static void loadFragmentLocale(Context context) {
+        SharedPreferences shared = context.getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
         if (shared.getString("language", "") != null) {
-            if (!shared.getString("language", "").equals("")) {
-                setFragmentLocale(shared.getString("language", ""), shared.getInt("lang_pos", -1), view);
+            if (!shared.getString("language", "").isEmpty()) {
+                setFragmentLocale(shared.getString("language", ""), shared.getInt("lang_pos", -1), context);
             }
         }
     }

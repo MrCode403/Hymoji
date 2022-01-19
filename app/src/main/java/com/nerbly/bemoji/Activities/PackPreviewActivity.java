@@ -22,7 +22,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.media.MediaScannerConnection;
 import android.os.Build;
 import android.os.Bundle;
@@ -77,7 +76,6 @@ public class PackPreviewActivity extends AppCompatActivity {
     private boolean isGoingToZipPack = false;
     private String downloadPackPath = "";
     private String packEmojisArrayString = "";
-    private String downloadPath = "";
     private ArrayList<String> downloadPackArrayList = new ArrayList<>();
     private RelativeLayout relativeView;
     private LinearLayout download;
@@ -137,7 +135,6 @@ public class PackPreviewActivity extends AppCompatActivity {
     public void LOGIC_BACKEND() {
         overridePendingTransition(R.anim.fade_in, 0);
         sheetBehavior = BottomSheetBehavior.from(bsheetbehavior);
-        downloadPath = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/" + getString(R.string.app_name);
         activityTitle.setText(getIntent().getStringExtra("packName"));
         setGridColumns();
         bottomSheetBehaviorListener();
@@ -186,16 +183,6 @@ public class PackPreviewActivity extends AppCompatActivity {
         int columns = (int) ((float) screenWidth / scaleFactor);
         layoutManager1 = new GridLayoutManager(this, columns);
         packsRecycler.setLayoutManager(layoutManager1);
-    }
-
-    @Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            setGridColumns();
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            setGridColumns();
-        }
     }
 
     private void bottomSheetBehaviorListener() {
@@ -340,7 +327,7 @@ public class PackPreviewActivity extends AppCompatActivity {
 
             final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.materialsheet);
             View bottomSheetView;
-            bottomSheetView = getLayoutInflater().inflate(R.layout.infosheet, null);
+            bottomSheetView = getLayoutInflater().inflate(R.layout.infosheet, (ViewGroup) null);
             bottomSheetDialog.setContentView(bottomSheetView);
             bottomSheetDialog.getWindow().findViewById(R.id.design_bottom_sheet).setBackgroundResource(android.R.color.transparent);
 
@@ -433,7 +420,7 @@ public class PackPreviewActivity extends AppCompatActivity {
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View v = inflater.inflate(R.layout.emojisview, null);
+            View v = inflater.inflate(R.layout.emojisview, parent, false);
             RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             v.setLayoutParams(layoutParams);
             return new ViewHolder(v);

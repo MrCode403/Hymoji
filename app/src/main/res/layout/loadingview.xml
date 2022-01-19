@@ -23,7 +23,6 @@
             android:background="#EEEEEE"
             android:forceDarkAllowed="false"
             android:orientation="vertical"
-            android:padding="8dp"
             app:shimmer_auto_start="true"
             tools:targetApi="q" />
     </LinearLayout>
@@ -49,7 +48,6 @@
                 android:background="#EEEEEE"
                 android:forceDarkAllowed="false"
                 android:orientation="vertical"
-                android:padding="8dp"
                 app:shimmer_auto_start="true"
                 tools:targetApi="q" />
         </LinearLayout>
@@ -70,7 +68,6 @@
                 android:background="#EEEEEE"
                 android:forceDarkAllowed="false"
                 android:orientation="vertical"
-                android:padding="8dp"
                 app:shimmer_auto_start="true"
                 tools:targetApi="q" />
         </LinearLayout>
@@ -90,7 +87,6 @@
                 android:background="#EEEEEE"
                 android:forceDarkAllowed="false"
                 android:orientation="vertical"
-                android:padding="8dp"
                 app:shimmer_auto_start="true"
                 tools:targetApi="q" />
         </LinearLayout>

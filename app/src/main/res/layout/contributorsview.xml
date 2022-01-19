@@ -76,7 +76,7 @@
             android:elevation="5dp"
             android:focusable="false"
             android:scaleType="centerCrop"
-            android:src="@drawable/app_icon"
+            android:src="@mipmap/ic_launcher_round"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/view_leftline"
             app:layout_constraintTop_toTopOf="parent" />

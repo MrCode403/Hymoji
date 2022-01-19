@@ -1,6 +1,7 @@
 package com.nerbly.bemoji.Fragments;
 
 import static com.nerbly.bemoji.Configurations.CATEGORIES_API_LINK;
+import static com.nerbly.bemoji.Functions.MainFunctions.loadFragmentLocale;
 import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
@@ -82,6 +83,12 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
         }
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        loadFragmentLocale(context);
+    }
+
     private void initialize(View view) {
         background = view.findViewById(R.id.background);
         slider = view.findViewById(R.id.slider);
@@ -94,11 +101,11 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
         sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                wasSheetTouched = true;
             }
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                wasSheetTouched = true;
             }
         });
 
@@ -175,7 +182,7 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
             shimmerMap.put("key", "value");
             shimmerList.add(shimmerMap);
         }
-        loadingRecycler.setAdapter(new LoadingCategoriesAdapter.LoadingRecyclerAdapter(shimmerList));
+        loadingRecycler.setAdapter(new LoadingCategoriesAdapter(shimmerList));
 
         if (sharedPref.getString("categoriesData", "").isEmpty()) {
             RequestCategories.startRequestNetwork(RequestNetworkController.GET, CATEGORIES_API_LINK, "", CategoriesRequestListener);
@@ -208,33 +215,34 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
     }
 
     private void showWarningSheet(String category_id) {
+        try {
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext(), R.style.materialsheet);
 
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext(), R.style.materialsheet);
+            View bottomSheetView;
+            bottomSheetView = getLayoutInflater().inflate(R.layout.infosheet, (ViewGroup) null);
+            bottomSheetDialog.setContentView(bottomSheetView);
 
-        View bottomSheetView;
-        bottomSheetView = getLayoutInflater().inflate(R.layout.infosheet, null);
-        bottomSheetDialog.setContentView(bottomSheetView);
+            bottomSheetDialog.getWindow().findViewById(R.id.design_bottom_sheet).setBackgroundResource(android.R.color.transparent);
 
-        bottomSheetDialog.getWindow().findViewById(R.id.design_bottom_sheet).setBackgroundResource(android.R.color.transparent);
+            MaterialButton infook = bottomSheetView.findViewById(R.id.infosheet_ok);
+            MaterialButton infocancel = bottomSheetView.findViewById(R.id.infosheet_cancel);
+            LinearLayout infoback = bottomSheetView.findViewById(R.id.infosheet_back);
+            LinearLayout slider = bottomSheetView.findViewById(R.id.slider);
 
-        MaterialButton infook = bottomSheetView.findViewById(R.id.infosheet_ok);
-        MaterialButton infocancel = bottomSheetView.findViewById(R.id.infosheet_cancel);
-        LinearLayout infoback = bottomSheetView.findViewById(R.id.infosheet_back);
-        LinearLayout slider = bottomSheetView.findViewById(R.id.slider);
+            advancedCorners(infoback, "#ffffff", 38, 38, 0, 0);
 
-        advancedCorners(infoback, "#ffffff", 38, 38, 0, 0);
-
-        setViewRadius(slider, 180, "#BDBDBD");
-        infook.setOnClickListener(v -> {
-            Intent toEmojis = new Intent();
-            toEmojis.putExtra("category_id", Integer.valueOf(category_id));
-            toEmojis.setClass(getContext(), PreviewCategoryActivity.class);
-            startActivity(toEmojis);
-            bottomSheetDialog.dismiss();
-        });
-        infocancel.setOnClickListener(v -> bottomSheetDialog.dismiss());
-        bottomSheetDialog.show();
-
+            setViewRadius(slider, 180, "#BDBDBD");
+            infook.setOnClickListener(v -> {
+                Intent toEmojis = new Intent();
+                toEmojis.putExtra("category_id", Integer.valueOf(category_id));
+                toEmojis.setClass(getContext(), PreviewCategoryActivity.class);
+                startActivity(toEmojis);
+                bottomSheetDialog.dismiss();
+            });
+            infocancel.setOnClickListener(v -> bottomSheetDialog.dismiss());
+            bottomSheetDialog.show();
+        } catch (Exception ignored) {
+        }
     }
 
     public class CategoriesRecyclerAdapter extends RecyclerView.Adapter<CategoriesRecyclerAdapter.ViewHolder> {

@@ -2,6 +2,7 @@ package com.nerbly.bemoji.Fragments;
 
 import static com.nerbly.bemoji.Configurations.DISCORD_INVITE_LINK;
 import static com.nerbly.bemoji.Functions.MainFunctions.initializeCacheScan;
+import static com.nerbly.bemoji.Functions.MainFunctions.loadFragmentLocale;
 import static com.nerbly.bemoji.Functions.MainFunctions.setFragmentLocale;
 import static com.nerbly.bemoji.Functions.MainFunctions.trimCache;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
@@ -74,8 +75,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
             Objects.requireNonNull(getDialog()).setOnShowListener(dialog -> {
                 BottomSheetDialog d = (BottomSheetDialog) dialog;
                 View view = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-                assert view != null;
-                BottomSheetBehavior.from(view);
+                BottomSheetBehavior.from(Objects.requireNonNull(view));
                 initialize(view);
                 initializeLogic();
             });
@@ -84,6 +84,12 @@ public class SettingsFragment extends BottomSheetDialogFragment {
             dismiss();
             return null;
         }
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        loadFragmentLocale(context);
     }
 
     @SuppressLint("SetTextI18n")
@@ -302,25 +308,25 @@ public class SettingsFragment extends BottomSheetDialogFragment {
                             isAskingForReload = true;
                             switch (i) {
                                 case 0:
-                                    setFragmentLocale("en", i, requireView());
+                                    setFragmentLocale("en", i, requireContext());
                                     break;
                                 case 1:
-                                    setFragmentLocale("pt", i, requireView());
+                                    setFragmentLocale("pt", i, requireContext());
                                     break;
                                 case 2:
-                                    setFragmentLocale("fr", i, requireView());
+                                    setFragmentLocale("fr", i, requireContext());
                                     break;
                                 case 3:
-                                    setFragmentLocale("de", i, requireView());
+                                    setFragmentLocale("de", i, requireContext());
                                     break;
                                 case 4:
-                                    setFragmentLocale("tr", i, requireView());
+                                    setFragmentLocale("tr", i, requireContext());
                                     break;
                                 case 5:
-                                    setFragmentLocale("ru", i, requireView());
+                                    setFragmentLocale("ru", i, requireContext());
                                     break;
                                 case 6:
-                                    setFragmentLocale("pl", i, requireView());
+                                    setFragmentLocale("pl", i, requireContext());
                                     break;
                             }
                             dismiss();

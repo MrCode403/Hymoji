@@ -24,7 +24,6 @@
                 android:layout_height="200dp"
                 android:forceDarkAllowed="false"
                 android:scaleType="centerCrop"
-                android:src="@drawable/app_icon"
                 tools:targetApi="q" />
 
             <ImageView

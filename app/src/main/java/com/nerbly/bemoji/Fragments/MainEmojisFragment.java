@@ -181,7 +181,7 @@ public class MainEmojisFragment extends Fragment {
                 }
 
                 handler.post(() -> {
-                    emojisRecycler.setAdapter(new MainEmojisAdapter.Gridview1Adapter(emojisList));
+                    emojisRecycler.setAdapter(new MainEmojisAdapter(emojisList, requireContext()));
                     whenEmojisAreReady();
                     emojisMap.clear();
                 });
@@ -213,7 +213,7 @@ public class MainEmojisFragment extends Fragment {
             isSortingOld = false;
             isSortingAlphabet = false;
             Utils.sortListMap(emojisList, "id", false, false);
-            emojisRecycler.setAdapter(new MainEmojisAdapter.Gridview1Adapter(emojisList));
+            emojisRecycler.setAdapter(new MainEmojisAdapter(emojisList, requireContext()));
         }
     }
 
@@ -223,7 +223,7 @@ public class MainEmojisFragment extends Fragment {
             isSortingNew = false;
             isSortingAlphabet = false;
             Utils.sortListMap(emojisList, "id", false, true);
-            emojisRecycler.setAdapter(new MainEmojisAdapter.Gridview1Adapter(emojisList));
+            emojisRecycler.setAdapter(new MainEmojisAdapter(emojisList, requireContext()));
         }
     }
 
@@ -233,7 +233,7 @@ public class MainEmojisFragment extends Fragment {
             isSortingNew = false;
             isSortingOld = false;
             Utils.sortListMap(emojisList, "title", false, true);
-            emojisRecycler.setAdapter(new MainEmojisAdapter.Gridview1Adapter(emojisList));
+            emojisRecycler.setAdapter(new MainEmojisAdapter(emojisList, requireContext()));
         }
     }
 
@@ -274,7 +274,7 @@ public class MainEmojisFragment extends Fragment {
                 } else {
                     emojisRecycler.setVisibility(View.VISIBLE);
                     loadView.setVisibility(View.GONE);
-                    emojisRecycler.setAdapter(new MainEmojisAdapter.Gridview1Adapter(emojisList));
+                    emojisRecycler.setAdapter(new MainEmojisAdapter(emojisList, requireContext()));
                 }
                 isMainEmojisLoaded = true;
             });

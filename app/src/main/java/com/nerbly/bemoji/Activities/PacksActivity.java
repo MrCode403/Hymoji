@@ -6,6 +6,7 @@ import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.Functions.SideFunctions.setHighPriorityImageFromUrl;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
 import static com.nerbly.bemoji.UI.MainUIMethods.statusBarColor;
 
 import android.animation.LayoutTransition;
@@ -35,6 +36,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nerbly.bemoji.Adapters.LoadingPacksAdapter;
@@ -134,7 +136,7 @@ public class PacksActivity extends AppCompatActivity {
             shimmerMap.put("key", "value");
             shimmerList.add(shimmerMap);
         }
-        loadingRecycler.setAdapter(new LoadingPacksAdapter.LoadingRecyclerAdapter(shimmerList));
+        loadingRecycler.setAdapter(new LoadingPacksAdapter(shimmerList));
         getPacks();
     }
 
@@ -242,16 +244,32 @@ public class PacksActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             View view = holder.itemView;
-            final com.google.android.material.card.MaterialCardView cardView = view.findViewById(R.id.cardView);
+            final MaterialCardView cardView = view.findViewById(R.id.cardView);
             final ImageView emoji = view.findViewById(R.id.emoji);
             final TextView title = view.findViewById(R.id.title);
             final TextView description = view.findViewById(R.id.description);
             final TextView amount = view.findViewById(R.id.amount);
+            final LinearLayout warningView = view.findViewById(R.id.warningView);
 
+            if (Objects.requireNonNull(data.get(position).get("name")).toString().toLowerCase().contains("nsfw")) {
+                warningView.setVisibility(View.VISIBLE);
+            } else {
+                warningView.setVisibility(View.GONE);
+            }
             title.setText(capitalizedFirstWord(Objects.requireNonNull(data.get(position).get("name")).toString().replace("_", " ")));
             description.setText(Objects.requireNonNull(data.get(position).get("description")).toString());
             amount.setText(String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("amount")).toString()))));
             setHighPriorityImageFromUrl(emoji, Objects.requireNonNull(data.get(position).get("image")).toString());
+
+            warningView.setOnClickListener(v -> {
+                shadAnim(warningView, "scaleX", 4, 400);
+                shadAnim(warningView, "scaleY", 4, 400);
+                shadAnim(warningView, "alpha", 0, 300);
+                final Handler handler = new Handler(Looper.getMainLooper());
+                handler.postDelayed(() -> {
+                    warningView.setVisibility(View.GONE);
+                }, 500);
+            });
 
             cardView.setOnClickListener(_view -> {
                 if (!isPacksOpened) {
@@ -297,5 +315,6 @@ public class PacksActivity extends AppCompatActivity {
                 super(v);
             }
         }
+
     }
 }

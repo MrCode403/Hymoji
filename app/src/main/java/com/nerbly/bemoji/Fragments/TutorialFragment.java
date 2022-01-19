@@ -1,9 +1,11 @@
 package com.nerbly.bemoji.Fragments;
 
 import static com.nerbly.bemoji.Configurations.TUTORIAL_SOURCE;
+import static com.nerbly.bemoji.Functions.MainFunctions.loadFragmentLocale;
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
 import static com.nerbly.bemoji.UI.UserInteractions.showCustomSnackBar;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -48,15 +50,14 @@ public class TutorialFragment extends BottomSheetDialogFragment {
     private RequestNetwork requestTutorial;
     private RequestNetwork.RequestListener TutorialRequestListener;
 
-    @Override
 
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle _savedInstanceState) {
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
         if (isAdded() && getActivity() != null) {
             Objects.requireNonNull(getDialog()).setOnShowListener(dialog -> {
                 BottomSheetDialog d = (BottomSheetDialog) dialog;
                 View view = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-                assert view != null;
-                sheetBehavior = BottomSheetBehavior.from(view);
+                sheetBehavior = BottomSheetBehavior.from(Objects.requireNonNull(view));
                 initialize(view);
                 initializeLogic();
             });
@@ -65,6 +66,12 @@ public class TutorialFragment extends BottomSheetDialogFragment {
             dismiss();
             return null;
         }
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        loadFragmentLocale(context);
     }
 
     private void initialize(View view) {
@@ -81,7 +88,7 @@ public class TutorialFragment extends BottomSheetDialogFragment {
                     try {
                         tutorialList = new Gson().fromJson(response, new TypeToken<ArrayList<HashMap<String, Object>>>() {
                         }.getType());
-                        recyclerview1.setAdapter(new TutorialAdapter.Recyclerview1Adapter(tutorialList));
+                        recyclerview1.setAdapter(new TutorialAdapter(tutorialList));
 
                         new Handler().postDelayed(() -> sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED), 1000);
 
@@ -119,7 +126,7 @@ public class TutorialFragment extends BottomSheetDialogFragment {
             shimmerMap.put("key", "value");
             shimmerList.add(shimmerMap);
         }
-        loadingRecycler.setAdapter(new LoadingPacksAdapter.LoadingRecyclerAdapter(shimmerList));
+        loadingRecycler.setAdapter(new LoadingPacksAdapter(shimmerList));
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());

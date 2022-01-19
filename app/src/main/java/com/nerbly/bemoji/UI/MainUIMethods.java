@@ -167,7 +167,7 @@ public class MainUIMethods {
         Glide.with(context)
                 .load(url)
                 .circleCrop()
-                .placeholder(R.drawable.app_icon)
+                .placeholder(R.drawable.logo)
                 .into(image);
 
     }

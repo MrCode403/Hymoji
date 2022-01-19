@@ -136,4 +136,7 @@
     <string name="exit_app">Sortir</string>
     <string name="primium_price">SEULEMENT 1 . 9 9 $</string>
     <string name="preview_emoji_error">Il semble que l\'aperçu d\'emoji ait une erreur, veuillez revenir à l\'écran d\'accueil et réessayer.</string>
+    <string name="nsfw_warning">Ce pack contient des emojis NSFW. Cliquez ici pour découvrir son contenu.</string>
+    <string name="pro_tip_title">Conseil de pro</string>
+    <string name="pro_tip_1_desc">Les emojis téléchargés apparaîtront ici en donnant l\'autorisation de stockage Hymoji.</string>
 </resources>

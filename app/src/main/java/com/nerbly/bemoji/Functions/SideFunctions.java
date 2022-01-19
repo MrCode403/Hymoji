@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +17,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.nerbly.bemoji.R;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -25,11 +28,11 @@ public class SideFunctions {
     public static void hideShowKeyboard(boolean bool, TextView edittext, Activity context) {
         try {
             if (bool) {
-                android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(edittext, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT);
+                InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(edittext, InputMethodManager.SHOW_IMPLICIT);
             } else {
-                android.view.View view = context.getCurrentFocus();
-                android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                View view = context.getCurrentFocus();
+                InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
         } catch (Exception e) {
@@ -39,7 +42,7 @@ public class SideFunctions {
 
 
     public static void setImageFromPath(final ImageView image, final String path) {
-        java.io.File file = new java.io.File(path);
+        File file = new File(path);
         Uri imageUri = Uri.fromFile(file);
         Glide.with(image.getContext())
                 .load(imageUri)

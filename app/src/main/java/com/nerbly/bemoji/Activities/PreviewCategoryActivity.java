@@ -1,7 +1,6 @@
 package com.nerbly.bemoji.Activities;
 
 
-import static com.nerbly.bemoji.Adapters.MainEmojisAdapter.Gridview1Adapter;
 import static com.nerbly.bemoji.Adapters.MainEmojisAdapter.isEmojiSheetShown;
 import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
@@ -47,8 +46,10 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.firebase.FirebaseApp;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.nerbly.bemoji.Adapters.MainEmojisAdapter;
 import com.nerbly.bemoji.Functions.Utils;
 import com.nerbly.bemoji.R;
 
@@ -67,14 +68,15 @@ import java.util.concurrent.Executors;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 public class PreviewCategoryActivity extends AppCompatActivity {
-    private static EditText searchBoxField;
     private final Timer timer = new Timer();
+    private EditText searchBoxField;
     private double searchPosition = 0;
     private double emojisCount = 0;
     private boolean isSortingNew = true;
     private boolean isSortingOld = false;
     private boolean isSortingAlphabet = false;
     private ArrayList<HashMap<String, Object>> emojisList = new ArrayList<>();
+    private ArrayList<HashMap<String, Object>> emojisBackupList = new ArrayList<>();
     private AdView adview;
     private LottieAnimationView emptyAnimation;
     private LinearLayout searchBox;
@@ -82,12 +84,12 @@ public class PreviewCategoryActivity extends AppCompatActivity {
     private ImageView searchBtn;
     private TextView emptyTitle;
     private GridView emojisRecycler;
-    private HashMap<String, Object> emojisMap = new HashMap<>();
     private LinearLayout loadView;
     private SharedPreferences sharedPref;
     private boolean isSearching = false;
     private boolean isGettingDataFirstTime = true;
     private String lastSearchedEmoji = "";
+    private String searchQuery = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +97,7 @@ public class PreviewCategoryActivity extends AppCompatActivity {
         loadLocale(this);
         setContentView(R.layout.categories_emojis);
         initialize();
-        com.google.firebase.FirebaseApp.initializeApp(this);
+        FirebaseApp.initializeApp(this);
         initializeLogic();
     }
 
@@ -114,11 +116,15 @@ public class PreviewCategoryActivity extends AppCompatActivity {
         searchBoxField.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence charSeq, int start, int count, int after) {
-                if (charSeq.toString().trim().length() == 0 && isSearching) {
+                searchQuery = charSeq.toString().trim().toUpperCase();
+
+                if (searchQuery.length() == 0 && isSearching) {
                     isSearching = false;
+                    lastSearchedEmoji = "";
                     getEmojis();
                 }
-                if (searchBoxField.getText().toString().trim().length() > 0) {
+
+                if (searchQuery.length() > 0) {
                     sortByBtn.setImageResource(R.drawable.round_clear_black_48dp);
                 } else {
                     sortByBtn.setImageResource(R.drawable.outline_filter_alt_black_48dp);
@@ -138,21 +144,14 @@ public class PreviewCategoryActivity extends AppCompatActivity {
 
         searchBoxField.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                String searchValue = searchBoxField.getText().toString().trim();
-                if (!searchValue.isEmpty() && !lastSearchedEmoji.equals(searchValue)) {
-                    lastSearchedEmoji = searchValue;
-                    hideShowKeyboard(false, searchBoxField, PreviewCategoryActivity.this);
-                    isSearching = true;
-                    searchTask();
-                    return true;
-                }
-
+                searchTask();
+                return true;
             }
             return false;
         });
 
         sortByBtn.setOnClickListener(_view -> {
-            if (searchBoxField.getText().toString().trim().length() > 0) {
+            if (searchQuery.length() > 0) {
                 lastSearchedEmoji = "";
                 searchBoxField.setText("");
             } else {
@@ -162,16 +161,7 @@ public class PreviewCategoryActivity extends AppCompatActivity {
             }
         });
 
-        searchBtn.setOnClickListener(_view -> {
-            String searchValue = searchBoxField.getText().toString().trim();
-            if (!searchValue.isEmpty() && !lastSearchedEmoji.equals(searchValue)) {
-                lastSearchedEmoji = searchBoxField.getText().toString().trim();
-                hideShowKeyboard(false, searchBoxField, PreviewCategoryActivity.this);
-                isSearching = true;
-                searchTask();
-            }
-
-        });
+        searchBtn.setOnClickListener(_view -> searchTask());
 
     }
 
@@ -212,30 +202,30 @@ public class PreviewCategoryActivity extends AppCompatActivity {
     }
 
     public void loadCategorizedEmojis() {
-        if (!emojisList.isEmpty()) {
-            try {
-                emojisList.clear();
-            } catch (Exception e) {
-                Log.e("Emojis Response", "couldn't clear the list for new emojis");
-            }
-        }
         try {
-            JSONArray emojisArray = new JSONArray(sharedPref.getString("emojisData", ""));
-            Log.d("Emojis Response", "found " + emojisArray.length() + " emojis");
+            if (isGettingDataFirstTime) {
+                isGettingDataFirstTime = false;
+                JSONArray emojisArray = new JSONArray(sharedPref.getString("emojisData", ""));
+                Log.d("Emojis Response", "found " + emojisArray.length() + " emojis");
 
-            for (int i = 0; i < emojisArray.length(); i++) {
-
-                JSONObject emojisObject = emojisArray.getJSONObject(i);
-                emojisMap = new HashMap<>();
-                emojisMap.put("image", emojisObject.getString("image"));
-                emojisMap.put("name", emojisObject.getString("name"));
-                emojisMap.put("title", emojisObject.getString("title"));
-                emojisMap.put("submitted_by", emojisObject.getString("submitted_by"));
-                emojisMap.put("id", emojisObject.getInt("id"));
-                if (emojisObject.getInt("category") == getIntent().getIntExtra("category_id", 0)) {
-                    emojisList.add(emojisMap);
+                for (int i = 0; i < emojisArray.length(); i++) {
+                    JSONObject emojisObject = emojisArray.getJSONObject(i);
+                    HashMap<String, Object> emojisMap = new HashMap<>();
+                    emojisMap.put("image", emojisObject.getString("image"));
+                    emojisMap.put("name", emojisObject.getString("name"));
+                    emojisMap.put("title", emojisObject.getString("title"));
+                    emojisMap.put("submitted_by", emojisObject.getString("submitted_by"));
+                    emojisMap.put("id", emojisObject.getInt("id"));
+                    if (emojisObject.getInt("category") == getIntent().getIntExtra("category_id", 0)) {
+                        emojisList.add(emojisMap);
+                        emojisBackupList.add(emojisMap);
+                    }
                 }
+            } else {
+                emojisList = new Gson().fromJson(new Gson().toJson(emojisBackupList), new TypeToken<ArrayList<HashMap<String, Object>>>() {
+                }.getType());
             }
+
 
         } catch (Exception e) {
             Log.e("EmojisRequestListener", e.toString());
@@ -295,7 +285,7 @@ public class PreviewCategoryActivity extends AppCompatActivity {
                 isSortingOld = false;
                 isSortingAlphabet = false;
                 Utils.sortListMap(emojisList, "id", false, false);
-                emojisRecycler.setAdapter(new Gridview1Adapter(emojisList));
+                emojisRecycler.setAdapter(new MainEmojisAdapter(emojisList, this));
                 popup.dismiss();
             }
         });
@@ -305,7 +295,7 @@ public class PreviewCategoryActivity extends AppCompatActivity {
                 isSortingNew = false;
                 isSortingAlphabet = false;
                 Utils.sortListMap(emojisList, "id", false, true);
-                emojisRecycler.setAdapter(new Gridview1Adapter(emojisList));
+                emojisRecycler.setAdapter(new MainEmojisAdapter(emojisList, this));
                 popup.dismiss();
             }
         });
@@ -314,23 +304,19 @@ public class PreviewCategoryActivity extends AppCompatActivity {
                 isSortingAlphabet = true;
                 isSortingNew = false;
                 isSortingOld = false;
-
                 Utils.sortListMap(emojisList, "title", false, true);
-                emojisRecycler.setAdapter(new Gridview1Adapter(emojisList));
+                emojisRecycler.setAdapter(new MainEmojisAdapter(emojisList, this));
                 popup.dismiss();
             }
         });
         popup.setAnimationStyle(android.R.style.Animation_Dialog);
-
+        popup.setFocusable(false);
+        popup.setOutsideTouchable(true);
         popup.showAsDropDown(view, 0, 0);
+        popup.setBackgroundDrawable(null);
     }
 
     private void getEmojis() {
-        if (isGettingDataFirstTime) {
-            isGettingDataFirstTime = false;
-            isSortingNew = true;
-        }
-
         if (sharedPref.getString("emojisData", "").isEmpty()) {
             sharedPref.edit().putString("emojisData", "").apply();
             sharedPref.edit().putString("categoriesData", "").apply();
@@ -342,10 +328,10 @@ public class PreviewCategoryActivity extends AppCompatActivity {
     }
 
     private void noEmojisFound(boolean isError) {
-
         shadAnim(emptyAnimation, "alpha", 0, 200);
         loadView.setVisibility(View.VISIBLE);
-
+        shadAnim(loadView, "translationY", 0, 300);
+        shadAnim(loadView, "alpha", 1, 300);
         AlphaAnimation fadeOut = new AlphaAnimation(1.0f, 0.0f);
         emptyTitle.startAnimation(fadeOut);
         fadeOut.setDuration(350);
@@ -389,59 +375,47 @@ public class PreviewCategoryActivity extends AppCompatActivity {
 
 
     private void searchTask() {
-
-        if (searchBoxField.getText().toString().trim().length() > 0) {
+        if (!searchQuery.isEmpty() && !lastSearchedEmoji.equals(searchQuery)) {
+            Log.d("HYMOJI_SEARCH", "Current search query: " + searchQuery);
+            lastSearchedEmoji = searchQuery;
+            hideShowKeyboard(false, searchBoxField, PreviewCategoryActivity.this);
+            isSearching = true;
             sortByBtn.setImageResource(R.drawable.round_clear_black_48dp);
-        } else {
-            sortByBtn.setImageResource(R.drawable.outline_filter_alt_black_48dp);
-        }
 
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            Handler handler = new Handler(Looper.getMainLooper());
 
-        executor.execute(() -> {
-
-            if (searchBoxField.getText().toString().trim().length() > 0) {
-                emojisList = new Gson().fromJson(sharedPref.getString("emojisData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
+            executor.execute(() -> {
+                emojisList = new Gson().fromJson(new Gson().toJson(emojisBackupList), new TypeToken<ArrayList<HashMap<String, Object>>>() {
                 }.getType());
+
                 emojisCount = emojisList.size();
                 searchPosition = emojisCount - 1;
                 for (int i = 0; i < (int) (emojisCount); i++) {
-                    if ((!Objects.requireNonNull(emojisList.get((int) searchPosition).get("submitted_by")).toString().toLowerCase().contains(searchBoxField.getText().toString().trim().toLowerCase())
-                            && !Objects.requireNonNull(emojisList.get((int) searchPosition).get("title")).toString().toLowerCase().contains(searchBoxField.getText().toString().trim().toLowerCase()))
-                            || !String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(emojisList.get((int) searchPosition).get("category")).toString()))).equals(getIntent().getStringExtra("category_id"))) {
+                    if ((!Objects.requireNonNull(emojisList.get((int) searchPosition).get("submitted_by")).toString().toUpperCase().contains(searchQuery)
+                            && !Objects.requireNonNull(emojisList.get((int) searchPosition).get("title")).toString().toUpperCase().contains(searchQuery))) {
                         emojisList.remove((int) (searchPosition));
                     }
                     searchPosition--;
                 }
-            } else {
-                try {
-                    emojisList = new Gson().fromJson(sharedPref.getString("emojisData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                    }.getType());
-                    emojisCount = emojisList.size();
-                    searchPosition = emojisCount - 1;
-                    for (int i = 0; i < (int) (emojisCount); i++) {
-                        if (!String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(emojisList.get((int) searchPosition).get("category")).toString()))).equals(getIntent().getStringExtra("category_id"))) {
-                            emojisList.remove((int) (searchPosition));
-                        }
-                        searchPosition--;
+
+                Log.d("HYMOJI_SEARCH", "Found " + emojisList.size() + " emojis");
+
+
+                handler.post(() -> {
+                    if (emojisList.size() == 0) {
+                        noEmojisFound(false);
+                    } else {
+                        emojisRecycler.setVisibility(View.VISIBLE);
+                        loadView.setVisibility(View.GONE);
+                        emojisRecycler.setAdapter(new MainEmojisAdapter(emojisList, this));
                     }
-                } catch (Exception e) {
-                    Utils.showToast(getApplicationContext(), (e.toString()));
-                }
-            }
 
-            handler.post(() -> {
-                if (emojisList.size() == 0) {
-                    noEmojisFound(false);
-                } else {
-                    emojisRecycler.setVisibility(View.VISIBLE);
-                    loadView.setVisibility(View.GONE);
-                    emojisRecycler.setAdapter(new Gridview1Adapter(emojisList));
-                }
-
+                });
             });
-        });
+        } else {
+            sortByBtn.setImageResource(R.drawable.outline_filter_alt_black_48dp);
+        }
     }
 
     private void getEmojisTask() {
@@ -453,7 +427,7 @@ public class PreviewCategoryActivity extends AppCompatActivity {
             if (isSortingNew) {
                 Utils.sortListMap(emojisList, "id", false, false);
             } else if (isSortingOld) {
-                Collections.reverse(emojisList);
+                Utils.sortListMap(emojisList, "id", false, true);
             } else if (isSortingAlphabet) {
                 Utils.sortListMap(emojisList, "title", false, true);
             }
@@ -462,9 +436,11 @@ public class PreviewCategoryActivity extends AppCompatActivity {
                 if (emojisList.isEmpty()) {
                     noEmojisFound(false);
                 } else {
+                    searchBoxField.setEnabled(true);
+                    sortByBtn.setEnabled(true);
                     emojisRecycler.setVisibility(View.VISIBLE);
                     try {
-                        emojisRecycler.setAdapter(new Gridview1Adapter(emojisList));
+                        emojisRecycler.setAdapter(new MainEmojisAdapter(emojisList, this));
                         whenEmojisAreReady();
                     } catch (Exception e) {
                         showCustomSnackBar(getString(R.string.error_msg_2), this);
@@ -484,6 +460,13 @@ public class PreviewCategoryActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        if (adview != null) {
+            adview.destroy();
+        }
+        super.onDestroy();
+    }
 
     private void loadAds() {
         if (!sharedPref.getBoolean("isPremium", false)) {

@@ -27,7 +27,7 @@
     <string name="emojis_search_box_txt">Поиск…</string>
     <string name="emojis_not_found">К сожалению, мы ничего не нашли.</string>
     <string name="emojis_loading">Секундочку, мы получаем смайлики…</string>
-    <string name="packs_included_emojis">включены\\nсмайлики</string>
+    <string name="packs_included_emojis">включены\nсмайлики</string>
     <string name="animated_emojis_warning_title">Постой, погоди!</string>
     <string name="animated_emojis_warning_subtitle">Вы собираетесь войти в категорию, содержащую мигающие изображения, которые потенциально могут вызвать припадки у людей с светочувствительной эпилепсией.</string>
     <string name="animated_emojis_warning_btncancel">Нет, я ухожу</string>
@@ -136,4 +136,7 @@
     <string name="exit_app">Выход</string>
     <string name="primium_price">ТОЛЬКО 1 . 9 9 $</string>
     <string name="preview_emoji_error">Похоже, в программе предварительного просмотра эмодзи возникла ошибка. Вернитесь на главный экран и повторите попытку.</string>
+    <string name="nsfw_warning">Этот пакет содержит эмодзи NSFW. Нажмите здесь, чтобы раскрыть его содержание.</string>
+    <string name="pro_tip_title">Подсказка</string>
+    <string name="pro_tip_1_desc">Загруженные смайлики появятся здесь, если дать разрешение на хранение Hymoji.</string>
 </resources>

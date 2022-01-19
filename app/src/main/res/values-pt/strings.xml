@@ -136,4 +136,7 @@
     <string name="exit_app">Saída</string>
     <string name="primium_price">A P E N A S   1 . 9 9 $</string>
     <string name="preview_emoji_error">Parece que o visualizador de emoji tem um erro. Volte para a tela inicial e tente novamente.</string>
+    <string name="nsfw_warning">Este pacote contém emojis NSFW. Clique aqui para revelar seu conteúdo.</string>
+    <string name="pro_tip_title">Dica pro</string>
+    <string name="pro_tip_1_desc">Os emojis baixados aparecerão aqui dando permissão de armazenamento Hymoji.</string>
 </resources>

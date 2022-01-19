@@ -69,9 +69,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="7dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginRight="7dp"
+                android:clipToPadding="false"
                 android:fadingEdgeLength="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:requiresFadingEdge="vertical" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -80,7 +82,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="7dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginRight="7dp" />
+                android:layout_marginRight="7dp"
+                android:background="#FFF" />
         </RelativeLayout>
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

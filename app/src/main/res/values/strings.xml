@@ -148,4 +148,5 @@
     <string name="preview_emoji_error">It seems like emoji previewer has an error, please go back to home screen and try again.</string>
     <string name="pro_tip_1_desc">Downloaded emojis will show up here by giving Hymoji storage permission.</string>
     <string name="pro_tip_title">Pro tip</string>
+    <string name="nsfw_warning">This pack contains NSFW emojis. Click here to reveal its content.</string>
 </resources>

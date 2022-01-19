@@ -78,6 +78,7 @@ public class EmojisActivity extends AppCompatActivity {
     private String lastSearchedEmoji = "";
     private String lastMainEmojisQuery = "";
     private String lastPacksEmojisQuery = "";
+    private String searchQuery = "";
     private AppBarLayout appbar;
     private InterstitialAd mInterstitialAd;
     private int emojisDownloadedSoFar = 0;
@@ -105,19 +106,21 @@ public class EmojisActivity extends AppCompatActivity {
         searchBoxField.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence charSeq, int start, int count, int after) {
-                if (charSeq.toString().trim().length() == 0 && isSearching) {
+                searchQuery = charSeq.toString().trim().toUpperCase();
+
+                if (searchQuery.length() == 0 && isSearching) {
                     isSearching = false;
                     lastSearchedEmoji = "";
                     if (viewpager.getCurrentItem() == 0) {
                         MainEmojisFragment fragment = (MainEmojisFragment) Objects.requireNonNull(viewpager.getAdapter()).instantiateItem(viewpager, viewpager.getCurrentItem());
                         fragment.getEmojis();
-                    } else {
+                    } else if (viewpager.getCurrentItem() == 1) {
                         PacksEmojisFragment fragment = (PacksEmojisFragment) Objects.requireNonNull(viewpager.getAdapter()).instantiateItem(viewpager, viewpager.getCurrentItem());
                         fragment.setLoadingScreenData();
                         fragment.getEmojis();
                     }
                 }
-                if (charSeq.toString().trim().length() > 0) {
+                if (searchQuery.length() > 0) {
                     sortByBtn.setImageResource(R.drawable.round_clear_black_48dp);
                 } else {
                     sortByBtn.setImageResource(R.drawable.outline_filter_alt_black_48dp);
@@ -144,7 +147,7 @@ public class EmojisActivity extends AppCompatActivity {
         });
 
         sortByBtn.setOnClickListener(_view -> {
-            if (searchBoxField.getText().toString().trim().length() > 0) {
+            if (searchQuery.length() > 0) {
                 lastSearchedEmoji = "";
                 searchBoxField.setText("");
             } else {
@@ -245,7 +248,7 @@ public class EmojisActivity extends AppCompatActivity {
             isSortingAlphabet = packs_emojis_fragment.isSortingAlphabet;
         }
 
-        View popupView = getLayoutInflater().inflate(R.layout.sortby_view, null);
+        View popupView = getLayoutInflater().inflate(R.layout.sortby_view, (ViewGroup) null);
         final PopupWindow popup = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         LinearLayout bg = popupView.findViewById(R.id.bg);
         ImageView i1 = popupView.findViewById(R.id.i1);
@@ -299,11 +302,13 @@ public class EmojisActivity extends AppCompatActivity {
             } else {
                 packs_emojis_fragment.sort_by_alphabetically();
             }
-
             popup.dismiss();
         });
         popup.setAnimationStyle(android.R.style.Animation_Dialog);
+        popup.setFocusable(false);
+        popup.setOutsideTouchable(true);
         popup.showAsDropDown(view, 0, 0);
+        popup.setBackgroundDrawable(null);
     }
 
     private void searchTask() {
@@ -317,8 +322,6 @@ public class EmojisActivity extends AppCompatActivity {
                 shouldAllowSearch = true;
             }
         }
-
-        String searchQuery = searchBoxField.getText().toString().trim().toLowerCase();
 
         if (!searchQuery.isEmpty()) {
             sortByBtn.setImageResource(R.drawable.round_clear_black_48dp);
@@ -367,6 +370,7 @@ public class EmojisActivity extends AppCompatActivity {
         }
         super.onDestroy();
     }
+
 
     public void loadInterstitialAd(Context context) {
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -457,8 +461,7 @@ public class EmojisActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             if (position == 0) {
                 return new MainEmojisFragment();
-            }
-            if (position == 1) {
+            } else if (position == 1) {
                 return new PacksEmojisFragment();
             }
             return null;

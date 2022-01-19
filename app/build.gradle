@@ -4,14 +4,17 @@ apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     useLibrary 'org.apache.http.legacy'
-    compileSdkVersion 31
+    compileSdk 31
 
     defaultConfig {
         applicationId "com.nerbly.bemoji"
-        minSdkVersion 21
-        targetSdkVersion 31
-        versionCode 33
-        versionName "1.0.5"
+        minSdk 21
+        targetSdk 31
+        versionCode 34
+        versionName "1.0.6"
+
+        buildConfigField "boolean", "LOG_DEBUG_MODE", "false"
+        buildConfigField "boolean", "LOG_DEBUG_WITH_STACKTRACE_MODE", "false"
     }
     buildTypes {
         release {
@@ -29,7 +32,9 @@ android {
             shrinkResources false
             minifyEnabled false
             manifestPlaceholders = [crashlyticsCollectionEnabled: "false"]
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            testCoverageEnabled = "true"
+            buildConfigField "boolean", "LOG_DEBUG_MODE", "true"
+            buildConfigField "boolean", "LOG_DEBUG_WITH_STACKTRACE_MODE", "true"
         }
     }
     compileOptions {
@@ -40,13 +45,13 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    // implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     //google
-    implementation 'androidx.appcompat:appcompat:1.4.0'
-    implementation 'com.google.android.material:material:1.6.0-alpha01'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    implementation 'com.google.android.play:core:1.10.2'
+    implementation 'com.google.android.play:core:1.10.3'
 
     //firebase
     implementation platform('com.google.firebase:firebase-bom:29.0.0')
