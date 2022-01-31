@@ -58,6 +58,8 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.cloudmessaging.CloudMessage;
+import com.google.android.gms.cloudmessaging.CloudMessagingReceiver;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
@@ -68,6 +70,7 @@ import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nerbly.bemoji.Adapters.HomePacksAdapter;
@@ -94,7 +97,7 @@ import java.util.concurrent.Executors;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity  {
 
     public static ArrayList<HashMap<String, Object>> packsList = new ArrayList<>();
     private final int FLEXIBLE_APP_UPDATE_REQ_CODE = 123;
@@ -384,6 +387,7 @@ public class HomeActivity extends AppCompatActivity {
                             });
                         });
                         break;
+
                     case "PACKS":
                         try {
                             executor.execute(() -> {
@@ -583,7 +587,7 @@ public class HomeActivity extends AppCompatActivity {
             }, 2000);
         }, 3500);
 
-        if (Build.VERSION.SDK_INT < 23) {
+        if (Build.VERSION.SDK_INT <= 27) {
             statusBarColor("#7289DA", this);
             LIGHT_ICONS(this);
         } else {
@@ -698,7 +702,8 @@ public class HomeActivity extends AppCompatActivity {
                 new Handler().postDelayed(() -> activityDescription.setVisibility(View.VISIBLE), 500);
             }
 
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 
@@ -821,6 +826,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 1) {
@@ -837,4 +844,8 @@ public class HomeActivity extends AppCompatActivity {
     public String PacksArray() {
         return new Gson().toJson(packsList);
     }
+
+
+
+
 }

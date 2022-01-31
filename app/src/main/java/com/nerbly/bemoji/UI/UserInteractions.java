@@ -3,23 +3,32 @@ package com.nerbly.bemoji.UI;
 import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setViewRadius;
+import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.nerbly.bemoji.R;
+
+import java.util.TimerTask;
 
 public class UserInteractions {
 
@@ -91,6 +100,83 @@ public class UserInteractions {
         if (!context.isFinishing()) {
             bottomSheetDialog.show();
         }
+    }
+
+    public static void noEmojisFound(boolean isError, View loadView, LottieAnimationView emptyAnimation, TextView emptyTitle, Activity context) {
+        loadView.setTranslationY(0);
+        loadView.setAlpha(1);
+        loadView.setVisibility(View.VISIBLE);
+        shadAnim(emptyAnimation, "alpha", 0, 200);
+
+        AlphaAnimation fadeOut = new AlphaAnimation(1.0f, 0.0f);
+        emptyTitle.startAnimation(fadeOut);
+        fadeOut.setDuration(350);
+        fadeOut.setFillAfter(true);
+
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (isError) {
+                    emptyTitle.setText(context.getString(R.string.error_msg_2));
+                } else {
+                    emptyTitle.setText(context.getString(R.string.emojis_not_found));
+                }
+                AlphaAnimation fadeIn = new AlphaAnimation(0.0f, 1.0f);
+                emptyTitle.startAnimation(fadeIn);
+                fadeIn.setDuration(350);
+                fadeIn.setFillAfter(true);
+                shadAnim(emptyAnimation, "alpha", 1, 200);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            emptyAnimation.setAnimation("animations/not_found.json");
+            emptyAnimation.playAnimation();
+        }, 200);
+    }
+
+    public void setLoadingScreenData(View loadView, LottieAnimationView emptyAnimation, TextView emptyTitle, Activity context) {
+        loadView.setVisibility(View.VISIBLE);
+        shadAnim(loadView, "translationY", 0, 300);
+        shadAnim(loadView, "alpha", 1, 300);
+        shadAnim(emptyAnimation, "alpha", 0, 200);
+        AlphaAnimation fadeOut = new AlphaAnimation(1.0f, 0.0f);
+        emptyTitle.startAnimation(fadeOut);
+        fadeOut.setDuration(350);
+        fadeOut.setFillAfter(true);
+
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                emptyTitle.setText(context.getString(R.string.emojis_loading));
+                AlphaAnimation fadeIn = new AlphaAnimation(0.0f, 1.0f);
+                emptyTitle.startAnimation(fadeIn);
+                fadeIn.setDuration(350);
+                fadeIn.setFillAfter(true);
+                shadAnim(emptyAnimation, "alpha", 1, 200);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            emptyAnimation.setAnimation("animations/loading.json");
+            emptyAnimation.playAnimation();
+        }, 200);
     }
 
 }

@@ -9,7 +9,7 @@ import static com.nerbly.bemoji.Functions.SideFunctions.hideShowKeyboard;
 import static com.nerbly.bemoji.Functions.Utils.getAdSize;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.RippleEffects;
+import static com.nerbly.bemoji.UI.MainUIMethods.rippleEffect;
 import static com.nerbly.bemoji.UI.MainUIMethods.navStatusBarColor;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
@@ -221,15 +221,15 @@ public class EmojisActivity extends AppCompatActivity {
 
     public void LOGIC_FRONTEND() {
         rippleRoundStroke(searchBox, "#FFFFFF", "#FFFFFF", 200, 1, "#C4C4C4");
-        if (Build.VERSION.SDK_INT < 23) {
+        if (Build.VERSION.SDK_INT <= 27) {
             statusBarColor("#7289DA", this);
             LIGHT_ICONS(this);
         } else {
             navStatusBarColor("#FFFFFF", "#FFFFFF", this);
             DARK_ICONS(this);
         }
-        RippleEffects("#E0E0E0", sortByBtn);
-        RippleEffects("#E0E0E0", searchBtn);
+        rippleEffect("#E0E0E0", sortByBtn);
+        rippleEffect("#E0E0E0", searchBtn);
         if (Build.VERSION.SDK_INT >= 31) {
             OverScrollDecoratorHelper.setUpOverScroll(viewpager);
         }

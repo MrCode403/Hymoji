@@ -41,6 +41,7 @@
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
             android:name=".Activities.PacksActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
             android:configChanges="keyboardHidden|orientation|uiMode" />
         <activity
             android:name=".Activities.PackPreviewActivity"

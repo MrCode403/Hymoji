@@ -3,6 +3,7 @@ package com.nerbly.bemoji.Activities;
 import static com.nerbly.bemoji.Configurations.PACKS_API_LINK;
 import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
+import static com.nerbly.bemoji.Functions.SideFunctions.hideShowKeyboard;
 import static com.nerbly.bemoji.Functions.SideFunctions.setHighPriorityImageFromUrl;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
@@ -18,10 +19,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,12 +36,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nerbly.bemoji.Adapters.LoadingPacksAdapter;
@@ -50,6 +58,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -70,7 +79,16 @@ public class PacksActivity extends AppCompatActivity {
     private RequestNetwork startGettingPacks;
     private RequestNetwork.RequestListener PacksRequestListener;
     private SharedPreferences sharedPref;
+    private EditText searchInput;
     private boolean isPacksOpened = false;
+    private String packsJson = "";
+    private String searchQuery = "";
+    private TextView emptyTitle;
+    private LinearLayout loadView;
+    private LottieAnimationView emptyAnimation;
+    private boolean isSearching = false;
+    private String lastSearchedEmoji = "";
+
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
@@ -78,13 +96,17 @@ public class PacksActivity extends AppCompatActivity {
         loadLocale(this);
         setContentView(R.layout.packs);
         initialize();
-        com.google.firebase.FirebaseApp.initializeApp(this);
+        FirebaseApp.initializeApp(this);
         initializeLogic();
     }
 
     private void initialize() {
+        emptyTitle = findViewById(R.id.emptyTitle);
+        emptyAnimation = findViewById(R.id.emptyAnimation);
+        loadView = findViewById(R.id.emptyview);
         background = findViewById(R.id.background);
         adview = findViewById(R.id.adview);
+        searchInput = findViewById(R.id.searchInput);
         packsRecycler = findViewById(R.id.packsRecycler);
         loadingRecycler = findViewById(R.id.loadingRecycler);
         startGettingPacks = new RequestNetwork(this);
@@ -110,7 +132,41 @@ public class PacksActivity extends AppCompatActivity {
 
             }
         };
+
+        searchInput.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                searchTask();
+                return true;
+            }
+            return false;
+        });
+
+        searchInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence charSeq, int start, int count, int after) {
+                searchQuery = charSeq.toString().trim().toUpperCase();
+
+                if (searchQuery.length() == 0 && isSearching) {
+                    isSearching = false;
+                    lastSearchedEmoji = "";
+                    getPacks();
+                }
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence _param1, int _param2, int _param3, int _param4) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable _param1) {
+
+            }
+        });
+
     }
+
 
     private void initializeLogic() {
         LOGIC_FRONTEND();
@@ -126,7 +182,6 @@ public class PacksActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT <= 30) {
             OverScrollDecoratorHelper.setUpOverScroll(packsRecycler, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
         }
-
         background.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
 
         loadAds();
@@ -137,17 +192,21 @@ public class PacksActivity extends AppCompatActivity {
             shimmerList.add(shimmerMap);
         }
         loadingRecycler.setAdapter(new LoadingPacksAdapter(shimmerList));
+
         getPacks();
     }
 
     public void LOGIC_FRONTEND() {
-        if (Build.VERSION.SDK_INT < 23) {
+        if (Build.VERSION.SDK_INT <= 27) {
             statusBarColor("#7289DA", this);
             LIGHT_ICONS(this);
         } else {
             statusBarColor("#FFFFFF", this);
             DARK_ICONS(this);
         }
+        emptyAnimation.setAnimation("animations/not_found.json");
+        emptyAnimation.playAnimation();
+        emptyTitle.setText(getString(R.string.emojis_not_found));
     }
 
     private void loadAds() {
@@ -183,23 +242,26 @@ public class PacksActivity extends AppCompatActivity {
     }
 
     private void getPacks() {
+        packsJson = sharedPref.getString("packsData", "");
+        loadView.setVisibility(View.GONE);
+
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
-
         executor.execute(() -> {
-            if (sharedPref.getString("packsData", "").isEmpty()) {
+            if (packsJson.isEmpty()) {
                 startGettingPacks.startRequestNetwork(RequestNetworkController.GET, PACKS_API_LINK, "", PacksRequestListener);
             } else {
                 try {
-                    packsList = new Gson().fromJson(sharedPref.getString("packsData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
+                    packsList = new Gson().fromJson(packsJson, new TypeToken<ArrayList<HashMap<String, Object>>>() {
                     }.getType());
-                    sharedPref.edit().putString("packsData", new Gson().toJson(packsList)).apply();
+
                 } catch (Exception e) {
-                    Utils.showToast(getApplicationContext(), (e.toString()));
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                    Utils.showToast(getApplicationContext(), e.toString());
                 }
             }
             handler.post(() -> {
-                if (!sharedPref.getString("packsData", "").isEmpty()) {
+                if (!packsJson.isEmpty()) {
                     packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
                     new Handler().postDelayed(() -> {
                         packsRecycler.setVisibility(View.VISIBLE);
@@ -208,6 +270,29 @@ public class PacksActivity extends AppCompatActivity {
                 }
             });
         });
+    }
+
+    private void searchTask() {
+        isSearching = true;
+        lastSearchedEmoji = searchQuery;
+        hideShowKeyboard(false, searchInput, this);
+
+        packsList = new Gson().fromJson(packsJson, new TypeToken<ArrayList<HashMap<String, Object>>>() {
+        }.getType());
+
+        for (Iterator<HashMap<String, Object>> iterator = packsList.iterator(); iterator.hasNext(); ) {
+            HashMap<String, Object> emojiName = iterator.next();
+            if (!Objects.requireNonNull(emojiName.get("name")).toString().toUpperCase().contains(searchQuery)) {
+                iterator.remove();
+            }
+        }
+
+        if (packsList.isEmpty()) {
+            loadView.setVisibility(View.VISIBLE);
+        } else {
+            packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
+        }
+
     }
 
     @Override

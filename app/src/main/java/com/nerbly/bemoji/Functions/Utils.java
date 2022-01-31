@@ -21,6 +21,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.ads.AdSize;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -42,61 +43,53 @@ public class Utils {
     }
 
     public static void ZIP(String source, String destination) {
-        zipFileAtPath(source, destination);
+        try {
+            filesListInDir.clear();
+            zipDirectory(source, destination);
+        } catch (Exception e) {
+            e.printStackTrace();
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
     }
 
-    public static void zipFileAtPath(String sourcePath, String toLocation) {
-        final int BUFFER = 2048;
-
-        File sourceFile = new File(sourcePath);
+    private static void zipDirectory(String str, String str2) {
         try {
-            BufferedInputStream origin;
-            FileOutputStream dest = new FileOutputStream(toLocation);
-            ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
-            if (sourceFile.isDirectory()) {
-                zipSubFolder(out, sourceFile, Objects.requireNonNull(sourceFile.getParent()).length());
-            } else {
-                byte[] data = new byte[BUFFER];
-                FileInputStream fi = new FileInputStream(sourcePath);
-                origin = new BufferedInputStream(fi, BUFFER);
-                ZipEntry entry = new ZipEntry(getLastPathComponent(sourcePath));
-                entry.setTime(sourceFile.lastModified()); // to keep modification time after unzipping
-                out.putNextEntry(entry);
-                int count;
-                while ((count = origin.read(data, 0, BUFFER)) != -1) {
-                    out.write(data, 0, count);
+            populateFilesList(str);
+            new File(str2).createNewFile();
+            FileOutputStream fileOutputStream = new FileOutputStream(str2);
+            ZipOutputStream zipOutputStream = new ZipOutputStream(fileOutputStream);
+            for (String str3 : filesListInDir) {
+                zipOutputStream.putNextEntry(new ZipEntry(str3.substring(str.length() + 1)));
+                FileInputStream fileInputStream = new FileInputStream(str3);
+                byte[] bArr = new byte[1024];
+                while (true) {
+                    int read = fileInputStream.read(bArr);
+                    if (read <= 0) {
+                        break;
+                    }
+                    zipOutputStream.write(bArr, 0, read);
                 }
+                zipOutputStream.closeEntry();
+                fileInputStream.close();
             }
-            out.close();
+            zipOutputStream.close();
+            fileOutputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static void zipSubFolder(ZipOutputStream out, File folder, int basePathLength) throws IOException {
+    private static final ArrayList<String> filesListInDir = new ArrayList();
 
-        final int BUFFER = 2048;
-
-        File[] fileList = folder.listFiles();
-        BufferedInputStream origin;
-        assert fileList != null;
-        for (File file : fileList) {
-            if (file.isDirectory()) {
-                zipSubFolder(out, file, basePathLength);
+    private static void populateFilesList(String str) {
+        ArrayList arrayList = new ArrayList();
+        FileUtil.listDir(str, arrayList);
+        for (Object o : arrayList) {
+            String str2 = (String) o;
+            if (FileUtil.isFile(str2)) {
+                filesListInDir.add(str2);
             } else {
-                byte[] data = new byte[BUFFER];
-                String unmodifiedFilePath = file.getPath();
-                String relativePath = unmodifiedFilePath.substring(basePathLength);
-                FileInputStream fi = new FileInputStream(unmodifiedFilePath);
-                origin = new BufferedInputStream(fi, BUFFER);
-                ZipEntry entry = new ZipEntry(relativePath);
-                entry.setTime(file.lastModified()); // to keep modification time after unzipping
-                out.putNextEntry(entry);
-                int count;
-                while ((count = origin.read(data, 0, BUFFER)) != -1) {
-                    out.write(data, 0, count);
-                }
-                origin.close();
+                populateFilesList(str2);
             }
         }
     }

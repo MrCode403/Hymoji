@@ -24,7 +24,7 @@ public class MainUIMethods {
 
     //views shape and shadows
 
-    public static void RippleEffects(String color, View view) {
+    public static void rippleEffect(String color, View view) {
         ColorStateList clr = new ColorStateList(new int[][]{new int[]{}}, new int[]{Color.parseColor(color)});
         RippleDrawable ripdr = new RippleDrawable(clr, null, null);
         view.setBackground(ripdr);
@@ -128,10 +128,10 @@ public class MainUIMethods {
     public static void DARK_ICONS(Activity activity) {
         if (Build.VERSION.SDK_INT >= 30) {
             activity.getWindow().getDecorView().getWindowInsetsController().setSystemBarsAppearance(WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS, WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS);
-        } else {
-            activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        } else if (Build.VERSION.SDK_INT >= 23) {
+                activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            }
         }
-    }
 
     //animations
 

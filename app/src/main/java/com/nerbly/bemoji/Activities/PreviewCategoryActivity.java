@@ -7,7 +7,7 @@ import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.Functions.SideFunctions.hideShowKeyboard;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
-import static com.nerbly.bemoji.UI.MainUIMethods.RippleEffects;
+import static com.nerbly.bemoji.UI.MainUIMethods.rippleEffect;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
 import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
 import static com.nerbly.bemoji.UI.MainUIMethods.setImageViewRipple;
@@ -47,6 +47,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nerbly.bemoji.Adapters.MainEmojisAdapter;
@@ -90,6 +91,7 @@ public class PreviewCategoryActivity extends AppCompatActivity {
     private boolean isGettingDataFirstTime = true;
     private String lastSearchedEmoji = "";
     private String searchQuery = "";
+    private boolean isSearchEnabled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,14 +156,18 @@ public class PreviewCategoryActivity extends AppCompatActivity {
             if (searchQuery.length() > 0) {
                 lastSearchedEmoji = "";
                 searchBoxField.setText("");
-            } else {
+            } else if (isSearchEnabled) {
                 searchBoxField.setEnabled(false);
                 searchBoxField.setEnabled(true);
                 showFilterMenu(sortByBtn);
             }
         });
 
-        searchBtn.setOnClickListener(_view -> searchTask());
+        searchBtn.setOnClickListener(_view -> {
+            if (isSearchEnabled) {
+                searchTask();
+            }
+        });
 
     }
 
@@ -179,15 +185,15 @@ public class PreviewCategoryActivity extends AppCompatActivity {
 
     public void LOGIC_FRONTEND() {
         rippleRoundStroke(searchBox, "#FFFFFF", "#FFFFFF", 200, 1, "#C4C4C4");
-        if (Build.VERSION.SDK_INT < 23) {
+        if (Build.VERSION.SDK_INT <= 27) {
             statusBarColor("#7289DA", this);
             LIGHT_ICONS(this);
         } else {
             statusBarColor("#FFFFFF", this);
             DARK_ICONS(this);
         }
-        RippleEffects("#E0E0E0", sortByBtn);
-        RippleEffects("#E0E0E0", searchBtn);
+        rippleEffect("#E0E0E0", sortByBtn);
+        rippleEffect("#E0E0E0", searchBtn);
     }
 
     public void initEmojisRecycler() {
@@ -226,27 +232,37 @@ public class PreviewCategoryActivity extends AppCompatActivity {
                 }.getType());
             }
 
-
+            if (isSortingNew) {
+                Utils.sortListMap(emojisList, "id", false, false);
+            } else if (isSortingOld) {
+                Collections.reverse(emojisList);
+            } else if (isSortingAlphabet) {
+                Utils.sortListMap(emojisList, "title", false, true);
+            }
         } catch (Exception e) {
             Log.e("EmojisRequestListener", e.toString());
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
 
-        if (isSortingNew) {
-            Utils.sortListMap(emojisList, "id", false, false);
-        } else if (isSortingOld) {
-            Collections.reverse(emojisList);
-        } else if (isSortingAlphabet) {
-            Utils.sortListMap(emojisList, "title", false, true);
-        }
     }
 
     private void whenEmojisAreReady() {
-        new Handler().postDelayed(() -> {
-            shadAnim(loadView, "translationY", -1000, 300);
-            shadAnim(loadView, "alpha", 0, 300);
+        try {
+            emojisRecycler.setAdapter(new MainEmojisAdapter(emojisList, this));
+            searchBoxField.setFocusable(true);
+            searchBoxField.setFocusableInTouchMode(true);
             searchBoxField.setEnabled(true);
-
-        }, 1000);
+            emojisRecycler.setVisibility(View.VISIBLE);
+            isSearchEnabled = true;
+            new Handler().postDelayed(() -> {
+                shadAnim(loadView, "translationY", -1000, 300);
+                shadAnim(loadView, "alpha", 0, 300);
+            }, 1000);
+        } catch (Exception e) {
+            showCustomSnackBar(getString(R.string.error_msg_2), this);
+            noEmojisFound(true);
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
     }
 
     public void showFilterMenu(final View view) {
@@ -321,10 +337,16 @@ public class PreviewCategoryActivity extends AppCompatActivity {
             sharedPref.edit().putString("emojisData", "").apply();
             sharedPref.edit().putString("categoriesData", "").apply();
             sharedPref.edit().putString("packsData", "").apply();
-            sharedPref.edit().putString("isAskingForReload", "true").apply();
+            noEmojisFound(true);
+            disableSearch();
         } else {
             getEmojisTask();
         }
+    }
+
+    private void disableSearch() {
+        isSearchEnabled = false;
+        searchBoxField.setEnabled(false);
     }
 
     private void noEmojisFound(boolean isError) {
@@ -435,18 +457,9 @@ public class PreviewCategoryActivity extends AppCompatActivity {
             handler.post(() -> {
                 if (emojisList.isEmpty()) {
                     noEmojisFound(false);
+                    disableSearch();
                 } else {
-                    searchBoxField.setEnabled(true);
-                    sortByBtn.setEnabled(true);
-                    emojisRecycler.setVisibility(View.VISIBLE);
-                    try {
-                        emojisRecycler.setAdapter(new MainEmojisAdapter(emojisList, this));
-                        whenEmojisAreReady();
-                    } catch (Exception e) {
-                        showCustomSnackBar(getString(R.string.error_msg_2), this);
-                        noEmojisFound(true);
-                    }
-
+                    whenEmojisAreReady();
                 }
             });
         });
