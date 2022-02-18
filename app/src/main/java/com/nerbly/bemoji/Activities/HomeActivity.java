@@ -435,7 +435,7 @@ public class HomeActivity extends AppCompatActivity {
                                 if (isSuccess[0]) {
                                     Log.d("HYMOJI_PACKS", emojisCount + " packs emojis saved to local database");
                                     sharedPref.edit().putString("packsData", new Gson().toJson(packsList)).apply();
-                                    packs_recycler.setAdapter(new HomePacksAdapter(packsList));
+                                    packs_recycler.setAdapter(new HomePacksAdapter(packsList, HomeActivity.this));
                                     loadingView.setVisibility(View.GONE);
                                     mainView.setVisibility(View.VISIBLE);
                                     adBackView.setVisibility(View.VISIBLE);
@@ -606,7 +606,6 @@ public class HomeActivity extends AppCompatActivity {
                 shadAnim(animated_logo, "scaleX", 0, 200);
                 shadAnim(animated_logo, "scaleY", 0, 200);
                 shadAnim(animated_logo, "alpha", 0, 200);
-
                 shadAnim(splashView, "scaleX", 4, 400);
                 shadAnim(splashView, "scaleY", 4, 400);
                 shadAnim(splashView, "alpha", 0, 400);
@@ -678,7 +677,7 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             categoriesList = new Gson().fromJson(sharedPref.getString("categoriesData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
             }.getType());
-            categoriesCounter.setText(String.valueOf((long) (categoriesList.size())));
+            categoriesCounter.setText("" + categoriesList.size());
         }
 
         if (!sharedPref.getString("packsData", "").isEmpty()) {
@@ -686,7 +685,7 @@ public class HomeActivity extends AppCompatActivity {
                 packsList = new Gson().fromJson(sharedPref.getString("packsData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
                 }.getType());
                 sharedPref.edit().putString("packsData", new Gson().toJson(packsList)).apply();
-                packs_recycler.setAdapter(new HomePacksAdapter(packsList));
+                packs_recycler.setAdapter(new HomePacksAdapter(packsList, HomeActivity.this));
             } catch (Exception ignored) {
             }
         }

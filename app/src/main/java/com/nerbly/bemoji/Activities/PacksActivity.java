@@ -1,9 +1,11 @@
 package com.nerbly.bemoji.Activities;
 
+import static com.nerbly.bemoji.Configurations.ASSETS_SOURCE_LINK;
 import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.Functions.SideFunctions.hideShowKeyboard;
-import static com.nerbly.bemoji.Functions.SideFunctions.setHighPriorityImageFromUrl;
+import static com.nerbly.bemoji.Functions.SideFunctions.setBlurImageUrl;
+import static com.nerbly.bemoji.Functions.SideFunctions.setImgURL;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.rippleEffect;
@@ -416,11 +418,27 @@ public class PacksActivity extends AppCompatActivity {
         public void onBindViewHolder(ViewHolder holder, int position) {
             View view = holder.itemView;
             final MaterialCardView cardView = view.findViewById(R.id.cardView);
+            final ImageView emoji0 = view.findViewById(R.id.emoji0);
+            final ImageView emoji1 = view.findViewById(R.id.emoji1);
+            final ImageView emoji2 = view.findViewById(R.id.emoji2);
+            final ImageView emoji3 = view.findViewById(R.id.emoji3);
+            final ImageView emoji4 = view.findViewById(R.id.emoji4);
             final ImageView emoji = view.findViewById(R.id.emoji);
             final TextView title = view.findViewById(R.id.title);
             final TextView description = view.findViewById(R.id.description);
             final TextView amount = view.findViewById(R.id.amount);
             final LinearLayout warningView = view.findViewById(R.id.warningView);
+
+            HashMap<String, Object> hashMap = data.get(position);
+            if (hashMap.containsKey("emojis")) {
+                setImgURL(emoji0, ASSETS_SOURCE_LINK + ((ArrayList) Objects.requireNonNull(hashMap.get("emojis"))).get(0));
+                setImgURL(emoji1, ASSETS_SOURCE_LINK + ((ArrayList) Objects.requireNonNull(hashMap.get("emojis"))).get(1));
+                setImgURL(emoji2, ASSETS_SOURCE_LINK + ((ArrayList) Objects.requireNonNull(hashMap.get("emojis"))).get(2));
+                setImgURL(emoji3, ASSETS_SOURCE_LINK + ((ArrayList) Objects.requireNonNull(hashMap.get("emojis"))).get(3));
+                setImgURL(emoji4, ASSETS_SOURCE_LINK + ((ArrayList) Objects.requireNonNull(hashMap.get("emojis"))).get(4));
+                setBlurImageUrl(emoji, 25, ASSETS_SOURCE_LINK + ((ArrayList) Objects.requireNonNull(hashMap.get("emojis"))).get(5));
+            }
+
 
             if (Objects.requireNonNull(data.get(position).get("name")).toString().toLowerCase().contains("nsfw")) {
                 warningView.setVisibility(View.VISIBLE);
@@ -430,7 +448,7 @@ public class PacksActivity extends AppCompatActivity {
             title.setText(capitalizedFirstWord(Objects.requireNonNull(data.get(position).get("name")).toString().replace("_", " ")));
             description.setText(Objects.requireNonNull(data.get(position).get("description")).toString());
             amount.setText(String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("amount")).toString()))));
-            setHighPriorityImageFromUrl(emoji, Objects.requireNonNull(data.get(position).get("image")).toString());
+
 
             warningView.setOnClickListener(v -> {
                 shadAnim(warningView, "scaleX", 4, 400);

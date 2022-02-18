@@ -1,13 +1,13 @@
-<LinearLayout android:id="@+id/emptyview"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/emptyview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:gravity="center_horizontal|center_vertical"
     android:orientation="vertical"
-    android:padding="8dp"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:padding="8dp">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/emptyAnimation"

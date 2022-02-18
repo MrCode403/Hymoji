@@ -145,7 +145,6 @@ public class PremiumActivity extends AppCompatActivity {
             webview.loadUrl(PAYMENT_SOURCE);
             shouldShowProgressBar(true);
         }, 1000);
-
     }
 
     public void LOGIC_FRONTEND() {
@@ -164,7 +163,6 @@ public class PremiumActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT <= 30) {
             OverScrollDecoratorHelper.setUpOverScroll(payment_features_scrollview);
         }
-
     }
 
     @Override

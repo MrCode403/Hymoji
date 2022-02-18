@@ -46,11 +46,12 @@ import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 public class MainEmojisFragment extends Fragment {
 
     public static boolean isMainEmojisLoaded = false;
+    public static String lastSearchedMainEmoji = "";
     private final Timer timer = new Timer();
-    private ArrayList<HashMap<String, Object>> emojisList = new ArrayList<>();
     public boolean isSortingNew = true;
     public boolean isSortingOld = false;
     public boolean isSortingAlphabet = false;
+    private ArrayList<HashMap<String, Object>> emojisList = new ArrayList<>();
     private TextView emptyTitle;
     private LinearLayout loadView;
     private RecyclerView emojisRecycler;
@@ -58,7 +59,6 @@ public class MainEmojisFragment extends Fragment {
     private SharedPreferences sharedPref;
     private GridLayoutManager layoutManager;
     private CircularProgressIndicator progress_loading;
-    public static String lastSearchedMainEmoji = "";
 
     @NonNull
     @Override

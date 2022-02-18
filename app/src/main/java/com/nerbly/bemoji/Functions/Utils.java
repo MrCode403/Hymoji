@@ -45,6 +45,8 @@ import java.util.zip.ZipOutputStream;
 
 public class Utils {
 
+    private static final ArrayList<String> filesListInDir = new ArrayList<>();
+
     public static void showToast(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
@@ -91,8 +93,6 @@ public class Utils {
             Log.d("HYMOJI_PACK_DOWNLOAD", "Zipping failed, step 2. | " + e);
         }
     }
-
-    private static final ArrayList<String> filesListInDir = new ArrayList<>();
 
     private static void populateFilesList(String str) {
         ArrayList<String> arrayList = new ArrayList<>();

@@ -29,17 +29,92 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/emoji"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:forceDarkAllowed="false"
-                android:scaleType="centerCrop"
-                android:src="@drawable/logo"
+            <RelativeLayout
+                android:id="@+id/emojisHolder"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:targetApi="q" />
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <ImageView
+                    android:id="@+id/emoji"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:forceDarkAllowed="false"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/circular_payment_icons"
+                    tools:targetApi="q" />
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+
+                    <ImageView
+                        android:id="@+id/emoji0"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:forceDarkAllowed="false"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/logo"
+                        tools:targetApi="q" />
+
+                    <ImageView
+                        android:id="@+id/emoji1"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:forceDarkAllowed="false"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/logo"
+                        tools:targetApi="q" />
+
+                    <ImageView
+                        android:id="@+id/emoji2"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:forceDarkAllowed="false"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/logo"
+                        tools:targetApi="q" />
+
+                    <ImageView
+                        android:id="@+id/emoji3"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:forceDarkAllowed="false"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/logo"
+                        tools:targetApi="q" />
+
+                    <ImageView
+                        android:id="@+id/emoji4"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:forceDarkAllowed="false"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/logo"
+                        tools:targetApi="q" />
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/title"
@@ -59,7 +134,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/amountName"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/emoji" />
+                app:layout_constraintTop_toBottomOf="@+id/emojisHolder" />
 
             <TextView
                 android:id="@+id/amount"
@@ -75,7 +150,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/amountName"
-                app:layout_constraintTop_toBottomOf="@+id/emoji" />
+                app:layout_constraintTop_toBottomOf="@+id/emojisHolder" />
 
             <TextView
                 android:id="@+id/amountName"
@@ -123,6 +198,7 @@
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
                 android:orientation="vertical"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -55,7 +55,7 @@ public class SideFunctions {
                 .into(image);
     }
 
-    public static void setImgURL(final String url, final ImageView image) {
+    public static void setImgURL(final ImageView image, final String url) {
         RequestOptions options = new RequestOptions()
                 .placeholder(R.drawable.loading)
                 .fitCenter()

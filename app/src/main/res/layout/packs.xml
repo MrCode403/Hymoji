@@ -94,8 +94,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="9dp"
                 android:layout_marginTop="10dp"
-                android:animateLayoutChanges="true"
                 android:layout_marginEnd="9dp"
+                android:animateLayoutChanges="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="6dp">

@@ -65,7 +65,7 @@ public class MainEmojisAdapter extends BaseAdapter {
         final ImageView emoji = view.findViewById(R.id.emoji);
 
         try {
-            setImgURL(Objects.requireNonNull(data.get(position).get("image")).toString(), emoji);
+            setImgURL(emoji, Objects.requireNonNull(data.get(position).get("image")).toString());
         } catch (Exception ignored) {
         }
 

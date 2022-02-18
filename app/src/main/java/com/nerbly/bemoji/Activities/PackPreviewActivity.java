@@ -3,6 +3,7 @@ package com.nerbly.bemoji.Activities;
 import static com.nerbly.bemoji.Configurations.ASSETS_SOURCE_LINK;
 import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
+import static com.nerbly.bemoji.Functions.SideFunctions.setImgURL;
 import static com.nerbly.bemoji.Functions.Utils.ZIP;
 import static com.nerbly.bemoji.Functions.Utils.isStoragePermissionGranted;
 import static com.nerbly.bemoji.Functions.Utils.requestStoragePermission;
@@ -41,9 +42,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
-import com.bumptech.glide.request.RequestOptions;
 import com.downloader.Error;
 import com.downloader.OnDownloadListener;
 import com.downloader.PRDownloader;
@@ -166,17 +164,6 @@ public class PackPreviewActivity extends AppCompatActivity {
         transparentStatusBar(this);
     }
 
-    private void setImgURL(final String url, final ImageView image) {
-        RequestOptions options = new RequestOptions()
-                .placeholder(R.drawable.loading)
-                .priority(Priority.HIGH);
-
-        Glide.with(this)
-                .load(url)
-                .apply(options)
-                .into(image);
-
-    }
 
     private void setGridColumns() {
         float scaleFactor = getResources().getDisplayMetrics().density * 60;
@@ -433,7 +420,7 @@ public class PackPreviewActivity extends AppCompatActivity {
             LinearLayout emojisBackground = view.findViewById(R.id.emojiBackground);
             ImageView emoji = view.findViewById(R.id.emoji);
 
-            setImgURL(Objects.requireNonNull(data.get(position).get("emoji_link")).toString(), emoji);
+            setImgURL(emoji, Objects.requireNonNull(data.get(position).get("emoji_link")).toString());
             emojisBackground.setOnClickListener(_view -> {
                 try {
                     DownloaderSheet downloaderSheet = new DownloaderSheet();

@@ -27,8 +27,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="9dp"
                 android:layout_marginTop="10dp"
-                android:animateLayoutChanges="true"
                 android:layout_marginEnd="9dp"
+                android:animateLayoutChanges="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="6dp">
@@ -74,12 +74,12 @@
                     android:id="@+id/progress_loading"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    app:indicatorSize="24dp"
                     android:indeterminate="true"
-                    app:indicatorColor="@color/colorAccent"
-                    app:trackCornerRadius="10dp"
                     android:visibility="gone"
-                    app:trackThickness="4dp"/>
+                    app:indicatorColor="@color/colorAccent"
+                    app:indicatorSize="24dp"
+                    app:trackCornerRadius="10dp"
+                    app:trackThickness="4dp" />
             </LinearLayout>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>

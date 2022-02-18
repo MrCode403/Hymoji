@@ -1,7 +1,9 @@
 package com.nerbly.bemoji.Adapters;
 
+import static com.nerbly.bemoji.Configurations.ASSETS_SOURCE_LINK;
 import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
-import static com.nerbly.bemoji.Functions.SideFunctions.setHighPriorityImageFromUrl;
+import static com.nerbly.bemoji.Functions.SideFunctions.setBlurImageUrl;
+import static com.nerbly.bemoji.Functions.SideFunctions.setImgURL;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -39,9 +41,11 @@ public class HomePacksAdapter extends RecyclerView.Adapter<HomePacksAdapter.View
     ArrayList<HashMap<String, Object>> data;
     private String packsTempArrayString = "";
     private String currentPositionPackArray = "";
+    private Context mContext;
 
-    public HomePacksAdapter(ArrayList<HashMap<String, Object>> _arr) {
+    public HomePacksAdapter(ArrayList<HashMap<String, Object>> _arr, Context context) {
         data = _arr;
+        mContext = context;
     }
 
     @NonNull
@@ -62,13 +66,28 @@ public class HomePacksAdapter extends RecyclerView.Adapter<HomePacksAdapter.View
         MaterialCardView cardview1 = view.findViewById(R.id.cardview1);
         TextView pack_title = view.findViewById(R.id.pack_title);
         TextView pack_desc = view.findViewById(R.id.pack_desc);
-        ImageView imageview1 = view.findViewById(R.id.emoji);
+        final ImageView emoji0 = view.findViewById(R.id.emoji0);
+        final ImageView emoji1 = view.findViewById(R.id.emoji1);
+        final ImageView emoji2 = view.findViewById(R.id.emoji2);
+        final ImageView emoji3 = view.findViewById(R.id.emoji3);
+        final ImageView emoji4 = view.findViewById(R.id.emoji4);
+        final ImageView emoji = view.findViewById(R.id.emoji);
 
         RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(_lp);
         pack_title.setText(capitalizedFirstWord(Objects.requireNonNull(data.get(position).get("name")).toString().replace("_", " ")));
         pack_desc.setText(Objects.requireNonNull(data.get(position).get("description")).toString());
-        setHighPriorityImageFromUrl(imageview1, Objects.requireNonNull(data.get(position).get("image")).toString());
+
+        HashMap<String, Object> hashMap = data.get(position);
+        if (hashMap.containsKey("emojis")) {
+            setImgURL(emoji0, ASSETS_SOURCE_LINK + ((ArrayList) Objects.requireNonNull(hashMap.get("emojis"))).get(0));
+            setImgURL(emoji1, ASSETS_SOURCE_LINK + ((ArrayList) Objects.requireNonNull(hashMap.get("emojis"))).get(1));
+            setImgURL(emoji2, ASSETS_SOURCE_LINK + ((ArrayList) Objects.requireNonNull(hashMap.get("emojis"))).get(2));
+            setImgURL(emoji3, ASSETS_SOURCE_LINK + ((ArrayList) Objects.requireNonNull(hashMap.get("emojis"))).get(3));
+            setImgURL(emoji4, ASSETS_SOURCE_LINK + ((ArrayList) Objects.requireNonNull(hashMap.get("emojis"))).get(4));
+            setBlurImageUrl(emoji, 25, ASSETS_SOURCE_LINK + ((ArrayList) Objects.requireNonNull(hashMap.get("emojis"))).get(5));
+        }
+
         cardview1.setOnClickListener(_view -> {
             try {
                 HomeActivity ha = new HomeActivity();
@@ -88,7 +107,7 @@ public class HomePacksAdapter extends RecyclerView.Adapter<HomePacksAdapter.View
             if (!isEmojiSheetShown) {
                 isEmojiSheetShown = true;
                 Intent toPreview = new Intent();
-                toPreview.putExtra("title", imageview1.getContext().getString(R.string.app_name) + "Pack_" + (long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("id")).toString())));
+                toPreview.putExtra("title", mContext.getString(R.string.app_name) + "Pack_" + (long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("id")).toString())));
                 toPreview.putExtra("subtitle", Objects.requireNonNull(data.get(position).get("description")).toString());
                 toPreview.putExtra("imageUrl", Objects.requireNonNull(data.get(position).get("image")).toString());
                 toPreview.putExtra("fileName", Objects.requireNonNull(data.get(position).get("slug")).toString());
@@ -96,8 +115,8 @@ public class HomePacksAdapter extends RecyclerView.Adapter<HomePacksAdapter.View
                 toPreview.putExtra("packEmojisAmount", Objects.requireNonNull(data.get(position).get("amount")).toString());
                 toPreview.putExtra("packName", capitalizedFirstWord(Objects.requireNonNull(data.get(position).get("name")).toString().replace("_", " ")));
                 toPreview.putExtra("packId", Objects.requireNonNull(data.get(position).get("id")).toString());
-                toPreview.setClass(imageview1.getContext(), PackPreviewActivity.class);
-                imageview1.getContext().startActivity(toPreview);
+                toPreview.setClass(mContext, PackPreviewActivity.class);
+                mContext.startActivity(toPreview);
                 new Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {
@@ -116,8 +135,8 @@ public class HomePacksAdapter extends RecyclerView.Adapter<HomePacksAdapter.View
                 if (!isEmojiSheetShown) {
                     isEmojiSheetShown = true;
                     Intent toPacks = new Intent();
-                    toPacks.setClass(imageview1.getContext(), PacksActivity.class);
-                    imageview1.getContext().startActivity(toPacks);
+                    toPacks.setClass(mContext, PacksActivity.class);
+                    mContext.startActivity(toPacks);
                     new Timer().schedule(new TimerTask() {
                         @Override
                         public void run() {

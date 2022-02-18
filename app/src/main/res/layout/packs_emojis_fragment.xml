@@ -8,9 +8,9 @@
         android:id="@+id/emojisRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="70dp"
+        android:clipToPadding="false"
         android:paddingTop="10dp"
-        android:clipToPadding="false" />
+        android:paddingBottom="70dp" />
 
     <include
         layout="@layout/no_emojis_found_view"

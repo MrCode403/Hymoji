@@ -1,6 +1,5 @@
 package com.nerbly.bemoji.UI;
 
-import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
 import static com.nerbly.bemoji.Functions.SideFunctions.setBlurImageUrl;
 import static com.nerbly.bemoji.Functions.SideFunctions.setImageFromUrlForSheet;
 import static com.nerbly.bemoji.Functions.Utils.formatEmojiName;
@@ -37,7 +36,6 @@ import com.google.android.material.textview.MaterialTextView;
 import com.nerbly.bemoji.Activities.EmojisActivity;
 import com.nerbly.bemoji.R;
 
-import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -68,7 +66,7 @@ public class DownloaderSheet extends AppCompatActivity {
 
         emoji_publisher.setText(context.getString(R.string.submitted_by) + " " + publisher);
 
-        emoji_title.setText(name);
+        emoji_title.setText(formatEmojiName(name));
         setBlurImageUrl(emoji_background, 25, url);
         setImageFromUrlForSheet(emoji, url);
         advancedCorners(relativeView, "#ffffff", 38, 38, 0, 0);

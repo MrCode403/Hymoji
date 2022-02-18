@@ -52,8 +52,9 @@ import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 public class PacksEmojisFragment extends Fragment {
 
-    private final int PAGINATION_LIMIT = 100;
     public static boolean isPacksEmojisLoaded = false;
+    public static String lastSearchedPackEmoji = "";
+    private final int PAGINATION_LIMIT = 100;
     private final Timer timer = new Timer();
     public boolean isSortingNew = true;
     public boolean isSortingOld = false;
@@ -71,8 +72,6 @@ public class PacksEmojisFragment extends Fragment {
     private boolean isSearching = false;
     private CircularProgressIndicator progress_loading;
     private JSONArray emojisArray;
-    public static String lastSearchedPackEmoji = "";
-
 
     @NonNull
     @Override
