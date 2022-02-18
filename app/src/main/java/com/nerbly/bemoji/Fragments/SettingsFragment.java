@@ -112,8 +112,8 @@ public class SettingsFragment extends BottomSheetDialogFragment {
         sharedPref = requireActivity().getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
         setting1.setOnClickListener(_view -> {
-            dismiss();
             ((HomeActivity) requireActivity()).startManualRefresh();
+            dismiss();
         });
 
         setting3.setOnClickListener(_view -> {
@@ -138,13 +138,13 @@ public class SettingsFragment extends BottomSheetDialogFragment {
         });
 
         setting4.setOnClickListener(_view -> {
-            intent.setAction(Intent.ACTION_SENDTO);
-            intent.setData(Uri.parse("mailto:"));
-            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"nerblyteam@gmail.com"});
-            intent.putExtra(Intent.EXTRA_SUBJECT, requireActivity().getString(R.string.app_name) + " App - Contact Us");
-            if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
+            try {
+                intent.setAction(Intent.ACTION_SENDTO);
+                intent.setData(Uri.parse("mailto:"));
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"nerblyteam@gmail.com"});
+                intent.putExtra(Intent.EXTRA_SUBJECT, requireActivity().getString(R.string.app_name) + " App - Contact Us");
                 startActivity(intent);
-            } else {
+            } catch (Exception e) {
                 showMessageDialog(true, getString(R.string.error_msg), getString(R.string.mailto_device_not_supported), getString(R.string.dialog_positive_text), getString(R.string.dialog_negative_text), requireActivity(),
                         (dialog, which) -> {
                             intent.setAction(Intent.ACTION_VIEW);

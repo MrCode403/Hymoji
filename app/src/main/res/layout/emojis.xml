@@ -27,6 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="9dp"
                 android:layout_marginTop="10dp"
+                android:animateLayoutChanges="true"
                 android:layout_marginEnd="9dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
@@ -68,6 +69,17 @@
                     android:scaleType="fitCenter"
                     android:src="@drawable/outline_filter_alt_black_48dp"
                     app:tint="#9E9E9E" />
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/progress_loading"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:indicatorSize="24dp"
+                    android:indeterminate="true"
+                    app:indicatorColor="@color/colorAccent"
+                    app:trackCornerRadius="10dp"
+                    android:visibility="gone"
+                    app:trackThickness="4dp"/>
             </LinearLayout>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -125,7 +137,6 @@
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
                 android:fillViewport="true">
 
                 <androidx.viewpager.widget.ViewPager

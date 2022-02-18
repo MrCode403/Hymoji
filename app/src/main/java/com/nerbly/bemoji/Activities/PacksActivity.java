@@ -1,12 +1,15 @@
 package com.nerbly.bemoji.Activities;
 
-import static com.nerbly.bemoji.Configurations.PACKS_API_LINK;
 import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
 import static com.nerbly.bemoji.Functions.SideFunctions.hideShowKeyboard;
 import static com.nerbly.bemoji.Functions.SideFunctions.setHighPriorityImageFromUrl;
 import static com.nerbly.bemoji.UI.MainUIMethods.DARK_ICONS;
 import static com.nerbly.bemoji.UI.MainUIMethods.LIGHT_ICONS;
+import static com.nerbly.bemoji.UI.MainUIMethods.rippleEffect;
+import static com.nerbly.bemoji.UI.MainUIMethods.rippleRoundStroke;
+import static com.nerbly.bemoji.UI.MainUIMethods.setClippedView;
+import static com.nerbly.bemoji.UI.MainUIMethods.setImageViewRipple;
 import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
 import static com.nerbly.bemoji.UI.MainUIMethods.statusBarColor;
 
@@ -29,6 +32,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -48,8 +52,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nerbly.bemoji.Adapters.LoadingPacksAdapter;
-import com.nerbly.bemoji.Functions.RequestNetwork;
-import com.nerbly.bemoji.Functions.RequestNetworkController;
 import com.nerbly.bemoji.Functions.Utils;
 import com.nerbly.bemoji.R;
 
@@ -57,6 +59,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Objects;
@@ -73,11 +76,10 @@ public class PacksActivity extends AppCompatActivity {
     private String currentPositionPackArray = "";
     private ArrayList<HashMap<String, Object>> packsList = new ArrayList<>();
     private LinearLayout background;
+    private LinearLayout searchBox;
     private AdView adview;
     private RecyclerView packsRecycler;
     private RecyclerView loadingRecycler;
-    private RequestNetwork startGettingPacks;
-    private RequestNetwork.RequestListener PacksRequestListener;
     private SharedPreferences sharedPref;
     private EditText searchInput;
     private boolean isPacksOpened = false;
@@ -86,8 +88,11 @@ public class PacksActivity extends AppCompatActivity {
     private TextView emptyTitle;
     private LinearLayout loadView;
     private LottieAnimationView emptyAnimation;
+    private ImageView searchFilter;
     private boolean isSearching = false;
-    private String lastSearchedEmoji = "";
+    private boolean isSortingNew = true;
+    private boolean isSortingOld = false;
+    private boolean isSortingAlphabet = false;
 
 
     @Override
@@ -106,32 +111,12 @@ public class PacksActivity extends AppCompatActivity {
         loadView = findViewById(R.id.emptyview);
         background = findViewById(R.id.background);
         adview = findViewById(R.id.adview);
+        searchBox = findViewById(R.id.searchBox);
         searchInput = findViewById(R.id.searchInput);
         packsRecycler = findViewById(R.id.packsRecycler);
         loadingRecycler = findViewById(R.id.loadingRecycler);
-        startGettingPacks = new RequestNetwork(this);
+        searchFilter = findViewById(R.id.searchFilter);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
-
-        PacksRequestListener = new RequestNetwork.RequestListener() {
-            @Override
-            public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
-                try {
-                    packsList = new Gson().fromJson(response, new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                    }.getType());
-                    sharedPref.edit().putString("packsData", new Gson().toJson(packsList)).apply();
-                    packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
-                } catch (Exception e) {
-                    Utils.showToast(getApplicationContext(), (e.toString()));
-                }
-                loadingRecycler.setVisibility(View.GONE);
-                packsRecycler.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onErrorResponse(String tag, String message) {
-
-            }
-        };
 
         searchInput.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -147,11 +132,11 @@ public class PacksActivity extends AppCompatActivity {
                 searchQuery = charSeq.toString().trim().toUpperCase();
 
                 if (searchQuery.length() == 0 && isSearching) {
-                    isSearching = false;
-                    lastSearchedEmoji = "";
+                    searchFilter.setImageResource(R.drawable.outline_filter_alt_black_48dp);
                     getPacks();
+                } else {
+                    searchFilter.setImageResource(R.drawable.round_clear_black_48dp);
                 }
-
             }
 
             @Override
@@ -162,6 +147,16 @@ public class PacksActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable _param1) {
 
+            }
+        });
+
+        searchFilter.setOnClickListener(v -> {
+            if (searchQuery.length() > 0) {
+                searchInput.setText("");
+            } else {
+                searchInput.setEnabled(false);
+                searchInput.setEnabled(true);
+                showFilterMenu(searchFilter);
             }
         });
 
@@ -197,6 +192,8 @@ public class PacksActivity extends AppCompatActivity {
     }
 
     public void LOGIC_FRONTEND() {
+        rippleRoundStroke(searchBox, "#FFFFFF", "#FFFFFF", 200, 1, "#C4C4C4");
+        rippleEffect("#E0E0E0", searchFilter);
         if (Build.VERSION.SDK_INT <= 27) {
             statusBarColor("#7289DA", this);
             LIGHT_ICONS(this);
@@ -242,23 +239,23 @@ public class PacksActivity extends AppCompatActivity {
     }
 
     private void getPacks() {
+        isSearching = false;
         packsJson = sharedPref.getString("packsData", "");
         loadView.setVisibility(View.GONE);
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
-            if (packsJson.isEmpty()) {
-                startGettingPacks.startRequestNetwork(RequestNetworkController.GET, PACKS_API_LINK, "", PacksRequestListener);
-            } else {
-                try {
-                    packsList = new Gson().fromJson(packsJson, new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                    }.getType());
+            try {
+                isSortingNew = true;
+                isSortingOld = false;
+                isSortingAlphabet = false;
+                packsList = new Gson().fromJson(packsJson, new TypeToken<ArrayList<HashMap<String, Object>>>() {
+                }.getType());
 
-                } catch (Exception e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                    Utils.showToast(getApplicationContext(), e.toString());
-                }
+            } catch (Exception e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+                Utils.showToast(getApplicationContext(), e.toString());
             }
             handler.post(() -> {
                 if (!packsJson.isEmpty()) {
@@ -274,11 +271,12 @@ public class PacksActivity extends AppCompatActivity {
 
     private void searchTask() {
         isSearching = true;
-        lastSearchedEmoji = searchQuery;
         hideShowKeyboard(false, searchInput, this);
 
         packsList = new Gson().fromJson(packsJson, new TypeToken<ArrayList<HashMap<String, Object>>>() {
         }.getType());
+
+        Log.d("HYMOJI_PACKS_SEARCH", "Total packs: " + packsList.size());
 
         for (Iterator<HashMap<String, Object>> iterator = packsList.iterator(); iterator.hasNext(); ) {
             HashMap<String, Object> emojiName = iterator.next();
@@ -289,7 +287,10 @@ public class PacksActivity extends AppCompatActivity {
 
         if (packsList.isEmpty()) {
             loadView.setVisibility(View.VISIBLE);
+            Log.d("HYMOJI_PACKS_SEARCH", "Nothing found.");
         } else {
+            Log.d("HYMOJI_PACKS_SEARCH", "Found: " + packsList.size() + " emojis.");
+            loadView.setVisibility(View.GONE);
             packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
         }
 
@@ -307,6 +308,91 @@ public class PacksActivity extends AppCompatActivity {
             adview.destroy();
         }
         super.onDestroy();
+    }
+
+
+    public void showFilterMenu(final View view) {
+        View popupView = getLayoutInflater().inflate(R.layout.sortby_view, (ViewGroup) null);
+        final PopupWindow popup = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        LinearLayout bg = popupView.findViewById(R.id.bg);
+        ImageView i1 = popupView.findViewById(R.id.i1);
+        ImageView i2 = popupView.findViewById(R.id.i2);
+        ImageView i3 = popupView.findViewById(R.id.i3);
+        LinearLayout b1 = popupView.findViewById(R.id.b1);
+        LinearLayout b2 = popupView.findViewById(R.id.b2);
+        LinearLayout b3 = popupView.findViewById(R.id.b3);
+        setImageViewRipple(i1, "#414141", "#7289DA");
+        setImageViewRipple(i2, "#414141", "#7289DA");
+        setImageViewRipple(i3, "#414141", "#7289DA");
+
+        setClippedView(bg, "#FFFFFF", 25, 7);
+        if (isSortingNew) {
+            rippleRoundStroke(b1, "#EEEEEE", "#BDBDBD", 0, 0, "#EEEEEE");
+        } else {
+            rippleRoundStroke(b1, "#FFFFFF", "#EEEEEE", 0, 0, "#EEEEEE");
+        }
+        if (isSortingOld) {
+            rippleRoundStroke(b2, "#EEEEEE", "#BDBDBD", 0, 0, "#EEEEEE");
+        } else {
+            rippleRoundStroke(b2, "#FFFFFF", "#EEEEEE", 0, 0, "#EEEEEE");
+        }
+        if (isSortingAlphabet) {
+            rippleRoundStroke(b3, "#EEEEEE", "#BDBDBD", 0, 0, "#EEEEEE");
+        } else {
+            rippleRoundStroke(b3, "#FFFFFF", "#EEEEEE", 0, 0, "#EEEEEE");
+        }
+        b1.setOnClickListener(view1 -> {
+            sort_by_newest();
+            popup.dismiss();
+        });
+        b2.setOnClickListener(view12 -> {
+            sort_by_oldest();
+            popup.dismiss();
+
+        });
+        b3.setOnClickListener(view13 -> {
+            sort_by_alphabetically();
+            popup.dismiss();
+        });
+        popup.setAnimationStyle(android.R.style.Animation_Dialog);
+        popup.setFocusable(false);
+        popup.setOutsideTouchable(true);
+        popup.showAsDropDown(view, 0, 0);
+        popup.setBackgroundDrawable(null);
+    }
+
+
+    public void sort_by_newest() {
+        if (!isSortingNew) {
+            isSortingNew = true;
+            isSortingOld = false;
+            isSortingAlphabet = false;
+            packsList = new Gson().fromJson(packsJson, new TypeToken<ArrayList<HashMap<String, Object>>>() {
+            }.getType());
+            packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
+        }
+    }
+
+    public void sort_by_oldest() {
+        if (!isSortingOld) {
+            isSortingOld = true;
+            isSortingNew = false;
+            isSortingAlphabet = false;
+            packsList = new Gson().fromJson(packsJson, new TypeToken<ArrayList<HashMap<String, Object>>>() {
+            }.getType());
+            Collections.reverse(packsList);
+            packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
+        }
+    }
+
+    public void sort_by_alphabetically() {
+        if (!isSortingAlphabet) {
+            isSortingAlphabet = true;
+            isSortingNew = false;
+            isSortingOld = false;
+            Utils.sortListMap(packsList, "name", false, true);
+            packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
+        }
     }
 
     public class PacksRecyclerAdapter extends RecyclerView.Adapter<PacksRecyclerAdapter.ViewHolder> {
@@ -351,9 +437,7 @@ public class PacksActivity extends AppCompatActivity {
                 shadAnim(warningView, "scaleY", 4, 400);
                 shadAnim(warningView, "alpha", 0, 300);
                 final Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(() -> {
-                    warningView.setVisibility(View.GONE);
-                }, 500);
+                handler.postDelayed(() -> warningView.setVisibility(View.GONE), 500);
             });
 
             cardView.setOnClickListener(_view -> {
@@ -372,7 +456,7 @@ public class PacksActivity extends AppCompatActivity {
                         packsArrayList.clear();
 
                     } catch (Exception e) {
-                        Log.d("Recycler Error", e.toString());
+                        Log.d("HYMOJI_PACKS_RECYCLER", e.toString());
                     }
                     toPreview.putExtra("switchType", "pack");
                     toPreview.putExtra("title", getString(R.string.app_name) + "Pack_" + ((long) (Double.parseDouble(Objects.requireNonNull(data.get(position).get("id")).toString()))));

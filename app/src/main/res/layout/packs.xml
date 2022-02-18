@@ -60,8 +60,8 @@
                     android:layout_height="1dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
                     android:layout_marginRight="15dp"
+                    android:layout_marginBottom="5dp"
                     android:background="#E0E0E0"
                     android:orientation="horizontal" />
 
@@ -88,62 +88,61 @@
             android:orientation="vertical">
 
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/searchCard"
+            <LinearLayout
+                android:id="@+id/searchBox"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="9dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:theme="@style/Theme.MaterialComponents.Light"
-                app:cardCornerRadius="25dp"
-                app:cardElevation="0dp"
-                app:rippleColor="#EEEEEE"
-                app:strokeColor="#E0E0E0"
-                app:strokeWidth="1dp">
+                android:animateLayoutChanges="true"
+                android:layout_marginEnd="9dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="6dp">
 
-                <LinearLayout
-                    android:id="@+id/searchBox"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/searchBtn"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icons8_search_60"
+                    app:tint="#9E9E9E" />
+
+                <EditText
+                    android:id="@+id/searchInput"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/whitney"
+                    android:hint="@string/home_searchbox"
+                    android:imeOptions="actionSearch"
+                    android:importantForAutofill="no"
+                    android:inputType="textNoSuggestions"
+                    android:lines="1"
+                    android:textColor="#000000"
+                    android:textColorHint="#757575"
+                    android:textSize="14sp"
+                    tools:ignore="TouchTargetSizeCheck" />
 
-                    <ImageView
-                        android:id="@+id/searchIcon"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="5dp"
-                        android:padding="8dp"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/icons8_search_60"
-                        app:tint="#C4C4C4" />
-
-                    <EditText
-                        android:id="@+id/searchInput"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#FFF"
-                        android:fontFamily="@font/whitney"
-                        android:hint="@string/home_searchbox"
-                        android:imeOptions="actionSearch"
-                        android:padding="8dp"
-                        android:lines="1"
-                        android:inputType="text"
-                        android:textColor="#000000"
-                        android:textColorHint="#757575"
-                        android:textSize="14sp"
-                        android:importantForAutofill="no" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                <ImageView
+                    android:id="@+id/searchFilter"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/outline_filter_alt_black_48dp"
+                    app:tint="#9E9E9E" />
+            </LinearLayout>
 
             <include
                 layout="@layout/no_emojis_found_view"
                 android:layout_width="match_parent"
-                android:visibility="gone"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/packsRecycler"

@@ -1,5 +1,8 @@
 package com.nerbly.bemoji.Functions;
 
+import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
+import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -23,15 +26,19 @@ import androidx.core.content.ContextCompat;
 import com.google.android.gms.ads.AdSize;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -42,12 +49,18 @@ public class Utils {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
+    public static int getColumns(Activity context) {
+        float scaleFactor = context.getResources().getDisplayMetrics().density * 70;
+        int number = getScreenWidth(context);
+        return (int) ((float) number / scaleFactor);
+    }
+
     public static void ZIP(String source, String destination) {
         try {
             filesListInDir.clear();
             zipDirectory(source, destination);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.d("HYMOJI_PACK_DOWNLOAD", "Zipping failed, step 1. | " + e);
             FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
@@ -75,21 +88,20 @@ public class Utils {
             zipOutputStream.close();
             fileOutputStream.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.d("HYMOJI_PACK_DOWNLOAD", "Zipping failed, step 2. | " + e);
         }
     }
 
-    private static final ArrayList<String> filesListInDir = new ArrayList();
+    private static final ArrayList<String> filesListInDir = new ArrayList<>();
 
     private static void populateFilesList(String str) {
-        ArrayList arrayList = new ArrayList();
+        ArrayList<String> arrayList = new ArrayList<>();
         FileUtil.listDir(str, arrayList);
-        for (Object o : arrayList) {
-            String str2 = (String) o;
-            if (FileUtil.isFile(str2)) {
-                filesListInDir.add(str2);
+        for (String o : arrayList) {
+            if (FileUtil.isFile(o)) {
+                filesListInDir.add(o);
             } else {
-                populateFilesList(str2);
+                populateFilesList(o);
             }
         }
     }
@@ -106,8 +118,12 @@ public class Utils {
         Collections.sort(listMap, (compareMap1, compareMap2) -> {
             try {
                 if (isNumber) {
-                    int count1 = Integer.parseInt(Objects.requireNonNull(compareMap1.get(key)).toString());
-                    int count2 = Integer.parseInt(Objects.requireNonNull(compareMap2.get(key)).toString());
+
+                    double value1 = Double.parseDouble(Objects.requireNonNull(compareMap1.get(key)).toString());
+                    double value2 = Double.parseDouble(Objects.requireNonNull(compareMap2.get(key)).toString());
+                    int count1 = (int) value1;
+                    int count2 = (int) value2;
+
                     if (ascending) {
                         return count1 < count2 ? -1 : 0;
                     } else {
@@ -121,9 +137,43 @@ public class Utils {
                     }
                 }
             } catch (Exception e) {
+                Log.e("HYMOJI_SORTING_ERROR", "ArrayList error: " + e);
                 return 0;
             }
         });
+    }
+
+    public static JSONArray sortJson(final JSONArray json, final String key, final boolean isNumber, final boolean ascending) throws JSONException {
+        List<JSONObject> JSON = new ArrayList<>();
+        for (int i = 0; i < json.length(); i++) {
+            JSON.add(json.getJSONObject(i));
+        }
+
+        Collections.sort(JSON, (Comparator<JSONObject>) (lhs, rhs) -> {
+            try {
+                String lid = lhs.getString(key);
+                String rid = rhs.getString(key);
+                if (isNumber) {
+                    int count1 = Integer.parseInt(lid);
+                    int count2 = Integer.parseInt(rid);
+                    if (ascending) {
+                        return count1 < count2 ? -1 : 0;
+                    } else {
+                        return count1 > count2 ? -1 : 0;
+                    }
+                } else {
+                    if (ascending) {
+                        return lid.compareTo(rid);
+                    } else {
+                        return rid.compareTo(lid);
+                    }
+                }
+            } catch (Exception e) {
+                Log.e("HYMOJI_SORTING_ERROR", "JSON error: " + e);
+                return 0;
+            }
+        });
+        return new JSONArray(JSON);
     }
 
     public static ArrayList<HashMap<String, Object>> getLocalEmojisMediaStore(@NonNull Context context) {
@@ -191,5 +241,21 @@ public class Utils {
 
         int adWidth = (int) (adWidthPixels / density);
         return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, adWidth);
+    }
+
+    public static String formatEmojiName(String query) {
+        String emojiName = query.substring(query.indexOf("-") + 1).trim();
+        emojiName = emojiName.replaceAll("[_\\\\-]", " ");
+        if (stringContainsItemFromList(emojiName, new String[]{".png", ".gif", ".jpg"})) {
+            emojiName = emojiName.substring(0, emojiName.length() - 4);
+        }
+        if (!emojiName.matches("[0-9]+") && (emojiName.length() > 1)) {
+            emojiName = emojiName.replaceAll("[0-9]", "");
+        }
+        return capitalizedFirstWord(emojiName);
+    }
+
+    public static boolean stringContainsItemFromList(String inputStr, String[] items) {
+        return Arrays.stream(items).anyMatch(inputStr::contains);
     }
 }

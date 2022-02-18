@@ -10,11 +10,10 @@ android {
         applicationId "com.nerbly.bemoji"
         minSdk 21
         targetSdk 31
-        versionCode 34
-        versionName "1.0.6"
+        versionCode 35
+        versionName "1.0.7"
 
-        buildConfigField "boolean", "LOG_DEBUG_MODE", "false"
-        buildConfigField "boolean", "LOG_DEBUG_WITH_STACKTRACE_MODE", "false"
+
     }
     buildTypes {
         release {
@@ -26,6 +25,8 @@ android {
                 mappingFileUploadEnabled true
             }
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean", "LOG_DEBUG_MODE", "false"
+            buildConfigField "boolean", "LOG_DEBUG_WITH_STACKTRACE_MODE", "false"
         }
         debug {
             debuggable true

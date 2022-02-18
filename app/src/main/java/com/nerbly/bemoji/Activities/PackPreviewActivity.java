@@ -22,7 +22,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.media.MediaScannerConnection;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -51,6 +50,7 @@ import com.downloader.PRDownloader;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nerbly.bemoji.Functions.FileUtil;
@@ -70,23 +70,26 @@ public class PackPreviewActivity extends AppCompatActivity {
     private GridLayoutManager layoutManager1 = new GridLayoutManager(this, 3);
     private BottomSheetBehavior<LinearLayout> sheetBehavior;
     private boolean isDownloading = false;
-    private int downloadPackPosition = 0;
     private boolean isPackDownloaded = false;
     private String tempPackName = "";
     private boolean isGoingToZipPack = false;
-    private String downloadPackPath = "";
     private String packEmojisArrayString = "";
-    private ArrayList<String> downloadPackArrayList = new ArrayList<>();
     private RelativeLayout relativeView;
     private LinearLayout download;
     private LinearLayout bsheetbehavior;
     private LinearLayout background;
     private LinearLayout slider;
     private TextView activityTitle;
+    private TextView activityDescription;
     private RecyclerView packsRecycler;
     private ImageView download_ic;
     private TextView download_tv;
     private SharedPreferences sharedPref;
+    private String currentDownloadURL = "";
+    private String currentDownloadPath = "";
+    private String currentDownloadName = "";
+    private int currentDownloadPosition = 0;
+    private String packDestination;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +108,7 @@ public class PackPreviewActivity extends AppCompatActivity {
         background = findViewById(R.id.background);
         slider = findViewById(R.id.slider);
         activityTitle = findViewById(R.id.activityTitle);
+        activityDescription = findViewById(R.id.activityDescription);
         packsRecycler = findViewById(R.id.packEmojisRecycler);
         download_ic = findViewById(R.id.download_ic);
         download_tv = findViewById(R.id.download_tv);
@@ -116,15 +120,7 @@ public class PackPreviewActivity extends AppCompatActivity {
             sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         });
 
-        download.setOnClickListener(_view -> {
-            if (!isDownloading && !isPackDownloaded) {
-                if (Build.VERSION.SDK_INT >= 30) {
-                    downloadPack(packEmojisArrayString, tempPackName);
-                } else {
-                    askForZippingSheet();
-                }
-            }
-        });
+        download.setOnClickListener(_view -> askForZippingSheet());
     }
 
     private void initializeLogic() {
@@ -135,14 +131,17 @@ public class PackPreviewActivity extends AppCompatActivity {
     public void LOGIC_BACKEND() {
         overridePendingTransition(R.anim.fade_in, 0);
         sheetBehavior = BottomSheetBehavior.from(bsheetbehavior);
-        activityTitle.setText(getIntent().getStringExtra("packName"));
         setGridColumns();
         bottomSheetBehaviorListener();
         try {
             tempPackName = getIntent().getStringExtra("packName");
+            activityTitle.setText(tempPackName);
+            activityDescription.setText(getIntent().getStringExtra("subtitle"));
             packEmojisArrayString = getIntent().getStringExtra("packEmojisArray");
-            ArrayList<String> emojisStringArray = new Gson().fromJson(getIntent().getStringExtra("packEmojisArray"), new TypeToken<ArrayList<String>>() {
+
+            ArrayList<String> emojisStringArray = new Gson().fromJson(packEmojisArrayString, new TypeToken<ArrayList<String>>() {
             }.getType());
+
             for (int i = 0; i < emojisStringArray.size(); i++) {
                 HashMap<String, Object> emojisMap = new HashMap<>();
                 emojisMap.put("emoji_link", ASSETS_SOURCE_LINK + emojisStringArray.get(i));
@@ -150,7 +149,9 @@ public class PackPreviewActivity extends AppCompatActivity {
                 emojisListMap.add(emojisMap);
             }
             packsRecycler.setAdapter(new Recycler1Adapter(emojisListMap));
+
         } catch (Exception e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
             UserInteractions.showCustomSnackBar(getString(R.string.failed_to_load_emojis), this);
             new Handler().postDelayed(() -> sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN), 3000);
         }
@@ -239,10 +240,8 @@ public class PackPreviewActivity extends AppCompatActivity {
 
     }
 
-
-    private void startPackDownload(String name, String path, String url) {
+    private void downloadPack() {
         if (!isDownloading) {
-            isDownloading = true;
             download_tv.setText(R.string.downloading);
             download_ic.setImageResource(R.drawable.loadingimg);
             downAnim.setTarget(download_ic);
@@ -253,7 +252,21 @@ public class PackPreviewActivity extends AppCompatActivity {
             downAnim.setRepeatMode(ValueAnimator.REVERSE);
             downAnim.start();
         }
-        PRDownloader.download(url, path, name)
+        isDownloading = true;
+
+        if (isGoingToZipPack) {
+            currentDownloadPath = FileUtil.getPackageDataDir(getApplicationContext()) + "/Zipper/" + tempPackName;
+            Log.d("HYMOJI_PACK_DOWNLOAD", "Downloading as ZIP, download path: " + currentDownloadPath);
+        } else {
+            currentDownloadPath = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/" + getString(R.string.app_name) + "/" + tempPackName;
+            Log.d("HYMOJI_PACK_DOWNLOAD", "Downloading as folder, download path: " + currentDownloadPath);
+        }
+
+        currentDownloadName = getString(R.string.app_name) + "_" + Objects.requireNonNull(emojisListMap.get(currentDownloadPosition).get("slug"));
+        currentDownloadURL = Objects.requireNonNull(emojisListMap.get(currentDownloadPosition).get("emoji_link")).toString();
+
+
+        PRDownloader.download(currentDownloadURL, currentDownloadPath, currentDownloadName)
                 .build()
                 .setOnStartOrResumeListener(() -> {
 
@@ -270,104 +283,91 @@ public class PackPreviewActivity extends AppCompatActivity {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onDownloadComplete() {
-                        downloadPackPosition++;
-                        download_tv.setText(getString(R.string.pack_downloading_progress) + " " + downloadPackPosition + "/" + downloadPackArrayList.size());
-                        downloadPack(new Gson().toJson(downloadPackArrayList), tempPackName);
-                        MediaScannerConnection.scanFile(PackPreviewActivity.this,
-                                new String[]{path}, null,
-                                (path1, uri) -> {
-                                });
+                        if (currentDownloadPosition < emojisListMap.size() - 1) {
+                            currentDownloadPosition++;
+                            downloadPack();
+                            download_tv.setText(getString(R.string.pack_downloading_progress) + " " + currentDownloadPosition + "/" + emojisListMap.size());
+                        } else {
+                            if (isGoingToZipPack) {
+                                zippingTask();
+                            } else {
+                                downloadFinished(true);
+                            }
+                        }
+
                     }
 
                     @Override
                     public void onError(Error error) {
-                        isDownloading = false;
-                        download_tv.setText(R.string.download_btn_txt);
-                        download_ic.setImageResource(R.drawable.round_get_app_white_48dp);
-                        showCustomSnackBar(getString(R.string.error_msg_2), PackPreviewActivity.this);
-                        download_ic.setRotation((float) (0));
-                        downAnim.cancel();
+                        downloadFinished(false);
+                        showCustomSnackBar(getString(R.string.error_msg_2) + error.getServerErrorMessage(), PackPreviewActivity.this);
                     }
                 });
-
     }
 
-    public void downloadPack(String array, String packName) {
-        try {
-            downloadPackArrayList = new Gson().fromJson(array, new TypeToken<ArrayList<String>>() {
-            }.getType());
-            if (downloadPackPosition == downloadPackArrayList.size()) {
-                if (isGoingToZipPack) {
-                    zippingTask();
-                } else {
-                    isDownloading = false;
-                    isPackDownloaded = true;
-                    download_tv.setText(R.string.download_success);
-                    download_ic.setImageResource(R.drawable.round_done_white_48dp);
-                    download_ic.setRotation(0);
-                    showCustomSnackBar(getString(R.string.full_download_path) + " " + downloadPackPath, this);
-                    downAnim.cancel();
-                }
-            } else {
-                String downloadPackUrl = ASSETS_SOURCE_LINK + downloadPackArrayList.get(downloadPackPosition);
-                String downloadPackName = getString(R.string.app_name) + "_" + downloadPackArrayList.get(downloadPackPosition);
-                if (isGoingToZipPack) {
-                    downloadPackPath = FileUtil.getPackageDataDir(getApplicationContext()) + "/Zipper/" + packName;
-                } else {
-                    downloadPackPath = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/" + getString(R.string.app_name) + "/" + packName;
-                }
-                startPackDownload(downloadPackName, downloadPackPath, downloadPackUrl);
-            }
-        } catch (Exception ignored) {
+    private void downloadFinished(boolean isSuccess) {
+        isDownloading = false;
+        download_ic.setRotation(0);
+        downAnim.cancel();
+        if (isSuccess) {
+            showCustomSnackBar(getString(R.string.full_download_path) + " " + packDestination, this);
+            download_ic.setImageResource(R.drawable.round_done_white_48dp);
+            download_tv.setText(R.string.download_success);
+            isPackDownloaded = true;
+        } else {
+            download_tv.setText(R.string.download_btn_txt);
+            download_ic.setImageResource(R.drawable.round_get_app_white_48dp);
         }
     }
 
+
     public void askForZippingSheet() {
-        if (isStoragePermissionGranted(this)) {
+        if (!isDownloading && !isPackDownloaded) {
+            if (isStoragePermissionGranted(this) || Build.VERSION.SDK_INT >= 30) {
+                final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.materialsheet);
+                View bottomSheetView;
+                bottomSheetView = getLayoutInflater().inflate(R.layout.infosheet, (ViewGroup) null);
+                bottomSheetDialog.setContentView(bottomSheetView);
+                bottomSheetDialog.getWindow().findViewById(R.id.design_bottom_sheet).setBackgroundResource(android.R.color.transparent);
 
-            final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.materialsheet);
-            View bottomSheetView;
-            bottomSheetView = getLayoutInflater().inflate(R.layout.infosheet, (ViewGroup) null);
-            bottomSheetDialog.setContentView(bottomSheetView);
-            bottomSheetDialog.getWindow().findViewById(R.id.design_bottom_sheet).setBackgroundResource(android.R.color.transparent);
+                final ImageView image = bottomSheetView.findViewById(R.id.image);
+                final TextView infook = bottomSheetView.findViewById(R.id.infosheet_ok);
+                final TextView infocancel = bottomSheetView.findViewById(R.id.infosheet_cancel);
+                final TextView infotitle = bottomSheetView.findViewById(R.id.infosheet_title);
+                final TextView infosub = bottomSheetView.findViewById(R.id.infosheet_description);
+                final LinearLayout infoback = bottomSheetView.findViewById(R.id.infosheet_back);
+                final LinearLayout slider = bottomSheetView.findViewById(R.id.slider);
 
-            final ImageView image = bottomSheetView.findViewById(R.id.image);
-            final TextView infook = bottomSheetView.findViewById(R.id.infosheet_ok);
-            final TextView infocancel = bottomSheetView.findViewById(R.id.infosheet_cancel);
-            final TextView infotitle = bottomSheetView.findViewById(R.id.infosheet_title);
-            final TextView infosub = bottomSheetView.findViewById(R.id.infosheet_description);
-            final LinearLayout infoback = bottomSheetView.findViewById(R.id.infosheet_back);
-            final LinearLayout slider = bottomSheetView.findViewById(R.id.slider);
-
-            advancedCorners(infoback, "#ffffff", 38, 38, 0, 0);
-            setViewRadius(slider, 180, "#BDBDBD");
-            infotitle.setText(R.string.pack_confirmation_sheet_title);
-            infosub.setText(R.string.pack_confirmation_sheet_subtitle);
-            infook.setText(R.string.pack_confirmation_sheet_btn1);
-            infocancel.setText(R.string.pack_confirmation_sheet_btn2);
-            image.setImageResource(R.drawable.ic_files_and_folder_flatline);
-            infook.setOnClickListener(v -> {
-                isGoingToZipPack = true;
-                downloadPack(packEmojisArrayString, tempPackName);
-                bottomSheetDialog.dismiss();
-            });
-            infocancel.setOnClickListener(v -> {
-                isGoingToZipPack = false;
-                downloadPack(packEmojisArrayString, tempPackName);
-                bottomSheetDialog.dismiss();
-            });
-            if (!isFinishing()) {
-                try {
-                    bottomSheetDialog.show();
-                } catch (Exception e) {
+                advancedCorners(infoback, "#ffffff", 38, 38, 0, 0);
+                setViewRadius(slider, 180, "#BDBDBD");
+                infotitle.setText(R.string.pack_confirmation_sheet_title);
+                infosub.setText(R.string.pack_confirmation_sheet_subtitle);
+                infook.setText(R.string.pack_confirmation_sheet_btn1);
+                infocancel.setText(R.string.pack_confirmation_sheet_btn2);
+                image.setImageResource(R.drawable.ic_files_and_folder_flatline);
+                infook.setOnClickListener(v -> {
+                    isGoingToZipPack = true;
+                    downloadPack();
+                    bottomSheetDialog.dismiss();
+                });
+                infocancel.setOnClickListener(v -> {
+                    isGoingToZipPack = false;
+                    downloadPack();
+                    bottomSheetDialog.dismiss();
+                });
+                if (!isFinishing()) {
+                    try {
+                        bottomSheetDialog.show();
+                    } catch (Exception e) {
+                        showCustomSnackBar(getString(R.string.error_msg), this);
+                    }
+                } else {
                     showCustomSnackBar(getString(R.string.error_msg), this);
                 }
             } else {
-                showCustomSnackBar(getString(R.string.error_msg), this);
+                requestStoragePermission(1, this);
+                showCustomSnackBar(getString(R.string.ask_for_permission), this);
             }
-        } else {
-            requestStoragePermission(1, this);
-            showCustomSnackBar(getString(R.string.ask_for_permission), this);
         }
     }
 
@@ -375,7 +375,7 @@ public class PackPreviewActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                download.performClick();
+                askForZippingSheet();
             } else {
                 showCustomSnackBar(getString(R.string.permission_denied_packs), this);
             }
@@ -387,17 +387,16 @@ public class PackPreviewActivity extends AppCompatActivity {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
-            ZIP(downloadPackPath, Environment.DIRECTORY_DOWNLOADS + "/" + getString(R.string.app_name) + "/" + tempPackName + ".zip");
-            downloadPackPath = Environment.DIRECTORY_DOWNLOADS + "/" + getString(R.string.app_name) + "/" + tempPackName + ".zip";
+
+            packDestination = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/" + getString(R.string.app_name) + "/" + tempPackName + ".zip";
+
+            Log.d("HYMOJI_PACK_DOWNLOAD", "Zipping at destination: " + packDestination);
+
+            ZIP(currentDownloadPath, packDestination);
 
             handler.post(() -> {
-                isDownloading = false;
-                download_tv.setText(R.string.download_success);
-                download_ic.setImageResource(R.drawable.round_done_white_48dp);
-                download_ic.setRotation((float) (0));
-                showCustomSnackBar(R.string.full_download_path + downloadPackPath, PackPreviewActivity.this);
-                downAnim.cancel();
-                FileUtil.deleteFile(downloadPackPath);
+                downloadFinished(true);
+                FileUtil.deleteFile(currentDownloadPath);
             });
         });
     }
@@ -440,7 +439,7 @@ public class PackPreviewActivity extends AppCompatActivity {
                     DownloaderSheet downloaderSheet = new DownloaderSheet();
                     downloaderSheet.showEmojiSheet(PackPreviewActivity.this, Objects.requireNonNull(data.get(position).get("emoji_link")).toString(), Objects.requireNonNull(data.get(position).get("slug")).toString(), "Emoji lovers");
                 } catch (Exception e) {
-                    Log.e("downloader", e.toString());
+                    Log.e("HYMOJI_EMOJI_PREVIEWER", e.toString());
                     e.printStackTrace();
                 }
             });

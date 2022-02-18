@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -129,8 +130,10 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
                             }
                         }
 
+                        categoriesMap.clear();
+
                     } catch (JSONException e) {
-                        System.err.println(e.toString());
+                        Log.d("HYMOJI_CATEGORIES", e.toString());
                     }
 
                     sharedPref.edit().putString("categoriesData", new Gson().toJson(categoriesList)).apply();
@@ -177,11 +180,13 @@ public class CategoriesFragment extends BottomSheetDialogFragment {
         categoriesRecycler.setHasFixedSize(true);
         loadingRecycler.setHasFixedSize(true);
 
+        HashMap<String, Object> shimmerMap = new HashMap<>();
+        shimmerMap.put("key", "value");
         for (int i = 0; i < 15; i++) {
-            HashMap<String, Object> shimmerMap = new HashMap<>();
-            shimmerMap.put("key", "value");
             shimmerList.add(shimmerMap);
         }
+        shimmerMap.clear();
+
         loadingRecycler.setAdapter(new LoadingCategoriesAdapter(shimmerList));
 
         if (sharedPref.getString("categoriesData", "").isEmpty()) {

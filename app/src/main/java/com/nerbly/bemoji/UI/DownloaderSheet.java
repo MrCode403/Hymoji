@@ -3,6 +3,7 @@ package com.nerbly.bemoji.UI;
 import static com.nerbly.bemoji.Functions.MainFunctions.capitalizedFirstWord;
 import static com.nerbly.bemoji.Functions.SideFunctions.setBlurImageUrl;
 import static com.nerbly.bemoji.Functions.SideFunctions.setImageFromUrlForSheet;
+import static com.nerbly.bemoji.Functions.Utils.formatEmojiName;
 import static com.nerbly.bemoji.Functions.Utils.isStoragePermissionGranted;
 import static com.nerbly.bemoji.Functions.Utils.requestStoragePermission;
 import static com.nerbly.bemoji.UI.MainUIMethods.advancedCorners;
@@ -67,14 +68,7 @@ public class DownloaderSheet extends AppCompatActivity {
 
         emoji_publisher.setText(context.getString(R.string.submitted_by) + " " + publisher);
 
-        String emojiName = name.replaceAll("[_\\\\-]", " ");
-        emojiName = emojiName.replaceAll("[0-9]", "");
-
-        if (stringContainsItemFromList(emojiName, new String[]{".png", ".gif", ".jpg"})) {
-            emojiName = emojiName.substring(0, emojiName.length() - 4);
-        }
-
-        emoji_title.setText(capitalizedFirstWord(emojiName).trim());
+        emoji_title.setText(name);
         setBlurImageUrl(emoji_background, 25, url);
         setImageFromUrlForSheet(emoji, url);
         advancedCorners(relativeView, "#ffffff", 38, 38, 0, 0);
@@ -122,16 +116,16 @@ public class DownloaderSheet extends AppCompatActivity {
                 downloadmanager.enqueue(request);
 
             } catch (Exception e) {
-                Log.e("DOWNLOAD", e.toString());
+                Log.e("HYMOJI_EMOJI_PREVIEWER", e.toString());
                 e.printStackTrace();
             }
 
             handler.post(() -> {
                 if (context instanceof EmojisActivity) {
                     ((EmojisActivity) context).showInterstitialAd();
-                    Log.d("CONTEXT", "We're in emojis activity");
+                    Log.d("HYMOJI_EMOJI_PREVIEWER", "We're in emojis activity");
                 } else {
-                    Log.d("CONTEXT", "We're not in emojis activity");
+                    Log.d("HYMOJI_EMOJI_PREVIEWER", "We're not in emojis activity");
                 }
             });
         });
@@ -144,9 +138,5 @@ public class DownloaderSheet extends AppCompatActivity {
         intent.putExtra("android.intent.extra.TEXT", emoji_link);
         context.startActivity(Intent.createChooser(intent, context.getString(R.string.share_title)));
         showCustomSnackBar(context.getString(R.string.getting_ready_to_share), (Activity) context);
-    }
-
-    public boolean stringContainsItemFromList(String inputStr, String[] items) {
-        return Arrays.stream(items).anyMatch(inputStr::contains);
     }
 }

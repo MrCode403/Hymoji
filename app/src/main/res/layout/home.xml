@@ -707,7 +707,7 @@
                         layout="@layout/home_loading"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
                 </RelativeLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
@@ -740,5 +740,5 @@
         layout="@layout/animated_splash_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone" />
+        android:visibility="visible" />
 </RelativeLayout>

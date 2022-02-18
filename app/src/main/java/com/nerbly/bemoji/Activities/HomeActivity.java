@@ -1,10 +1,12 @@
 package com.nerbly.bemoji.Activities;
 
+import static com.nerbly.bemoji.Configurations.ASSETS_SOURCE_LINK;
 import static com.nerbly.bemoji.Configurations.CATEGORIES_API_LINK;
 import static com.nerbly.bemoji.Configurations.DISCORD_INVITE_LINK;
 import static com.nerbly.bemoji.Configurations.EMOJIS_API_LINK;
 import static com.nerbly.bemoji.Configurations.PACKS_API_LINK;
 import static com.nerbly.bemoji.Functions.MainFunctions.loadLocale;
+import static com.nerbly.bemoji.Functions.Utils.formatEmojiName;
 import static com.nerbly.bemoji.Functions.Utils.getAdSize;
 import static com.nerbly.bemoji.Functions.Utils.getLocalEmojisMediaStore;
 import static com.nerbly.bemoji.Functions.Utils.isStoragePermissionGranted;
@@ -58,8 +60,6 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.cloudmessaging.CloudMessage;
-import com.google.android.gms.cloudmessaging.CloudMessagingReceiver;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
@@ -97,7 +97,7 @@ import java.util.concurrent.Executors;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
-public class HomeActivity extends AppCompatActivity  {
+public class HomeActivity extends AppCompatActivity {
 
     public static ArrayList<HashMap<String, Object>> packsList = new ArrayList<>();
     private final int FLEXIBLE_APP_UPDATE_REQ_CODE = 123;
@@ -352,7 +352,7 @@ public class HomeActivity extends AppCompatActivity  {
                             try {
                                 emojisList.clear();
                             } catch (Exception e) {
-                                Log.e("Emojis Response", "couldn't clear the list for new emojis");
+                                Log.e("HYMOJI_RESPONSE", "Couldn't clear the list for new emojis");
                             }
                         }
 
@@ -360,14 +360,14 @@ public class HomeActivity extends AppCompatActivity  {
                         executor.execute(() -> {
                             try {
                                 JSONArray emojisArray = new JSONArray(response);
-                                Log.d("Emojis Response", "found " + emojisArray.length() + " emojis");
+                                Log.d("HYMOJI_RESPONSE", "found " + emojisArray.length() + " emojis");
 
                                 for (int i = 0; i < emojisArray.length(); i++) {
                                     JSONObject emojisObject = emojisArray.getJSONObject(i);
                                     emojisMap = new HashMap<>();
                                     emojisMap.put("image", emojisObject.getString("image"));
                                     emojisMap.put("name", emojisObject.getString("slug"));
-                                    emojisMap.put("title", emojisObject.getString("title"));
+                                    emojisMap.put("title", formatEmojiName(emojisObject.getString("title")));
                                     emojisMap.put("submitted_by", emojisObject.getString("submitted_by"));
                                     emojisMap.put("id", emojisObject.getInt("id"));
                                     emojisMap.put("category", emojisObject.getInt("category"));
@@ -381,7 +381,7 @@ public class HomeActivity extends AppCompatActivity  {
                             }
                             handler.post(() -> {
                                 sharedPref.edit().putString("emojisData", new Gson().toJson(emojisList)).apply();
-                                Log.d("Emojis Response", emojisCount + " main emojis saved to local database");
+                                Log.d("HYMOJI_RESPONSE", emojisCount + " main emojis saved to local database");
 
                                 startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, PACKS_API_LINK, "PACKS", EmojisRequestListener);
                             });
@@ -389,26 +389,51 @@ public class HomeActivity extends AppCompatActivity  {
                         break;
 
                     case "PACKS":
-                        try {
-                            executor.execute(() -> {
-                                try {
-                                    packsList = new Gson().fromJson(response, new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                                    }.getType());
-                                    JSONArray backPacksArray = new JSONArray(response);
-                                    for (int backPacksArrayInt = 0; backPacksArrayInt < backPacksArray.length(); backPacksArrayInt++) {
-                                        JSONObject packsObject = backPacksArray.getJSONObject(backPacksArrayInt);
-                                        JSONArray frontPacksArray = packsObject.getJSONArray("emojis");
-                                        for (int frontPacksInt = 0; frontPacksInt < frontPacksArray.length(); frontPacksInt++) {
-                                            emojisCount++;
-                                        }
+                        final boolean[] isSuccess = {false};
+
+                        ExecutorService executor2 = Executors.newSingleThreadExecutor();
+                        Handler handler2 = new Handler(Looper.getMainLooper());
+                        executor2.execute(() -> {
+                            int currentPosition = 0;
+                            ArrayList<HashMap<String, Object>> backendEmojisList = new ArrayList<>();
+
+                            try {
+                                packsList = new Gson().fromJson(response, new TypeToken<ArrayList<HashMap<String, Object>>>() {
+                                }.getType());
+
+                                JSONArray backPacksArray = new JSONArray(response);
+
+                                for (int i1 = 0; i1 < backPacksArray.length(); i1++) {
+                                    JSONObject packsObject = backPacksArray.getJSONObject(i1);
+                                    JSONArray frontPacksArray = packsObject.getJSONArray("emojis");
+
+                                    for (int i2 = 0; i2 < frontPacksArray.length(); i2++) {
+
+                                        emojisMap = new HashMap<>();
+                                        emojisMap.put("image", ASSETS_SOURCE_LINK + frontPacksArray.getString(i2));
+                                        emojisMap.put("title", formatEmojiName(frontPacksArray.getString(i2)));
+                                        emojisMap.put("name", frontPacksArray.getString(i2));
+                                        emojisMap.put("submitted_by", "Emoji lovers");
+                                        emojisMap.put("id", currentPosition);
+                                        currentPosition++;
+                                        emojisCount++;
+                                        backendEmojisList.add(emojisMap);
                                     }
-                                } catch (Exception e) {
-                                    Log.d("Packs Response", "failed to get emojis count due to:");
-                                    e.printStackTrace();
                                 }
-                                handler.post(() -> {
-                                    Log.d("Packs Response", emojisCount + " packs emojis saved to local database");
-                                    sharedPref.edit().putString("packsDataOriginal", response).apply();
+
+                                sharedPref.edit().putString("packsOneByOne", new Gson().toJson(backendEmojisList)).apply();
+
+                                Log.d("HYMOJI_PACKS", "Found: " + backendEmojisList.size());
+                                isSuccess[0] = true;
+                            } catch (Exception e) {
+                                isSuccess[0] = false;
+                                FirebaseCrashlytics.getInstance().recordException(e);
+                                Log.e("HYMOJI_ERROR", e.toString());
+                            }
+
+                            handler2.post(() -> {
+                                if (isSuccess[0]) {
+                                    Log.d("HYMOJI_PACKS", emojisCount + " packs emojis saved to local database");
                                     sharedPref.edit().putString("packsData", new Gson().toJson(packsList)).apply();
                                     packs_recycler.setAdapter(new HomePacksAdapter(packsList));
                                     loadingView.setVisibility(View.GONE);
@@ -416,11 +441,13 @@ public class HomeActivity extends AppCompatActivity  {
                                     adBackView.setVisibility(View.VISIBLE);
                                     numbersAnimator(emojisCounter, 0, emojisCount, 1000);
                                     sharedPref.edit().putInt("emojisTotalCount", emojisCount).apply();
-                                });
+                                } else {
+                                    Log.d("HYMOJI_PACKS", "Failed to get emojis count due to:");
+                                }
                             });
-                        } catch (Exception e) {
-                            getOnlineEmojis();
-                        }
+                        });
+
+
                         break;
                     case "CATEGORIES":
                         if (!categoriesList.isEmpty()) {
@@ -433,7 +460,7 @@ public class HomeActivity extends AppCompatActivity  {
                             while (keys.hasNext()) {
                                 String key = keys.next();
                                 String value = String.valueOf(object.get(key));
-                                if (!value.equals("NSFW")) {
+                                if (!value.equalsIgnoreCase("NSFW")) {
                                     categoriesMap = new HashMap<>();
                                     categoriesMap.put("category_id", key);
                                     categoriesMap.put("category_name", value);
@@ -827,15 +854,12 @@ public class HomeActivity extends AppCompatActivity  {
     }
 
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 pro_tip_view.setVisibility(View.GONE);
                 getLocalEmojis();
-            } else {
-                showCustomSnackBar("Like just why, this is a cool feature.", this);
             }
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
@@ -844,8 +868,6 @@ public class HomeActivity extends AppCompatActivity  {
     public String PacksArray() {
         return new Gson().toJson(packsList);
     }
-
-
 
 
 }

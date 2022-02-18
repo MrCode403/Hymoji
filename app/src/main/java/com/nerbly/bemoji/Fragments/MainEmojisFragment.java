@@ -1,6 +1,6 @@
 package com.nerbly.bemoji.Fragments;
 
-import static com.nerbly.bemoji.Functions.MainFunctions.getScreenWidth;
+import static com.nerbly.bemoji.Functions.Utils.getColumns;
 import static com.nerbly.bemoji.UI.MainUIMethods.shadAnim;
 
 import android.app.Activity;
@@ -9,32 +9,32 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.nerbly.bemoji.Adapters.MainEmojisAdapter;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.nerbly.bemoji.Adapters.MainEmojisAdapterExperimental;
 import com.nerbly.bemoji.Functions.Utils;
 import com.nerbly.bemoji.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
@@ -47,16 +47,18 @@ public class MainEmojisFragment extends Fragment {
 
     public static boolean isMainEmojisLoaded = false;
     private final Timer timer = new Timer();
-    private final ArrayList<HashMap<String, Object>> emojisList = new ArrayList<>();
+    private ArrayList<HashMap<String, Object>> emojisList = new ArrayList<>();
     public boolean isSortingNew = true;
     public boolean isSortingOld = false;
     public boolean isSortingAlphabet = false;
     private TextView emptyTitle;
     private LinearLayout loadView;
-    private GridView emojisRecycler;
+    private RecyclerView emojisRecycler;
     private LottieAnimationView emptyAnimation;
     private SharedPreferences sharedPref;
-    private HashMap<String, Object> emojisMap;
+    private GridLayoutManager layoutManager;
+    private CircularProgressIndicator progress_loading;
+    public static String lastSearchedMainEmoji = "";
 
     @NonNull
     @Override
@@ -73,6 +75,8 @@ public class MainEmojisFragment extends Fragment {
         loadView = view.findViewById(R.id.emptyview);
         emojisRecycler = view.findViewById(R.id.emojisRecycler);
         sharedPref = requireContext().getSharedPreferences("AppData", Activity.MODE_PRIVATE);
+        layoutManager = new GridLayoutManager(requireContext(), getColumns(requireActivity()));
+        progress_loading = requireActivity().findViewById(R.id.progress_loading);
     }
 
     private void initializeLogic() {
@@ -80,16 +84,15 @@ public class MainEmojisFragment extends Fragment {
     }
 
     public void LOGIC_BACKEND() {
-        initEmojisRecycler();
+        emojisRecycler.setLayoutManager(layoutManager);
+        if (Build.VERSION.SDK_INT <= 30) {
+            OverScrollDecoratorHelper.setUpOverScroll(emojisRecycler, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
+        }
         if (!sharedPref.getString("emojisData", "").isEmpty()) {
             getEmojis();
         } else {
-            noEmojisFound(true);
+            noEmojisFound(false);
         }
-        if (Build.VERSION.SDK_INT <= 30) {
-            OverScrollDecoratorHelper.setUpOverScroll(emojisRecycler);
-        }
-        emojisRecycler.setNestedScrollingEnabled(true);
     }
 
     private void noEmojisFound(boolean isError) {
@@ -141,49 +144,28 @@ public class MainEmojisFragment extends Fragment {
     }
 
     public void getEmojis() {
+        progress_loading.setVisibility(View.VISIBLE);
+        lastSearchedMainEmoji = "";
         if (!sharedPref.getString("emojisData", "").isEmpty()) {
 
             ExecutorService executor = Executors.newSingleThreadExecutor();
             Handler handler = new Handler(Looper.getMainLooper());
 
             executor.execute(() -> {
-                if (!emojisList.isEmpty()) {
-                    try {
-                        emojisList.clear();
-                    } catch (Exception e) {
-                        Log.e("Emojis Response", "couldn't clear the list for new emojis");
-                    }
-                }
-                try {
-                    JSONArray emojisArray = new JSONArray(sharedPref.getString("emojisData", ""));
-                    Log.d("Emojis Response", "found " + emojisArray.length() + " emojis");
-
-                    for (int i = 0; i < emojisArray.length(); i++) {
-                        JSONObject emojisObject = emojisArray.getJSONObject(i);
-                        emojisMap = new HashMap<>();
-                        emojisMap.put("image", emojisObject.getString("image"));
-                        emojisMap.put("name", emojisObject.getString("name"));
-                        emojisMap.put("title", emojisObject.getString("title"));
-                        emojisMap.put("submitted_by", emojisObject.getString("submitted_by"));
-                        emojisMap.put("id", emojisObject.getInt("id"));
-                        emojisList.add(emojisMap);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                emojisList = new Gson().fromJson(sharedPref.getString("emojisData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
+                }.getType());
 
                 if (isSortingNew) {
-                    Utils.sortListMap(emojisList, "id", false, false);
+                    Utils.sortListMap(emojisList, "id", true, true);
                 } else if (isSortingOld) {
-                    Collections.reverse(emojisList);
+                    Utils.sortListMap(emojisList, "id", true, false);
                 } else if (isSortingAlphabet) {
                     Utils.sortListMap(emojisList, "title", false, true);
                 }
 
                 handler.post(() -> {
-                    emojisRecycler.setAdapter(new MainEmojisAdapter(emojisList, requireContext()));
+                    emojisRecycler.setAdapter(new MainEmojisAdapterExperimental(emojisList, requireContext()));
                     whenEmojisAreReady();
-                    emojisMap.clear();
                 });
             });
         }
@@ -191,20 +173,12 @@ public class MainEmojisFragment extends Fragment {
 
     private void whenEmojisAreReady() {
         new Handler().postDelayed(() -> {
+            progress_loading.setVisibility(View.GONE);
             shadAnim(loadView, "translationY", -1000, 300);
             shadAnim(loadView, "alpha", 0, 300);
             isMainEmojisLoaded = true;
-        }, 1000);
+        }, 500);
         new Handler().postDelayed(() -> emptyAnimation.cancelAnimation(), 2000);
-    }
-
-    public void initEmojisRecycler() {
-        float scaleFactor = getResources().getDisplayMetrics().density * 70;
-        int number = getScreenWidth(requireActivity());
-        int columns = (int) ((float) number / scaleFactor);
-        emojisRecycler.setNumColumns(columns);
-        emojisRecycler.setVerticalSpacing(0);
-        emojisRecycler.setHorizontalSpacing(0);
     }
 
     public void sort_by_newest() {
@@ -212,8 +186,7 @@ public class MainEmojisFragment extends Fragment {
             isSortingNew = true;
             isSortingOld = false;
             isSortingAlphabet = false;
-            Utils.sortListMap(emojisList, "id", false, false);
-            emojisRecycler.setAdapter(new MainEmojisAdapter(emojisList, requireContext()));
+            getEmojis();
         }
     }
 
@@ -222,8 +195,7 @@ public class MainEmojisFragment extends Fragment {
             isSortingOld = true;
             isSortingNew = false;
             isSortingAlphabet = false;
-            Utils.sortListMap(emojisList, "id", false, true);
-            emojisRecycler.setAdapter(new MainEmojisAdapter(emojisList, requireContext()));
+            getEmojis();
         }
     }
 
@@ -232,50 +204,32 @@ public class MainEmojisFragment extends Fragment {
             isSortingAlphabet = true;
             isSortingNew = false;
             isSortingOld = false;
-            Utils.sortListMap(emojisList, "title", false, true);
-            emojisRecycler.setAdapter(new MainEmojisAdapter(emojisList, requireContext()));
+            getEmojis();
         }
     }
 
     public void searchTask(String query) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
-
         executor.execute(() -> {
-            if (!emojisList.isEmpty()) {
-                try {
-                    emojisList.clear();
-                } catch (Exception e) {
-                    Log.e("Emojis Response", "couldn't clear the list for new emojis");
-                }
-            }
-            try {
-                JSONArray emojisArray = new JSONArray(sharedPref.getString("emojisData", ""));
-                Log.d("Emojis Response", "found " + emojisArray.length() + " emojis");
+            lastSearchedMainEmoji = query;
+            emojisList = new Gson().fromJson(sharedPref.getString("emojisData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
+            }.getType());
 
-                for (int i = 0; i < emojisArray.length(); i++) {
-                    JSONObject emojisObject = emojisArray.getJSONObject(i);
-                    HashMap<String, Object> emojisMap = new HashMap<>();
-                    emojisMap.put("image", emojisObject.getString("image"));
-                    emojisMap.put("name", emojisObject.getString("name"));
-                    emojisMap.put("title", emojisObject.getString("title"));
-                    emojisMap.put("submitted_by", emojisObject.getString("submitted_by"));
-                    emojisMap.put("id", emojisObject.getInt("id"));
-                    if (emojisObject.getString("submitted_by").toLowerCase().contains(query) || emojisObject.getString("title").toLowerCase().contains(query)) {
-                        emojisList.add(emojisMap);
-                    }
+            for (Iterator<HashMap<String, Object>> iterator = emojisList.iterator(); iterator.hasNext(); ) {
+                HashMap<String, Object> emojiName = iterator.next();
+                if (!Objects.requireNonNull(emojiName.get("title")).toString().toUpperCase().contains(query)) {
+                    iterator.remove();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
             handler.post(() -> {
-                if (emojisList.size() == 0) {
+                if (emojisList.isEmpty()) {
                     noEmojisFound(false);
                 } else {
-                    emojisRecycler.setVisibility(View.VISIBLE);
                     loadView.setVisibility(View.GONE);
-                    emojisRecycler.setAdapter(new MainEmojisAdapter(emojisList, requireContext()));
+                    emojisRecycler.setAdapter(new MainEmojisAdapterExperimental(emojisList, requireContext()));
                 }
+                progress_loading.setVisibility(View.GONE);
                 isMainEmojisLoaded = true;
             });
         });

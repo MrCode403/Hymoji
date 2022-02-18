@@ -4,13 +4,13 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
-    <GridView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/emojisRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fadingEdgeLength="20dp"
-        android:isScrollContainer="false"
-        android:requiresFadingEdge="vertical" />
+        android:paddingBottom="70dp"
+        android:paddingTop="10dp"
+        android:clipToPadding="false" />
 
     <include
         layout="@layout/no_emojis_found_view"
