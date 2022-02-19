@@ -297,7 +297,7 @@ public class SettingsFragment extends BottomSheetDialogFragment {
     }
 
     private void showLanguagesDialog() {
-        final String[] languages = {"English", "Português", "Français", "Deutsch", "Türkçe", "русский", "Polskie"};
+        final String[] languages = {"English", "Português", "Français", "Deutsch", "Türkçe", "Pусский", "Polskie"};
         MaterialAlertDialogBuilder languagesDialog = new MaterialAlertDialogBuilder(requireActivity(), R.style.RoundShapeTheme);
         int languagePosition;
         languagePosition = sharedPref.getInt("lang_pos", -1);

@@ -74,6 +74,8 @@ public class PackPreviewActivity extends AppCompatActivity {
     private String packEmojisArrayString = "";
     private RelativeLayout relativeView;
     private LinearLayout download;
+    private LinearLayout buttonsHolder;
+    private LinearLayout cancelDownload;
     private LinearLayout bsheetbehavior;
     private LinearLayout background;
     private LinearLayout slider;
@@ -102,6 +104,8 @@ public class PackPreviewActivity extends AppCompatActivity {
     private void initialize() {
         relativeView = findViewById(R.id.relativeView);
         download = findViewById(R.id.download);
+        buttonsHolder = findViewById(R.id.buttonsHolder);
+        cancelDownload = findViewById(R.id.cancelDownload);
         bsheetbehavior = findViewById(R.id.sheetBehavior);
         background = findViewById(R.id.background);
         slider = findViewById(R.id.slider);
@@ -113,12 +117,15 @@ public class PackPreviewActivity extends AppCompatActivity {
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
         relativeView.setOnClickListener(_view -> {
-            shadAnim(download, "translationY", 200, 200);
-            shadAnim(download, "alpha", 0, 200);
-            sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            if (!isDownloading) {
+                shadAnim(buttonsHolder, "alpha", 0, 200);
+                shadAnim(buttonsHolder, "translationY", 200, 200);
+                sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            }
         });
 
         download.setOnClickListener(_view -> askForZippingSheet());
+        cancelDownload.setOnClickListener(_view -> downloadFinished(false, true));
     }
 
     private void initializeLogic() {
@@ -146,6 +153,7 @@ public class PackPreviewActivity extends AppCompatActivity {
                 emojisMap.put("slug", emojisStringArray.get(i));
                 emojisListMap.add(emojisMap);
             }
+
             packsRecycler.setAdapter(new Recycler1Adapter(emojisListMap));
 
         } catch (Exception e) {
@@ -160,6 +168,7 @@ public class PackPreviewActivity extends AppCompatActivity {
         marqueeTextView(activityTitle);
         setViewRadius(slider, 90, "#E0E0E0");
         rippleRoundStroke(download, "#7289DA", "#687DC8", getResources().getDimension(R.dimen.buttons_corners_radius), 0, "#7289DA");
+        rippleRoundStroke(cancelDownload, "#424242", "#343434", getResources().getDimension(R.dimen.buttons_corners_radius), 0, "#7289DA");
         DARK_ICONS(this);
         transparentStatusBar(this);
     }
@@ -182,8 +191,8 @@ public class PackPreviewActivity extends AppCompatActivity {
                         shadAnim(background, "elevation", 20, 200);
                         shadAnim(slider, "translationY", 0, 200);
                         shadAnim(slider, "alpha", 1, 200);
-                        shadAnim(download, "translationY", 0, 200);
-                        shadAnim(download, "alpha", 1, 200);
+                        shadAnim(buttonsHolder, "translationY", 0, 200);
+                        shadAnim(buttonsHolder, "alpha", 1, 200);
                         slider.setVisibility(View.VISIBLE);
                         break;
                     case BottomSheetBehavior.STATE_DRAGGING:
@@ -192,8 +201,8 @@ public class PackPreviewActivity extends AppCompatActivity {
                         shadAnim(slider, "alpha", 1, 200);
                         slider.setVisibility(View.VISIBLE);
                         if (!isDownloading) {
-                            shadAnim(download, "translationY", 200, 200);
-                            shadAnim(download, "alpha", 0, 200);
+                            shadAnim(buttonsHolder, "translationY", 200, 200);
+                            shadAnim(buttonsHolder, "alpha", 0, 200);
                         }
                         break;
 
@@ -201,8 +210,8 @@ public class PackPreviewActivity extends AppCompatActivity {
                         shadAnim(background, "elevation", 0, 200);
                         shadAnim(slider, "translationY", -200, 200);
                         shadAnim(slider, "alpha", 0, 200);
-                        shadAnim(download, "translationY", 0, 200);
-                        shadAnim(download, "alpha", 1, 200);
+                        shadAnim(buttonsHolder, "translationY", 0, 200);
+                        shadAnim(buttonsHolder, "alpha", 1, 200);
                         slider.setVisibility(View.INVISIBLE);
                         break;
                     case BottomSheetBehavior.STATE_HIDDEN:
@@ -224,11 +233,12 @@ public class PackPreviewActivity extends AppCompatActivity {
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
             }
         });
-
     }
+
 
     private void downloadPack() {
         if (!isDownloading) {
+            cancelDownload.setVisibility(View.VISIBLE);
             download_tv.setText(R.string.downloading);
             download_ic.setImageResource(R.drawable.loadingimg);
             downAnim.setTarget(download_ic);
@@ -273,12 +283,12 @@ public class PackPreviewActivity extends AppCompatActivity {
                         if (currentDownloadPosition < emojisListMap.size() - 1) {
                             currentDownloadPosition++;
                             downloadPack();
-                            download_tv.setText(getString(R.string.pack_downloading_progress) + " " + currentDownloadPosition + "/" + emojisListMap.size());
+                            download_tv.setText(getString(R.string.downloading) + " " + currentDownloadPosition + "/" + emojisListMap.size());
                         } else {
                             if (isGoingToZipPack) {
                                 zippingTask();
                             } else {
-                                downloadFinished(true);
+                                downloadFinished(true, false);
                             }
                         }
 
@@ -286,24 +296,32 @@ public class PackPreviewActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Error error) {
-                        downloadFinished(false);
+                        downloadFinished(false, false);
                         showCustomSnackBar(getString(R.string.error_msg_2) + error.getServerErrorMessage(), PackPreviewActivity.this);
                     }
                 });
     }
 
-    private void downloadFinished(boolean isSuccess) {
+    private void downloadFinished(boolean isSuccess, boolean isCancelling) {
         isDownloading = false;
-        download_ic.setRotation(0);
         downAnim.cancel();
-        if (isSuccess) {
-            showCustomSnackBar(getString(R.string.full_download_path) + " " + packDestination, this);
-            download_ic.setImageResource(R.drawable.round_done_white_48dp);
-            download_tv.setText(R.string.download_success);
-            isPackDownloaded = true;
+        if (isCancelling) {
+            PRDownloader.cancelAll();
+            shadAnim(buttonsHolder, "translationY", 200, 200);
+            shadAnim(buttonsHolder, "alpha", 0, 200);
+            sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         } else {
-            download_tv.setText(R.string.download_btn_txt);
-            download_ic.setImageResource(R.drawable.round_get_app_white_48dp);
+            currentDownloadPosition = 0;
+            download_ic.setRotation(0);
+            cancelDownload.setVisibility(View.GONE);
+            if (isSuccess) {
+                download_ic.setImageResource(R.drawable.round_done_white_48dp);
+                download_tv.setText(R.string.download_success);
+                isPackDownloaded = true;
+            } else {
+                download_tv.setText(R.string.download_btn_txt);
+                download_ic.setImageResource(R.drawable.round_get_app_white_48dp);
+            }
         }
     }
 
@@ -334,11 +352,13 @@ public class PackPreviewActivity extends AppCompatActivity {
                 image.setImageResource(R.drawable.ic_files_and_folder_flatline);
                 infook.setOnClickListener(v -> {
                     isGoingToZipPack = true;
+                    packDestination = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/" + getString(R.string.app_name) + "/" + tempPackName + ".zip";
                     downloadPack();
                     bottomSheetDialog.dismiss();
                 });
                 infocancel.setOnClickListener(v -> {
                     isGoingToZipPack = false;
+                    packDestination = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/" + getString(R.string.app_name) + "/" + tempPackName;
                     downloadPack();
                     bottomSheetDialog.dismiss();
                 });
@@ -382,7 +402,7 @@ public class PackPreviewActivity extends AppCompatActivity {
             ZIP(currentDownloadPath, packDestination);
 
             handler.post(() -> {
-                downloadFinished(true);
+                downloadFinished(true, false);
                 FileUtil.deleteFile(currentDownloadPath);
             });
         });
@@ -390,8 +410,11 @@ public class PackPreviewActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        shadAnim(download, "translationY", 200, 200);
-        shadAnim(download, "alpha", 0, 200);
+        if (isDownloading) {
+            downloadFinished(false, true);
+        }
+        shadAnim(buttonsHolder, "alpha", 0, 200);
+        shadAnim(buttonsHolder, "translationY", 200, 200);
         sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
@@ -427,7 +450,6 @@ public class PackPreviewActivity extends AppCompatActivity {
                     downloaderSheet.showEmojiSheet(PackPreviewActivity.this, Objects.requireNonNull(data.get(position).get("emoji_link")).toString(), Objects.requireNonNull(data.get(position).get("slug")).toString(), "Emoji lovers");
                 } catch (Exception e) {
                     Log.e("HYMOJI_EMOJI_PREVIEWER", e.toString());
-                    e.printStackTrace();
                 }
             });
 
