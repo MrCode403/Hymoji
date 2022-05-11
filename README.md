@@ -10,14 +10,10 @@
 </div>
 
 <div align='center'>
-  
 [![stability-mature](https://img.shields.io/badge/stability-mature-008000.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#mature)
 [![Chat](https://img.shields.io/badge/chat-on%20Discord-7289da)](https://discord.gg/nxy2Qq4YP4)
-
 </div>
-<p align='center'>
-<img src="https://repository-images.githubusercontent.com/362965204/c598643a-5af3-4581-a9ba-87022cc2f7c2" >
-  </p>
+
 Hymoji is a platform that works as a library of emojis for Discord, Twitch and Slack provided by emoji.gg.
  
 ## To-do
@@ -30,6 +26,8 @@ Currently, `EmojisActivity` uses 2 fragments to show both main and packs emojis.
 This app was initially created using Sketchware, and the current code base uses old methods and approaches to do a certain job. Due to that, the app needs improvements in terms of code.
  - Binding instead of `findViewById`.
  - Split methods to proper classes.
+
+### Improve Readme.md
 
 ## Contributions
 The project is open source because I can't work on it on a regular basis, and there are many users who use the app daily and they need to stay updated with the latest fixes and features. Each contribution would be appreciated in any way. Thanks.
