@@ -69,7 +69,7 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-7692699628033489~9811500474" />
+            android:value="XXXXXXXXXXXXXXX" />
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
