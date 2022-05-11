@@ -23,9 +23,13 @@ Hymoji is a platform that works as a library of emojis for Discord, Twitch and S
 ## To-do
 ### Stability:
 Currently, `EmojisActivity` uses 2 fragments to show both main and packs emojis. However, the way it shows emojis is so inconsistent and needs to be improved.
+ - Improve the way `HomeActivity` handles server responses.
+ - Recreate `PacksEmojisFragment` pagination to work seamlessly with +10K emojis.
  
 ### Massive refactoring:
-This app was initially created using Sketchware, and the current code base uses old methods and approaches to do a certain job. Due to that, the app needs improvements in terms of codes.
+This app was initially created using Sketchware, and the current code base uses old methods and approaches to do a certain job. Due to that, the app needs improvements in terms of code.
+ - Binding instead of `findViewById`.
+ - Split methods to proper classes.
 
 ## Contributions
 The project is open source because I can't work on it on a regular basis, and there are many users who use the app daily and they need to stay updated with the latest fixes and features. Each contribution would be appreciated in any way. Thanks.
