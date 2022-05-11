@@ -4,3 +4,4 @@ app/release/
 .idea/
 java_pid14544.hprof
 *.hprof
+local.properties
