@@ -68,7 +68,7 @@ guidelines, or that summarized:
    - `chore:` Code maintenance (you can also use emojis to represent commit types)
 
 Examples:
- - `feat: Speed up compiling with new technique`
+ - `feat: Better way to download emojis`
  - `fix: Fix crash during launch on certain phones`
  - `refactor: Reformat code at File.java`
 
