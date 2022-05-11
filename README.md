@@ -10,6 +10,7 @@
 </div>
 
 <div align='center'>
+  
 [![stability-mature](https://img.shields.io/badge/stability-mature-008000.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#mature)
 [![Chat](https://img.shields.io/badge/chat-on%20Discord-7289da)](https://discord.gg/nxy2Qq4YP4)
 </div>
