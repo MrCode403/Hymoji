@@ -6,6 +6,8 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
+      - name: Add gms application id
+        run: sed -i 's/$(applicationId)/${{ secrets.APPLICATION_ID }}/g' app/src/main/AndroidManifest.xml
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build the app

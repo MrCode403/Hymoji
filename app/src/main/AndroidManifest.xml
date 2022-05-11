@@ -1,6 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.nerbly.bemoji">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -27,7 +26,7 @@
         tools:targetApi="o">
 
         <activity
-            android:name=".Activities.HomeActivity"
+            android:name=".activities.HomeActivity"
             android:configChanges="keyboardHidden|orientation|uiMode"
             android:exported="true">
             <intent-filter>
@@ -36,23 +35,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.EmojisActivity"
+            android:name=".activities.EmojisActivity"
             android:configChanges="keyboardHidden|orientation|uiMode"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
-            android:name=".Activities.PacksActivity"
+            android:name=".activities.PacksActivity"
             android:configChanges="keyboardHidden|orientation|uiMode"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".Activities.PackPreviewActivity"
+            android:name=".activities.PackPreviewActivity"
             android:configChanges="keyboardHidden|orientation|uiMode"
             android:theme="@style/ActivityAsSheet" />
         <activity
-            android:name=".Activities.PreviewCategoryActivity"
+            android:name=".activities.PreviewCategoryActivity"
             android:configChanges="keyboardHidden|orientation|uiMode"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
-            android:name=".Activities.PremiumActivity"
+            android:name=".activities.PremiumActivity"
             android:configChanges="keyboardHidden|orientation|uiMode" />
 
         <meta-data
@@ -69,7 +68,7 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-7692699628033489~9811500474" />
+            android:value="$(applicationId)" />
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
