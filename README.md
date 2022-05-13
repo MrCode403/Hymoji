@@ -16,17 +16,26 @@
 </div>
 
 Hymoji is a platform that works as a library of emojis for Discord, Twitch and Slack provided by emoji.gg.
- 
+
 ## To-do
 ### Stability:
 Currently, `EmojisActivity` uses 2 fragments to show both main and packs emojis. However, the way it shows emojis is so inconsistent and needs to be improved.
+Known todos:
  - Improve the way `HomeActivity` handles server responses.
- - Recreate `PacksEmojisFragment` pagination to work seamlessly with +10K emojis.
- 
+ - `EmojisActivity` needs a checkup to verify any issues that cause the app to hang.
+ - Recreate `PacksEmojisFragment` pagination to work seamlessly with +15K emojis.
+ - The app is kinda slow, but the reason is unknown so far.
+ - The way the app changes to selected language is unstable and sometimes doesn't work.
+ - Showing `BottomSheetDialog/BottomSheetFragment` over `BottomSheetFragment` causes flickering.
+ - Downloading packs as ZIP not working when Hymoji's folder at Downloads doesn't exist. Solution: check if Hymoji folder exists, else create it. Check `zippingTask()` in `PackPreviewActivity`.
+
 ### Massive refactoring:
 This app was initially created using Sketchware, and the current code base uses old methods and approaches to do a certain job. Due to that, the app needs improvements in terms of code.
+Known todos:
  - Binding instead of `findViewById`.
  - Split methods to proper classes.
+ - Switch from hardcoded colors to xml colors.
+ - Replace programmatically-written UI methods with xml approaches.
 
 ### Improve Readme.md
 
@@ -71,4 +80,3 @@ Examples:
  - `feat: Better way to download emojis`
  - `fix: Fix crash during launch on certain phones`
  - `refactor: Reformat code at File.java`
-
