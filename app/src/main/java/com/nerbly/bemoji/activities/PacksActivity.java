@@ -54,6 +54,9 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nerbly.bemoji.adapters.LoadingPacksAdapter;
+import com.nerbly.bemoji.databinding.HomeLoadingBinding;
+import com.nerbly.bemoji.databinding.NoEmojisFoundViewBinding;
+import com.nerbly.bemoji.databinding.PacksBinding;
 import com.nerbly.bemoji.functions.Utils;
 import com.nerbly.bemoji.R;
 
@@ -77,50 +80,44 @@ public class PacksActivity extends AppCompatActivity {
     private String packsTempArrayString = "";
     private String currentPositionPackArray = "";
     private ArrayList<HashMap<String, Object>> packsList = new ArrayList<>();
-    private LinearLayout background;
-    private LinearLayout searchBox;
-    private AdView adview;
-    private RecyclerView packsRecycler;
-    private RecyclerView loadingRecycler;
-    private SharedPreferences sharedPref;
-    private EditText searchInput;
+
     private boolean isPacksOpened = false;
     private String packsJson = "";
     private String searchQuery = "";
-    private TextView emptyTitle;
-    private LinearLayout loadView;
-    private LottieAnimationView emptyAnimation;
-    private ImageView searchFilter;
+
     private boolean isSearching = false;
     private boolean isSortingNew = true;
     private boolean isSortingOld = false;
     private boolean isSortingAlphabet = false;
+
+    private PacksBinding packsBinding;
+    private NoEmojisFoundViewBinding noEmojisFoundViewBinding;
+    private HomeLoadingBinding homeLoadingBinding;
+    private SharedPreferences sharedPref;
 
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
         loadLocale(this);
-        setContentView(R.layout.packs);
+        initViewBind();
+        setContentView(packsBinding.getRoot());
         initialize();
         FirebaseApp.initializeApp(this);
         initializeLogic();
     }
 
+    private void initViewBind(){
+        packsBinding = PacksBinding.inflate(getLayoutInflater());
+        noEmojisFoundViewBinding = NoEmojisFoundViewBinding.inflate(getLayoutInflater());
+        homeLoadingBinding = HomeLoadingBinding.inflate(getLayoutInflater());
+    }
+
     private void initialize() {
-        emptyTitle = findViewById(R.id.emptyTitle);
-        emptyAnimation = findViewById(R.id.emptyAnimation);
-        loadView = findViewById(R.id.emptyview);
-        background = findViewById(R.id.background);
-        adview = findViewById(R.id.adview);
-        searchBox = findViewById(R.id.searchBox);
-        searchInput = findViewById(R.id.searchInput);
-        packsRecycler = findViewById(R.id.packsRecycler);
-        loadingRecycler = findViewById(R.id.loadingRecycler);
-        searchFilter = findViewById(R.id.searchFilter);
+
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
-        searchInput.setOnEditorActionListener((v, actionId, event) -> {
+        packsBinding.searchInput.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 searchTask();
                 return true;
@@ -128,16 +125,16 @@ public class PacksActivity extends AppCompatActivity {
             return false;
         });
 
-        searchInput.addTextChangedListener(new TextWatcher() {
+        packsBinding.searchInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence charSeq, int start, int count, int after) {
                 searchQuery = charSeq.toString().trim().toUpperCase();
 
                 if (searchQuery.length() == 0 && isSearching) {
-                    searchFilter.setImageResource(R.drawable.outline_filter_alt_black_48dp);
+                    packsBinding.searchFilter.setImageResource(R.drawable.outline_filter_alt_black_48dp);
                     getPacks();
                 } else {
-                    searchFilter.setImageResource(R.drawable.round_clear_black_48dp);
+                    packsBinding.searchFilter.setImageResource(R.drawable.round_clear_black_48dp);
                 }
             }
 
@@ -152,13 +149,13 @@ public class PacksActivity extends AppCompatActivity {
             }
         });
 
-        searchFilter.setOnClickListener(v -> {
+        packsBinding.searchFilter.setOnClickListener(v -> {
             if (searchQuery.length() > 0) {
-                searchInput.setText("");
+                packsBinding.searchInput.setText("");
             } else {
-                searchInput.setEnabled(false);
-                searchInput.setEnabled(true);
-                showFilterMenu(searchFilter);
+                packsBinding.searchInput.setEnabled(false);
+                packsBinding.searchInput.setEnabled(true);
+                showFilterMenu(packsBinding.searchFilter);
             }
         });
 
@@ -172,14 +169,14 @@ public class PacksActivity extends AppCompatActivity {
 
 
     public void LOGIC_BACKEND() {
-        loadingRecycler.setLayoutManager(new LinearLayoutManager(this));
-        packsRecycler.setLayoutManager(new LinearLayoutManager(this));
-        packsRecycler.setHasFixedSize(true);
-        loadingRecycler.setHasFixedSize(true);
+        packsBinding.loadingRecycler.setLayoutManager(new LinearLayoutManager(this));
+        packsBinding.packsRecycler.setLayoutManager(new LinearLayoutManager(this));
+        packsBinding.packsRecycler.setHasFixedSize(true);
+        packsBinding.loadingRecycler.setHasFixedSize(true);
         if (Build.VERSION.SDK_INT <= 30) {
-            OverScrollDecoratorHelper.setUpOverScroll(packsRecycler, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
+            OverScrollDecoratorHelper.setUpOverScroll(packsBinding.packsRecycler, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
         }
-        background.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
+        packsBinding.background.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
 
         loadAds();
 
@@ -188,14 +185,14 @@ public class PacksActivity extends AppCompatActivity {
             shimmerMap.put("key", "value");
             shimmerList.add(shimmerMap);
         }
-        loadingRecycler.setAdapter(new LoadingPacksAdapter(shimmerList));
+        packsBinding.loadingRecycler.setAdapter(new LoadingPacksAdapter(shimmerList));
 
         getPacks();
     }
 
     public void LOGIC_FRONTEND() {
-        rippleRoundStroke(searchBox, "#FFFFFF", "#FFFFFF", 200, 1, "#C4C4C4");
-        rippleEffect("#E0E0E0", searchFilter);
+        rippleRoundStroke(packsBinding.searchBox, "#FFFFFF", "#FFFFFF", 200, 1, "#C4C4C4");
+        rippleEffect("#E0E0E0", packsBinding.searchFilter);
         if (Build.VERSION.SDK_INT <= 27) {
             statusBarColor("#7289DA", this);
             LIGHT_ICONS(this);
@@ -203,9 +200,9 @@ public class PacksActivity extends AppCompatActivity {
             statusBarColor("#FFFFFF", this);
             DARK_ICONS(this);
         }
-        emptyAnimation.setAnimation("animations/not_found.json");
-        emptyAnimation.playAnimation();
-        emptyTitle.setText(getString(R.string.emojis_not_found));
+        noEmojisFoundViewBinding.emptyAnimation.setAnimation("animations/not_found.json");
+        noEmojisFoundViewBinding.emptyAnimation.playAnimation();
+        noEmojisFoundViewBinding.emptyTitle.setText(getString(R.string.emojis_not_found));
     }
 
     private void loadAds() {
@@ -214,9 +211,9 @@ public class PacksActivity extends AppCompatActivity {
             });
 
             AdRequest adRequest = new AdRequest.Builder().build();
-            adview.loadAd(adRequest);
+            packsBinding.adview.loadAd(adRequest);
 
-            adview.setAdListener(new AdListener() {
+            packsBinding.adview.setAdListener(new AdListener() {
                 @Override
                 public void onAdLoaded() {
                 }
@@ -243,7 +240,7 @@ public class PacksActivity extends AppCompatActivity {
     private void getPacks() {
         isSearching = false;
         packsJson = sharedPref.getString("packsData", "");
-        loadView.setVisibility(View.GONE);
+        homeLoadingBinding.loadingView.setVisibility(View.GONE);
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
@@ -261,10 +258,10 @@ public class PacksActivity extends AppCompatActivity {
             }
             handler.post(() -> {
                 if (!packsJson.isEmpty()) {
-                    packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
+                    packsBinding.packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
                     new Handler().postDelayed(() -> {
-                        packsRecycler.setVisibility(View.VISIBLE);
-                        loadingRecycler.setVisibility(View.GONE);
+                        packsBinding.packsRecycler.setVisibility(View.VISIBLE);
+                        packsBinding.loadingRecycler.setVisibility(View.GONE);
                     }, 1000);
                 }
             });
@@ -273,7 +270,7 @@ public class PacksActivity extends AppCompatActivity {
 
     private void searchTask() {
         isSearching = true;
-        hideShowKeyboard(false, searchInput, this);
+        hideShowKeyboard(false, packsBinding.searchInput, this);
 
         packsList = new Gson().fromJson(packsJson, new TypeToken<ArrayList<HashMap<String, Object>>>() {
         }.getType());
@@ -288,12 +285,12 @@ public class PacksActivity extends AppCompatActivity {
         }
 
         if (packsList.isEmpty()) {
-            loadView.setVisibility(View.VISIBLE);
+            homeLoadingBinding.loadingView.setVisibility(View.VISIBLE);
             Log.d("HYMOJI_PACKS_SEARCH", "Nothing found.");
         } else {
             Log.d("HYMOJI_PACKS_SEARCH", "Found: " + packsList.size() + " emojis.");
-            loadView.setVisibility(View.GONE);
-            packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
+            homeLoadingBinding.loadingView.setVisibility(View.GONE);
+            packsBinding.packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
         }
 
     }
@@ -306,8 +303,8 @@ public class PacksActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if (adview != null) {
-            adview.destroy();
+        if (packsBinding.adview != null) {
+            packsBinding. adview.destroy();
         }
         super.onDestroy();
     }
@@ -371,7 +368,7 @@ public class PacksActivity extends AppCompatActivity {
             isSortingAlphabet = false;
             packsList = new Gson().fromJson(packsJson, new TypeToken<ArrayList<HashMap<String, Object>>>() {
             }.getType());
-            packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
+            packsBinding.packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
         }
     }
 
@@ -383,7 +380,7 @@ public class PacksActivity extends AppCompatActivity {
             packsList = new Gson().fromJson(packsJson, new TypeToken<ArrayList<HashMap<String, Object>>>() {
             }.getType());
             Collections.reverse(packsList);
-            packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
+            packsBinding.packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
         }
     }
 
@@ -393,7 +390,7 @@ public class PacksActivity extends AppCompatActivity {
             isSortingNew = false;
             isSortingOld = false;
             Utils.sortListMap(packsList, "name", false, true);
-            packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
+            packsBinding.packsRecycler.setAdapter(new PacksRecyclerAdapter(packsList));
         }
     }
 
