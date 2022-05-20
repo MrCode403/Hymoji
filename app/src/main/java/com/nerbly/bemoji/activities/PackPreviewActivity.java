@@ -51,6 +51,8 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.nerbly.bemoji.databinding.EmojisviewBinding;
+import com.nerbly.bemoji.databinding.PackpreviewBinding;
 import com.nerbly.bemoji.functions.FileUtil;
 import com.nerbly.bemoji.R;
 import com.nerbly.bemoji.ui.DownloaderSheet;
@@ -72,18 +74,6 @@ public class PackPreviewActivity extends AppCompatActivity {
     private String tempPackName = "";
     private boolean isGoingToZipPack = false;
     private String packEmojisArrayString = "";
-    private RelativeLayout relativeView;
-    private LinearLayout download;
-    private LinearLayout buttonsHolder;
-    private LinearLayout cancelDownload;
-    private LinearLayout bsheetbehavior;
-    private LinearLayout background;
-    private LinearLayout slider;
-    private TextView activityTitle;
-    private TextView activityDescription;
-    private RecyclerView packsRecycler;
-    private ImageView download_ic;
-    private TextView download_tv;
     private SharedPreferences sharedPref;
     private String currentDownloadURL = "";
     private String currentDownloadPath = "";
@@ -91,41 +81,38 @@ public class PackPreviewActivity extends AppCompatActivity {
     private int currentDownloadPosition = 0;
     private String packDestination;
 
+    private PackpreviewBinding packpreviewBinding;
+    private EmojisviewBinding emojisviewBinding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadLocale(this);
-        setContentView(R.layout.packpreview);
+        initViewBinding();
+        setContentView(packpreviewBinding.getRoot());
         initialize();
         FirebaseApp.initializeApp(this);
         initializeLogic();
     }
 
+    private void initViewBinding(){
+        packpreviewBinding = PackpreviewBinding.inflate(getLayoutInflater());
+        emojisviewBinding = EmojisviewBinding.inflate(getLayoutInflater());
+    }
+
     private void initialize() {
-        relativeView = findViewById(R.id.relativeView);
-        download = findViewById(R.id.download);
-        buttonsHolder = findViewById(R.id.buttonsHolder);
-        cancelDownload = findViewById(R.id.cancelDownload);
-        bsheetbehavior = findViewById(R.id.sheetBehavior);
-        background = findViewById(R.id.background);
-        slider = findViewById(R.id.slider);
-        activityTitle = findViewById(R.id.activityTitle);
-        activityDescription = findViewById(R.id.activityDescription);
-        packsRecycler = findViewById(R.id.packEmojisRecycler);
-        download_ic = findViewById(R.id.download_ic);
-        download_tv = findViewById(R.id.download_tv);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
-        relativeView.setOnClickListener(_view -> {
+        packpreviewBinding.relativeView.setOnClickListener(_view -> {
             if (!isDownloading) {
-                shadAnim(buttonsHolder, "alpha", 0, 200);
-                shadAnim(buttonsHolder, "translationY", 200, 200);
+                shadAnim(packpreviewBinding.buttonsHolder, "alpha", 0, 200);
+                shadAnim(packpreviewBinding.buttonsHolder, "translationY", 200, 200);
                 sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             }
         });
 
-        download.setOnClickListener(_view -> askForZippingSheet());
-        cancelDownload.setOnClickListener(_view -> downloadFinished(false, true));
+        packpreviewBinding.download.setOnClickListener(_view -> askForZippingSheet());
+        packpreviewBinding.cancelDownload.setOnClickListener(_view -> downloadFinished(false, true));
     }
 
     private void initializeLogic() {
@@ -135,13 +122,13 @@ public class PackPreviewActivity extends AppCompatActivity {
 
     public void LOGIC_BACKEND() {
         overridePendingTransition(R.anim.fade_in, 0);
-        sheetBehavior = BottomSheetBehavior.from(bsheetbehavior);
+        sheetBehavior = BottomSheetBehavior.from(packpreviewBinding.sheetBehavior);
         setGridColumns();
         bottomSheetBehaviorListener();
         try {
             tempPackName = getIntent().getStringExtra("packName");
-            activityTitle.setText(tempPackName);
-            activityDescription.setText(getIntent().getStringExtra("subtitle"));
+            packpreviewBinding.activityTitle.setText(tempPackName);
+            packpreviewBinding.activityDescription.setText(getIntent().getStringExtra("subtitle"));
             packEmojisArrayString = getIntent().getStringExtra("packEmojisArray");
 
             ArrayList<String> emojisStringArray = new Gson().fromJson(packEmojisArrayString, new TypeToken<ArrayList<String>>() {
@@ -154,7 +141,7 @@ public class PackPreviewActivity extends AppCompatActivity {
                 emojisListMap.add(emojisMap);
             }
 
-            packsRecycler.setAdapter(new Recycler1Adapter(emojisListMap));
+            packpreviewBinding.packEmojisRecycler.setAdapter(new Recycler1Adapter(emojisListMap));
 
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -164,11 +151,11 @@ public class PackPreviewActivity extends AppCompatActivity {
     }
 
     public void LOGIC_FRONTEND() {
-        advancedCorners(background, "#FFFFFF", 40, 40, 0, 0);
-        marqueeTextView(activityTitle);
-        setViewRadius(slider, 90, "#E0E0E0");
-        rippleRoundStroke(download, "#7289DA", "#687DC8", getResources().getDimension(R.dimen.buttons_corners_radius), 0, "#7289DA");
-        rippleRoundStroke(cancelDownload, "#424242", "#343434", getResources().getDimension(R.dimen.buttons_corners_radius), 0, "#7289DA");
+        advancedCorners(packpreviewBinding.background, "#FFFFFF", 40, 40, 0, 0);
+        marqueeTextView(packpreviewBinding.activityTitle);
+        setViewRadius(packpreviewBinding.slider, 90, "#E0E0E0");
+        rippleRoundStroke(packpreviewBinding.download, "#7289DA", "#687DC8", getResources().getDimension(R.dimen.buttons_corners_radius), 0, "#7289DA");
+        rippleRoundStroke(packpreviewBinding.cancelDownload, "#424242", "#343434", getResources().getDimension(R.dimen.buttons_corners_radius), 0, "#7289DA");
         DARK_ICONS(this);
         transparentStatusBar(this);
     }
@@ -179,7 +166,7 @@ public class PackPreviewActivity extends AppCompatActivity {
         int screenWidth = getScreenWidth(this);
         int columns = (int) ((float) screenWidth / scaleFactor);
         layoutManager1 = new GridLayoutManager(this, columns);
-        packsRecycler.setLayoutManager(layoutManager1);
+        packpreviewBinding.packEmojisRecycler.setLayoutManager(layoutManager1);
     }
 
     private void bottomSheetBehaviorListener() {
@@ -188,37 +175,37 @@ public class PackPreviewActivity extends AppCompatActivity {
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 switch (newState) {
                     case BottomSheetBehavior.STATE_COLLAPSED:
-                        shadAnim(background, "elevation", 20, 200);
-                        shadAnim(slider, "translationY", 0, 200);
-                        shadAnim(slider, "alpha", 1, 200);
-                        shadAnim(buttonsHolder, "translationY", 0, 200);
-                        shadAnim(buttonsHolder, "alpha", 1, 200);
-                        slider.setVisibility(View.VISIBLE);
+                        shadAnim(packpreviewBinding.background, "elevation", 20, 200);
+                        shadAnim(packpreviewBinding.slider, "translationY", 0, 200);
+                        shadAnim(packpreviewBinding.slider, "alpha", 1, 200);
+                        shadAnim(packpreviewBinding.buttonsHolder, "translationY", 0, 200);
+                        shadAnim(packpreviewBinding.buttonsHolder, "alpha", 1, 200);
+                        packpreviewBinding.slider.setVisibility(View.VISIBLE);
                         break;
                     case BottomSheetBehavior.STATE_DRAGGING:
-                        shadAnim(background, "elevation", 20, 200);
-                        shadAnim(slider, "translationY", 0, 200);
-                        shadAnim(slider, "alpha", 1, 200);
-                        slider.setVisibility(View.VISIBLE);
+                        shadAnim(packpreviewBinding.background, "elevation", 20, 200);
+                        shadAnim(packpreviewBinding.slider, "translationY", 0, 200);
+                        shadAnim(packpreviewBinding.slider, "alpha", 1, 200);
+                        packpreviewBinding.slider.setVisibility(View.VISIBLE);
                         if (!isDownloading) {
-                            shadAnim(buttonsHolder, "translationY", 200, 200);
-                            shadAnim(buttonsHolder, "alpha", 0, 200);
+                            shadAnim(packpreviewBinding.buttonsHolder, "translationY", 200, 200);
+                            shadAnim(packpreviewBinding.buttonsHolder, "alpha", 0, 200);
                         }
                         break;
 
                     case BottomSheetBehavior.STATE_EXPANDED:
-                        shadAnim(background, "elevation", 0, 200);
-                        shadAnim(slider, "translationY", -200, 200);
-                        shadAnim(slider, "alpha", 0, 200);
-                        shadAnim(buttonsHolder, "translationY", 0, 200);
-                        shadAnim(buttonsHolder, "alpha", 1, 200);
-                        slider.setVisibility(View.INVISIBLE);
+                        shadAnim(packpreviewBinding.background, "elevation", 0, 200);
+                        shadAnim(packpreviewBinding.slider, "translationY", -200, 200);
+                        shadAnim(packpreviewBinding.slider, "alpha", 0, 200);
+                        shadAnim(packpreviewBinding.buttonsHolder, "translationY", 0, 200);
+                        shadAnim(packpreviewBinding.buttonsHolder, "alpha", 1, 200);
+                        packpreviewBinding.slider.setVisibility(View.INVISIBLE);
                         break;
                     case BottomSheetBehavior.STATE_HIDDEN:
                         if (isDownloading) {
                             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                         } else {
-                            shadAnim(relativeView, "alpha", 0, 200);
+                            shadAnim(packpreviewBinding.relativeView, "alpha", 0, 200);
                             new Handler().postDelayed(() -> finish(), 150);
                         }
                         break;
@@ -238,10 +225,10 @@ public class PackPreviewActivity extends AppCompatActivity {
 
     private void downloadPack() {
         if (!isDownloading) {
-            cancelDownload.setVisibility(View.VISIBLE);
-            download_tv.setText(R.string.downloading);
-            download_ic.setImageResource(R.drawable.loadingimg);
-            downAnim.setTarget(download_ic);
+            packpreviewBinding.cancelDownload.setVisibility(View.VISIBLE);
+            packpreviewBinding.downloadTv.setText(R.string.downloading);
+            packpreviewBinding.downloadIc.setImageResource(R.drawable.loadingimg);
+            downAnim.setTarget(packpreviewBinding.downloadIc);
             downAnim.setPropertyName("rotation");
             downAnim.setFloatValues((float) (1000));
             downAnim.setRepeatCount(999);
@@ -283,7 +270,7 @@ public class PackPreviewActivity extends AppCompatActivity {
                         if (currentDownloadPosition < emojisListMap.size() - 1) {
                             currentDownloadPosition++;
                             downloadPack();
-                            download_tv.setText(getString(R.string.downloading) + " " + currentDownloadPosition + "/" + emojisListMap.size());
+                            packpreviewBinding.downloadTv.setText(getString(R.string.downloading) + " " + currentDownloadPosition + "/" + emojisListMap.size());
                         } else {
                             if (isGoingToZipPack) {
                                 zippingTask();
@@ -307,20 +294,20 @@ public class PackPreviewActivity extends AppCompatActivity {
         downAnim.cancel();
         if (isCancelling) {
             PRDownloader.cancelAll();
-            shadAnim(buttonsHolder, "translationY", 200, 200);
-            shadAnim(buttonsHolder, "alpha", 0, 200);
+            shadAnim(packpreviewBinding.buttonsHolder, "translationY", 200, 200);
+            shadAnim(packpreviewBinding.buttonsHolder, "alpha", 0, 200);
             sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         } else {
             currentDownloadPosition = 0;
-            download_ic.setRotation(0);
-            cancelDownload.setVisibility(View.GONE);
+            packpreviewBinding.downloadIc.setRotation(0);
+            packpreviewBinding.cancelDownload.setVisibility(View.GONE);
             if (isSuccess) {
-                download_ic.setImageResource(R.drawable.round_done_white_48dp);
-                download_tv.setText(R.string.download_success);
+                packpreviewBinding.downloadIc.setImageResource(R.drawable.round_done_white_48dp);
+                packpreviewBinding.downloadTv.setText(R.string.download_success);
                 isPackDownloaded = true;
             } else {
-                download_tv.setText(R.string.download_btn_txt);
-                download_ic.setImageResource(R.drawable.round_get_app_white_48dp);
+                packpreviewBinding.downloadTv.setText(R.string.download_btn_txt);
+                packpreviewBinding.downloadIc.setImageResource(R.drawable.round_get_app_white_48dp);
             }
         }
     }
@@ -413,8 +400,8 @@ public class PackPreviewActivity extends AppCompatActivity {
         if (isDownloading) {
             downloadFinished(false, true);
         }
-        shadAnim(buttonsHolder, "alpha", 0, 200);
-        shadAnim(buttonsHolder, "translationY", 200, 200);
+        shadAnim(packpreviewBinding.buttonsHolder, "alpha", 0, 200);
+        shadAnim(packpreviewBinding.buttonsHolder, "translationY", 200, 200);
         sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
@@ -429,7 +416,8 @@ public class PackPreviewActivity extends AppCompatActivity {
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View v = inflater.inflate(R.layout.emojisview, parent, false);
+            emojisviewBinding = EmojisviewBinding.inflate(getLayoutInflater(),parent,false);
+            View v = emojisviewBinding.getRoot();
             RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             v.setLayoutParams(layoutParams);
             return new ViewHolder(v);
@@ -437,14 +425,9 @@ public class PackPreviewActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            View view = holder.itemView;
 
-            final LinearLayout space = view.findViewById(R.id.space);
-            LinearLayout emojisBackground = view.findViewById(R.id.emojiBackground);
-            ImageView emoji = view.findViewById(R.id.emoji);
-
-            setImgURL(emoji, Objects.requireNonNull(data.get(position).get("emoji_link")).toString());
-            emojisBackground.setOnClickListener(_view -> {
+            setImgURL(emojisviewBinding.emoji, Objects.requireNonNull(data.get(position).get("emoji_link")).toString());
+            emojisviewBinding.emojiBackground.setOnClickListener(_view -> {
                 try {
                     DownloaderSheet downloaderSheet = new DownloaderSheet();
                     downloaderSheet.showEmojiSheet(PackPreviewActivity.this, Objects.requireNonNull(data.get(position).get("emoji_link")).toString(), Objects.requireNonNull(data.get(position).get("slug")).toString(), "Emoji lovers");
@@ -454,9 +437,9 @@ public class PackPreviewActivity extends AppCompatActivity {
             });
 
             if (position == getItemCount() - 1) {
-                space.setVisibility(View.VISIBLE);
+                emojisviewBinding.space.setVisibility(View.VISIBLE);
             } else {
-                space.setVisibility(View.GONE);
+                emojisviewBinding.space.setVisibility(View.GONE);
             }
         }
 
