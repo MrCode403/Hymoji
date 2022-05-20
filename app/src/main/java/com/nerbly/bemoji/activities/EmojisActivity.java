@@ -31,7 +31,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -51,9 +50,9 @@ import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.tabs.TabLayout;
+import com.nerbly.bemoji.databinding.EmojisBinding;
+import com.nerbly.bemoji.databinding.SortbyViewBinding;
 import com.nerbly.bemoji.fragments.MainEmojisFragment;
 import com.nerbly.bemoji.fragments.PacksEmojisFragment;
 import com.nerbly.bemoji.R;
@@ -63,17 +62,10 @@ import java.util.Objects;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 public class EmojisActivity extends AppCompatActivity {
-    public EditText searchBoxField;
-    public LinearLayout searchBox;
-    public LinearLayout adContainerView;
+
     public boolean isSortingNew = true;
     public boolean isSortingOld = false;
     public boolean isSortingAlphabet = false;
-    private AdView adview;
-    private ImageView sortByBtn;
-    private ImageView searchBtn;
-    private ViewPager viewpager;
-    private TabLayout tablayout;
     private SharedPreferences sharedPref;
     private boolean isSearching = false;
     private boolean isSearchingMain = false;
@@ -84,33 +76,27 @@ public class EmojisActivity extends AppCompatActivity {
     private String lastMainEmojisQuery = "";
     private String lastPacksEmojisQuery = "";
     private String searchQuery = "";
-    private AppBarLayout appbar;
     private InterstitialAd mInterstitialAd;
     private int emojisDownloadedSoFar = 0;
-    private CircularProgressIndicator progress_loading;
+    private EmojisBinding emojisBinding;
+    private AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadLocale(this);
-        setContentView(R.layout.emojis);
+        emojisBinding = EmojisBinding.inflate(getLayoutInflater());
+        View view = emojisBinding.getRoot();
+        setContentView(view);
         initialize();
         initializeLogic();
     }
 
     private void initialize() {
-        adContainerView = findViewById(R.id.adContainerView);
-        viewpager = findViewById(R.id.viewpager);
-        appbar = findViewById(R.id.appbar);
-        searchBox = findViewById(R.id.searchbox);
-        tablayout = findViewById(R.id.tablayout);
-        searchBoxField = findViewById(R.id.searchField);
-        sortByBtn = findViewById(R.id.ic_filter_clear);
-        searchBtn = findViewById(R.id.searchBtn);
-        progress_loading = findViewById(R.id.progress_loading);
+
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
-        searchBoxField.addTextChangedListener(new TextWatcher() {
+        emojisBinding.searchField.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence charSeq, int start, int count, int after) {
                 searchQuery = charSeq.toString().trim().toUpperCase();
@@ -119,17 +105,17 @@ public class EmojisActivity extends AppCompatActivity {
                     isSearching = false;
                     lastSearchedEmoji = "";
                     searchQuery = "";
-                    if (viewpager.getCurrentItem() == 0) {
+                    if (emojisBinding.viewpager.getCurrentItem() == 0) {
                         if (isSearchingMain) {
-                            MainEmojisFragment fragment = (MainEmojisFragment) Objects.requireNonNull(viewpager.getAdapter()).instantiateItem(viewpager, viewpager.getCurrentItem());
-                            progress_loading.setVisibility(View.VISIBLE);
+                            MainEmojisFragment fragment = (MainEmojisFragment) Objects.requireNonNull(emojisBinding.viewpager.getAdapter()).instantiateItem(emojisBinding.viewpager, emojisBinding.viewpager.getCurrentItem());
+                            emojisBinding.progressLoading.setVisibility(View.VISIBLE);
                             fragment.getEmojis();
                             isSearchingMain = false;
                             lastMainEmojisQuery = "";
                         }
-                    } else if (viewpager.getCurrentItem() == 1) {
+                    } else if (emojisBinding.viewpager.getCurrentItem() == 1) {
                         if (isSearchingPacks) {
-                            PacksEmojisFragment fragment = (PacksEmojisFragment) Objects.requireNonNull(viewpager.getAdapter()).instantiateItem(viewpager, viewpager.getCurrentItem());
+                            PacksEmojisFragment fragment = (PacksEmojisFragment) Objects.requireNonNull(emojisBinding.viewpager.getAdapter()).instantiateItem(emojisBinding.viewpager, emojisBinding.viewpager.getCurrentItem());
                             fragment.setLoadingScreenData(false, true);
                             fragment.getEmojis();
                             isSearchingPacks = false;
@@ -138,9 +124,9 @@ public class EmojisActivity extends AppCompatActivity {
                     }
                 }
                 if (searchQuery.length() > 0) {
-                    sortByBtn.setImageResource(R.drawable.round_clear_black_48dp);
+                    emojisBinding.icFilterClear.setImageResource(R.drawable.round_clear_black_48dp);
                 } else {
-                    sortByBtn.setImageResource(R.drawable.outline_filter_alt_black_48dp);
+                    emojisBinding.icFilterClear.setImageResource(R.drawable.outline_filter_alt_black_48dp);
                 }
             }
 
@@ -155,7 +141,7 @@ public class EmojisActivity extends AppCompatActivity {
             }
         });
 
-        searchBoxField.setOnEditorActionListener((v, actionId, event) -> {
+        emojisBinding.searchField.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 searchTask();
                 return true;
@@ -163,19 +149,19 @@ public class EmojisActivity extends AppCompatActivity {
             return false;
         });
 
-        sortByBtn.setOnClickListener(_view -> {
+        emojisBinding.icFilterClear.setOnClickListener(_view -> {
             if (searchQuery.length() > 0) {
-                searchBoxField.setText("");
+                emojisBinding.searchField.setText("");
             } else {
-                searchBoxField.setEnabled(false);
-                searchBoxField.setEnabled(true);
-                showFilterMenu(sortByBtn);
+                emojisBinding.searchField.setEnabled(false);
+                emojisBinding.searchField.setEnabled(true);
+                showFilterMenu(emojisBinding.icFilterClear);
             }
         });
 
-        searchBtn.setOnClickListener(_view -> searchTask());
+        emojisBinding.searchBtn.setOnClickListener(_view -> searchTask());
 
-        tablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        emojisBinding.tablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
             }
@@ -195,7 +181,7 @@ public class EmojisActivity extends AppCompatActivity {
             }
         });
 
-        viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        emojisBinding.viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -203,21 +189,21 @@ public class EmojisActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                appbar.setExpanded(true, true);
+                emojisBinding.appbar.setExpanded(true, true);
                 if (position == 0) {
                     lastSearchedEmoji = lastMainEmojisQuery;
 
                     if (!lastSearchedMainEmoji.isEmpty()) {
-                        searchBoxField.setText(lastSearchedMainEmoji);
-                        sortByBtn.setImageResource(R.drawable.round_clear_black_48dp);
+                        emojisBinding.searchField.setText(lastSearchedMainEmoji);
+                        emojisBinding.icFilterClear.setImageResource(R.drawable.round_clear_black_48dp);
                         isSearching = true;
                     }
                 } else {
                     lastSearchedEmoji = lastPacksEmojisQuery;
 
                     if (!lastSearchedPackEmoji.isEmpty()) {
-                        searchBoxField.setText(lastSearchedPackEmoji);
-                        sortByBtn.setImageResource(R.drawable.round_clear_black_48dp);
+                        emojisBinding.searchField.setText(lastSearchedPackEmoji);
+                        emojisBinding.icFilterClear.setImageResource(R.drawable.round_clear_black_48dp);
                         isSearching = true;
                     }
                 }
@@ -238,17 +224,17 @@ public class EmojisActivity extends AppCompatActivity {
     }
 
     public void LOGIC_BACKEND() {
-        viewpager.setOffscreenPageLimit(2);
-        viewpager.setAdapter(new MyFragmentAdapter(getApplicationContext(), getSupportFragmentManager(), 2));
-        tablayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.colorPrimary));
-        tablayout.setTabTextColors(Color.parseColor("#616161"), ContextCompat.getColor(this, R.color.colorPrimary));
-        tablayout.setupWithViewPager(viewpager);
+        emojisBinding.viewpager.setOffscreenPageLimit(2);
+        emojisBinding.viewpager.setAdapter(new MyFragmentAdapter(getApplicationContext(), getSupportFragmentManager(), 2));
+        emojisBinding.tablayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        emojisBinding.tablayout.setTabTextColors(Color.parseColor("#616161"), ContextCompat.getColor(this, R.color.colorPrimary));
+        emojisBinding.tablayout.setupWithViewPager(emojisBinding.viewpager);
 
         loadAds();
     }
 
     public void LOGIC_FRONTEND() {
-        rippleRoundStroke(searchBox, "#FFFFFF", "#FFFFFF", 200, 1, "#C4C4C4");
+        rippleRoundStroke(emojisBinding.searchbox, "#FFFFFF", "#FFFFFF", 200, 1, "#C4C4C4");
         if (Build.VERSION.SDK_INT <= 27) {
             statusBarColor("#7289DA", this);
             LIGHT_ICONS(this);
@@ -256,57 +242,51 @@ public class EmojisActivity extends AppCompatActivity {
             navStatusBarColor("#FFFFFF", "#FFFFFF", this);
             DARK_ICONS(this);
         }
-        rippleEffect("#E0E0E0", sortByBtn);
-        rippleEffect("#E0E0E0", searchBtn);
+        rippleEffect("#E0E0E0", emojisBinding.icFilterClear);
+        rippleEffect("#E0E0E0", emojisBinding.searchBtn);
         if (Build.VERSION.SDK_INT >= 31) {
-            OverScrollDecoratorHelper.setUpOverScroll(viewpager);
+            OverScrollDecoratorHelper.setUpOverScroll(emojisBinding.viewpager);
         }
     }
 
     public void showFilterMenu(final View view) {
-        if (viewpager.getCurrentItem() == 0) {
-            main_emojis_fragment = (MainEmojisFragment) Objects.requireNonNull(viewpager.getAdapter()).instantiateItem(viewpager, viewpager.getCurrentItem());
+        if (emojisBinding.viewpager.getCurrentItem() == 0) {
+            main_emojis_fragment = (MainEmojisFragment) Objects.requireNonNull(emojisBinding.viewpager.getAdapter()).instantiateItem(emojisBinding.viewpager, emojisBinding.viewpager.getCurrentItem());
             isSortingNew = main_emojis_fragment.isSortingNew;
             isSortingOld = main_emojis_fragment.isSortingOld;
             isSortingAlphabet = main_emojis_fragment.isSortingAlphabet;
         } else {
-            packs_emojis_fragment = (PacksEmojisFragment) Objects.requireNonNull(viewpager.getAdapter()).instantiateItem(viewpager, viewpager.getCurrentItem());
+            packs_emojis_fragment = (PacksEmojisFragment) Objects.requireNonNull(emojisBinding.viewpager.getAdapter()).instantiateItem(emojisBinding.viewpager, emojisBinding.viewpager.getCurrentItem());
             isSortingNew = packs_emojis_fragment.isSortingNew;
             isSortingOld = packs_emojis_fragment.isSortingOld;
             isSortingAlphabet = packs_emojis_fragment.isSortingAlphabet;
         }
 
-        View popupView = getLayoutInflater().inflate(R.layout.sortby_view, (ViewGroup) null);
+        SortbyViewBinding sortbyViewBinding = SortbyViewBinding.inflate(getLayoutInflater());
+        View popupView = sortbyViewBinding.getRoot();
         final PopupWindow popup = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        LinearLayout bg = popupView.findViewById(R.id.bg);
-        ImageView i1 = popupView.findViewById(R.id.i1);
-        ImageView i2 = popupView.findViewById(R.id.i2);
-        ImageView i3 = popupView.findViewById(R.id.i3);
-        LinearLayout b1 = popupView.findViewById(R.id.b1);
-        LinearLayout b2 = popupView.findViewById(R.id.b2);
-        LinearLayout b3 = popupView.findViewById(R.id.b3);
-        setImageViewRipple(i1, "#414141", "#7289DA");
-        setImageViewRipple(i2, "#414141", "#7289DA");
-        setImageViewRipple(i3, "#414141", "#7289DA");
+        setImageViewRipple(sortbyViewBinding.i1, "#414141", "#7289DA");
+        setImageViewRipple(sortbyViewBinding.i2, "#414141", "#7289DA");
+        setImageViewRipple(sortbyViewBinding.i3, "#414141", "#7289DA");
 
-        setClippedView(bg, "#FFFFFF", 25, 7);
+        setClippedView(sortbyViewBinding.bg, "#FFFFFF", 25, 7);
         if (isSortingNew) {
-            rippleRoundStroke(b1, "#EEEEEE", "#BDBDBD", 0, 0, "#EEEEEE");
+            rippleRoundStroke(sortbyViewBinding.b1, "#EEEEEE", "#BDBDBD", 0, 0, "#EEEEEE");
         } else {
-            rippleRoundStroke(b1, "#FFFFFF", "#EEEEEE", 0, 0, "#EEEEEE");
+            rippleRoundStroke(sortbyViewBinding.b1, "#FFFFFF", "#EEEEEE", 0, 0, "#EEEEEE");
         }
         if (isSortingOld) {
-            rippleRoundStroke(b2, "#EEEEEE", "#BDBDBD", 0, 0, "#EEEEEE");
+            rippleRoundStroke(sortbyViewBinding.b2, "#EEEEEE", "#BDBDBD", 0, 0, "#EEEEEE");
         } else {
-            rippleRoundStroke(b2, "#FFFFFF", "#EEEEEE", 0, 0, "#EEEEEE");
+            rippleRoundStroke(sortbyViewBinding.b2, "#FFFFFF", "#EEEEEE", 0, 0, "#EEEEEE");
         }
         if (isSortingAlphabet) {
-            rippleRoundStroke(b3, "#EEEEEE", "#BDBDBD", 0, 0, "#EEEEEE");
+            rippleRoundStroke(sortbyViewBinding.b3, "#EEEEEE", "#BDBDBD", 0, 0, "#EEEEEE");
         } else {
-            rippleRoundStroke(b3, "#FFFFFF", "#EEEEEE", 0, 0, "#EEEEEE");
+            rippleRoundStroke(sortbyViewBinding.b3, "#FFFFFF", "#EEEEEE", 0, 0, "#EEEEEE");
         }
-        b1.setOnClickListener(view1 -> {
-            if (viewpager.getCurrentItem() == 0) {
+        sortbyViewBinding.b1.setOnClickListener(view1 -> {
+            if (emojisBinding.viewpager.getCurrentItem() == 0) {
                 main_emojis_fragment.sort_by_newest();
             } else {
                 packs_emojis_fragment.sort_by_newest();
@@ -314,8 +294,8 @@ public class EmojisActivity extends AppCompatActivity {
 
             popup.dismiss();
         });
-        b2.setOnClickListener(view12 -> {
-            if (viewpager.getCurrentItem() == 0) {
+        sortbyViewBinding.b2.setOnClickListener(view12 -> {
+            if (emojisBinding.viewpager.getCurrentItem() == 0) {
                 main_emojis_fragment.sort_by_oldest();
             } else {
                 packs_emojis_fragment.sort_by_oldest();
@@ -324,8 +304,8 @@ public class EmojisActivity extends AppCompatActivity {
             popup.dismiss();
 
         });
-        b3.setOnClickListener(view13 -> {
-            if (viewpager.getCurrentItem() == 0) {
+        sortbyViewBinding.b3.setOnClickListener(view13 -> {
+            if (emojisBinding.viewpager.getCurrentItem() == 0) {
                 main_emojis_fragment.sort_by_alphabetically();
             } else {
                 packs_emojis_fragment.sort_by_alphabetically();
@@ -341,12 +321,12 @@ public class EmojisActivity extends AppCompatActivity {
 
     private void searchTask() {
         boolean shouldAllowSearch = false;
-        if (viewpager.getCurrentItem() == 0) {
+        if (emojisBinding.viewpager.getCurrentItem() == 0) {
             if (isMainEmojisLoaded) {
                 shouldAllowSearch = true;
                 isSearchingMain = true;
             }
-        } else if (viewpager.getCurrentItem() == 1) {
+        } else if (emojisBinding.viewpager.getCurrentItem() == 1) {
             if (isPacksEmojisLoaded) {
                 shouldAllowSearch = true;
                 isSearchingPacks = true;
@@ -354,27 +334,27 @@ public class EmojisActivity extends AppCompatActivity {
         }
 
         if (!searchQuery.isEmpty()) {
-            sortByBtn.setImageResource(R.drawable.round_clear_black_48dp);
+            emojisBinding.icFilterClear.setImageResource(R.drawable.round_clear_black_48dp);
         } else {
-            sortByBtn.setImageResource(R.drawable.outline_filter_alt_black_48dp);
+            emojisBinding.icFilterClear.setImageResource(R.drawable.outline_filter_alt_black_48dp);
         }
 
         if (searchQuery.length() > 0 && !lastSearchedEmoji.equals(searchQuery) && shouldAllowSearch) {
             Log.d("HYMOJI_SEARCH", "allowed to search from step 2");
             lastSearchedEmoji = searchQuery;
-            hideShowKeyboard(false, searchBoxField, this);
+            hideShowKeyboard(false, emojisBinding.searchField, this);
             isSearching = true;
-            progress_loading.setVisibility(View.VISIBLE);
-            if (viewpager.getCurrentItem() == 0) {
+            emojisBinding.progressLoading.setVisibility(View.VISIBLE);
+            if (emojisBinding.viewpager.getCurrentItem() == 0) {
                 isMainEmojisLoaded = false;
                 lastMainEmojisQuery = searchQuery;
 
-                MainEmojisFragment fragment = (MainEmojisFragment) Objects.requireNonNull(viewpager.getAdapter()).instantiateItem(viewpager, viewpager.getCurrentItem());
+                MainEmojisFragment fragment = (MainEmojisFragment) Objects.requireNonNull(emojisBinding.viewpager.getAdapter()).instantiateItem(emojisBinding.viewpager, emojisBinding.viewpager.getCurrentItem());
                 fragment.searchTask(searchQuery);
             } else {
                 isPacksEmojisLoaded = false;
                 lastPacksEmojisQuery = searchQuery;
-                PacksEmojisFragment fragment = (PacksEmojisFragment) Objects.requireNonNull(viewpager.getAdapter()).instantiateItem(viewpager, viewpager.getCurrentItem());
+                PacksEmojisFragment fragment = (PacksEmojisFragment) Objects.requireNonNull(emojisBinding.viewpager.getAdapter()).instantiateItem(emojisBinding.viewpager, emojisBinding.viewpager.getCurrentItem());
                 fragment.searchTask(searchQuery);
             }
         } else {
@@ -386,8 +366,8 @@ public class EmojisActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (!isEmojiSheetShown) {
-            if (viewpager.getCurrentItem() == 1) {
-                viewpager.setCurrentItem(0);
+            if (emojisBinding.viewpager.getCurrentItem() == 1) {
+                emojisBinding.viewpager.setCurrentItem(0);
             } else {
                 finish();
             }
@@ -397,8 +377,8 @@ public class EmojisActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         mInterstitialAd = null;
-        if (adview != null) {
-            adview.destroy();
+        if (adView != null) {
+            adView.destroy();
         }
         super.onDestroy();
     }
@@ -444,17 +424,17 @@ public class EmojisActivity extends AppCompatActivity {
 
     private void loadAds() {
         if (!sharedPref.getBoolean("isPremium", false)) {
-            adview = new AdView(this);
-            adview.setAdUnitId(getString(R.string.mainemojis_admob_banner_id));
-            adContainerView.removeAllViews();
-            adContainerView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
-            adContainerView.addView(adview);
+            adView = new AdView(this);
+            adView.setAdUnitId(getString(R.string.mainemojis_admob_banner_id));
+            emojisBinding.adContainerView.removeAllViews();
+            emojisBinding.adContainerView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
+            emojisBinding.adContainerView.addView(adView);
 
-            AdSize adSize = getAdSize(adContainerView, this);
-            adview.setAdSize(adSize);
+            AdSize adSize = getAdSize(emojisBinding.adContainerView, this);
+            adView.setAdSize(adSize);
 
             AdRequest adRequest = new AdRequest.Builder().build();
-            adview.loadAd(adRequest);
+            adView.loadAd(adRequest);
 
             MobileAds.initialize(this, initializationStatus -> {
             });
