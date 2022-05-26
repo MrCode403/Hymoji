@@ -31,7 +31,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
@@ -51,11 +50,11 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.tabs.TabLayout;
+import com.nerbly.bemoji.R;
 import com.nerbly.bemoji.databinding.EmojisBinding;
 import com.nerbly.bemoji.databinding.SortbyViewBinding;
 import com.nerbly.bemoji.fragments.MainEmojisFragment;
 import com.nerbly.bemoji.fragments.PacksEmojisFragment;
-import com.nerbly.bemoji.R;
 
 import java.util.Objects;
 
@@ -459,11 +458,11 @@ public class EmojisActivity extends AppCompatActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            if (position == 0) {
-                return getString(R.string.emojis_tab1_title);
-            }
-            if (position == 1) {
-                return getString(R.string.emojis_tab2_title);
+            switch (position) {
+                case 0:
+                    return getString(R.string.emojis_tab1_title);
+                case 1:
+                    return getString(R.string.emojis_tab2_title);
             }
             return null;
         }
@@ -471,10 +470,11 @@ public class EmojisActivity extends AppCompatActivity {
         @NonNull
         @Override
         public Fragment getItem(int position) {
-            if (position == 0) {
-                return new MainEmojisFragment();
-            } else if (position == 1) {
-                return new PacksEmojisFragment();
+            switch (position) {
+                case 0:
+                    return new MainEmojisFragment();
+                case 1:
+                    return new PacksEmojisFragment();
             }
             return null;
         }
