@@ -40,9 +40,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,16 +49,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
@@ -73,17 +68,15 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.nerbly.bemoji.R;
 import com.nerbly.bemoji.adapters.HomePacksAdapter;
 import com.nerbly.bemoji.adapters.LocalEmojisAdapter;
-import com.nerbly.bemoji.databinding.AnimatedSplashViewBinding;
 import com.nerbly.bemoji.databinding.HomeBinding;
-import com.nerbly.bemoji.databinding.HomeLoadingBinding;
 import com.nerbly.bemoji.fragments.CategoriesFragment;
 import com.nerbly.bemoji.fragments.SettingsFragment;
 import com.nerbly.bemoji.fragments.TutorialFragment;
 import com.nerbly.bemoji.functions.RequestNetwork;
 import com.nerbly.bemoji.functions.RequestNetworkController;
-import com.nerbly.bemoji.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -125,9 +118,7 @@ public class HomeActivity extends AppCompatActivity {
     private AppUpdateManager appUpdateManager;
     private InstallStateUpdatedListener installStateUpdatedListener;
 
-    private HomeBinding homeBinding;
-    private HomeLoadingBinding homeLoadingBinding;
-    private AnimatedSplashViewBinding animatedSplashViewBinding;
+    private HomeBinding binding;
 
     private AdView adView;
 
@@ -140,16 +131,14 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(_savedInstanceState);
         loadLocale(this);
         initViewBinding();
-        setContentView(homeBinding.getRoot());
+        setContentView(binding.getRoot());
         initialize();
         FirebaseApp.initializeApp(this);
         initializeLogic();
     }
 
-    private void initViewBinding(){
-        homeBinding = HomeBinding.inflate(getLayoutInflater());
-        homeLoadingBinding = HomeLoadingBinding.inflate(getLayoutInflater());
-        animatedSplashViewBinding = AnimatedSplashViewBinding.inflate(getLayoutInflater());
+    private void initViewBinding() {
+        binding = HomeBinding.inflate(getLayoutInflater());
     }
 
     private void initialize() {
@@ -157,8 +146,8 @@ public class HomeActivity extends AppCompatActivity {
         startGettingEmojis = new RequestNetwork(this);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
-        homeBinding.searchcard.setOnClickListener(view -> {
-            if (homeBinding.emojisCounter.getText().toString().equals("0")) {
+        binding.searchcard.setOnClickListener(view -> {
+            if (binding.emojisCounter.getText().toString().equals("0")) {
                 showCustomSnackBar(getString(R.string.emojis_still_loading_msg), HomeActivity.this);
             } else if (!isActivityAttached) {
                 isActivityAttached = true;
@@ -169,7 +158,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        homeBinding.gotopacks.setOnClickListener(view -> {
+        binding.gotopacks.setOnClickListener(view -> {
             if (!isActivityAttached) {
                 isActivityAttached = true;
                 toPacks.setClass(getApplicationContext(), PacksActivity.class);
@@ -177,15 +166,15 @@ public class HomeActivity extends AppCompatActivity {
                 new Handler().postDelayed(() -> isActivityAttached = false, 1000);
             }
         });
-        homeBinding.proTipView.setOnClickListener(view -> {
+        binding.proTipView.setOnClickListener(view -> {
             if (isStoragePermissionGranted(HomeActivity.this)) {
-                homeBinding.proTipView.setVisibility(View.GONE);
+                binding.proTipView.setVisibility(View.GONE);
             } else {
                 requestStoragePermission(1, HomeActivity.this);
             }
         });
 
-        homeBinding.discordDock.setOnClickListener(view -> {
+        binding.discordDock.setOnClickListener(view -> {
             try {
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_VIEW);
@@ -201,13 +190,13 @@ public class HomeActivity extends AppCompatActivity {
                         (dialog, which) -> dialog.dismiss());
             }
         });
-        homeBinding.premiumDock.setOnClickListener(view -> {
+        binding.premiumDock.setOnClickListener(view -> {
             Intent intent1 = new Intent();
             intent1.setClass(this, PremiumActivity.class);
             startActivity(intent1);
         });
 
-        homeBinding.packsRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        binding.packsRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int _scrollState) {
                 super.onScrollStateChanged(recyclerView, _scrollState);
@@ -218,18 +207,18 @@ public class HomeActivity extends AppCompatActivity {
             public void onScrolled(@NonNull RecyclerView recyclerView, int offsetX, int offsetY) {
                 super.onScrolled(recyclerView, offsetX, offsetY);
                 if (layoutManager.findFirstVisibleItemPosition() >= 1) {
-                    homeBinding.seeMorePacks.setVisibility(View.VISIBLE);
+                    binding.seeMorePacks.setVisibility(View.VISIBLE);
                 } else {
-                    homeBinding.seeMorePacks.setVisibility(View.INVISIBLE);
+                    binding.seeMorePacks.setVisibility(View.INVISIBLE);
                 }
             }
         });
 
-        homeBinding.dock1.setOnClickListener(view -> {
-            if (homeBinding.emojisCounter.getText().toString().equals("0")) {
+        binding.dock1.setOnClickListener(view -> {
+            if (binding.emojisCounter.getText().toString().equals("0")) {
                 showCustomSnackBar(getString(R.string.emojis_still_loading_msg), HomeActivity.this);
             } else {
-                if (homeBinding.emojisCounter.getText().toString().equals("0")) {
+                if (binding.emojisCounter.getText().toString().equals("0")) {
                     showCustomSnackBar(getString(R.string.emojis_still_loading_msg), HomeActivity.this);
                 } else {
                     if (!isActivityAttached) {
@@ -243,11 +232,11 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        homeBinding.dock2.setOnClickListener(view -> {
-            if (homeBinding.categoriesCounter.getText().toString().equals("0")) {
+        binding.dock2.setOnClickListener(view -> {
+            if (binding.categoriesCounter.getText().toString().equals("0")) {
                 showCustomSnackBar(getString(R.string.packs_still_loading_msg), HomeActivity.this);
             } else {
-                if (homeBinding.emojisCounter.getText().toString().equals("0")) {
+                if (binding.emojisCounter.getText().toString().equals("0")) {
                     showCustomSnackBar(getString(R.string.emojis_still_loading_msg), HomeActivity.this);
                 } else {
                     CategoriesFragment bottomSheet = new CategoriesFragment();
@@ -259,7 +248,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        homeBinding.dock3.setOnClickListener(view -> {
+        binding.dock3.setOnClickListener(view -> {
 
             SettingsFragment bottomSheet = new SettingsFragment();
             if (!isFragmentAttached) {
@@ -269,7 +258,7 @@ public class HomeActivity extends AppCompatActivity {
 
         });
 
-        homeBinding.dock4.setOnClickListener(view -> {
+        binding.dock4.setOnClickListener(view -> {
             TutorialFragment bottomSheet = new TutorialFragment();
             if (!isFragmentAttached) {
                 isFragmentAttached = true;
@@ -281,7 +270,8 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
 
-                if (homeBinding.swipeToRefresh.isRefreshing()) homeBinding.swipeToRefresh.setRefreshing(false);
+                if (binding.swipeToRefresh.isRefreshing())
+                    binding.swipeToRefresh.setRefreshing(false);
 
                 ExecutorService executor = Executors.newSingleThreadExecutor();
                 Handler handler = new Handler(Looper.getMainLooper());
@@ -375,11 +365,11 @@ public class HomeActivity extends AppCompatActivity {
                                 if (isSuccess[0]) {
                                     Log.d("HYMOJI_PACKS", emojisCount + " packs emojis saved to local database");
                                     sharedPref.edit().putString("packsData", new Gson().toJson(packsList)).apply();
-                                    homeBinding.packsRecycler.setAdapter(new HomePacksAdapter(packsList, HomeActivity.this));
-                                    homeLoadingBinding.loadingView.setVisibility(View.GONE);
-                                    homeBinding.mainView.setVisibility(View.VISIBLE);
-                                    homeBinding.adBackView.setVisibility(View.VISIBLE);
-                                    numbersAnimator(homeBinding.emojisCounter, 0, emojisCount, 1000);
+                                    binding.packsRecycler.setAdapter(new HomePacksAdapter(packsList, HomeActivity.this));
+                                    binding.homeLoading.loadingView.setVisibility(View.GONE);
+                                    binding.mainView.setVisibility(View.VISIBLE);
+                                    binding.adBackView.setVisibility(View.VISIBLE);
+                                    numbersAnimator(binding.emojisCounter, 0, emojisCount, 1000);
                                     sharedPref.edit().putInt("emojisTotalCount", emojisCount).apply();
                                 } else {
                                     Log.d("HYMOJI_PACKS", "Failed to get emojis count due to:");
@@ -413,7 +403,7 @@ public class HomeActivity extends AppCompatActivity {
                         }
 
                         sharedPref.edit().putString("categoriesData", new Gson().toJson(categoriesList)).apply();
-                        numbersAnimator(homeBinding.categoriesCounter, 0, categoriesList.size(), 1000);
+                        numbersAnimator(binding.categoriesCounter, 0, categoriesList.size(), 1000);
 
                         break;
                 }
@@ -421,12 +411,12 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(String tag, String message) {
-                homeBinding.swipeToRefresh.setRefreshing(false);
+                binding.swipeToRefresh.setRefreshing(false);
                 noInternetAccessAction();
             }
         };
 
-        homeBinding.swipeToRefresh.setOnRefreshListener(() -> {
+        binding.swipeToRefresh.setOnRefreshListener(() -> {
             TimerTask loadingTmr = new TimerTask() {
                 @Override
                 public void run() {
@@ -435,8 +425,8 @@ public class HomeActivity extends AppCompatActivity {
                         emojisCount = 0;
                         startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, CATEGORIES_API_LINK, "CATEGORIES", EmojisRequestListener);
                         startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, EMOJIS_API_LINK, "EMOJIS", EmojisRequestListener);
-                        homeLoadingBinding.loadingView.setVisibility(View.VISIBLE);
-                        homeBinding.mainView.setVisibility(View.GONE);
+                        binding.homeLoading.loadingView.setVisibility(View.VISIBLE);
+                        binding.mainView.setVisibility(View.GONE);
                         getLocalEmojis();
                         loadAds();
                     });
@@ -476,7 +466,7 @@ public class HomeActivity extends AppCompatActivity {
             if (isAdLoaded) {
                 adView.destroy();
                 adView.setVisibility(View.GONE);
-                homeBinding.premiumDock.setVisibility(View.GONE);
+                binding.premiumDock.setVisibility(View.GONE);
             }
         }
         super.onResume();
@@ -494,15 +484,15 @@ public class HomeActivity extends AppCompatActivity {
 
         checkUpdate();
 
-        homeBinding.localRecycler.setItemAnimator(null);
-        homeBinding.packsRecycler.setItemAnimator(null);
+        binding.localRecycler.setItemAnimator(null);
+        binding.packsRecycler.setItemAnimator(null);
 
         SnapHelper snapHelper = new LinearSnapHelper();
-        homeBinding.packsRecycler.setLayoutManager(layoutManager);
-        snapHelper.attachToRecyclerView(homeBinding.packsRecycler);
+        binding.packsRecycler.setLayoutManager(layoutManager);
+        snapHelper.attachToRecyclerView(binding.packsRecycler);
 
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        homeBinding.localRecycler.setLayoutManager(layoutManager2);
+        binding.localRecycler.setLayoutManager(layoutManager2);
 
         if (sharedPref.getInt("opened_so_far", 0) >= 2) {
             sharedPref.edit().putInt("opened_so_far", 0).apply();
@@ -515,40 +505,43 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         if ((sharedPref.getString("categoriesData", "").isEmpty() || (sharedPref.getString("packsData", "").isEmpty() || sharedPref.getString("emojisData", "").isEmpty()))) {
-            homeLoadingBinding.loadingView.setVisibility(View.VISIBLE);
-            homeBinding.mainView.setVisibility(View.GONE);
+            binding.homeLoading.loadingView.setVisibility(View.VISIBLE);
+            binding.mainView.setVisibility(View.GONE);
         } else {
-            homeLoadingBinding.loadingView.setVisibility(View.GONE);
-            homeBinding.mainView.setVisibility(View.VISIBLE);
-            homeBinding.adBackView.setVisibility(View.VISIBLE);
+            binding.homeLoading.loadingView.setVisibility(View.GONE);
+            binding.mainView.setVisibility(View.VISIBLE);
+            binding.adBackView.setVisibility(View.VISIBLE);
         }
 
         if (Build.VERSION.SDK_INT <= 30) {
-            OverScrollDecoratorHelper.setUpOverScroll(homeBinding.packsRecycler, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL);
-            OverScrollDecoratorHelper.setUpOverScroll(homeBinding.localRecycler, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL);
+            OverScrollDecoratorHelper.setUpOverScroll(binding.packsRecycler, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL);
+            OverScrollDecoratorHelper.setUpOverScroll(binding.localRecycler, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL);
         }
 
         getOnlineEmojis();
 
         getLocalEmojis();
 
-        homeBinding.adContainerView.post(this::loadAds);
+        binding.adContainerView.post(this::loadAds);
 
     }
 
 
     public void LOGIC_FRONTEND() {
-        new Handler(Looper.getMainLooper()).postDelayed(() -> animatedSplashViewBinding.animatedLogo.playAnimation(), 1000);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> binding.animatedSplashView.animatedLogo.playAnimation(), 1000);
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            animatedSplashViewBinding.appTitle.setVisibility(View.GONE);
+            binding.animatedSplashView.appTitle.setVisibility(View.GONE);
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                shadAnim(animatedSplashViewBinding.animatedLogo, "scaleX", 0, 200);
-                shadAnim(animatedSplashViewBinding.animatedLogo, "scaleY", 0, 200);
-                shadAnim(animatedSplashViewBinding.animatedLogo, "alpha", 0, 200);
-                shadAnim(animatedSplashViewBinding.splashView, "scaleX", 4, 400);
-                shadAnim(animatedSplashViewBinding.splashView, "scaleY", 4, 400);
-                shadAnim(animatedSplashViewBinding.splashView, "alpha", 0, 400);
+                var animatedSplashView = binding.animatedSplashView.splashView;
+                var animatedLogo = binding.animatedSplashView.animatedLogo;
+
+                shadAnim(animatedLogo, "scaleX", 0, 200);
+                shadAnim(animatedLogo, "scaleY", 0, 200);
+                shadAnim(animatedLogo, "alpha", 0, 200);
+                shadAnim(animatedSplashView, "scaleX", 4, 400);
+                shadAnim(animatedSplashView, "scaleY", 4, 400);
+                shadAnim(animatedSplashView, "alpha", 0, 400);
                 afterSplashAnimationAction();
             }, 2000);
         }, 3500);
@@ -562,41 +555,41 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         if (sharedPref.getBoolean("isPremium", false)) {
-            homeBinding.premiumDock.setVisibility(View.GONE);
+            binding.premiumDock.setVisibility(View.GONE);
         }
 
 
-        rippleRoundStroke(homeBinding.dock1, "#FEF3ED", "#FEE0D0", 25, 0, "#FFFFFF");
-        rippleRoundStroke(homeBinding.dock2, "#FAECFD", "#F6D6FD", 25, 0, "#FFFFFF");
-        rippleRoundStroke(homeBinding.dock3, "#FFF7EC", "#FFEACE", 25, 0, "#FFFFFF");
-        rippleRoundStroke(homeBinding.dock4, "#F3EFFE", "#D8CBFE", 25, 0, "#FFFFFF");
-        setClippedView(homeLoadingBinding.shimmer6, "#FFFFFF", 200, 0);
-        setClippedView(homeLoadingBinding.shimmer2, "#FFFFFF", 200, 0);
-        setClippedView(homeLoadingBinding.shimmer3, "#FFFFFF", 30, 0);
-        setClippedView(homeLoadingBinding.shimmer4, "#FFFFFF", 30, 0);
-        setClippedView(homeLoadingBinding.shimmer5, "#FFFFFF", 30, 0);
-        setClippedView(homeLoadingBinding.shimmer6, "#FFFFFF", 30, 0);
-        setClippedView(homeLoadingBinding.shimmer7, "#FFFFFF", 200, 0);
-        setClippedView(homeLoadingBinding.shimmer9, "#FFFFFF", 30, 0);
-        setClippedView(homeLoadingBinding.shimmer10, "#FFFFFF", 200, 0);
-        setClippedView(homeLoadingBinding.shimmer11, "#FFFFFF", 200, 0);
-        setViewRadius(homeBinding.discordImg, 30, "#FAFAFA");
-        setViewRadius(homeBinding.premiumImg, 30, "#FAFAFA");
+        rippleRoundStroke(binding.dock1, "#FEF3ED", "#FEE0D0", 25, 0, "#FFFFFF");
+        rippleRoundStroke(binding.dock2, "#FAECFD", "#F6D6FD", 25, 0, "#FFFFFF");
+        rippleRoundStroke(binding.dock3, "#FFF7EC", "#FFEACE", 25, 0, "#FFFFFF");
+        rippleRoundStroke(binding.dock4, "#F3EFFE", "#D8CBFE", 25, 0, "#FFFFFF");
+        setClippedView(binding.homeLoading.shimmer6, "#FFFFFF", 200, 0);
+        setClippedView(binding.homeLoading.shimmer2, "#FFFFFF", 200, 0);
+        setClippedView(binding.homeLoading.shimmer3, "#FFFFFF", 30, 0);
+        setClippedView(binding.homeLoading.shimmer4, "#FFFFFF", 30, 0);
+        setClippedView(binding.homeLoading.shimmer5, "#FFFFFF", 30, 0);
+        setClippedView(binding.homeLoading.shimmer6, "#FFFFFF", 30, 0);
+        setClippedView(binding.homeLoading.shimmer7, "#FFFFFF", 200, 0);
+        setClippedView(binding.homeLoading.shimmer9, "#FFFFFF", 30, 0);
+        setClippedView(binding.homeLoading.shimmer10, "#FFFFFF", 200, 0);
+        setClippedView(binding.homeLoading.shimmer11, "#FFFFFF", 200, 0);
+        setViewRadius(binding.discordImg, 30, "#FAFAFA");
+        setViewRadius(binding.premiumImg, 30, "#FAFAFA");
 
-        marqueeTextView(homeBinding.dockTxt1);
-        marqueeTextView(homeBinding.dockTxt2);
-        marqueeTextView(homeBinding.dockTxt3);
-        marqueeTextView(homeBinding.dockTxt4);
+        marqueeTextView(binding.dockTxt1);
+        marqueeTextView(binding.dockTxt2);
+        marqueeTextView(binding.dockTxt3);
+        marqueeTextView(binding.dockTxt4);
 
         generateActivityDescription(true);
 
-        homeBinding.swipeToRefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+        binding.swipeToRefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 
     }
 
     private void afterSplashAnimationAction() {
         if (!isStoragePermissionGranted(this)) {
-            new Handler(Looper.getMainLooper()).postDelayed(() -> homeBinding.proTipView.setVisibility(View.VISIBLE), 1000);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> binding.proTipView.setVisibility(View.VISIBLE), 1000);
         }
     }
 
@@ -607,9 +600,9 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             emojisList = new Gson().fromJson(sharedPref.getString("emojisData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
             }.getType());
-            homeBinding.emojisCounter.setText("" + sharedPref.getInt("emojisTotalCount", emojisList.size()));
-            homeLoadingBinding.loadingView.setVisibility(View.GONE);
-            homeBinding.mainView.setVisibility(View.VISIBLE);
+            binding.emojisCounter.setText("" + sharedPref.getInt("emojisTotalCount", emojisList.size()));
+            binding.homeLoading.loadingView.setVisibility(View.GONE);
+            binding.mainView.setVisibility(View.VISIBLE);
         }
 
         if (sharedPref.getString("categoriesData", "").isEmpty()) {
@@ -617,7 +610,7 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             categoriesList = new Gson().fromJson(sharedPref.getString("categoriesData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
             }.getType());
-            homeBinding.categoriesCounter.setText("" + categoriesList.size());
+            binding.categoriesCounter.setText("" + categoriesList.size());
         }
 
         if (!sharedPref.getString("packsData", "").isEmpty()) {
@@ -625,7 +618,7 @@ public class HomeActivity extends AppCompatActivity {
                 packsList = new Gson().fromJson(sharedPref.getString("packsData", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
                 }.getType());
                 sharedPref.edit().putString("packsData", new Gson().toJson(packsList)).apply();
-                homeBinding.packsRecycler.setAdapter(new HomePacksAdapter(packsList, HomeActivity.this));
+                binding.packsRecycler.setAdapter(new HomePacksAdapter(packsList, HomeActivity.this));
             } catch (Exception ignored) {
             }
         }
@@ -642,10 +635,10 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 handler.post(() -> {
                     if (localEmojisList.size() == 0) {
-                        homeBinding.localemojisview.setVisibility(View.GONE);
+                        binding.localemojisview.setVisibility(View.GONE);
                     } else {
-                        homeBinding.localRecycler.setAdapter(new LocalEmojisAdapter(localEmojisList));
-                        new Handler().postDelayed(() -> homeBinding.localemojisview.setVisibility(View.VISIBLE), 1000);
+                        binding.localRecycler.setAdapter(new LocalEmojisAdapter(localEmojisList));
+                        new Handler().postDelayed(() -> binding.localemojisview.setVisibility(View.VISIBLE), 1000);
                     }
                 });
             });
@@ -661,11 +654,11 @@ public class HomeActivity extends AppCompatActivity {
             int random = random1.nextInt(max - min) + min;
 
             if (isFirstTime) {
-                homeBinding.activityDescription.setText(tips[random]);
+                binding.activityDescription.setText(tips[random]);
             } else {
-                homeBinding.activityDescription.setVisibility(View.GONE);
-                new Handler().postDelayed(() -> homeBinding.activityDescription.setText(tips[random]), 400);
-                new Handler().postDelayed(() -> homeBinding.activityDescription.setVisibility(View.VISIBLE), 500);
+                binding.activityDescription.setVisibility(View.GONE);
+                new Handler().postDelayed(() -> binding.activityDescription.setText(tips[random]), 400);
+                new Handler().postDelayed(() -> binding.activityDescription.setVisibility(View.VISIBLE), 500);
             }
 
         } catch (Exception e) {
@@ -680,11 +673,11 @@ public class HomeActivity extends AppCompatActivity {
                 });
                 adView = new AdView(this);
                 adView.setAdUnitId(getString(R.string.home_admob_banner_id));
-                homeBinding.adContainerView.removeAllViews();
-                homeBinding.adContainerView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                homeBinding.adContainerView.addView(adView);
+                binding.adContainerView.removeAllViews();
+                binding.adContainerView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                binding.adContainerView.addView(adView);
 
-                AdSize adSize = getAdSize(homeBinding.adContainerView, this);
+                AdSize adSize = getAdSize(binding.adContainerView, this);
                 adView.setAdSize(adSize);
 
                 AdRequest adRequest = new AdRequest.Builder().build();
@@ -721,9 +714,9 @@ public class HomeActivity extends AppCompatActivity {
         emojisCount = 0;
         startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, CATEGORIES_API_LINK, "CATEGORIES", EmojisRequestListener);
         startGettingEmojis.startRequestNetwork(RequestNetworkController.GET, EMOJIS_API_LINK, "EMOJIS", EmojisRequestListener);
-        homeLoadingBinding.loadingView.setVisibility(View.VISIBLE);
-        homeBinding.mainView.setVisibility(View.GONE);
-        homeBinding.swipeToRefresh.setRefreshing(true);
+        binding.homeLoading.loadingView.setVisibility(View.VISIBLE);
+        binding.mainView.setVisibility(View.GONE);
+        binding.swipeToRefresh.setRefreshing(true);
     }
 
     private void checkUpdate() {
@@ -797,7 +790,7 @@ public class HomeActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                homeBinding.proTipView.setVisibility(View.GONE);
+                binding.proTipView.setVisibility(View.GONE);
                 getLocalEmojis();
             }
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
