@@ -382,7 +382,7 @@ public class PackPreviewActivity extends AppCompatActivity {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
-            final String downloadDir = new File(FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/" + getString(R.string.app_name));
+            final File downloadDir = new File(FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/" + getString(R.string.app_name));
             if (!(downloadDir.exists() && downloadDir.isDirectory())) {
                 downloadDir.mkdirs();
             }
