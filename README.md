@@ -13,19 +13,70 @@
   
 [![stability-mature](https://img.shields.io/badge/stability-mature-008000.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#mature)
 [![Chat](https://img.shields.io/badge/chat-on%20Discord-7289da)](https://discord.gg/nxy2Qq4YP4)
-
 </div>
-<p align='center'>
-<img src="https://repository-images.githubusercontent.com/362965204/c598643a-5af3-4581-a9ba-87022cc2f7c2" >
-  </p>
+
 Hymoji is a platform that works as a library of emojis for Discord, Twitch and Slack provided by emoji.gg.
- 
+
 ## To-do
 ### Stability:
 Currently, `EmojisActivity` uses 2 fragments to show both main and packs emojis. However, the way it shows emojis is so inconsistent and needs to be improved.
- 
-### Massive refactoring:
-This app was initially created using Sketchware, and the current code base uses old methods and approaches to do a certain job. Due to that, the app needs improvements in terms of codes.
+Known todos:
+ - Improve the way `HomeActivity` handles server responses.
+ - `EmojisActivity` needs a checkup to verify any issues that cause the app to hang.
+ - Recreate `PacksEmojisFragment` pagination to work seamlessly with +15K emojis.
+ - The app is kinda slow, but the reason is unknown so far.
+ - The way the app changes to selected language is unstable and sometimes doesn't work.
+ - Showing `BottomSheetDialog/BottomSheetFragment` over `BottomSheetFragment` causes flickering.
+ - Downloading packs as ZIP not working when Hymoji's folder at Downloads doesn't exist. Solution: check if Hymoji folder exists, else create it. Check `zippingTask()` in `PackPreviewActivity`.
 
-## Contributions
-The project is open source because I can't work on it on a regular basis, and there are many users who use the app daily and they need to stay updated with the latest fixes and features. Each contribution would be appreciated in any way. Thanks.
+### Massive refactoring:
+This app was initially created using Sketchware, and the current code base uses old methods and approaches to do a certain job. Due to that, the app needs improvements in terms of code.
+Known todos:
+ - Binding instead of `findViewById`.
+ - Split methods to proper classes.
+ - Switch from hardcoded colors to xml colors.
+ - Replace programmatically-written UI methods with xml approaches.
+
+### Improve Readme.md
+
+## Contributing
+
+Fork this repository and contribute back using
+[pull requests](https://github.com/ilyassesalama/Hymoji/pulls).
+
+The project is open source because I can't work on it on a regular basis, and there are many users who use the app daily and they need to stay updated with the latest fixes and features. Any contributions, large or small, major features, bug fixes, are welcomed and appreciated, but will
+be thoroughly reviewed.
+
+### How to contribute
+
+- Fork the repository to your GitHub account
+- Make a branch if necessary
+- Clone the forked repository to your local device (optional, you can edit files through GitHub's
+  web interface)
+- Make changes to files
+- (IMPORTANT) Test out those changes
+- Create a pull request in this repository
+- The repository members will review your pull request, and merge it when they are accepted.
+
+### Commit message
+
+When you've made changes to one or more files, you have to *commit* that file. You also need a
+*message* for that *commit*.
+
+You should read [these](https://www.freecodecamp.org/news/writing-good-commit-messages-a-practical-guide/)
+guidelines, or that summarized:
+
+- Short and detailed
+- Prefix one of these commit types:
+   - `feat:` A feature, possibly improving something already existing
+   - `fix:` A fix, for example of a bug
+   - `style:` Feature and updates related to styling
+   - `refactor:` Refactoring a specific section of the codebase
+   - `test:` Everything related to testing
+   - `docs:` Everything related to documentation
+   - `chore:` Code maintenance (you can also use emojis to represent commit types)
+
+Examples:
+ - `feat: Better way to download emojis`
+ - `fix: Fix crash during launch on certain phones`
+ - `refactor: Reformat code at File.java`

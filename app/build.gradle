@@ -3,15 +3,20 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
+    namespace 'com.nerbly.bemoji'
     useLibrary 'org.apache.http.legacy'
     compileSdk 31
 
     defaultConfig {
-        applicationId "com.nerbly.bemoji"
+        applicationId 'com.nerbly.bemoji'
         minSdk 21
         targetSdk 31
         versionCode 37
-        versionName "1.0.8"
+        versionName '1.0.8'
+    }
+    
+    buildFeatures {
+        viewBinding true
     }
 
     buildTypes {
@@ -53,7 +58,7 @@ dependencies {
     implementation 'com.google.android.play:core:1.10.3'
 
     //firebase
-    implementation platform('com.google.firebase:firebase-bom:30.0.0')
+    implementation platform('com.google.firebase:firebase-bom:30.0.2')
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-messaging'
     implementation 'com.google.firebase:firebase-analytics'
