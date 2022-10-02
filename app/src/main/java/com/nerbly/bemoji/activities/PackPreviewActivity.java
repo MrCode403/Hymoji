@@ -58,6 +58,7 @@ import com.nerbly.bemoji.R;
 import com.nerbly.bemoji.ui.DownloaderSheet;
 import com.nerbly.bemoji.ui.UserInteractions;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -381,8 +382,11 @@ public class PackPreviewActivity extends AppCompatActivity {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
-
-            packDestination = FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/" + getString(R.string.app_name) + "/" + tempPackName + ".zip";
+            final File downloadDir = new File(FileUtil.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + "/" + getString(R.string.app_name));
+            if (!(downloadDir.exists() && downloadDir.isDirectory())) {
+                downloadDir.mkdirs();
+            }
+            packDestination = downloadDir.getAbsolutePath() + "/" + tempPackName + ".zip";
 
             Log.d("HYMOJI_PACK_DOWNLOAD", "Zipping at destination: " + packDestination);
 
